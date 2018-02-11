@@ -1,0 +1,45 @@
+<html>
+
+<body>
+    <div>
+        <input id="button1" type="button" value="offline canvas->canvas1" onclick="copy(offline_canvas, canvas1)" disabled />
+    </div>
+    <canvas id="canvas1" width="10000" height="10000" border=1>
+        canvas here
+    </canvas>
+    <script>
+        var canvas1 = document.getElementById("canvas1");
+        var offline_canvas = document.createElement('canvas');
+        offline_canvas.width = canvas1.width;
+        offline_canvas.height = canvas1.height;
+
+        draw(offline_canvas);
+
+        function draw(canvas) {
+            var ctx = canvas.getContext("2d");
+            var list = ["rgb(255,189,111)", "rgb(255,221,180)", "rgb(255,244,232)", "rgb(251,248,255)",
+                "rgb(202,216,255)", "rgb(170,191,255)", "rgb(155,176,255)"];
+
+            ctx.beginPath();
+            var i = 0;
+            for (var y = 0; y < canvas.height; y++) {
+                for (var x = 0; x < canvas.width; x++) {
+                    ctx.fillStyle = list[i % list.length];
+                    i++;
+                    ctx.fillRect(x, y, x + 1, y + 1);
+                }
+            }
+            ctx.stroke();
+
+            document.getElementById("button1").removeAttribute("disabled");
+        }
+
+        function copy(src, dest) {
+            var dc = dest.getContext("2d");
+            dc.clearRect(0, 0, src.width, src.height);
+            dc.drawImage(src, 0, 0);
+        }
+    </script>
+</body>
+
+</html>

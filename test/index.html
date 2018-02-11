@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>Network | Static smooth curves - World Cup Network</title>
+
+    <script type="text/javascript" src="../dist/browser.js"></script>
+    <link type="text/css" rel="stylesheet" href="vis-network.min.css">
+
+    <script src="WorldCup2014.js"></script>
+
+    <style type="text/css">
+        #mycanvas {
+            width: 100%;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="mycanvas"></div>
+
+<script type="text/javascript">
+    graphviz.Messages.setLanguage("chs");
+    var container = document.getElementById('mycanvas');
+    var browser = new graphviz.Browser(container,
+            "http://localhost:8088/graphviz-server/graphviz-service");
+    browser.on("init",
+            function () {
+                browser.loadAll();
+                //browser.centerOn(0, 0, 0.5);
+            });
+    browser.init();
+    console.log(browser);
+</script>
+</body>
+
+</html>
