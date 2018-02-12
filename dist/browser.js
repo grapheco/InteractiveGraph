@@ -70350,24 +70350,26 @@ function Browser(container, url, callBackAfterInit) {
 Browser.prototype.init = function () {
 	//init, get global settings
 	var browser = this;
-	this._ajaxCommand("init", {}, function (data, textStatus) {
-		browser.canvaWidth = data.canvaWidth + CANVAS_PADDING;
-		browser.canvasHeight = data.canvasHeight + CANVAS_PADDING;
-		browser.gridSize = data.gridSize;
-		browser.numberOfNodes = data.numberOfNodes;
+	this._ajaxCommand("init", {}, function (json, textStatus) {
+		browser.canvaWidth = json.canvaWidth + CANVAS_PADDING;
+		browser.canvasHeight = json.canvasHeight + CANVAS_PADDING;
+		browser.gridSize = json.gridSize;
+		browser.numberOfNodes = json.numberOfNodes;
 
-		browser.emit("init", data);
+		browser.emit("init", json);
 	});
 }
 
 Browser.prototype.__proto__ = events.EventEmitter.prototype;
 
 Browser.prototype.loadAll = function () {
-	this._ajaxCommand("loadAll", {}, function (data, textStatus) {
-		var options = this.getDefaultOptions();
-		this.network = new vis.Network(container, {
-			nodes: data.nodes,
-			edges: data.edges
+	var browser = this;
+	this._ajaxCommand("loadAll", {}, function (json, textStatus) {
+		var options = browser.getDefaultOptions();
+		console.log(browser);
+		browser.network = new vis.Network(browser.network.body.container, {
+			nodes: json.data.nodes,
+			edges: json.data.edges
 		}, options);
 	});
 }
