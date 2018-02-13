@@ -57,7 +57,6 @@ Browser.prototype.init = function () {
 }
 
 Browser.prototype.__proto__ = events.EventEmitter.prototype;
-
 Browser.prototype.loadAll = function () {
 	var browser = this;
 	this._ajaxCommand("loadAll", {}, function (json, textStatus) {
@@ -87,7 +86,7 @@ Browser.prototype.onZoom = function (args) {
 Browser.prototype._ajaxCommand = function (command, params, callback) {
 	params = params || {};
 	params["command"] = command;
-	jQuery.getJSON(this.url, params, callback);
+	jQuery.getJSON(this.url + "?jsoncallback=?", params, callback);
 };
 
 Browser.prototype.getExplorerOptions = function () {
@@ -125,19 +124,26 @@ Browser.prototype.getExplorerOptions = function () {
 Browser.prototype.getDefaultOptions = function () {
 	return {
 		nodes: {
-			shape: 'dot',
+			shape: 'circularImage',
 			scaling: {
 				min: 10,
 				max: 30
 			},
 			font: {
-				size: 12,
-				face: 'Tahoma'
+				size: 14,
+				strokeWidth: 7
 			}
 		},
 		edges: {
 			width: 0.15,
-			color: {inherit: 'from'},
+			color: {
+				highlight: '#ff0000',
+				hover: '#848484',
+			},
+			selectionWidth: 0.3,
+			arrows: {
+				to: {enabled: true}
+			},
 			smooth: {
 				type: 'continuous'
 			}
