@@ -1,0 +1,24 @@
+{
+  "name": "interactive-graph-browser",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "gulp"
+  },
+  "dependencies": {
+    "browserify": "^16.1.0",
+    "canvas": "^1.6.9",
+    "events": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jquery": "^3.3.1",
+    "jsdom": "^11.6.2",
+    "jsdom-global": "^3.0.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "vis": "^4.21.0"
+  },
+  "devDependencies": {}
+}
