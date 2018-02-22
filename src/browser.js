@@ -1,4 +1,5 @@
 "use strict";
+
 var vis = require("vis");
 require("./shape.js");
 var Messages = require("./messages.js");
@@ -8,7 +9,7 @@ var events = require("events");
 exports.Browser = Browser;
 exports.Messages = Messages;
 
-const CANVAS_PADDING = 80;
+var CANVAS_PADDING = 80;
 
 function Browser(container, url, callBackAfterInit) {
 	this.url = url;

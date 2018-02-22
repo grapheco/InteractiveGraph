@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
     <title>GraphViz-browser</title>
 
-    <script type="text/javascript" src="../dist/browser.js"></script>
+    <script type="text/javascript" src="../dist/igbrowser.min.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
 
     <style type="text/css">
@@ -22,9 +22,9 @@
 <div id="mycanvas"></div>
 
 <script type="text/javascript">
-    graphviz.Messages.setLanguage("chs");
+    igraph.Messages.setLanguage("chs");
     var container = document.getElementById('mycanvas');
-    var browser = new graphviz.Browser(container,
+    var browser = new igraph.Browser(container,
             "http://localhost:9999/graphserver/graphviz-service");
     browser.on("init",
             function () {

@@ -42,7 +42,7 @@ Rect.prototype.height = function () {
 ///////////////////////////////////
 Map.prototype.valueArray = function () {
 	var arr = [];
-	for (let v of this.values()) {
+	for (v in this.values()) {
 		arr.push(v);
 	}
 	return arr;
