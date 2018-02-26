@@ -2,13 +2,13 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-    <title>GraphViz-browser</title>
-
-    <script type="text/javascript" src="../dist/igbrowser.min.js"></script>
+    <title>GraphBrowser</title>
+    <script type="text/javascript" src="../dist/igbrowser.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
-
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script charset="utf-8" src="./graphdata.js"></script>
     <style type="text/css">
-        #mycanvas {
+        #graphArea {
             width: 100%;
             height: 600px;
             border: 1px solid lightgray;
@@ -18,22 +18,73 @@
 </head>
 
 <body>
+    <table width="100%" height="600">
+        <tr>
+            <td width="85%">
+                <div id="graphArea"></div>
+            </td>
+            <td valign="top">
+                <div id="searchBox">
+                    <input type="text">
+                </div>
+                <div id="infoBox" style="height: 100%">info</div>
+            </td>
+        </tr>
+    </table>
 
-<div id="mycanvas"></div>
-
-<script type="text/javascript">
-    igraph.Messages.setLanguage("chs");
-    var container = document.getElementById('mycanvas');
-    var browser = new igraph.Browser(container,
-            "http://localhost:9999/graphserver/graphviz-service");
-    browser.on("init",
+    <input type="button" id="scaleTo" value="scale to 80%">
+    <input type="button" id="showFocus" value="focus on some people">
+    <input type="checkbox" id="showFaces" checked>
+    <label for="showFaces">show faces</label>
+    <input type="checkbox" id="showDegrees" checked>
+    <label for="showDegrees">show degrees</label>
+    <input type="checkbox" id="showEdges" checked>
+    <label for="showEdges">show edges</label>
+    <script type="text/javascript">
+        igraph.i18n.setLanguage("chs");
+        var browser = new igraph.GraphBrowser(
+            new igraph.LocalGraph(graphData),
+            document.getElementById('graphArea'),
+            document.getElementById('infoBox'));
+        browser.loadGraph();
+        /*
+        browser.on("loadGraph",
             function () {
-                browser.loadAll();
-                //browser.centerOn(0, 0, 0.5);
+                browser.updateGraph({
+                    scale: 0.6,
+                    showFaces: true,
+                    showDegrees: true,
+                    showEdges: true,
+                    showGroups: true
+                });
             });
-    browser.init();
-    console.log(browser);
-</script>
+        browser.init();
+        */
+        console.log(browser);
+
+        $("#scaleTo").click(function () {
+            browser.scaleTo(0.8);
+        });
+
+        $("#showFocus").click(function () {
+            browser.focus([3863, 4037, 4038]);
+        });
+
+        $("#showDegrees").click(function () {
+            var checked = $("#showDegrees").prop('checked');
+            browser.showDegrees(checked);
+        });
+
+        $("#showEdges").click(function () {
+            var checked = $("#showEdges").prop('checked');
+            browser.showEdges(checked);
+        });
+
+        $("#showFaces").click(function () {
+            var checked = $("#showFaces").prop('checked');
+            browser.showFaces(checked);
+        });
+    </script>
 </body>
 
 </html>
