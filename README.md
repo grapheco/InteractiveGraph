@@ -1,7 +1,7 @@
-# graphviz-browser
-graphviz-browser
+# InteractiveGraphBrowser
+InteractiveGraphBrowser
 
 
 ```
-browserify src/browser.js -o dist/browser.js -s graphviz
+npm run build
 ```
