@@ -5,6 +5,47 @@ InteractiveGraphBrowser is a web-based browser for large graph databases.
 
 # how to start
 
+Step 1. include main javascript file `igbrowser.js`:
+
+```
+    <script type="text/javascript" src="../dist/igbrowser.js"></script>
+```
+another alternative choice is `igbrowser.min.js`, a minified version.
+
+Step 2. define three HTML <div>s.
+    
+Step 3. create a GraphBrowser object in java script:
+
+```
+    var browser = new igraph.GraphBrowser(
+        new igraph.LocalGraph(graphData),
+        document.getElementById('graphArea'),
+        document.getElementById('infoBox'));
+```
+Step 4. manipulate the GraphBrowser:
+
+```
+    browser.run([
+        function (callback) {
+            browser.init(callback);
+        },
+
+        function (callback) {
+            browser.loadGraph({}, callback);
+        },
+
+        function (callback) {
+            browser.showGraph({
+                scale: 0.6,
+                showFaces: true,
+                showDegrees: true,
+                showEdges: true,
+                showGroups: true
+            });
+        }
+    ]);
+```
+
 # dependencies
 this project depends on following components:
 ```
