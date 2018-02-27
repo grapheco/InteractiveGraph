@@ -10,7 +10,7 @@ __Step 1.__ include main javascript file `igbrowser.js`:
 ```
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
 ```
-another alternative choice is `igbrowser.min.js`, a minified version.
+Alternatively, `igbrowser.min.js`, a minified version, is available in `dist` folder.
 
 __Step 2.__ define three HTML `div`s: graphArea, searchBox, infoBox
     
@@ -22,6 +22,11 @@ __Step 3.__ create a GraphBrowser object in java script:
         document.getElementById('graphArea'),
         document.getElementById('infoBox'));
 ```
+
+in this case, a `LocalGraph` is used, it loads `graphData` from a .js file (`https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/graphdata.js` in this example). 
+
+Alternatively, a `RemoteGraph` is required when loading a __very very large graph__ from remote server.
+
 __Step 4.__ manipulate the GraphBrowser:
 
 ```
