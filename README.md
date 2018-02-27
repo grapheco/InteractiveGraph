@@ -12,7 +12,7 @@ Step 1. include main javascript file `igbrowser.js`:
 ```
 another alternative choice is `igbrowser.min.js`, a minified version.
 
-Step 2. define three HTML <div>s.
+Step 2. define three HTML `div`s: graphArea, searchBox, infoBox
     
 Step 3. create a GraphBrowser object in java script:
 
@@ -45,6 +45,7 @@ Step 4. manipulate the GraphBrowser:
         }
     ]);
 ```
+Most manipulation tasks work in async mode, so it is required to call `browser.run` instead of call init(), loadGraph(), showGraph() directly.
 
 # dependencies
 this project depends on following components:
