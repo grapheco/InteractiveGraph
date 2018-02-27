@@ -5,16 +5,16 @@ InteractiveGraphBrowser is a web-based browser for large graph databases.
 
 # how to start
 
-Step 1. include main javascript file `igbrowser.js`:
+__Step 1__ include main javascript file `igbrowser.js`:
 
 ```
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
 ```
 another alternative choice is `igbrowser.min.js`, a minified version.
 
-Step 2. define three HTML `div`s: graphArea, searchBox, infoBox
+__Step 2__ define three HTML `div`s: graphArea, searchBox, infoBox
     
-Step 3. create a GraphBrowser object in java script:
+__Step 3__ create a GraphBrowser object in java script:
 
 ```
     var browser = new igraph.GraphBrowser(
@@ -22,7 +22,7 @@ Step 3. create a GraphBrowser object in java script:
         document.getElementById('graphArea'),
         document.getElementById('infoBox'));
 ```
-Step 4. manipulate the GraphBrowser:
+__Step 4__ manipulate the GraphBrowser:
 
 ```
     browser.run([
@@ -46,6 +46,8 @@ Step 4. manipulate the GraphBrowser:
     ]);
 ```
 Most manipulation tasks work in async mode, so it is required to call `browser.run` instead of call init(), loadGraph(), showGraph() directly.
+
+See https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/index.html for details.
 
 # dependencies
 this project depends on following components:
