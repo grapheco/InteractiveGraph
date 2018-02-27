@@ -2,12 +2,15 @@
  * Created by bluejoe on 2018/2/24.
  */
 
-import { GraphService } from './service';
+
 import * as vis from "vis";
+
+import { GraphService } from './service';
 import { Utils, Rect, Point } from "./utils";
 import { i18n } from "./messages";
 import * as $ from "jquery";
 import * as events from "events";
+import * as series from "async/series";
 
 export class GraphBrowser extends events.EventEmitter {
     static CANVAS_PADDING: number = 80;
@@ -15,11 +18,22 @@ export class GraphBrowser extends events.EventEmitter {
     private _infoBox: JQuery<HTMLElement>;
     private _messageBar: JQuery<HTMLElement>;
     private _graphService: GraphService;
-    public network: vis.Network;
+    private _network: vis.Network;
+    private _nodes: vis.DataSet<vis.Node>;
+    private _edges: vis.DataSet<vis.Edge>;
+    private _fnFormatNodesInfo;
 
-    public constructor(graphService: GraphService, htmlGraphArea: HTMLElement, htmlInfoBox: HTMLElement) {
+    public constructor(graphService: GraphService,
+        htmlGraphArea: HTMLElement,
+        htmlInfoBox: HTMLElement,
+        fnFormatNodesInfo: (object) => string) {
         super();
         this._infoBox = $(htmlInfoBox);
+        this._fnFormatNodesInfo =
+            fnFormatNodesInfo === undefined ?
+                function (nodeInfos) { return JSON.stringify(nodeInfos); }
+                : fnFormatNodesInfo;
+
         //message bar
         this._messageBar = $(document.createElement("div"));
         this._messageBar.addClass("messageBar");
@@ -28,23 +42,28 @@ export class GraphBrowser extends events.EventEmitter {
         this._graphService = graphService;
 
         var options = this.getDefaultOptions();
-        this.network = new vis.Network(htmlGraphArea, {
-            nodes: [],
-            edges: []
+        this._nodes = new vis.DataSet<vis.Node>();
+        this._edges = new vis.DataSet<vis.Edge>();
+
+        this._network = new vis.Network(htmlGraphArea, {
+            nodes: this._nodes,
+            edges: this._edges
         }, options);
 
         var browser = this;
 
-        this.network.on("click", function (args) {
+        this._network.on("click", function (args) {
             if (args.nodes.length > 0) {
                 browser.showNodesInfo(args.nodes);
             }
         });
-
-        this._graphService.init();
     }
 
-    private showMessage(msgCode) {
+    public init(callback) {
+        this._graphService.init(callback);
+    }
+
+    private showMessage(msgCode: string) {
         this._messageBar.html(i18n.getMessage(msgCode));
         this._messageBar.show();
     }
@@ -111,20 +130,71 @@ export class GraphBrowser extends events.EventEmitter {
         };
     }
 
+    public focus(nodeIds) {
+        this._network.selectNodes(nodeIds, false);
+        this._network.fit({ nodes: nodeIds, animation: false });
+    }
+
+    private _updateEdges(functionDoUpdate: (node, update) => void) {
+        var updates = [];
+        for (var item in this._edges) {
+            var edge = this._edges[item];
+            var update = { id: edge['id'] };
+            functionDoUpdate(edge, update);
+            if (Object.keys(update).length > 1)
+                updates.push(update);
+        }
+
+        if (updates.length > 0)
+            this._edges.update(updates);
+    }
+
+    private _showEdges(showOrNot) {
+        showOrNot = !(false === showOrNot);
+        this._updateEdges(function (edge, update) {
+            update.hidden = !showOrNot;
+        });
+    }
+
+    public scaleTo(scale) {
+        this._network.moveTo({ scale: scale });
+    }
+
+    public run(tasks) {
+        series(tasks);
+    }
+
+    public showGraph(showGraphOptions: ShowGraphOptions) {
+        showGraphOptions = showGraphOptions || {};
+        if (showGraphOptions.scale !== undefined)
+            this.scaleTo(showGraphOptions.scale);
+
+        if (showGraphOptions.showEdges !== undefined)
+            this._showEdges(showGraphOptions.showEdges);
+
+        var updates = this._graphService.updateNodes(showGraphOptions);
+        if (updates.length > 0)
+            this._nodes.update(updates);
+    }
+
     public showNodesInfo(nodeIds: string[]) {
         var browser = this;
         if (nodeIds.length > 0 && this._infoBox !== undefined) {
             this._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
                 console.log(nodeInfos);
-                browser._infoBox.text(nodeInfos.toString());
+                browser._infoBox.html(browser._fnFormatNodesInfo(nodeInfos));
             });
         }
     };
 
-    public loadGraph(options) {
+    public loadGraph(options, callback) {
         var browser = this;
-        this._graphService.loadGraph(options, function (graphData) {
-            browser.network.setData(graphData);
+        this._graphService.loadGraph(options, function (graphData: GraphData) {
+            browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes);
+            browser._edges = new vis.DataSet<vis.Edge>(graphData.edges);
+            browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
+
+            callback();
         });
     }
 }

@@ -1,4 +1,6 @@
-class RemoteGraph {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class RemoteGraph /*implements GraphService*/ {
     constructor(url) {
         this._url = url;
     }

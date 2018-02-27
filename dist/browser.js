@@ -1,31 +1,42 @@
+"use strict";
 /**
  * Created by bluejoe on 2018/2/24.
  */
-var vis = require("vis");
-var messages_1 = require("./messages");
-var $ = require("jquery");
-var events = require("events");
+Object.defineProperty(exports, "__esModule", { value: true });
+const vis = require("vis");
+const messages_1 = require("./messages");
+const $ = require("jquery");
+const events = require("events");
+const series = require("async/series");
 class GraphBrowser extends events.EventEmitter {
-    constructor(graphService, htmlGraphArea, htmlInfoBox) {
+    constructor(graphService, htmlGraphArea, htmlInfoBox, fnFormatNodesInfo) {
         super();
         this._infoBox = $(htmlInfoBox);
+        this._fnFormatNodesInfo =
+            fnFormatNodesInfo === undefined ?
+                function (nodeInfos) { return JSON.stringify(nodeInfos); }
+                : fnFormatNodesInfo;
         //message bar
         this._messageBar = $(document.createElement("div"));
         this._messageBar.addClass("messageBar");
         this._messageBar.hide();
         this._graphService = graphService;
         var options = this.getDefaultOptions();
-        this.network = new vis.Network(htmlGraphArea, {
-            nodes: [],
-            edges: []
+        this._nodes = new vis.DataSet();
+        this._edges = new vis.DataSet();
+        this._network = new vis.Network(htmlGraphArea, {
+            nodes: this._nodes,
+            edges: this._edges
         }, options);
         var browser = this;
-        this.network.on("click", function (args) {
+        this._network.on("click", function (args) {
             if (args.nodes.length > 0) {
                 browser.showNodesInfo(args.nodes);
             }
         });
-        this._graphService.init();
+    }
+    init(callback) {
+        this._graphService.init(callback);
     }
     showMessage(msgCode) {
         this._messageBar.html(messages_1.i18n.getMessage(msgCode));
@@ -91,20 +102,61 @@ class GraphBrowser extends events.EventEmitter {
             }
         };
     }
+    focus(nodeIds) {
+        this._network.selectNodes(nodeIds, false);
+        this._network.fit({ nodes: nodeIds, animation: false });
+    }
+    _updateEdges(functionDoUpdate) {
+        var updates = [];
+        for (var item in this._edges) {
+            var edge = this._edges[item];
+            var update = { id: edge['id'] };
+            functionDoUpdate(edge, update);
+            if (Object.keys(update).length > 1)
+                updates.push(update);
+        }
+        if (updates.length > 0)
+            this._edges.update(updates);
+    }
+    _showEdges(showOrNot) {
+        showOrNot = !(false === showOrNot);
+        this._updateEdges(function (edge, update) {
+            update.hidden = !showOrNot;
+        });
+    }
+    scaleTo(scale) {
+        this._network.moveTo({ scale: scale });
+    }
+    run(tasks) {
+        series(tasks);
+    }
+    showGraph(showGraphOptions) {
+        showGraphOptions = showGraphOptions || {};
+        if (showGraphOptions.scale !== undefined)
+            this.scaleTo(showGraphOptions.scale);
+        if (showGraphOptions.showEdges !== undefined)
+            this._showEdges(showGraphOptions.showEdges);
+        var updates = this._graphService.updateNodes(showGraphOptions);
+        if (updates.length > 0)
+            this._nodes.update(updates);
+    }
     showNodesInfo(nodeIds) {
         var browser = this;
         if (nodeIds.length > 0 && this._infoBox !== undefined) {
             this._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
                 console.log(nodeInfos);
-                browser._infoBox.text(nodeInfos.toString());
+                browser._infoBox.html(browser._fnFormatNodesInfo(nodeInfos));
             });
         }
     }
     ;
-    loadGraph(options) {
+    loadGraph(options, callback) {
         var browser = this;
         this._graphService.loadGraph(options, function (graphData) {
-            browser.network.setData(graphData);
+            browser._nodes = new vis.DataSet(graphData.nodes);
+            browser._edges = new vis.DataSet(graphData.edges);
+            browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
+            callback();
         });
     }
 }

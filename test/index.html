@@ -13,6 +13,20 @@
             height: 600px;
             border: 1px solid lightgray;
         }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            word-break: break-word;
+        }
+
+        #infoBox {
+            font-size: 9pt;
+        }
     </style>
 
 </head>
@@ -20,14 +34,14 @@
 <body>
     <table width="100%" height="600">
         <tr>
-            <td width="85%">
+            <td>
                 <div id="graphArea"></div>
             </td>
-            <td valign="top">
+            <td width="150" valign="top">
                 <div id="searchBox">
                     <input type="text">
                 </div>
-                <div id="infoBox" style="height: 100%">info</div>
+                <div id="infoBox" style="height: 100%"></div>
             </td>
         </tr>
     </table>
@@ -42,25 +56,34 @@
     <label for="showEdges">show edges</label>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
+
         var browser = new igraph.GraphBrowser(
             new igraph.LocalGraph(graphData),
             document.getElementById('graphArea'),
             document.getElementById('infoBox'));
-        browser.loadGraph();
-        /*
-        browser.on("loadGraph",
-            function () {
-                browser.updateGraph({
+
+        console.log(browser);
+
+        //use async.series to make serial calls
+        browser.run([
+            function (callback) {
+                browser.init(callback);
+            },
+
+            function (callback) {
+                browser.loadGraph({}, callback);
+            },
+
+            function (callback) {
+                browser.showGraph({
                     scale: 0.6,
                     showFaces: true,
                     showDegrees: true,
                     showEdges: true,
                     showGroups: true
                 });
-            });
-        browser.init();
-        */
-        console.log(browser);
+            }
+        ]);
 
         $("#scaleTo").click(function () {
             browser.scaleTo(0.8);

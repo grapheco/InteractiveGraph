@@ -1,6 +1,8 @@
+"use strict";
 /**
  * Created by bluejoe on 2018/2/7.
  */
+Object.defineProperty(exports, "__esModule", { value: true });
 class i18n {
     static setLanguage(language) {
         i18n.RESOURCE_BUNDLE = MESSAGES.hasOwnProperty(language) ?

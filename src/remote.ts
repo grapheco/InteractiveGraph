@@ -1,6 +1,6 @@
 import { GraphService } from './service';
 
-export class RemoteGraph implements GraphService {
+export class RemoteGraph /*implements GraphService*/ {
     private _url: string;
     constructor(url: string) {
         this._url = url;

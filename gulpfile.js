@@ -87,10 +87,19 @@ gulp.task('clean', function (cb) {
 
 gulp.task('build-ts', function (cb) {
   return gulp.src(TS_SOURCE)
-    .pipe(tsp())
+    .pipe(tsp({
+      error: (error, typescript) => {
+        console.info("failed to compile:");
+        console.error(error)
+      },
+      finish: (results) => {
+        console.info("successed to compile:");
+        console.info(results);
+      }
+    }))
     .pipe(gulp.dest(DIST));
 
-    cb();
+  cb();
 });
 
 gulp.task('bundle-js', ['build-ts'], function (cb) {
