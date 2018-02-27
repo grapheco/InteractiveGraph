@@ -1,6 +1,8 @@
 # InteractiveGraphBrowser
 InteractiveGraphBrowser is a web-based browser for large graph databases.
 
+<img src="https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/snapshot.png?raw=true">
+
 # how to start
 
 # dependencies
