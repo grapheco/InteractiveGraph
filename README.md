@@ -95,4 +95,6 @@ this project depends on following components:
 
 # build InteractiveGraphBrowser
 
-use `npm run build` or `gulp build` to build InteractiveGraphBrowser
+use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `igbrowser.min.js`.
+
+in development mode, use `gulp dev` to generate `igbrowser.js`.
