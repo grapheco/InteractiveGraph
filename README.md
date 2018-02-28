@@ -18,12 +18,12 @@ __Step 3.__ create a GraphBrowser object in java script:
 
 ```
     var browser = new igraph.GraphBrowser(
-        new igraph.LocalGraph(graphData),
+        new igraph.LocalGraph(exampleData),
         document.getElementById('graphArea'),
         document.getElementById('infoBox'));
 ```
 
-in this case, a `LocalGraph` is used, it loads `graphData` from a .js file (`https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/graphdata.js` in this example). 
+in this case, a `LocalGraph` is used, it loads `graphData` from a .js file (`https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/example-data.js` in this example). 
 
 Alternatively, a `RemoteGraph` is required when loading a __very very large graph__ from remote server.
 
