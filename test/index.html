@@ -6,7 +6,7 @@
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script charset="utf-8" src="./graphdata.js"></script>
+    <script charset="utf-8" src="./example-data.js"></script>
     <style type="text/css">
         #graphArea {
             width: 100%;
@@ -58,7 +58,7 @@
         igraph.i18n.setLanguage("chs");
 
         var browser = new igraph.GraphBrowser(
-            new igraph.LocalGraph(graphData),
+            new igraph.LocalGraph(exampleData),
             document.getElementById('graphArea'),
             document.getElementById('infoBox'));
 
