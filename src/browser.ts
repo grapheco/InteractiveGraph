@@ -15,24 +15,19 @@ import * as series from "async/series";
 export class GraphBrowser extends events.EventEmitter {
     static CANVAS_PADDING: number = 80;
 
-    private _infoBox: JQuery<HTMLElement>;
     private _messageBar: JQuery<HTMLElement>;
     private _graphService: GraphService;
     private _network: vis.Network;
     private _nodes: vis.DataSet<vis.Node>;
     private _edges: vis.DataSet<vis.Edge>;
-    private _fnFormatNodesInfo;
+
+    private _nodesInfoPrinter: (nodeInfos: string[]) => void = function (nodeInfos) {
+        console.log(nodeInfos);
+    }
 
     public constructor(graphService: GraphService,
-        htmlGraphArea: HTMLElement,
-        htmlInfoBox: HTMLElement,
-        fnFormatNodesInfo: (object) => string) {
+        htmlGraphArea: HTMLElement) {
         super();
-        this._infoBox = $(htmlInfoBox);
-        this._fnFormatNodesInfo =
-            fnFormatNodesInfo === undefined ?
-                function (nodeInfos) { return JSON.stringify(nodeInfos); }
-                : fnFormatNodesInfo;
 
         //message bar
         this._messageBar = $(document.createElement("div"));
@@ -53,10 +48,66 @@ export class GraphBrowser extends events.EventEmitter {
         var browser = this;
 
         this._network.on("click", function (args) {
-            if (args.nodes.length > 0) {
-                browser.showNodesInfo(args.nodes);
+            var nodeIds = args.nodes;
+            if (nodeIds.length > 0) {
+                browser._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
+                    browser._nodesInfoPrinter(nodeInfos);
+                });
             }
         });
+
+        this._network.on("selectEdge", function (args) {
+            //set font size normal
+            if (args.edges.length > 0) {
+                var updates = [];
+                var edgeIds: string[] = args.edges;
+                edgeIds.forEach(edgeId => {
+                    updates.push({
+                        id: edgeId, font: {
+                            size: 12,
+                        }
+                    });
+                }
+                );
+
+                browser._edges.update(updates);
+            }
+        });
+
+        this._network.on("deselectEdge", function (args) {
+            //set font size 0
+            if (args.previousSelection.edges.length > 0) {
+                var updates = [];
+                var edgeIds: string[] = args.previousSelection.edges;
+                edgeIds.forEach(edgeId => {
+                    updates.push({
+                        id: edgeId, font: {
+                            size: 0,
+                        }
+                    });
+                }
+                );
+
+                browser._edges.update(updates);
+            }
+        });
+    }
+
+    public setInfoBox(htmlInfoBox: HTMLElement) {
+        this.setInfoPrinter((nodesInfo: string[]) => {
+            $(htmlInfoBox).empty();
+            nodesInfo.forEach((nodeInfo: string) => {
+                var div = document.createElement("div");
+                $(div).html(nodeInfo);
+                $(htmlInfoBox).append($(div));
+            }
+            )
+        }
+        );
+    }
+
+    public setInfoPrinter(nodesInfoPrinter: (nodeInfos: string[]) => void) {
+        this._nodesInfoPrinter = nodesInfoPrinter;
     }
 
     public init(callback) {
@@ -87,6 +138,9 @@ export class GraphBrowser extends events.EventEmitter {
             },
             edges: {
                 width: 0.05,
+                font: {
+                    size: 0,
+                },
                 color: {
                     highlight: '#ff0000',
                     hover: '#848484',
@@ -135,21 +189,20 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.fit({ nodes: nodeIds, animation: false });
     }
 
-    private _updateEdges(functionDoUpdate: (node, update) => void) {
+    private _updateEdges(fnDoUpdate: (node, update) => void) {
         var updates = [];
-        for (var item in this._edges) {
-            var edge = this._edges[item];
+        this._edges.forEach(edge => {
             var update = { id: edge['id'] };
-            functionDoUpdate(edge, update);
+            fnDoUpdate(edge, update);
             if (Object.keys(update).length > 1)
                 updates.push(update);
         }
-
+        );
         if (updates.length > 0)
             this._edges.update(updates);
     }
 
-    private _showEdges(showOrNot) {
+    public showEdges(showOrNot) {
         showOrNot = !(false === showOrNot);
         this._updateEdges(function (edge, update) {
             update.hidden = !showOrNot;
@@ -164,28 +217,26 @@ export class GraphBrowser extends events.EventEmitter {
         series(tasks);
     }
 
+    public showDegrees(showOrNot) {
+        this.showGraph({ showDegrees: showOrNot });
+    }
+
+    public showFaces(showOrNot) {
+        this.showGraph({ showFaces: showOrNot });
+    }
+
     public showGraph(showGraphOptions: ShowGraphOptions) {
         showGraphOptions = showGraphOptions || {};
         if (showGraphOptions.scale !== undefined)
             this.scaleTo(showGraphOptions.scale);
 
         if (showGraphOptions.showEdges !== undefined)
-            this._showEdges(showGraphOptions.showEdges);
+            this.showEdges(showGraphOptions.showEdges);
 
         var updates = this._graphService.updateNodes(showGraphOptions);
         if (updates.length > 0)
             this._nodes.update(updates);
     }
-
-    public showNodesInfo(nodeIds: string[]) {
-        var browser = this;
-        if (nodeIds.length > 0 && this._infoBox !== undefined) {
-            this._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
-                console.log(nodeInfos);
-                browser._infoBox.html(browser._fnFormatNodesInfo(nodeInfos));
-            });
-        }
-    };
 
     public loadGraph(options, callback) {
         var browser = this;

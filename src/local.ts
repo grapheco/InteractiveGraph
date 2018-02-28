@@ -19,10 +19,15 @@ export class LocalGraph implements GraphService {
         callback();
     }
 
-    getNodesInfo(nodeIds: string[], callback: (nodeInfos: object[]) => void) {
+    getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void) {
         var self = this;
         callback(nodeIds.map(nodeId => {
-            return self._nodeIdMap.get(nodeId);
+            let node: any = self._nodeIdMap.get(nodeId);
+            if (node._meta !== undefined && node._meta.info !== undefined) {
+                return node._meta.info;
+            }
+
+            return null;
         }));
     }
 
@@ -30,12 +35,12 @@ export class LocalGraph implements GraphService {
         callback(this._graphData);
     }
 
-    private _updateNodes(functionDoUpdate: (node, update) => void): object[] {
+    private _updateNodes(fnDoUpdate: (node, update) => void): object[] {
         var updates = [];
         for (var item in this._graphData.nodes) {
             var node = this._graphData.nodes[item];
             var update = { id: node['id'] };
-            functionDoUpdate(node, update);
+            fnDoUpdate(node, update);
             if (Object.keys(update).length > 1)
                 updates.push(update);
         }
@@ -46,15 +51,37 @@ export class LocalGraph implements GraphService {
     updateNodes(showOptions): object[] {
         return this._updateNodes(function (node, update) {
             if (node._meta !== undefined) {
+                ///////show node?
+                if (showOptions.showNodes === true) {
+                    update.hidden = false;
+                }
+                if (showOptions.showNodes === false) {
+                    update.hidden = true;
+                }
+
+                ///////show face?
                 if (showOptions.showFaces === true && node._meta.image !== undefined) {
                     update.shape = 'circularImage';
                     update.image = node._meta.image;
                 }
+                if (showOptions.showFaces === false) {
+                    update.shape = 'dot';
+                }
+
+                ///////show group?
                 if (showOptions.showGroups === true && node._meta.group !== undefined) {
                     update.group = node._meta.group;
                 }
+                if (showOptions.showGroups === false) {
+                    update.group = 0;
+                }
+
+                ///////show degree?
                 if (showOptions.showDegrees === true && node._meta.degree !== undefined) {
                     update.value = node._meta.degree;
+                }
+                if (showOptions.showDegrees === false) {
+                    update.value = 1;
                 }
             }
         });

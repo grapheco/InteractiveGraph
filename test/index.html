@@ -47,7 +47,6 @@
     </table>
 
     <input type="button" id="scaleTo" value="scale to 80%">
-    <input type="button" id="showFocus" value="focus on some people">
     <input type="checkbox" id="showFaces" checked>
     <label for="showFaces">show faces</label>
     <input type="checkbox" id="showDegrees" checked>
@@ -59,10 +58,11 @@
 
         var browser = new igraph.GraphBrowser(
             new igraph.LocalGraph(exampleData),
-            document.getElementById('graphArea'),
-            document.getElementById('infoBox'));
+            document.getElementById('graphArea')
+            );
 
         console.log(browser);
+        browser.setInfoBox(document.getElementById('infoBox'));
 
         //use async.series to make serial calls
         browser.run([
@@ -87,10 +87,6 @@
 
         $("#scaleTo").click(function () {
             browser.scaleTo(0.8);
-        });
-
-        $("#showFocus").click(function () {
-            browser.focus([3863, 4037, 4038]);
         });
 
         $("#showDegrees").click(function () {

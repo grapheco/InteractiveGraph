@@ -6,7 +6,7 @@ import { GraphBrowser } from './browser';
 
 export interface GraphService {
     init(callback);
-    getNodesInfo(nodeIds: string[], callback: (nodeInfos: object[]) => void);
+    getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void);
     loadGraph(options: object, callback: (graphData: object) => void);
     updateNodes(showOptions):object[];
 }
