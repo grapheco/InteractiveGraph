@@ -75000,7 +75000,7 @@ var LocalGraph = function () {
                         update.hidden = true;
                     }
                     ///////show face?
-                    if (showOptions.showFaces === true && node._meta.image !== undefined) {
+                    if (showOptions.showFaces === true && node._meta.image !== undefined && node._meta.image != "") {
                         update.shape = 'circularImage';
                         update.image = node._meta.image;
                     }
