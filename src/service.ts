@@ -8,5 +8,6 @@ export interface GraphService {
     init(callback);
     getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void);
     loadGraph(options: object, callback: (graphData: object) => void);
-    updateNodes(showOptions):object[];
+    updateNodes(showOptions): object[];
+    search(keyword: string, limit: number, callback: (nodes: any[]) => void);
 }

@@ -8,7 +8,8 @@ import * as vis from "vis";
 import { GraphService } from './service';
 import { Utils, Rect, Point } from "./utils";
 import { i18n } from "./messages";
-import * as $ from "jquery";
+import { } from "jquery";
+import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 
@@ -20,9 +21,15 @@ export class GraphBrowser extends events.EventEmitter {
     private _network: vis.Network;
     private _nodes: vis.DataSet<vis.Node>;
     private _edges: vis.DataSet<vis.Edge>;
+    private _autoCompletionItemLimit = 30;
 
-    private _nodesInfoPrinter: (nodeInfos: string[]) => void = function (nodeInfos) {
+    public _renderNodesInfo: (nodeInfos: string[]) => void = function (nodeInfos) {
         console.log(nodeInfos);
+    }
+
+    public _renderAutoCompletionItem: (item: any) => string = function (item: any) {
+        return "<b>" + item.name + "</b>"
+            + (item.title === undefined ? "" : "<br>" + item.title);
     }
 
     public constructor(graphService: GraphService,
@@ -51,7 +58,7 @@ export class GraphBrowser extends events.EventEmitter {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
                 browser._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
-                    browser._nodesInfoPrinter(nodeInfos);
+                    browser._renderNodesInfo(nodeInfos);
                 });
             }
         });
@@ -93,8 +100,8 @@ export class GraphBrowser extends events.EventEmitter {
         });
     }
 
-    public setInfoBox(htmlInfoBox: HTMLElement) {
-        this.setInfoPrinter((nodesInfo: string[]) => {
+    public bindInfoBox(htmlInfoBox: HTMLElement) {
+        this._renderNodesInfo = function (nodesInfo: string[]) {
             $(htmlInfoBox).empty();
             nodesInfo.forEach((nodeInfo: string) => {
                 var div = document.createElement("div");
@@ -102,12 +109,38 @@ export class GraphBrowser extends events.EventEmitter {
                 $(htmlInfoBox).append($(div));
             }
             )
-        }
-        );
+        };
     }
 
-    public setInfoPrinter(nodesInfoPrinter: (nodeInfos: string[]) => void) {
-        this._nodesInfoPrinter = nodesInfoPrinter;
+    public bindSearchBox(htmlSearchBox: HTMLElement) {
+        var browser = this;
+        $(htmlSearchBox).change(function () {
+            $(htmlSearchBox).data("boundGraphNode", {});
+        });
+
+        $(htmlSearchBox).autocomplete({
+            source: function (request, response) {
+                var term = request.term;
+                browser.search(term, function (nodeInfos) {
+                    response(nodeInfos);
+                });
+            },
+            change: function (event, ui) {
+                if (ui.item !== undefined) {
+                    $(htmlSearchBox).val(ui.item.name);
+                    $(htmlSearchBox).data("boundGraphNode", ui.item);
+                    browser.focus([ui.item.id]);
+                }
+                else {
+                    $(htmlSearchBox).data("boundGraphNode", {});
+                }
+                return false;
+            }
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append(browser._renderAutoCompletionItem(item))
+                .appendTo(ul);
+        };
     }
 
     public init(callback) {
@@ -185,8 +218,8 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public focus(nodeIds) {
+        this._network.fit({ nodes: nodeIds, animation: true });
         this._network.selectNodes(nodeIds, false);
-        this._network.fit({ nodes: nodeIds, animation: false });
     }
 
     private _updateEdges(fnDoUpdate: (node, update) => void) {
@@ -213,6 +246,10 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.moveTo({ scale: scale });
     }
 
+    public fits(nodeIds, animation = false) {
+        this._network.fit({ nodes: nodeIds, animation: animation });
+    }
+
     public run(tasks) {
         series(tasks);
     }
@@ -223,6 +260,10 @@ export class GraphBrowser extends events.EventEmitter {
 
     public showFaces(showOrNot) {
         this.showGraph({ showFaces: showOrNot });
+    }
+
+    public search(keyword: string, callback: (nodes: any[]) => void) {
+        this._graphService.search(keyword, this._autoCompletionItemLimit, callback);
     }
 
     public showGraph(showGraphOptions: ShowGraphOptions) {

@@ -5,14 +5,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vis = require("vis");
 const messages_1 = require("./messages");
-const $ = require("jquery");
 const events = require("events");
 const series = require("async/series");
 class GraphBrowser extends events.EventEmitter {
     constructor(graphService, htmlGraphArea) {
         super();
-        this._nodesInfoPrinter = function (nodeInfos) {
+        this._autoCompletionItemLimit = 30;
+        this._renderNodesInfo = function (nodeInfos) {
             console.log(nodeInfos);
+        };
+        this._renderAutoCompletionItem = function (item) {
+            return "<b>" + item.name + "</b>"
+                + (item.title === undefined ? "" : "<br>" + item.title);
         };
         //message bar
         this._messageBar = $(document.createElement("div"));
@@ -31,7 +35,7 @@ class GraphBrowser extends events.EventEmitter {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
                 browser._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
-                    browser._nodesInfoPrinter(nodeInfos);
+                    browser._renderNodesInfo(nodeInfos);
                 });
             }
         });
@@ -66,18 +70,44 @@ class GraphBrowser extends events.EventEmitter {
             }
         });
     }
-    setInfoBox(htmlInfoBox) {
-        this.setInfoPrinter((nodesInfo) => {
+    bindInfoBox(htmlInfoBox) {
+        this._renderNodesInfo = function (nodesInfo) {
             $(htmlInfoBox).empty();
             nodesInfo.forEach((nodeInfo) => {
                 var div = document.createElement("div");
                 $(div).html(nodeInfo);
                 $(htmlInfoBox).append($(div));
             });
-        });
+        };
     }
-    setInfoPrinter(nodesInfoPrinter) {
-        this._nodesInfoPrinter = nodesInfoPrinter;
+    bindSearchBox(htmlSearchBox) {
+        var browser = this;
+        $(htmlSearchBox).change(function () {
+            $(htmlSearchBox).data("boundGraphNode", {});
+        });
+        $(htmlSearchBox).autocomplete({
+            source: function (request, response) {
+                var term = request.term;
+                browser.search(term, function (nodeInfos) {
+                    response(nodeInfos);
+                });
+            },
+            change: function (event, ui) {
+                if (ui.item !== undefined) {
+                    $(htmlSearchBox).val(ui.item.name);
+                    $(htmlSearchBox).data("boundGraphNode", ui.item);
+                    browser.focus([ui.item.id]);
+                }
+                else {
+                    $(htmlSearchBox).data("boundGraphNode", {});
+                }
+                return false;
+            }
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append(browser._renderAutoCompletionItem(item))
+                .appendTo(ul);
+        };
     }
     init(callback) {
         this._graphService.init(callback);
@@ -150,8 +180,8 @@ class GraphBrowser extends events.EventEmitter {
         };
     }
     focus(nodeIds) {
+        this._network.fit({ nodes: nodeIds, animation: true });
         this._network.selectNodes(nodeIds, false);
-        this._network.fit({ nodes: nodeIds, animation: false });
     }
     _updateEdges(fnDoUpdate) {
         var updates = [];
@@ -173,6 +203,9 @@ class GraphBrowser extends events.EventEmitter {
     scaleTo(scale) {
         this._network.moveTo({ scale: scale });
     }
+    fits(nodeIds, animation = false) {
+        this._network.fit({ nodes: nodeIds, animation: animation });
+    }
     run(tasks) {
         series(tasks);
     }
@@ -181,6 +214,9 @@ class GraphBrowser extends events.EventEmitter {
     }
     showFaces(showOrNot) {
         this.showGraph({ showFaces: showOrNot });
+    }
+    search(keyword, callback) {
+        this._graphService.search(keyword, this._autoCompletionItemLimit, callback);
     }
     showGraph(showGraphOptions) {
         showGraphOptions = showGraphOptions || {};

@@ -6,6 +6,9 @@
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script charset="utf-8" src="./example-data.js"></script>
     <style type="text/css">
         #graphArea {
@@ -26,6 +29,12 @@
 
         #infoBox {
             font-size: 9pt;
+            height: 50%;
+            border: 1pt;
+        }
+
+        .ui-menu {
+            font-size: 9pt;
         }
     </style>
 
@@ -38,10 +47,16 @@
                 <div id="graphArea"></div>
             </td>
             <td width="150" valign="top">
-                <div id="searchBox">
-                    <input type="text">
+                <div style="height: 50%">
+                    <img height="12" src="img/search.png">
+                    <input id="searchBox1" type="text" size="16"><br>
+                    <img height="12" src="img/search.png">
+                    <input id="searchBox2" type="text" size="16"><br>
+                    <img height="12" src="img/search.png">
+                    <input id="searchBox3" type="text" size="16"><br>
+                    <input type="button" id="fitSelected" value="fit selected">
                 </div>
-                <div id="infoBox" style="height: 100%"></div>
+                <div id="infoBox"></div>
             </td>
         </tr>
     </table>
@@ -59,10 +74,13 @@
         var browser = new igraph.GraphBrowser(
             new igraph.LocalGraph(exampleData),
             document.getElementById('graphArea')
-            );
+        );
 
         console.log(browser);
-        browser.setInfoBox(document.getElementById('infoBox'));
+        browser.bindInfoBox(document.getElementById('infoBox'));
+        browser.bindSearchBox(document.getElementById('searchBox1'));
+        browser.bindSearchBox(document.getElementById('searchBox2'));
+        browser.bindSearchBox(document.getElementById('searchBox3'));
 
         //use async.series to make serial calls
         browser.run([
@@ -88,6 +106,20 @@
         $("#scaleTo").click(function () {
             browser.scaleTo(0.8);
         });
+
+        $("#fitSelected").click(function () {
+            var nodeIds = [];
+            ["#searchBox1", "#searchBox2", "#searchBox3"].forEach(
+                function (s) {
+                    var data = $(s).data("boundGraphNode");
+                    if (data !== undefined && data.id !== undefined) {
+                        nodeIds.push(data.id);
+                    }
+                }
+            )
+            browser.fits(nodeIds);
+        }
+        );
 
         $("#showDegrees").click(function () {
             var checked = $("#showDegrees").prop('checked');
