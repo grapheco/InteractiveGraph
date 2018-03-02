@@ -1,21 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class LocalGraph {
-    constructor(jsonGraphData) {
+    constructor(source) {
         this._nodeIdMap = new Map();
+        this._source = source;
+    }
+    processJsonGraphData(jsonGraphData) {
         this._graphData = jsonGraphData.data;
-        var self = this;
+        var service = this;
         this._graphData.nodes.forEach(node => {
-            self._nodeIdMap.set(node['id'], node);
+            service._nodeIdMap.set(node['id'], node);
         });
     }
     init(callback) {
-        callback();
+        var service = this;
+        if (this._source.json) {
+            service.processJsonGraphData(service._source.json);
+            callback();
+        }
+        else {
+            $.getScript(this._source.jsonScriptURL, function (data, status) {
+                service.processJsonGraphData(service._source.getJsonFromScript());
+                callback();
+            });
+        }
     }
     getNodesInfo(nodeIds, callback) {
-        var self = this;
+        var service = this;
         callback(nodeIds.map(nodeId => {
-            let node = self._nodeIdMap.get(nodeId);
+            let node = service._nodeIdMap.get(nodeId);
             if (node.info !== undefined) {
                 return node.info;
             }

@@ -10,21 +10,21 @@ export class RemoteGraph /*implements GraphService*/ {
 
     }
 
-    private _ajaxCommand(command, params, callback) {
+    private _ajaxCommand(command, params, callback: (data, status) => void) {
         params = params || {};
         params["command"] = command;
-        jQuery.getJSON(this._url + "?jsoncallback=?", params, callback);
+        $.getJSON(this._url + "?jsoncallback=?", params, callback);
     };
 
     getNodesInfo(nodeIds: string[], callback: (nodeInfos: object[]) => void) {
-        this._ajaxCommand("getNodesInfo", { nodes: nodeIds }, function (json, textStatus) {
-            callback(json.nodeInfos);
+        this._ajaxCommand("getNodesInfo", { nodes: nodeIds }, function (data, status) {
+            callback(data.nodeInfos);
         });
     }
 
     loadGraph(options: object, callback: (graphData: object) => void) {
-        this._ajaxCommand("loadGraph", options, function (json, textStatus) {
-            callback({ nodes: json.nodes, edges: json.edges });
+        this._ajaxCommand("loadGraph", options, function (data, status) {
+            callback({ nodes: data.nodes, edges: data.edges });
         });
     }
 }

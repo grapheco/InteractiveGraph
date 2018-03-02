@@ -206,8 +206,8 @@ class GraphBrowser extends events.EventEmitter {
     fits(nodeIds, animation = false) {
         this._network.fit({ nodes: nodeIds, animation: animation });
     }
-    run(tasks) {
-        series(tasks);
+    chained(tasksWithCallback) {
+        series(tasksWithCallback);
     }
     showDegrees(showOrNot) {
         this.showGraph({ showDegrees: showOrNot });

@@ -250,8 +250,8 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.fit({ nodes: nodeIds, animation: animation });
     }
 
-    public run(tasks) {
-        series(tasks);
+    public chained(tasksWithCallback) {
+        series(tasksWithCallback);
     }
 
     public showDegrees(showOrNot) {

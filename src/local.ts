@@ -5,24 +5,39 @@ import { GraphService } from './service';
 
 export class LocalGraph implements GraphService {
     private _graphData: GraphData;
+    private _source: LocalGraphSource;
     private _nodeIdMap: Map<string, object> = new Map<string, object>();
 
-    constructor(jsonGraphData: JsonGraphData) {
+    constructor(source: LocalGraphSource) {
+        this._source = source;
+    }
+
+    private processJsonGraphData(jsonGraphData: JsonGraphData) {
         this._graphData = jsonGraphData.data;
-        var self = this;
+        var service = this;
         this._graphData.nodes.forEach(node => {
-            self._nodeIdMap.set(node['id'], node);
+            service._nodeIdMap.set(node['id'], node);
         });
     }
 
     init(callback) {
-        callback();
+        var service = this;
+        if (this._source.json) {
+            service.processJsonGraphData(service._source.json);
+            callback();
+        }
+        else {
+            $.getScript(this._source.jsonScriptURL, function (data, status) {
+                service.processJsonGraphData(service._source.getJsonFromScript());
+                callback();
+            })
+        }
     }
 
     getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void) {
-        var self = this;
+        var service = this;
         callback(nodeIds.map(nodeId => {
-            let node: any = self._nodeIdMap.get(nodeId);
+            let node: any = service._nodeIdMap.get(nodeId);
             if (node.info !== undefined) {
                 return node.info;
             }

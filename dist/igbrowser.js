@@ -1972,9 +1972,9 @@ var GraphBrowser = function (_events$EventEmitter) {
             this._network.fit({ nodes: nodeIds, animation: animation });
         }
     }, {
-        key: "run",
-        value: function run(tasks) {
-            series(tasks);
+        key: "chained",
+        value: function chained(tasksWithCallback) {
+            series(tasksWithCallback);
         }
     }, {
         key: "showDegrees",
@@ -64609,28 +64609,42 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 Object.defineProperty(exports, "__esModule", { value: true });
 
 var LocalGraph = function () {
-    function LocalGraph(jsonGraphData) {
+    function LocalGraph(source) {
         (0, _classCallCheck3["default"])(this, LocalGraph);
 
         this._nodeIdMap = new _map2["default"]();
-        this._graphData = jsonGraphData.data;
-        var self = this;
-        this._graphData.nodes.forEach(function (node) {
-            self._nodeIdMap.set(node['id'], node);
-        });
+        this._source = source;
     }
 
     (0, _createClass3["default"])(LocalGraph, [{
+        key: "processJsonGraphData",
+        value: function processJsonGraphData(jsonGraphData) {
+            this._graphData = jsonGraphData.data;
+            var service = this;
+            this._graphData.nodes.forEach(function (node) {
+                service._nodeIdMap.set(node['id'], node);
+            });
+        }
+    }, {
         key: "init",
         value: function init(callback) {
-            callback();
+            var service = this;
+            if (this._source.json) {
+                service.processJsonGraphData(service._source.json);
+                callback();
+            } else {
+                $.getScript(this._source.jsonScriptURL, function (data, status) {
+                    service.processJsonGraphData(service._source.getJsonFromScript());
+                    callback();
+                });
+            }
         }
     }, {
         key: "getNodesInfo",
         value: function getNodesInfo(nodeIds, callback) {
-            var self = this;
+            var service = this;
             callback(nodeIds.map(function (nodeId) {
-                var node = self._nodeIdMap.get(nodeId);
+                var node = service._nodeIdMap.get(nodeId);
                 if (node.info !== undefined) {
                     return node.info;
                 }
@@ -65272,20 +65286,20 @@ var RemoteGraph /*implements GraphService*/ = function () {
         value: function _ajaxCommand(command, params, callback) {
             params = params || {};
             params["command"] = command;
-            jQuery.getJSON(this._url + "?jsoncallback=?", params, callback);
+            $.getJSON(this._url + "?jsoncallback=?", params, callback);
         }
     }, {
         key: "getNodesInfo",
         value: function getNodesInfo(nodeIds, callback) {
-            this._ajaxCommand("getNodesInfo", { nodes: nodeIds }, function (json, textStatus) {
-                callback(json.nodeInfos);
+            this._ajaxCommand("getNodesInfo", { nodes: nodeIds }, function (data, status) {
+                callback(data.nodeInfos);
             });
         }
     }, {
         key: "loadGraph",
         value: function loadGraph(options, callback) {
-            this._ajaxCommand("loadGraph", options, function (json, textStatus) {
-                callback({ nodes: json.nodes, edges: json.edges });
+            this._ajaxCommand("loadGraph", options, function (data, status) {
+                callback({ nodes: data.nodes, edges: data.edges });
             });
         }
     }]);

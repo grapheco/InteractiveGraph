@@ -78,7 +78,15 @@
         igraph.i18n.setLanguage("chs");
 
         var browser = new igraph.GraphBrowser(
-            new igraph.LocalGraph(exampleData),
+            new igraph.LocalGraph({ json: exampleData }),
+            /*
+            new igraph.LocalGraph({
+                jsonScriptURL: "example-data.js",
+                getJsonFromScript: function () {
+                    return exampleData;
+                }
+            }),
+            */
             document.getElementById('graphArea')
         );
 
@@ -89,7 +97,7 @@
         browser.bindSearchBox(document.getElementById('searchBox3'));
 
         //use async.series to make serial calls
-        browser.run([
+        browser.chained([
             function (callback) {
                 browser.init(callback);
             },

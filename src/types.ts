@@ -15,3 +15,9 @@ interface ShowGraphOptions {
     showEdges?: boolean;
     scale?: number;
 }
+
+interface LocalGraphSource {
+    json?: JsonGraphData;
+    jsonScriptURL?: string;
+    getJsonFromScript?: () => JsonGraphData;
+}
