@@ -5,9 +5,12 @@
 import { GraphBrowser } from './browser';
 
 export interface GraphService {
-    init(callback);
-    getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void);
-    loadGraph(options: object, callback: (graphData: object) => void);
-    updateNodes(showOptions): object[];
-    search(keyword: string, limit: number, callback: (nodes: any[]) => void);
+    requestInit(callback: () => void);
+    requestGetNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void);
+    requestLoadGraph(options: object, callback: (graphData: object) => void);
+    requestSearch(keyword: string, limit: number, callback: (nodes: any[]) => void);
+
+    getNodeLabelMap(): object;
+    update4ShowNodes(showOptions): object[];
+    update4ShowNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void);
 }

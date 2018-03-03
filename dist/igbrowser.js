@@ -1778,7 +1778,7 @@ var GraphBrowser = function (_events$EventEmitter) {
         _this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
+                browser._graphService.requestGetNodesInfo(nodeIds, function (nodeInfos) {
                     browser._renderNodesInfo(nodeInfos);
                 });
             }
@@ -1844,11 +1844,16 @@ var GraphBrowser = function (_events$EventEmitter) {
                 },
                 change: function change(event, ui) {
                     if (ui.item !== undefined) {
-                        $(htmlSearchBox).val(ui.item.name);
                         $(htmlSearchBox).data("boundGraphNode", ui.item);
-                        browser.focus([ui.item.id]);
                     } else {
                         $(htmlSearchBox).data("boundGraphNode", {});
+                    }
+                    return false;
+                },
+                select: function select(event, ui) {
+                    if (ui.item !== undefined) {
+                        $(htmlSearchBox).val(ui.item.name);
+                        browser.focus([ui.item.id]);
                     }
                     return false;
                 }
@@ -1859,7 +1864,7 @@ var GraphBrowser = function (_events$EventEmitter) {
     }, {
         key: "init",
         value: function init(callback) {
-            this._graphService.init(callback);
+            this._graphService.requestInit(callback);
         }
     }, {
         key: "showMessage",
@@ -1871,6 +1876,19 @@ var GraphBrowser = function (_events$EventEmitter) {
         key: "hideMessage",
         value: function hideMessage() {
             this._messageBar.hide();
+        }
+    }, {
+        key: "getNodeLabelMap",
+        value: function getNodeLabelMap() {
+            return this._graphService.getNodeLabelMap();
+        }
+    }, {
+        key: "showNodesOfLabel",
+        value: function showNodesOfLabel(nodeLabel, showOrNot) {
+            var browser = this;
+            this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
+                browser._nodes.update(updates);
+            });
         }
     }, {
         key: "getDefaultOptions",
@@ -1989,7 +2007,7 @@ var GraphBrowser = function (_events$EventEmitter) {
     }, {
         key: "search",
         value: function search(keyword, callback) {
-            this._graphService.search(keyword, this._autoCompletionItemLimit, callback);
+            this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
         }
     }, {
         key: "showGraph",
@@ -1997,14 +2015,14 @@ var GraphBrowser = function (_events$EventEmitter) {
             showGraphOptions = showGraphOptions || {};
             if (showGraphOptions.scale !== undefined) this.scaleTo(showGraphOptions.scale);
             if (showGraphOptions.showEdges !== undefined) this.showEdges(showGraphOptions.showEdges);
-            var updates = this._graphService.updateNodes(showGraphOptions);
+            var updates = this._graphService.update4ShowNodes(showGraphOptions);
             if (updates.length > 0) this._nodes.update(updates);
         }
     }, {
         key: "loadGraph",
         value: function loadGraph(options, callback) {
             var browser = this;
-            this._graphService.loadGraph(options, function (graphData) {
+            this._graphService.requestLoadGraph(options, function (graphData) {
                 browser._nodes = new vis.DataSet(graphData.nodes);
                 browser._edges = new vis.DataSet(graphData.edges);
                 browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
@@ -64620,31 +64638,48 @@ var LocalGraph = function () {
         key: "processJsonGraphData",
         value: function processJsonGraphData(jsonGraphData) {
             this._graphData = jsonGraphData.data;
-            var service = this;
+            this._nodeLabelMap = jsonGraphData.nodeLabelMap;
+            var local = this;
             this._graphData.nodes.forEach(function (node) {
-                service._nodeIdMap.set(node['id'], node);
+                local._nodeIdMap.set(node['id'], node);
             });
         }
     }, {
-        key: "init",
-        value: function init(callback) {
-            var service = this;
+        key: "requestInit",
+        value: function requestInit(callback) {
+            var local = this;
             if (this._source.json) {
-                service.processJsonGraphData(service._source.json);
+                local.processJsonGraphData(local._source.json);
                 callback();
             } else {
                 $.getScript(this._source.jsonScriptURL, function (data, status) {
-                    service.processJsonGraphData(service._source.getJsonFromScript());
+                    local.processJsonGraphData(local._source.getJsonFromScript());
                     callback();
                 });
             }
         }
     }, {
-        key: "getNodesInfo",
-        value: function getNodesInfo(nodeIds, callback) {
-            var service = this;
+        key: "getNodeLabelMap",
+        value: function getNodeLabelMap() {
+            return this._nodeLabelMap;
+        }
+    }, {
+        key: "update4ShowNodesOfLabel",
+        value: function update4ShowNodesOfLabel(nodeLabel, showOrNot, callback) {
+            var updates = this._updateNodes(function (node, update) {
+                var nls = node.labels;
+                if (nls.indexOf(nodeLabel) > -1) {
+                    update.hidden = !showOrNot;
+                }
+            });
+            callback(updates);
+        }
+    }, {
+        key: "requestGetNodesInfo",
+        value: function requestGetNodesInfo(nodeIds, callback) {
+            var local = this;
             callback(nodeIds.map(function (nodeId) {
-                var node = service._nodeIdMap.get(nodeId);
+                var node = local._nodeIdMap.get(nodeId);
                 if (node.info !== undefined) {
                     return node.info;
                 }
@@ -64652,8 +64687,8 @@ var LocalGraph = function () {
             }));
         }
     }, {
-        key: "loadGraph",
-        value: function loadGraph(options, callback) {
+        key: "requestLoadGraph",
+        value: function requestLoadGraph(options, callback) {
             callback({
                 nodes: this._graphData.nodes.map(function (node) {
                     return {
@@ -64668,17 +64703,16 @@ var LocalGraph = function () {
         key: "_updateNodes",
         value: function _updateNodes(fnDoUpdate) {
             var updates = [];
-            for (var item in this._graphData.nodes) {
-                var node = this._graphData.nodes[item];
+            this._graphData.nodes.forEach(function (node) {
                 var update = { id: node.id };
                 fnDoUpdate(node, update);
                 if ((0, _keys2["default"])(update).length > 1) updates.push(update);
-            }
+            });
             return updates;
         }
     }, {
-        key: "search",
-        value: function search(keyword, limit, callback) {
+        key: "requestSearch",
+        value: function requestSearch(keyword, limit, callback) {
             var results = [];
             for (var item in this._graphData.nodes) {
                 var node = this._graphData.nodes[item];
@@ -64690,8 +64724,8 @@ var LocalGraph = function () {
             callback(results);
         }
     }, {
-        key: "updateNodes",
-        value: function updateNodes(showOptions) {
+        key: "update4ShowNodes",
+        value: function update4ShowNodes(showOptions) {
             return this._updateNodes(function (node, update) {
                 ///////show node?
                 if (showOptions.showNodes === true) {

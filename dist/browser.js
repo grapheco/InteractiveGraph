@@ -34,7 +34,7 @@ class GraphBrowser extends events.EventEmitter {
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.getNodesInfo(nodeIds, function (nodeInfos) {
+                browser._graphService.requestGetNodesInfo(nodeIds, function (nodeInfos) {
                     browser._renderNodesInfo(nodeInfos);
                 });
             }
@@ -94,12 +94,17 @@ class GraphBrowser extends events.EventEmitter {
             },
             change: function (event, ui) {
                 if (ui.item !== undefined) {
-                    $(htmlSearchBox).val(ui.item.name);
                     $(htmlSearchBox).data("boundGraphNode", ui.item);
-                    browser.focus([ui.item.id]);
                 }
                 else {
                     $(htmlSearchBox).data("boundGraphNode", {});
+                }
+                return false;
+            },
+            select: function (event, ui) {
+                if (ui.item !== undefined) {
+                    $(htmlSearchBox).val(ui.item.name);
+                    browser.focus([ui.item.id]);
                 }
                 return false;
             }
@@ -110,7 +115,7 @@ class GraphBrowser extends events.EventEmitter {
         };
     }
     init(callback) {
-        this._graphService.init(callback);
+        this._graphService.requestInit(callback);
     }
     showMessage(msgCode) {
         this._messageBar.html(messages_1.i18n.getMessage(msgCode));
@@ -118,6 +123,15 @@ class GraphBrowser extends events.EventEmitter {
     }
     hideMessage() {
         this._messageBar.hide();
+    }
+    getNodeLabelMap() {
+        return this._graphService.getNodeLabelMap();
+    }
+    showNodesOfLabel(nodeLabel, showOrNot) {
+        var browser = this;
+        this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
+            browser._nodes.update(updates);
+        });
     }
     getDefaultOptions() {
         return {
@@ -216,7 +230,7 @@ class GraphBrowser extends events.EventEmitter {
         this.showGraph({ showFaces: showOrNot });
     }
     search(keyword, callback) {
-        this._graphService.search(keyword, this._autoCompletionItemLimit, callback);
+        this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
     }
     showGraph(showGraphOptions) {
         showGraphOptions = showGraphOptions || {};
@@ -224,13 +238,13 @@ class GraphBrowser extends events.EventEmitter {
             this.scaleTo(showGraphOptions.scale);
         if (showGraphOptions.showEdges !== undefined)
             this.showEdges(showGraphOptions.showEdges);
-        var updates = this._graphService.updateNodes(showGraphOptions);
+        var updates = this._graphService.update4ShowNodes(showGraphOptions);
         if (updates.length > 0)
             this._nodes.update(updates);
     }
     loadGraph(options, callback) {
         var browser = this;
-        this._graphService.loadGraph(options, function (graphData) {
+        this._graphService.requestLoadGraph(options, function (graphData) {
             browser._nodes = new vis.DataSet(graphData.nodes);
             browser._edges = new vis.DataSet(graphData.edges);
             browser._network.setData({ nodes: browser._nodes, edges: browser._edges });

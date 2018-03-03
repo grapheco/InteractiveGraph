@@ -5,6 +5,7 @@ import { GraphService } from './service';
 
 export class LocalGraph implements GraphService {
     private _graphData: GraphData;
+    private _nodeLabelMap: object;
     private _source: LocalGraphSource;
     private _nodeIdMap: Map<string, object> = new Map<string, object>();
 
@@ -14,30 +15,46 @@ export class LocalGraph implements GraphService {
 
     private processJsonGraphData(jsonGraphData: JsonGraphData) {
         this._graphData = jsonGraphData.data;
-        var service = this;
+        this._nodeLabelMap = jsonGraphData.nodeLabelMap;
+        var local = this;
         this._graphData.nodes.forEach(node => {
-            service._nodeIdMap.set(node['id'], node);
+            local._nodeIdMap.set(node['id'], node);
         });
     }
 
-    init(callback) {
-        var service = this;
+    requestInit(callback: () => void) {
+        var local = this;
         if (this._source.json) {
-            service.processJsonGraphData(service._source.json);
+            local.processJsonGraphData(local._source.json);
             callback();
         }
         else {
             $.getScript(this._source.jsonScriptURL, function (data, status) {
-                service.processJsonGraphData(service._source.getJsonFromScript());
+                local.processJsonGraphData(local._source.getJsonFromScript());
                 callback();
             })
         }
     }
 
-    getNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void) {
-        var service = this;
+    getNodeLabelMap(): object {
+        return this._nodeLabelMap;
+    }
+
+    update4ShowNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void) {
+        var updates = this._updateNodes(function (node, update) {
+            var nls: string[] = node.labels;
+            if (nls.indexOf(nodeLabel) > -1) {
+                update.hidden = !showOrNot;
+            }
+        });
+
+        callback(updates);
+    }
+
+    requestGetNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void) {
+        var local = this;
         callback(nodeIds.map(nodeId => {
-            let node: any = service._nodeIdMap.get(nodeId);
+            let node: any = local._nodeIdMap.get(nodeId);
             if (node.info !== undefined) {
                 return node.info;
             }
@@ -46,7 +63,7 @@ export class LocalGraph implements GraphService {
         }));
     }
 
-    loadGraph(options: object, callback: (graphData: object) => void) {
+    requestLoadGraph(options: object, callback: (graphData: object) => void) {
         callback({
             nodes: this._graphData.nodes.map((node: any) => {
                 return {
@@ -60,18 +77,17 @@ export class LocalGraph implements GraphService {
 
     private _updateNodes(fnDoUpdate: (node, update) => void): object[] {
         var updates = [];
-        for (var item in this._graphData.nodes) {
-            var node: any = this._graphData.nodes[item];
+        this._graphData.nodes.forEach((node: any) => {
             var update = { id: node.id };
             fnDoUpdate(node, update);
             if (Object.keys(update).length > 1)
                 updates.push(update);
-        }
+        });
 
         return updates;
     }
 
-    search(keyword: string, limit: number, callback: (nodes: any[]) => void) {
+    requestSearch(keyword: string, limit: number, callback: (nodes: any[]) => void) {
         var results = [];
         for (var item in this._graphData.nodes) {
             var node: any = this._graphData.nodes[item];
@@ -85,7 +101,7 @@ export class LocalGraph implements GraphService {
         callback(results);
     }
 
-    updateNodes(showOptions): object[] {
+    update4ShowNodes(showOptions): object[] {
         return this._updateNodes(function (node, update) {
             ///////show node?
             if (showOptions.showNodes === true) {

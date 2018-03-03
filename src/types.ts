@@ -6,6 +6,7 @@ interface GraphData {
 interface JsonGraphData {
     data: GraphData;
     dbinfo: object;
+    nodeLabelMap: object;
 }
 
 interface ShowGraphOptions {

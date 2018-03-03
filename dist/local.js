@@ -7,35 +7,48 @@ class LocalGraph {
     }
     processJsonGraphData(jsonGraphData) {
         this._graphData = jsonGraphData.data;
-        var service = this;
+        this._nodeLabelMap = jsonGraphData.nodeLabelMap;
+        var local = this;
         this._graphData.nodes.forEach(node => {
-            service._nodeIdMap.set(node['id'], node);
+            local._nodeIdMap.set(node['id'], node);
         });
     }
-    init(callback) {
-        var service = this;
+    requestInit(callback) {
+        var local = this;
         if (this._source.json) {
-            service.processJsonGraphData(service._source.json);
+            local.processJsonGraphData(local._source.json);
             callback();
         }
         else {
             $.getScript(this._source.jsonScriptURL, function (data, status) {
-                service.processJsonGraphData(service._source.getJsonFromScript());
+                local.processJsonGraphData(local._source.getJsonFromScript());
                 callback();
             });
         }
     }
-    getNodesInfo(nodeIds, callback) {
-        var service = this;
+    getNodeLabelMap() {
+        return this._nodeLabelMap;
+    }
+    update4ShowNodesOfLabel(nodeLabel, showOrNot, callback) {
+        var updates = this._updateNodes(function (node, update) {
+            var nls = node.labels;
+            if (nls.indexOf(nodeLabel) > -1) {
+                update.hidden = !showOrNot;
+            }
+        });
+        callback(updates);
+    }
+    requestGetNodesInfo(nodeIds, callback) {
+        var local = this;
         callback(nodeIds.map(nodeId => {
-            let node = service._nodeIdMap.get(nodeId);
+            let node = local._nodeIdMap.get(nodeId);
             if (node.info !== undefined) {
                 return node.info;
             }
             return null;
         }));
     }
-    loadGraph(options, callback) {
+    requestLoadGraph(options, callback) {
         callback({
             nodes: this._graphData.nodes.map((node) => {
                 return {
@@ -48,16 +61,15 @@ class LocalGraph {
     }
     _updateNodes(fnDoUpdate) {
         var updates = [];
-        for (var item in this._graphData.nodes) {
-            var node = this._graphData.nodes[item];
+        this._graphData.nodes.forEach((node) => {
             var update = { id: node.id };
             fnDoUpdate(node, update);
             if (Object.keys(update).length > 1)
                 updates.push(update);
-        }
+        });
         return updates;
     }
-    search(keyword, limit, callback) {
+    requestSearch(keyword, limit, callback) {
         var results = [];
         for (var item in this._graphData.nodes) {
             var node = this._graphData.nodes[item];
@@ -69,7 +81,7 @@ class LocalGraph {
         }
         callback(results);
     }
-    updateNodes(showOptions) {
+    update4ShowNodes(showOptions) {
         return this._updateNodes(function (node, update) {
             ///////show node?
             if (showOptions.showNodes === true) {

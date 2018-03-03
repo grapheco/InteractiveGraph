@@ -6,25 +6,14 @@
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/humanity/jquery-ui.css">
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script charset="utf-8" src="./example-data.js"></script>
     <style type="text/css">
         #graphArea {
-            width: 100%;
-            height: 600px;
+            height: 100%;
             border: 1px solid lightgray;
-        }
-
-        table {
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        td {
-            border: 1px solid #ddd;
-            word-break: break-word;
         }
 
         #infoBox {
@@ -36,17 +25,23 @@
         .ui-menu {
             font-size: 9pt;
         }
+
+        #right {
+            float: right;
+            width: 150px;
+        }
+
+        #main {
+            margin: 0px 150px 0px 0px;
+        }
     </style>
 
 </head>
 
 <body>
-    <table width="100%" height="600">
-        <tr>
-            <td>
-                <div id="graphArea"></div>
-            </td>
-            <td width="150" valign="top">
+    <div style="height:95%">
+        <div id="right">
+            <div style="margin:5px">
                 <div style="height: 50%">
                     <img height="12" src="img/search.png">
                     <input id="searchBox1" type="text" size="16">
@@ -63,17 +58,29 @@
                     selected nodes:
                 </div>
                 <div id="infoBox">[...]</div>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+        <div id="main">
+            <div id="graphArea"></div>
+        </div>
+    </div>
+    <div style="margin-top:10px">
+        <div style="float:left">
+            <div style="float:left">scale:</div>
+            <div style="float:left; width: 150pt;" id="slider"></div>
+        </div>
 
-    <input type="button" id="scaleTo" value="scale to 80%">
-    <input type="checkbox" id="showFaces" checked>
-    <label for="showFaces">show faces</label>
-    <input type="checkbox" id="showDegrees" checked>
-    <label for="showDegrees">show degrees</label>
-    <input type="checkbox" id="showEdges" checked>
-    <label for="showEdges">show edges</label>
+        <div style="float:left">
+            <input type="checkbox" id="showFaces" checked>
+            <label for="showFaces">show faces</label>
+            <input type="checkbox" id="showDegrees" checked>
+            <label for="showDegrees">show degrees</label>
+            <input type="checkbox" id="showEdges" checked>
+            <label for="showEdges">show edges</label>
+        </div>
+
+        <div style="float:right" id="labelSelection" align="right"></div>
+    </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
 
@@ -103,6 +110,21 @@
             },
 
             function (callback) {
+                var map = browser.getNodeLabelMap();
+                for (var key in map) {
+                    var check = document.createElement("input");
+                    var label = document.createElement("label");
+                    $(check).attr("id", "checkbox_" + key)
+                        .attr("key", key)
+                        .attr("type", "checkbox")
+                        .attr("checked", true)
+                        .click(function () {
+                            browser.showNodesOfLabel($(this).attr("key"), $(this).prop('checked'));
+                        });
+                    $(label).attr("for", "checkbox_" + key).text(map[key]);
+                    $("#labelSelection").append(check);
+                    $("#labelSelection").append(label);
+                }
                 browser.loadGraph({}, callback);
             },
 
@@ -116,6 +138,16 @@
                 });
             }
         ]);
+
+        $("#slider").slider({
+            value: 80,
+            min: 5,
+            max: 100,
+            step: 5,
+            slide: function (event, ui) {
+                browser.scaleTo(ui.value / 100);
+            }
+        });
 
         $("#scaleTo").click(function () {
             browser.scaleTo(0.8);
