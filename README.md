@@ -95,8 +95,10 @@ this project depends on following components:
     "yargs": "^11.0.0"
 ```
 
-# build InteractiveGraphBrowser
+# build & run
 
-use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `igbrowser.min.js`.
+__Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `igbrowser.min.js`.
 
 in development mode, use `gulp dev` to generate `igbrowser.js`.
+
+__Step 2.__ open `test/index.html` in web browser, such as `file:///Users/bluejoe/IdeaProjects/InteractiveGraphBrowser/test/index.html`. No web server is required, local file browse is ok.
