@@ -3,10 +3,14 @@ interface GraphData {
     edges: object[];
 }
 
-interface JsonGraphData {
+/** 
+ * graph json objects
+*/
+interface Gson {
     data: GraphData;
     dbinfo: object;
     nodeLabelMap: object;
+    defaultData: GraphData;
 }
 
 interface ShowGraphOptions {
@@ -15,10 +19,4 @@ interface ShowGraphOptions {
     showDegrees?: boolean;
     showEdges?: boolean;
     scale?: number;
-}
-
-interface LocalGraphSource {
-    json?: JsonGraphData;
-    jsonScriptURL?: string;
-    getJsonFromScript?: () => JsonGraphData;
 }

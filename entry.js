@@ -1,7 +1,7 @@
 "use strict";
 
 exports.GraphBrowser = require("./dist/browser").GraphBrowser;
-exports.LocalGraph = require("./dist/local").LocalGraph;
+exports.GsonSource = require("./dist/gson").GsonSource;
 exports.RemoteGraph = require("./dist/remote").RemoteGraph;
 exports.i18n = require("./dist/messages").i18n;
 

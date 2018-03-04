@@ -11,9 +11,21 @@ export class Utils {
 		return arr;
 	}
 
-	public static mergeProperties(objectThis, objectThat) {
+	public static assign(objectThis, objectThat) {
 		for (let key in objectThat) {
 			objectThis[key] = objectThat[key];
+		}
+	}
+
+	/**
+	 * evalate each property which is a Function(currentObject)
+	 */
+	public static evaluate(o) {
+		for (let key in o) {
+			if (o[key] instanceof Function) {
+				var fun = o[key];
+				o[key] = fun(o);
+			}
 		}
 	}
 }

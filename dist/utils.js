@@ -12,9 +12,20 @@ class Utils {
         }
         return arr;
     }
-    static mergeProperties(objectThis, objectThat) {
+    static assign(objectThis, objectThat) {
         for (let key in objectThat) {
             objectThis[key] = objectThat[key];
+        }
+    }
+    /**
+     * evalate each property which is a Function(currentObject)
+     */
+    static evaluate(o) {
+        for (let key in o) {
+            if (o[key] instanceof Function) {
+                var fun = o[key];
+                o[key] = fun(o);
+            }
         }
     }
 }

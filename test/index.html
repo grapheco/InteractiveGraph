@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/humanity/jquery-ui.css">
     <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script charset="utf-8" src="./example-data.js"></script>
+    <script charset="utf-8" src="honglou.js"></script>
     <style type="text/css">
         #graphArea {
             height: 100%;
@@ -52,7 +52,8 @@
                     <img height="12" src="img/search.png">
                     <input id="searchBox3" type="text" size="16">
                     <br>
-                    <input type="button" id="fitSelected" value="fit selected">
+                    <input type="button" id="highlightNodes" value="highlight nodes">
+                    <input type="button" id="highlightPaths" value="highlight paths">
                 </div>
                 <div>
                     selected nodes:
@@ -85,14 +86,13 @@
         igraph.i18n.setLanguage("chs");
 
         var browser = new igraph.GraphBrowser(
-            new igraph.LocalGraph({ json: exampleData }),
+            igraph.GsonSource.fromObject(gson),
             /*
-            new igraph.LocalGraph({
-                jsonScriptURL: "example-data.js",
-                getJsonFromScript: function () {
-                    return exampleData;
-                }
-            }),
+            igraph.GsonSource.fromScript(
+                "honglou.js",
+                function () {
+                    return gson;
+                }),
             */
             document.getElementById('graphArea')
         );
@@ -153,7 +153,7 @@
             browser.scaleTo(0.8);
         });
 
-        $("#fitSelected").click(function () {
+        $("#highlightNodes").click(function () {
             var nodeIds = [];
             ["#searchBox1", "#searchBox2", "#searchBox3"].forEach(
                 function (s) {

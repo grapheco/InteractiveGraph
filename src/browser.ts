@@ -104,9 +104,7 @@ export class GraphBrowser extends events.EventEmitter {
         this._renderNodesInfo = function (nodesInfo: string[]) {
             $(htmlInfoBox).empty();
             nodesInfo.forEach((nodeInfo: string) => {
-                var div = document.createElement("div");
-                $(div).html(nodeInfo);
-                $(htmlInfoBox).append($(div));
+                $(htmlInfoBox).append(nodeInfo);
             }
             )
         };
@@ -137,7 +135,7 @@ export class GraphBrowser extends events.EventEmitter {
             select: function (event, ui) {
                 if (ui.item !== undefined) {
                     $(htmlSearchBox).val(ui.item.name);
-                    browser.focus([ui.item.id]);
+                    browser.highlight([ui.item.id]);
                 }
 
                 return false;
@@ -234,7 +232,7 @@ export class GraphBrowser extends events.EventEmitter {
         };
     }
 
-    public focus(nodeIds) {
+    public highlight(nodeIds) {
         this._network.fit({ nodes: nodeIds, animation: true });
         this._network.selectNodes(nodeIds, false);
     }
