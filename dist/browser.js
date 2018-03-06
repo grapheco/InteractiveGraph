@@ -7,95 +7,56 @@ const vis = require("vis");
 const messages_1 = require("./messages");
 const events = require("events");
 const series = require("async/series");
+const theme_1 = require("./theme");
 class GraphBrowser extends events.EventEmitter {
-    constructor(graphService, htmlGraphArea, options) {
+    constructor(graphService, htmlGraphArea, theme) {
         super();
         this._autoCompletionItemLimit = 30;
-        this._defaultOptions = {
-            nodes: {
-                shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
-                font: {
-                    size: 14,
-                    strokeWidth: 7
-                }
-            },
-            edges: {
-                width: 0.05,
-                font: {
-                    size: 0,
-                },
-                color: {
-                    highlight: '#ff0000',
-                    hover: '#848484',
-                },
-                selectionWidth: 0.1,
-                arrows: {
-                    from: {},
-                    to: {
-                        enabled: true,
-                        scaleFactor: 0.5,
-                    }
-                },
-                smooth: {
-                    enabled: true,
-                    type: 'continuous',
-                    roundness: 0.5,
-                }
-            },
-            physics: {
-                stabilization: false,
-                solver: 'forceAtlas2Based',
-                barnesHut: {
-                    gravitationalConstant: -80000,
-                    springConstant: 0.001,
-                    springLength: 200
-                },
-                forceAtlas2Based: {
-                    gravitationalConstant: -26,
-                    centralGravity: 0.005,
-                    springLength: 230,
-                    springConstant: 0.18
-                },
-            },
-            interaction: {
-                tooltipDelay: 200,
-                hover: true,
-                hideEdgesOnDrag: true,
-                selectable: true,
-                navigationButtons: true,
-            }
-        };
-        this._renderNodesInfo = function (nodeInfos) {
-            console.log(nodeInfos);
+        this._highlightedNodeIds = {};
+        this._renderNodeDescriptions = function (descriptions) {
+            console.log(descriptions);
         };
         this._renderAutoCompletionItem = function (item) {
             return "<b>" + item.name + "</b>"
                 + (item.title === undefined ? "" : "<br>" + item.title);
         };
         //message bar
-        this._messageBar = $(document.createElement("div"));
-        this._messageBar.addClass("messageBar");
-        this._messageBar.hide();
+        this._jqueryMessageBar = $(document.createElement("div"));
+        this._jqueryMessageBar.addClass("messageBar");
+        this._jqueryMessageBar.hide();
         this._graphService = graphService;
         this._nodes = new vis.DataSet();
         this._edges = new vis.DataSet();
-        this._networkOptions = options || this._defaultOptions;
+        this._theme = theme || theme_1.Themes.DEFAULT();
+        this._jqueryGraphArea = $(htmlGraphArea);
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
             edges: this._edges
-        }, this._networkOptions);
+        }, this._theme.networkOptions);
         var browser = this;
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.requestGetNodesInfo(nodeIds, function (nodeInfos) {
-                    browser._renderNodesInfo(nodeInfos);
+                browser._graphService.requestGetNodeDescriptions(nodeIds, function (nodeInfos) {
+                    browser._renderNodeDescriptions(nodeInfos);
                 });
             }
+        });
+        this._network.on("doubleClick", function (args) {
+            //double click on backgroud (no nodes selected)
+            if (args.nodes.length == 0 && args.edges.length == 0) {
+                browser._highlightedNodeIds = [];
+                return;
+            }
+            var nodeIds = args.nodes;
+            nodeIds.forEach(nodeId => {
+                if (browser._highlightedNodeIds[nodeId] === undefined) {
+                    browser._highlightedNodeIds[nodeId] = 0;
+                }
+                else {
+                    delete browser._highlightedNodeIds[nodeId];
+                }
+            });
         });
         this._network.on("selectEdge", function (args) {
             //set font size normal
@@ -127,16 +88,51 @@ class GraphBrowser extends events.EventEmitter {
                 browser._edges.update(updates);
             }
         });
+        this._network.on("afterDrawing", function (ctx) {
+            ctx.strokeStyle = '#A6D5F7';
+            ctx.lineWidth = 3;
+            //ctx.fillStyle = '#294475';
+            var nodeIds = browser.getHighlightedNodeIds();
+            /*
+            nodeIds.forEach(nodeId => {
+                var box = browser._network.getBoundingBox(nodeId);
+                ctx.fillRect(box.left - 10, box.top - 10, box.right - box.left + 20, box.bottom - box.top + 20);
+                //ctx.fill();
+            });
+            */
+            var nodePositions = browser._network.getPositions(nodeIds);
+            for (let key in nodePositions) {
+                var pos = nodePositions[key];
+                var box = browser._network.getBoundingBox(key);
+                ctx.circle(pos.x, pos.y, pos.y - box.top + 5);
+                //ctx.fill();
+                ctx.stroke();
+            }
+        });
     }
-    updateOptions(update) {
-        update(this._networkOptions);
-        this._network.setOptions(this._networkOptions);
+    setTheme(theme) {
+        this._theme = theme;
+        this._jqueryGraphArea.css('background', theme.canvasBackground);
+        this._network.setOptions(theme.networkOptions);
+    }
+    updateTheme(update) {
+        update(this._theme);
+        this.setTheme(this._theme);
+    }
+    getHighlightedNodeIds() {
+        return Object.keys(this._highlightedNodeIds);
+    }
+    highlightNode(nodeId, showOrNot) {
+        if (showOrNot)
+            this._highlightedNodeIds[nodeId] = 0;
+        else
+            delete this._highlightedNodeIds[nodeId];
     }
     bindInfoBox(htmlInfoBox) {
-        this._renderNodesInfo = function (nodesInfo) {
+        this._renderNodeDescriptions = function (descriptions) {
             $(htmlInfoBox).empty();
-            nodesInfo.forEach((nodeInfo) => {
-                $(htmlInfoBox).append(nodeInfo);
+            descriptions.forEach((description) => {
+                $(htmlInfoBox).append(description);
             });
         };
     }
@@ -178,11 +174,11 @@ class GraphBrowser extends events.EventEmitter {
         this._graphService.requestInit(callback);
     }
     showMessage(msgCode) {
-        this._messageBar.html(messages_1.i18n.getMessage(msgCode));
-        this._messageBar.show();
+        this._jqueryMessageBar.html(messages_1.i18n.getMessage(msgCode));
+        this._jqueryMessageBar.show();
     }
     hideMessage() {
-        this._messageBar.hide();
+        this._jqueryMessageBar.hide();
     }
     getNodeLabelMap() {
         return this._graphService.getNodeLabelMap();

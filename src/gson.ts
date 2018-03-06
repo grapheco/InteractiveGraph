@@ -80,12 +80,12 @@ export class GsonSource implements GraphService {
         callback(updates);
     }
 
-    requestGetNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void) {
+    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
         var local = this;
         callback(nodeIds.map(nodeId => {
             let node: any = local._nodeIdMap.get(nodeId);
-            if (node.info !== undefined) {
-                return node.info;
+            if (node.description !== undefined) {
+                return node.description;
             }
 
             return null;

@@ -10,19 +10,28 @@
     <script src="jquery-ui.js"></script>
     <script charset="utf-8" src="honglou.js"></script>
     <style type="text/css">
+        body {
+            margin: 0px;
+        }
+
+        .ui-draggable,
+        .ui-droppable {
+            background-position: top;
+        }
+
         #graphArea {
             height: 100%;
             border: 1px solid lightgray;
         }
 
         #infoBox {
-            font-size: 9pt;
+            font-size: 9px;
             height: 50%;
-            border: 1pt;
+            border: 1px;
         }
 
         .ui-menu {
-            font-size: 9pt;
+            font-size: 9px;
         }
 
         #right {
@@ -66,8 +75,14 @@
     </div>
     <div style="margin-top:10px">
         <div style="float:left">
-            <div style="float:left">scale:</div>
-            <div style="float:left; width: 150pt;" id="slider"></div>
+            <select id="themeSelect">
+                <option value="DEFAULT">THEME_DEFAULT</option>
+                <option value="BLACK">THEME_BLACK</option>
+            </select>
+        </div>
+        <div style="float:left">
+            <div style="float:left;margin-left: 10px">scale:</div>
+            <div style="float:left; width: 150pt;margin-right: 10px" id="slider"></div>
         </div>
 
         <div style="float:left">
@@ -95,17 +110,7 @@
                     return gson;
                 }),
             */
-            document.getElementById('graphArea'),
-            {
-                "nodes": {
-                    shadow: {
-                        color: 'rgba(0,0,0,0.5)',
-                        size: 10,
-                        x: 5,
-                        y: 5
-                    }
-                }
-            }
+            document.getElementById('graphArea')
         );
 
         console.log(browser);
@@ -141,7 +146,7 @@
 
             function (callback) {
                 browser.showGraph({
-                    scale: 0.6,
+                    scale: 0.8,
                     showFaces: true,
                     showDegrees: true,
                     showEdges: true,
@@ -158,10 +163,6 @@
             slide: function (event, ui) {
                 browser.scaleTo(ui.value / 100);
             }
-        });
-
-        $("#scaleTo").click(function () {
-            browser.scaleTo(0.8);
         });
 
         $("#highlightNodes").click(function () {
@@ -185,9 +186,9 @@
 
         $("#showShadow").click(function () {
             var checked = $("#showShadow").prop('checked');
-            browser.updateOptions(function (options) {
-                options.nodes.shadow = checked;
-                options.edges.shadow = checked;
+            browser.updateTheme(function (theme) {
+                theme.networkOptions.nodes.shadow = checked;
+                //theme.networkOptions.edges.shadow = checked;
             });
         });
 
@@ -200,6 +201,12 @@
             var checked = $("#showFaces").prop('checked');
             browser.showFaces(checked);
         });
+
+        $("#themeSelect").change(function () {
+            var value = $("#themeSelect").val();
+            var func = igraph.Themes[value];
+            browser.setTheme(func());
+        })
     </script>
 </body>
 

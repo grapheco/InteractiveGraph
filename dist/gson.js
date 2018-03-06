@@ -59,12 +59,12 @@ class GsonSource {
         });
         callback(updates);
     }
-    requestGetNodesInfo(nodeIds, callback) {
+    requestGetNodeDescriptions(nodeIds, callback) {
         var local = this;
         callback(nodeIds.map(nodeId => {
             let node = local._nodeIdMap.get(nodeId);
-            if (node.info !== undefined) {
-                return node.info;
+            if (node.description !== undefined) {
+                return node.description;
             }
             return null;
         }));

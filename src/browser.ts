@@ -11,79 +11,22 @@ import { } from "jquery";
 import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
+import { Themes, Theme } from "./theme";
 
 export class GraphBrowser extends events.EventEmitter {
     static CANVAS_PADDING: number = 80;
-
-    private _messageBar: JQuery<HTMLElement>;
+    private _jqueryMessageBar: JQuery<HTMLElement>;
     private _graphService: GraphService;
     private _network: vis.Network;
     private _nodes: vis.DataSet<vis.Node>;
     private _edges: vis.DataSet<vis.Edge>;
     private _autoCompletionItemLimit = 30;
-    private _networkOptions: vis.Options;
+    private _theme: Theme;
+    private _jqueryGraphArea: JQuery<HTMLElement>;
+    private _highlightedNodeIds = {};
 
-    private _defaultOptions: vis.Options = {
-        nodes: {
-            shape: 'dot',
-            scaling: {
-                min: 10,
-                max: 30
-            },
-            font: {
-                size: 14,
-                strokeWidth: 7
-            }
-        },
-        edges: {
-            width: 0.05,
-            font: {
-                size: 0,
-            },
-            color: {
-                highlight: '#ff0000',
-                hover: '#848484',
-            },
-            selectionWidth: 0.1,
-            arrows: {
-                from: {},
-                to: {
-                    enabled: true,
-                    scaleFactor: 0.5,
-                }
-            },
-            smooth: {
-                enabled: true,
-                type: 'continuous',
-                roundness: 0.5,
-            }
-        },
-        physics: {
-            stabilization: false,
-            solver: 'forceAtlas2Based',
-            barnesHut: {
-                gravitationalConstant: -80000,
-                springConstant: 0.001,
-                springLength: 200
-            },
-            forceAtlas2Based: {
-                gravitationalConstant: -26,
-                centralGravity: 0.005,
-                springLength: 230,
-                springConstant: 0.18
-            },
-        },
-        interaction: {
-            tooltipDelay: 200,
-            hover: true,
-            hideEdgesOnDrag: true,
-            selectable: true,
-            navigationButtons: true,
-        }
-    };
-
-    public _renderNodesInfo: (nodeInfos: string[]) => void = function (nodeInfos) {
-        console.log(nodeInfos);
+    public _renderNodeDescriptions: (descriptions: string[]) => void = function (descriptions) {
+        console.log(descriptions);
     }
 
     public _renderAutoCompletionItem: (item: any) => string = function (item: any) {
@@ -93,34 +36,52 @@ export class GraphBrowser extends events.EventEmitter {
 
     public constructor(graphService: GraphService,
         htmlGraphArea: HTMLElement,
-        options: vis.Options) {
+        theme: Theme) {
         super();
 
         //message bar
-        this._messageBar = $(document.createElement("div"));
-        this._messageBar.addClass("messageBar");
-        this._messageBar.hide();
+        this._jqueryMessageBar = $(document.createElement("div"));
+        this._jqueryMessageBar.addClass("messageBar");
+        this._jqueryMessageBar.hide();
 
         this._graphService = graphService;
 
         this._nodes = new vis.DataSet<vis.Node>();
         this._edges = new vis.DataSet<vis.Edge>();
-        this._networkOptions = options || this._defaultOptions;
+        this._theme = theme || Themes.DEFAULT();
+        this._jqueryGraphArea = $(htmlGraphArea);
 
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
             edges: this._edges
-        }, this._networkOptions);
+        }, this._theme.networkOptions);
 
         var browser = this;
 
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.requestGetNodesInfo(nodeIds, function (nodeInfos) {
-                    browser._renderNodesInfo(nodeInfos);
+                browser._graphService.requestGetNodeDescriptions(nodeIds, function (nodeInfos) {
+                    browser._renderNodeDescriptions(nodeInfos);
                 });
             }
+        });
+
+        this._network.on("doubleClick", function (args) {
+            //double click on backgroud (no nodes selected)
+            if (args.nodes.length == 0 && args.edges.length == 0) {
+                browser._highlightedNodeIds = [];
+                return;
+            }
+            var nodeIds = args.nodes;
+            nodeIds.forEach(nodeId => {
+                if (browser._highlightedNodeIds[nodeId] === undefined) {
+                    browser._highlightedNodeIds[nodeId] = 0;
+                }
+                else {
+                    delete browser._highlightedNodeIds[nodeId];
+                }
+            });
         });
 
         this._network.on("selectEdge", function (args) {
@@ -158,18 +119,58 @@ export class GraphBrowser extends events.EventEmitter {
                 browser._edges.update(updates);
             }
         });
+
+        this._network.on("afterDrawing", function (ctx) {
+            ctx.strokeStyle = '#A6D5F7';
+            ctx.lineWidth = 3;
+            //ctx.fillStyle = '#294475';
+            var nodeIds = browser.getHighlightedNodeIds();
+            /*
+            nodeIds.forEach(nodeId => {
+                var box = browser._network.getBoundingBox(nodeId);
+                ctx.fillRect(box.left - 10, box.top - 10, box.right - box.left + 20, box.bottom - box.top + 20);
+                //ctx.fill();
+            });
+            */
+
+            var nodePositions: any = browser._network.getPositions(nodeIds);
+            for (let key in nodePositions) {
+                var pos = nodePositions[key];
+                var box = browser._network.getBoundingBox(key);
+                ctx.circle(pos.x, pos.y, pos.y - box.top + 5);
+                //ctx.fill();
+                ctx.stroke();
+            }
+        });
     }
 
-    public updateOptions(update: (options: vis.Options) => void) {
-        update(this._networkOptions);
-        this._network.setOptions(this._networkOptions);
+    public setTheme(theme: Theme) {
+        this._theme = theme;
+        this._jqueryGraphArea.css('background', theme.canvasBackground);
+        this._network.setOptions(theme.networkOptions);
+    }
+
+    public updateTheme(update: (theme: Theme) => void) {
+        update(this._theme);
+        this.setTheme(this._theme);
+    }
+
+    public getHighlightedNodeIds(): string[] {
+        return Object.keys(this._highlightedNodeIds);
+    }
+
+    public highlightNode(nodeId: string, showOrNot) {
+        if (showOrNot)
+            this._highlightedNodeIds[nodeId] = 0;
+        else
+            delete this._highlightedNodeIds[nodeId];
     }
 
     public bindInfoBox(htmlInfoBox: HTMLElement) {
-        this._renderNodesInfo = function (nodesInfo: string[]) {
+        this._renderNodeDescriptions = function (descriptions: string[]) {
             $(htmlInfoBox).empty();
-            nodesInfo.forEach((nodeInfo: string) => {
-                $(htmlInfoBox).append(nodeInfo);
+            descriptions.forEach((description: string) => {
+                $(htmlInfoBox).append(description);
             }
             )
         };
@@ -217,12 +218,12 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     private showMessage(msgCode: string) {
-        this._messageBar.html(i18n.getMessage(msgCode));
-        this._messageBar.show();
+        this._jqueryMessageBar.html(i18n.getMessage(msgCode));
+        this._jqueryMessageBar.show();
     }
 
     private hideMessage() {
-        this._messageBar.hide();
+        this._jqueryMessageBar.hide();
     }
 
     public getNodeLabelMap(): object {

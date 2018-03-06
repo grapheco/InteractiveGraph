@@ -6,7 +6,7 @@ import { GraphBrowser } from './browser';
 
 export interface GraphService {
     requestInit(callback: () => void);
-    requestGetNodesInfo(nodeIds: string[], callback: (nodeInfos: string[]) => void);
+    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void);
     requestLoadGraph(options: object, callback: (graphData: object) => void);
     requestSearch(keyword: string, limit: number, callback: (nodes: any[]) => void);
 
