@@ -8,9 +8,67 @@ const messages_1 = require("./messages");
 const events = require("events");
 const series = require("async/series");
 class GraphBrowser extends events.EventEmitter {
-    constructor(graphService, htmlGraphArea) {
+    constructor(graphService, htmlGraphArea, options) {
         super();
         this._autoCompletionItemLimit = 30;
+        this._defaultOptions = {
+            nodes: {
+                shape: 'dot',
+                scaling: {
+                    min: 10,
+                    max: 30
+                },
+                font: {
+                    size: 14,
+                    strokeWidth: 7
+                }
+            },
+            edges: {
+                width: 0.05,
+                font: {
+                    size: 0,
+                },
+                color: {
+                    highlight: '#ff0000',
+                    hover: '#848484',
+                },
+                selectionWidth: 0.1,
+                arrows: {
+                    from: {},
+                    to: {
+                        enabled: true,
+                        scaleFactor: 0.5,
+                    }
+                },
+                smooth: {
+                    enabled: true,
+                    type: 'continuous',
+                    roundness: 0.5,
+                }
+            },
+            physics: {
+                stabilization: false,
+                solver: 'forceAtlas2Based',
+                barnesHut: {
+                    gravitationalConstant: -80000,
+                    springConstant: 0.001,
+                    springLength: 200
+                },
+                forceAtlas2Based: {
+                    gravitationalConstant: -26,
+                    centralGravity: 0.005,
+                    springLength: 230,
+                    springConstant: 0.18
+                },
+            },
+            interaction: {
+                tooltipDelay: 200,
+                hover: true,
+                hideEdgesOnDrag: true,
+                selectable: true,
+                navigationButtons: true,
+            }
+        };
         this._renderNodesInfo = function (nodeInfos) {
             console.log(nodeInfos);
         };
@@ -23,13 +81,13 @@ class GraphBrowser extends events.EventEmitter {
         this._messageBar.addClass("messageBar");
         this._messageBar.hide();
         this._graphService = graphService;
-        var options = this.getDefaultOptions();
         this._nodes = new vis.DataSet();
         this._edges = new vis.DataSet();
+        this._networkOptions = options || this._defaultOptions;
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
             edges: this._edges
-        }, options);
+        }, this._networkOptions);
         var browser = this;
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
@@ -69,6 +127,10 @@ class GraphBrowser extends events.EventEmitter {
                 browser._edges.update(updates);
             }
         });
+    }
+    updateOptions(update) {
+        update(this._networkOptions);
+        this._network.setOptions(this._networkOptions);
     }
     bindInfoBox(htmlInfoBox) {
         this._renderNodesInfo = function (nodesInfo) {
@@ -130,66 +192,6 @@ class GraphBrowser extends events.EventEmitter {
         this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
             browser._nodes.update(updates);
         });
-    }
-    getDefaultOptions() {
-        return {
-            nodes: {
-                shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
-                font: {
-                    size: 14,
-                    strokeWidth: 7
-                }
-            },
-            edges: {
-                width: 0.05,
-                font: {
-                    size: 0,
-                },
-                color: {
-                    highlight: '#ff0000',
-                    hover: '#848484',
-                },
-                selectionWidth: 0.1,
-                arrows: {
-                    from: {},
-                    to: {
-                        enabled: true,
-                        scaleFactor: 0.5,
-                    }
-                },
-                smooth: {
-                    enabled: true,
-                    type: 'continuous',
-                    roundness: 0.5,
-                }
-            },
-            physics: {
-                stabilization: false,
-                solver: 'forceAtlas2Based',
-                barnesHut: {
-                    gravitationalConstant: -80000,
-                    springConstant: 0.001,
-                    springLength: 200
-                },
-                forceAtlas2Based: {
-                    gravitationalConstant: -26,
-                    centralGravity: 0.005,
-                    springLength: 230,
-                    springConstant: 0.18
-                },
-            },
-            interaction: {
-                tooltipDelay: 200,
-                hover: true,
-                hideEdgesOnDrag: true,
-                selectable: true,
-                navigationButtons: true,
-            }
-        };
     }
     highlight(nodeIds) {
         this._network.fit({ nodes: nodeIds, animation: true });

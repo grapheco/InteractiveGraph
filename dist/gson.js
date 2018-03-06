@@ -13,15 +13,15 @@ class GsonSource {
         this._graphData = {
             nodes: gson.data.nodes.map(node => {
                 var x = {};
-                utils_1.Utils.assign(x, defaults.nodes);
-                utils_1.Utils.assign(x, node);
+                utils_1.Utils.extend(x, defaults.nodes);
+                utils_1.Utils.extend(x, node);
                 utils_1.Utils.evaluate(x);
                 return x;
             }),
             edges: gson.data.edges.map(edge => {
                 var x = {};
-                utils_1.Utils.assign(x, defaults.edges);
-                utils_1.Utils.assign(x, edge);
+                utils_1.Utils.extend(x, defaults.edges);
+                utils_1.Utils.extend(x, edge);
                 utils_1.Utils.evaluate(x);
                 return x;
             })

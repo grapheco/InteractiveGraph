@@ -11,9 +11,18 @@ export class Utils {
 		return arr;
 	}
 
-	public static assign(objectThis, objectThat) {
-		for (let key in objectThat) {
-			objectThis[key] = objectThat[key];
+	public static extend(baseObject: object, extension: object) {
+		for (let key in extension) {
+			if (extension.hasOwnProperty(key)) {
+				var baseValue = baseObject[key];
+				var extValue = extension[key];
+				if (baseValue instanceof Object && baseValue instanceof Object) {
+					Utils.extend(baseValue, extValue);
+				}
+				else {
+					baseObject[key] = extValue;
+				}
+			}
 		}
 	}
 

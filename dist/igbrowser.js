@@ -1726,10 +1726,18 @@ var Utils = function () {
             return arr;
         }
     }, {
-        key: "assign",
-        value: function assign(objectThis, objectThat) {
-            for (var key in objectThat) {
-                objectThis[key] = objectThat[key];
+        key: "extend",
+        value: function extend(baseObject, extension) {
+            for (var key in extension) {
+                if (extension.hasOwnProperty(key)) {
+                    var baseValue = baseObject[key];
+                    var extValue = extension[key];
+                    if (baseValue instanceof Object && baseValue instanceof Object) {
+                        Utils.extend(baseValue, extValue);
+                    } else {
+                        baseObject[key] = extValue;
+                    }
+                }
             }
         }
         /**
@@ -1872,12 +1880,70 @@ var series = __webpack_require__(113);
 var GraphBrowser = function (_events$EventEmitter) {
     (0, _inherits3["default"])(GraphBrowser, _events$EventEmitter);
 
-    function GraphBrowser(graphService, htmlGraphArea) {
+    function GraphBrowser(graphService, htmlGraphArea, options) {
         (0, _classCallCheck3["default"])(this, GraphBrowser);
 
         var _this = (0, _possibleConstructorReturn3["default"])(this, (GraphBrowser.__proto__ || (0, _getPrototypeOf2["default"])(GraphBrowser)).call(this));
 
         _this._autoCompletionItemLimit = 30;
+        _this._defaultOptions = {
+            nodes: {
+                shape: 'dot',
+                scaling: {
+                    min: 10,
+                    max: 30
+                },
+                font: {
+                    size: 14,
+                    strokeWidth: 7
+                }
+            },
+            edges: {
+                width: 0.05,
+                font: {
+                    size: 0
+                },
+                color: {
+                    highlight: '#ff0000',
+                    hover: '#848484'
+                },
+                selectionWidth: 0.1,
+                arrows: {
+                    from: {},
+                    to: {
+                        enabled: true,
+                        scaleFactor: 0.5
+                    }
+                },
+                smooth: {
+                    enabled: true,
+                    type: 'continuous',
+                    roundness: 0.5
+                }
+            },
+            physics: {
+                stabilization: false,
+                solver: 'forceAtlas2Based',
+                barnesHut: {
+                    gravitationalConstant: -80000,
+                    springConstant: 0.001,
+                    springLength: 200
+                },
+                forceAtlas2Based: {
+                    gravitationalConstant: -26,
+                    centralGravity: 0.005,
+                    springLength: 230,
+                    springConstant: 0.18
+                }
+            },
+            interaction: {
+                tooltipDelay: 200,
+                hover: true,
+                hideEdgesOnDrag: true,
+                selectable: true,
+                navigationButtons: true
+            }
+        };
         _this._renderNodesInfo = function (nodeInfos) {
             console.log(nodeInfos);
         };
@@ -1889,13 +1955,13 @@ var GraphBrowser = function (_events$EventEmitter) {
         _this._messageBar.addClass("messageBar");
         _this._messageBar.hide();
         _this._graphService = graphService;
-        var options = _this.getDefaultOptions();
         _this._nodes = new vis.DataSet();
         _this._edges = new vis.DataSet();
+        _this._networkOptions = options || _this._defaultOptions;
         _this._network = new vis.Network(htmlGraphArea, {
             nodes: _this._nodes,
             edges: _this._edges
-        }, options);
+        }, _this._networkOptions);
         var browser = _this;
         _this._network.on("click", function (args) {
             var nodeIds = args.nodes;
@@ -1939,6 +2005,12 @@ var GraphBrowser = function (_events$EventEmitter) {
     }
 
     (0, _createClass3["default"])(GraphBrowser, [{
+        key: "updateOptions",
+        value: function updateOptions(update) {
+            update(this._networkOptions);
+            this._network.setOptions(this._networkOptions);
+        }
+    }, {
         key: "bindInfoBox",
         value: function bindInfoBox(htmlInfoBox) {
             this._renderNodesInfo = function (nodesInfo) {
@@ -2009,68 +2081,6 @@ var GraphBrowser = function (_events$EventEmitter) {
             this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
                 browser._nodes.update(updates);
             });
-        }
-    }, {
-        key: "getDefaultOptions",
-        value: function getDefaultOptions() {
-            return {
-                nodes: {
-                    shape: 'dot',
-                    scaling: {
-                        min: 10,
-                        max: 30
-                    },
-                    font: {
-                        size: 14,
-                        strokeWidth: 7
-                    }
-                },
-                edges: {
-                    width: 0.05,
-                    font: {
-                        size: 0
-                    },
-                    color: {
-                        highlight: '#ff0000',
-                        hover: '#848484'
-                    },
-                    selectionWidth: 0.1,
-                    arrows: {
-                        from: {},
-                        to: {
-                            enabled: true,
-                            scaleFactor: 0.5
-                        }
-                    },
-                    smooth: {
-                        enabled: true,
-                        type: 'continuous',
-                        roundness: 0.5
-                    }
-                },
-                physics: {
-                    stabilization: false,
-                    solver: 'forceAtlas2Based',
-                    barnesHut: {
-                        gravitationalConstant: -80000,
-                        springConstant: 0.001,
-                        springLength: 200
-                    },
-                    forceAtlas2Based: {
-                        gravitationalConstant: -26,
-                        centralGravity: 0.005,
-                        springLength: 230,
-                        springConstant: 0.18
-                    }
-                },
-                interaction: {
-                    tooltipDelay: 200,
-                    hover: true,
-                    hideEdgesOnDrag: true,
-                    selectable: true,
-                    navigationButtons: true
-                }
-            };
         }
     }, {
         key: "highlight",
@@ -64764,15 +64774,15 @@ var GsonSource = function () {
             this._graphData = {
                 nodes: gson.data.nodes.map(function (node) {
                     var x = {};
-                    utils_1.Utils.assign(x, defaults.nodes);
-                    utils_1.Utils.assign(x, node);
+                    utils_1.Utils.extend(x, defaults.nodes);
+                    utils_1.Utils.extend(x, node);
                     utils_1.Utils.evaluate(x);
                     return x;
                 }),
                 edges: gson.data.edges.map(function (edge) {
                     var x = {};
-                    utils_1.Utils.assign(x, defaults.edges);
-                    utils_1.Utils.assign(x, edge);
+                    utils_1.Utils.extend(x, defaults.edges);
+                    utils_1.Utils.extend(x, edge);
                     utils_1.Utils.evaluate(x);
                     return x;
                 })

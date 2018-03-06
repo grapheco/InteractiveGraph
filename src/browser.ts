@@ -4,7 +4,6 @@
 
 
 import * as vis from "vis";
-
 import { GraphService } from './service';
 import { Utils, Rect, Point } from "./utils";
 import { i18n } from "./messages";
@@ -22,6 +21,66 @@ export class GraphBrowser extends events.EventEmitter {
     private _nodes: vis.DataSet<vis.Node>;
     private _edges: vis.DataSet<vis.Edge>;
     private _autoCompletionItemLimit = 30;
+    private _networkOptions: vis.Options;
+
+    private _defaultOptions: vis.Options = {
+        nodes: {
+            shape: 'dot',
+            scaling: {
+                min: 10,
+                max: 30
+            },
+            font: {
+                size: 14,
+                strokeWidth: 7
+            }
+        },
+        edges: {
+            width: 0.05,
+            font: {
+                size: 0,
+            },
+            color: {
+                highlight: '#ff0000',
+                hover: '#848484',
+            },
+            selectionWidth: 0.1,
+            arrows: {
+                from: {},
+                to: {
+                    enabled: true,
+                    scaleFactor: 0.5,
+                }
+            },
+            smooth: {
+                enabled: true,
+                type: 'continuous',
+                roundness: 0.5,
+            }
+        },
+        physics: {
+            stabilization: false,
+            solver: 'forceAtlas2Based',
+            barnesHut: {
+                gravitationalConstant: -80000,
+                springConstant: 0.001,
+                springLength: 200
+            },
+            forceAtlas2Based: {
+                gravitationalConstant: -26,
+                centralGravity: 0.005,
+                springLength: 230,
+                springConstant: 0.18
+            },
+        },
+        interaction: {
+            tooltipDelay: 200,
+            hover: true,
+            hideEdgesOnDrag: true,
+            selectable: true,
+            navigationButtons: true,
+        }
+    };
 
     public _renderNodesInfo: (nodeInfos: string[]) => void = function (nodeInfos) {
         console.log(nodeInfos);
@@ -33,7 +92,8 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public constructor(graphService: GraphService,
-        htmlGraphArea: HTMLElement) {
+        htmlGraphArea: HTMLElement,
+        options: vis.Options) {
         super();
 
         //message bar
@@ -43,14 +103,14 @@ export class GraphBrowser extends events.EventEmitter {
 
         this._graphService = graphService;
 
-        var options = this.getDefaultOptions();
         this._nodes = new vis.DataSet<vis.Node>();
         this._edges = new vis.DataSet<vis.Edge>();
+        this._networkOptions = options || this._defaultOptions;
 
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
             edges: this._edges
-        }, options);
+        }, this._networkOptions);
 
         var browser = this;
 
@@ -98,6 +158,11 @@ export class GraphBrowser extends events.EventEmitter {
                 browser._edges.update(updates);
             }
         });
+    }
+
+    public updateOptions(update: (options: vis.Options) => void) {
+        update(this._networkOptions);
+        this._network.setOptions(this._networkOptions);
     }
 
     public bindInfoBox(htmlInfoBox: HTMLElement) {
@@ -166,70 +231,9 @@ export class GraphBrowser extends events.EventEmitter {
 
     public showNodesOfLabel(nodeLabel: string, showOrNot: boolean) {
         var browser = this;
-        this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function(updates){
+        this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
             browser._nodes.update(updates);
         });
-    }
-
-    private getDefaultOptions(): vis.Options {
-        return {
-            nodes: {
-                shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
-                font: {
-                    size: 14,
-                    strokeWidth: 7
-                }
-            },
-            edges: {
-                width: 0.05,
-                font: {
-                    size: 0,
-                },
-                color: {
-                    highlight: '#ff0000',
-                    hover: '#848484',
-                },
-                selectionWidth: 0.1,
-                arrows: {
-                    from: {},
-                    to: {
-                        enabled: true,
-                        scaleFactor: 0.5,
-                    }
-                },
-                smooth: {
-                    enabled: true,
-                    type: 'continuous',
-                    roundness: 0.5,
-                }
-            },
-            physics: {
-                stabilization: false,
-                solver: 'forceAtlas2Based',
-                barnesHut: {
-                    gravitationalConstant: -80000,
-                    springConstant: 0.001,
-                    springLength: 200
-                },
-                forceAtlas2Based: {
-                    gravitationalConstant: -26,
-                    centralGravity: 0.005,
-                    springLength: 230,
-                    springConstant: 0.18
-                },
-            },
-            interaction: {
-                tooltipDelay: 200,
-                hover: true,
-                hideEdgesOnDrag: true,
-                selectable: true,
-                navigationButtons: true,
-            }
-        };
     }
 
     public highlight(nodeIds) {

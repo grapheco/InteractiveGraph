@@ -12,9 +12,18 @@ class Utils {
         }
         return arr;
     }
-    static assign(objectThis, objectThat) {
-        for (let key in objectThat) {
-            objectThis[key] = objectThat[key];
+    static extend(baseObject, extension) {
+        for (let key in extension) {
+            if (extension.hasOwnProperty(key)) {
+                var baseValue = baseObject[key];
+                var extValue = extension[key];
+                if (baseValue instanceof Object && baseValue instanceof Object) {
+                    Utils.extend(baseValue, extValue);
+                }
+                else {
+                    baseObject[key] = extValue;
+                }
+            }
         }
     }
     /**

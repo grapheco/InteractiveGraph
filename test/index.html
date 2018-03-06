@@ -5,10 +5,9 @@
     <title>GraphBrowser</title>
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
     <link type="text/css" rel="stylesheet" href="vis-network.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/humanity/jquery-ui.css">
-    <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
-    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <script src="jquery-ui.js"></script>
     <script charset="utf-8" src="honglou.js"></script>
     <style type="text/css">
         #graphArea {
@@ -78,6 +77,8 @@
             <label for="showDegrees">show degrees</label>
             <input type="checkbox" id="showEdges" checked>
             <label for="showEdges">show edges</label>
+            <input type="checkbox" id="showShadow">
+            <label for="showShadow">show shadow</label>
         </div>
 
         <div style="float:right" id="labelSelection" align="right"></div>
@@ -94,7 +95,17 @@
                     return gson;
                 }),
             */
-            document.getElementById('graphArea')
+            document.getElementById('graphArea'),
+            {
+                "nodes": {
+                    shadow: {
+                        color: 'rgba(0,0,0,0.5)',
+                        size: 10,
+                        x: 5,
+                        y: 5
+                    }
+                }
+            }
         );
 
         console.log(browser);
@@ -170,6 +181,14 @@
         $("#showDegrees").click(function () {
             var checked = $("#showDegrees").prop('checked');
             browser.showDegrees(checked);
+        });
+
+        $("#showShadow").click(function () {
+            var checked = $("#showShadow").prop('checked');
+            browser.updateOptions(function (options) {
+                options.nodes.shadow = checked;
+                options.edges.shadow = checked;
+            });
         });
 
         $("#showEdges").click(function () {

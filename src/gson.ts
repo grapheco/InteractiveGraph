@@ -23,8 +23,8 @@ export class GsonSource implements GraphService {
             nodes:
                 gson.data.nodes.map(node => {
                     var x = {};
-                    Utils.assign(x, defaults.nodes);
-                    Utils.assign(x, node);
+                    Utils.extend(x, defaults.nodes);
+                    Utils.extend(x, node);
                     Utils.evaluate(x);
 
                     return x;
@@ -32,8 +32,8 @@ export class GsonSource implements GraphService {
             edges:
                 gson.data.edges.map(edge => {
                     var x = {};
-                    Utils.assign(x, defaults.edges);
-                    Utils.assign(x, edge);
+                    Utils.extend(x, defaults.edges);
+                    Utils.extend(x, edge);
                     Utils.evaluate(x);
 
                     return x;
