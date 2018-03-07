@@ -32,14 +32,13 @@
 
         #infoPanel {
             display: none;
-            padding: 10px;
+            padding: 5px;
             position: absolute;
             left: 10px;
             top: 80px;
             width: 258px;
             cursor: hand;
-            background: rgba(250, 248, 248, 0.8);
-            border: thin solid rgba(117, 114, 114, 0.384);
+            background: white;
             color: midnightblue;
             box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
             z-index: 888;
@@ -50,18 +49,17 @@
             position: absolute;
             left: 10px;
             top: 20px;
-            width: 270px;
+            width: 260px;
             height: 30px;
             cursor: hand;
             background: white;
-            border: thin solid lightgray;
             color: #ecb80e;
-            box-shadow: rgba(0, 0, 0, 0.5) 1px 1px 10px;
-            z-index: 999;
+            box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+            z-index: 900;
         }
 
         #searchPanel1 {
-            width: 230px;
+            width: 220px;
             float: left;
         }
 
@@ -87,13 +85,13 @@
         #infoPanel2 {
             width: 20px;
             height: 20px;
-            float: left;
+            float: right;
             padding: 5px 0px 5px 5px;
         }
 
-        .ui-menu {
+        ul.ui-autocomplete {
             font-size: 12px;
-            z-index: 899;
+            z-index: 999;
         }
     </style>
 
@@ -130,7 +128,7 @@
     </div>
     <div id="searchPanel">
         <div id="searchPanel1">
-            <input id="searchBox" type="text" size="16">
+            <input id="searchBox" type="text" size="16" placeholder="input keyword">
         </div>
         <div id="searchPanel2">
             <i align="center" class="fa fa-search fa-lg"></i>
@@ -212,7 +210,7 @@
             }
         });
 
-        $("#infoPanel").draggable().resizable();
+        $("#infoPanel").draggable();
 
         $("#btnCloseInfoPanel").click(function () {
             $("#infoPanel").hide();
