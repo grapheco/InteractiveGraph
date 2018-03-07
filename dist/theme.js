@@ -4,6 +4,7 @@ class Themes {
     static DEFAULT() {
         return {
             canvasBackground: "none",
+            nodeHighlightColor: ["#00FF00", "#FFFFFF"],
             networkOptions: {
                 nodes: {
                     shape: 'dot',
@@ -67,6 +68,7 @@ class Themes {
     static BLACK() {
         return {
             canvasBackground: "#111111",
+            nodeHighlightColor: ["yellow", "black"],
             networkOptions: {
                 nodes: {
                     shape: 'dot',

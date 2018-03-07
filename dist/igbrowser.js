@@ -1653,6 +1653,7 @@ var Themes = function () {
         value: function DEFAULT() {
             return {
                 canvasBackground: "none",
+                nodeHighlightColor: ["#00FF00", "#FFFFFF"],
                 networkOptions: {
                     nodes: {
                         shape: 'dot',
@@ -1718,6 +1719,7 @@ var Themes = function () {
         value: function BLACK() {
             return {
                 canvasBackground: "#111111",
+                nodeHighlightColor: ["yellow", "black"],
                 networkOptions: {
                     nodes: {
                         shape: 'dot',
@@ -2122,10 +2124,7 @@ var GraphBrowser = function (_events$EventEmitter) {
                 browser._edges.update(updates);
             }
         });
-        _this._network.on("afterDrawing", function (ctx) {
-            ctx.strokeStyle = '#A6D5F7';
-            ctx.lineWidth = 3;
-            //ctx.fillStyle = '#294475';
+        _this._network.on("beforeDrawing", function (ctx) {
             var nodeIds = browser.getHighlightedNodeIds();
             /*
             nodeIds.forEach(nodeId => {
@@ -2134,13 +2133,21 @@ var GraphBrowser = function (_events$EventEmitter) {
                 //ctx.fill();
             });
             */
-            var nodePositions = browser._network.getPositions(nodeIds);
-            for (var key in nodePositions) {
-                var pos = nodePositions[key];
-                var box = browser._network.getBoundingBox(key);
-                ctx.circle(pos.x, pos.y, pos.y - box.top + 5);
-                //ctx.fill();
-                ctx.stroke();
+            if (nodeIds.length > 0) {
+                var nodePositions = browser._network.getPositions(nodeIds);
+                var colors = browser._theme.nodeHighlightColor;
+                for (var nodeId in nodePositions) {
+                    var node = browser._nodes.get(nodeId);
+                    if (node.hidden) continue;
+                    var pos = nodePositions[nodeId];
+                    var box = browser._network.getBoundingBox(nodeId);
+                    var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top, pos.x, pos.y, pos.y - box.top + 40);
+                    grd.addColorStop(0, colors[0]);
+                    grd.addColorStop(1, colors[1]);
+                    ctx.fillStyle = grd;
+                    ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
+                    ctx.fill();
+                }
             }
         });
         return _this;
@@ -2171,12 +2178,13 @@ var GraphBrowser = function (_events$EventEmitter) {
         }
     }, {
         key: "bindInfoBox",
-        value: function bindInfoBox(htmlInfoBox) {
+        value: function bindInfoBox(htmlInfoPanel, htmlInfoBox) {
             this._renderNodeDescriptions = function (descriptions) {
                 $(htmlInfoBox).empty();
                 descriptions.forEach(function (description) {
                     $(htmlInfoBox).append(description);
                 });
+                $(htmlInfoPanel).show();
             };
         }
     }, {
@@ -2204,7 +2212,8 @@ var GraphBrowser = function (_events$EventEmitter) {
                 select: function select(event, ui) {
                     if (ui.item !== undefined) {
                         $(htmlSearchBox).val(ui.item.name);
-                        browser.highlight([ui.item.id]);
+                        browser._network.fit({ nodes: [ui.item.id], animation: true });
+                        browser.highlightNode(ui.item.id, true);
                     }
                     return false;
                 }
@@ -2240,12 +2249,6 @@ var GraphBrowser = function (_events$EventEmitter) {
             this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
                 browser._nodes.update(updates);
             });
-        }
-    }, {
-        key: "highlight",
-        value: function highlight(nodeIds) {
-            this._network.fit({ nodes: nodeIds, animation: true });
-            this._network.selectNodes(nodeIds, false);
         }
     }, {
         key: "_updateEdges",

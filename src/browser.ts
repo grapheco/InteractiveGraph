@@ -120,10 +120,7 @@ export class GraphBrowser extends events.EventEmitter {
             }
         });
 
-        this._network.on("afterDrawing", function (ctx) {
-            ctx.strokeStyle = '#A6D5F7';
-            ctx.lineWidth = 3;
-            //ctx.fillStyle = '#294475';
+        this._network.on("beforeDrawing", function (ctx) {
             var nodeIds = browser.getHighlightedNodeIds();
             /*
             nodeIds.forEach(nodeId => {
@@ -132,14 +129,27 @@ export class GraphBrowser extends events.EventEmitter {
                 //ctx.fill();
             });
             */
+            if (nodeIds.length > 0) {
+                var nodePositions: any = browser._network.getPositions(nodeIds);
+                var colors = browser._theme.nodeHighlightColor;
 
-            var nodePositions: any = browser._network.getPositions(nodeIds);
-            for (let key in nodePositions) {
-                var pos = nodePositions[key];
-                var box = browser._network.getBoundingBox(key);
-                ctx.circle(pos.x, pos.y, pos.y - box.top + 5);
-                //ctx.fill();
-                ctx.stroke();
+                for (let nodeId in nodePositions) {
+                    var node: any = browser._nodes.get(nodeId);
+                    if (node.hidden)
+                        continue;
+
+                    var pos = nodePositions[nodeId];
+                    var box = browser._network.getBoundingBox(nodeId);
+
+                    var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top,
+                        pos.x, pos.y, pos.y - box.top + 40);
+                    grd.addColorStop(0, colors[0]);
+                    grd.addColorStop(1, colors[1]);
+
+                    ctx.fillStyle = grd;
+                    ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
+                    ctx.fill();
+                }
             }
         });
     }
@@ -166,13 +176,15 @@ export class GraphBrowser extends events.EventEmitter {
             delete this._highlightedNodeIds[nodeId];
     }
 
-    public bindInfoBox(htmlInfoBox: HTMLElement) {
+    public bindInfoBox(htmlInfoPanel: HTMLElement, htmlInfoBox: HTMLElement) {
         this._renderNodeDescriptions = function (descriptions: string[]) {
+
             $(htmlInfoBox).empty();
             descriptions.forEach((description: string) => {
                 $(htmlInfoBox).append(description);
             }
-            )
+            );
+            $(htmlInfoPanel).show();
         };
     }
 
@@ -201,7 +213,8 @@ export class GraphBrowser extends events.EventEmitter {
             select: function (event, ui) {
                 if (ui.item !== undefined) {
                     $(htmlSearchBox).val(ui.item.name);
-                    browser.highlight([ui.item.id]);
+                    browser._network.fit({ nodes: [ui.item.id], animation: true });
+                    browser.highlightNode(ui.item.id, true);
                 }
 
                 return false;
@@ -235,11 +248,6 @@ export class GraphBrowser extends events.EventEmitter {
         this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
             browser._nodes.update(updates);
         });
-    }
-
-    public highlight(nodeIds) {
-        this._network.fit({ nodes: nodeIds, animation: true });
-        this._network.selectNodes(nodeIds, false);
     }
 
     private _updateEdges(fnDoUpdate: (node, update) => void) {
