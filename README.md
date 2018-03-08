@@ -7,32 +7,30 @@ online demo: https://bluejoe2008.github.io/igbrowser/examples/example1.html
 
 # how to start
 
-__Step 1.__ include main javascript file `igbrowser.js`:
+__Step 1.__ include main javascript file `igbrowser.js` and css file `igbrowser.css`:
 
 ```
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
+    <link type="text/css" rel="stylesheet" href="../dist/igbrowser.css">
 ```
-Alternatively, `igbrowser.min.js`, a minified version, is available in `dist` folder.
+Alternatively, `igbrowser.min.js` and `igbrowser.min.css`, minified versions, are available in `dist` folder.
 
-__Step 2.__ define three HTML `div`s: graphArea, searchBox, infoBox
-    
+__Step 2.__ define a HTML div: graphArea
+
 __Step 3.__ create a GraphBrowser object in java script:
 
 ```
     var browser = new igraph.GraphBrowser(
-        new igraph.LocalGraph(exampleData),
-        document.getElementById('graphArea'),
-        document.getElementById('infoBox'));
+        igraph.GsonSource.fromObject(gson),
+        document.getElementById('graphArea'));
 ```
 
-in this case, a `LocalGraph` is used, it loads `exampleData` from a .js file (`https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/example-data.js` in this example). 
-
-Alternatively, a `RemoteGraph` is required when loading a __very very large graph__ from remote server.
+in this case, a `GsonSource` is used, it loads `gson` as graph data. Alternatively, a `RemoteGraph` is required when loading a __very very large graph__ from remote server.
 
 __Step 4.__ manipulate the GraphBrowser:
 
 ```
-    browser.run([
+    browser.chained([
         function (callback) {
             browser.init(callback);
         },
@@ -52,9 +50,9 @@ __Step 4.__ manipulate the GraphBrowser:
         }
     ]);
 ```
-Most manipulation tasks work in async mode, so it is required to call `browser.run` instead of call init(), loadGraph(), showGraph() directly.
+Most manipulation tasks work in async mode, so it is required to call `browser.chained` instead of call init(), loadGraph(), showGraph() directly.
 
-See https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/test/index.html for details.
+See https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/examples/example1.html for details.
 
 # dependencies
 this project depends on following components:
