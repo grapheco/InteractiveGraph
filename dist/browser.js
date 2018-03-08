@@ -21,9 +21,10 @@ class GraphBrowser extends events.EventEmitter {
                 + (item.title === undefined ? "" : "<br>" + item.title);
         };
         //message bar
-        this._jqueryMessageBar = $(document.createElement("div"));
-        this._jqueryMessageBar.addClass("messageBar");
-        this._jqueryMessageBar.hide();
+        this._jqueryMessageBar = $(document.createElement("div"))
+            .addClass("messageBar")
+            .appendTo($(document.body))
+            .hide();
         this._graphService = graphService;
         this._nodes = new vis.DataSet();
         this._edges = new vis.DataSet();
@@ -33,6 +34,11 @@ class GraphBrowser extends events.EventEmitter {
             nodes: this._nodes,
             edges: this._edges
         }, this._theme.networkOptions);
+        this.bindNetworkEvents();
+        this.createSearchPanel();
+        this.createInfoPanel();
+    }
+    bindNetworkEvents() {
         var browser = this;
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
@@ -116,34 +122,38 @@ class GraphBrowser extends events.EventEmitter {
             }
         });
     }
-    setTheme(theme) {
-        this._theme = theme;
-        this._jqueryGraphArea.css('background', theme.canvasBackground);
-        this._network.setOptions(theme.networkOptions);
-    }
-    updateTheme(update) {
-        update(this._theme);
-        this.setTheme(this._theme);
-    }
-    getHighlightedNodeIds() {
-        return Object.keys(this._highlightedNodeIds);
-    }
-    highlightNode(nodeId, showOrNot) {
-        if (showOrNot)
-            this._highlightedNodeIds[nodeId] = 0;
-        else
-            delete this._highlightedNodeIds[nodeId];
-    }
-    bindInfoBox(htmlInfoPanel, htmlInfoBox) {
-        this._renderNodeDescriptions = function (descriptions) {
-            $(htmlInfoBox).empty();
-            descriptions.forEach((description) => {
-                $(htmlInfoBox).append(description);
-            });
-            $(htmlInfoPanel).show();
-        };
-    }
-    bindSearchBox(htmlSearchBox) {
+    createSearchPanel() {
+        /*
+        <div id="searchPanel" class="searchPanel">
+            <div id="searchPanel1" class="searchPanel1">
+                <input id="searchBox" class="searchBox" type="text" size="16" placeholder="input keyword">
+            </div>
+            <div id="searchPanel2" class="searchPanel2">
+                <i align="center" class="fa fa-search fa-lg"></i>
+            </div>
+        </div>
+        */
+        var panel = document.createElement("div");
+        $(panel).addClass("searchPanel")
+            .appendTo($(document.body));
+        var searchPanel1 = document.createElement("div");
+        $(searchPanel1).addClass("searchPanel1")
+            .appendTo($(panel));
+        var htmlSearchBox = document.createElement("input");
+        $(htmlSearchBox).addClass("searchBox")
+            .attr("type", "text")
+            .attr("placeholder", "input keyword")
+            .appendTo($(searchPanel1));
+        var searchPanel2 = document.createElement("div");
+        $(searchPanel2).addClass("searchPanel2")
+            .appendTo($(panel));
+        var i = document.createElement("i");
+        $(i).addClass("fa")
+            .addClass("fa-search")
+            .addClass("fa-lg")
+            .appendTo($(searchPanel2));
+        console.log(panel.outerHTML);
+        //binds events
         var browser = this;
         $(htmlSearchBox).change(function () {
             $(htmlSearchBox).data("boundGraphNode", {});
@@ -178,12 +188,83 @@ class GraphBrowser extends events.EventEmitter {
                 .appendTo(ul);
         };
     }
+    createInfoPanel() {
+        /*
+        <div id="infoPanel" class="infoPanel">
+            <div>
+                <div id="infoPanel1" class="infoPanel1">node description</div>
+                <div id="infoPanel2" class="infoPanel2">
+                    <i id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></i>
+                </div>
+            </div>
+            <div id="infoBox" class="infoBox"></div>
+        </div>
+        */
+        var htmlInfoPanel = document.createElement("div");
+        $(htmlInfoPanel).addClass("infoPanel")
+            .appendTo($(document.body));
+        var div = document.createElement("div");
+        $(div).appendTo($(htmlInfoPanel));
+        var infoPanel1 = document.createElement("div");
+        $(infoPanel1).addClass("infoPanel1")
+            .text("information")
+            .appendTo($(div));
+        var infoPanel2 = document.createElement("div");
+        $(infoPanel2).addClass("infoPanel2")
+            .appendTo($(div));
+        var btnCloseInfoPanel = document.createElement("i");
+        $(btnCloseInfoPanel).addClass("fa")
+            .addClass("fa-close")
+            .addClass("fa-lg")
+            .addClass("btnCloseInfoPanel")
+            .attr("align", "center")
+            .appendTo($(infoPanel2));
+        var htmlInfoBox = document.createElement("div");
+        $(htmlInfoBox).addClass("infoBox").
+            appendTo($(htmlInfoPanel));
+        console.log(htmlInfoPanel.outerHTML);
+        //binds events
+        $(htmlInfoPanel).draggable();
+        $(btnCloseInfoPanel).click(function () {
+            $(htmlInfoPanel).hide();
+        });
+        this._renderNodeDescriptions = function (descriptions) {
+            $(htmlInfoBox).empty();
+            descriptions.forEach((description) => {
+                $(htmlInfoBox).append(description);
+            });
+            $(htmlInfoPanel).show();
+        };
+    }
+    setTheme(theme) {
+        this._theme = theme;
+        this._jqueryGraphArea.css('background', theme.canvasBackground);
+        this._network.setOptions(theme.networkOptions);
+    }
+    updateTheme(update) {
+        update(this._theme);
+        this.setTheme(this._theme);
+    }
+    getHighlightedNodeIds() {
+        return Object.keys(this._highlightedNodeIds);
+    }
+    highlightNode(nodeId, showOrNot) {
+        if (showOrNot)
+            this._highlightedNodeIds[nodeId] = 0;
+        else
+            delete this._highlightedNodeIds[nodeId];
+    }
     init(callback) {
         this._graphService.requestInit(callback);
     }
     showMessage(msgCode) {
-        this._jqueryMessageBar.html(messages_1.i18n.getMessage(msgCode));
-        this._jqueryMessageBar.show();
+        var pos = this._jqueryGraphArea.position();
+        var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
+        var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
+        this._jqueryMessageBar.css("left", left).
+            css("top", top).
+            html("<i class='fa fa-spinner fa-pulse'></i>" + messages_1.i18n.getMessage(msgCode)).
+            show();
     }
     hideMessage() {
         this._jqueryMessageBar.hide();
@@ -244,11 +325,13 @@ class GraphBrowser extends events.EventEmitter {
     }
     loadGraph(options, callback) {
         var browser = this;
+        browser.showMessage("LOADING_GRAPH");
         this._graphService.requestLoadGraph(options, function (graphData) {
             browser._nodes = new vis.DataSet(graphData.nodes);
             browser._edges = new vis.DataSet(graphData.edges);
             browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
             callback();
+            browser.hideMessage();
         });
     }
 }

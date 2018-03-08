@@ -16,13 +16,15 @@ import { Themes, Theme } from "./theme";
 export class GraphBrowser extends events.EventEmitter {
     static CANVAS_PADDING: number = 80;
     private _jqueryMessageBar: JQuery<HTMLElement>;
+    private _jqueryGraphArea: JQuery<HTMLElement>;
+
     private _graphService: GraphService;
     private _network: vis.Network;
     private _nodes: vis.DataSet<vis.Node>;
     private _edges: vis.DataSet<vis.Edge>;
     private _autoCompletionItemLimit = 30;
     private _theme: Theme;
-    private _jqueryGraphArea: JQuery<HTMLElement>;
+
     private _highlightedNodeIds = {};
 
     public _renderNodeDescriptions: (descriptions: string[]) => void = function (descriptions) {
@@ -40,9 +42,10 @@ export class GraphBrowser extends events.EventEmitter {
         super();
 
         //message bar
-        this._jqueryMessageBar = $(document.createElement("div"));
-        this._jqueryMessageBar.addClass("messageBar");
-        this._jqueryMessageBar.hide();
+        this._jqueryMessageBar = $(document.createElement("div"))
+            .addClass("messageBar")
+            .appendTo($(document.body))
+            .hide();
 
         this._graphService = graphService;
 
@@ -56,6 +59,12 @@ export class GraphBrowser extends events.EventEmitter {
             edges: this._edges
         }, this._theme.networkOptions);
 
+        this.bindNetworkEvents();
+        this.createSearchPanel();
+        this.createInfoPanel();
+    }
+
+    private bindNetworkEvents() {
         var browser = this;
 
         this._network.on("click", function (args) {
@@ -154,41 +163,40 @@ export class GraphBrowser extends events.EventEmitter {
         });
     }
 
-    public setTheme(theme: Theme) {
-        this._theme = theme;
-        this._jqueryGraphArea.css('background', theme.canvasBackground);
-        this._network.setOptions(theme.networkOptions);
-    }
+    private createSearchPanel() {
+        /*
+        <div id="searchPanel" class="searchPanel">
+            <div id="searchPanel1" class="searchPanel1">
+                <input id="searchBox" class="searchBox" type="text" size="16" placeholder="input keyword">
+            </div>
+            <div id="searchPanel2" class="searchPanel2">
+                <i align="center" class="fa fa-search fa-lg"></i>
+            </div>
+        </div>
+        */
+        var panel = document.createElement("div");
+        $(panel).addClass("searchPanel")
+            .appendTo($(document.body));
+        var searchPanel1 = document.createElement("div");
+        $(searchPanel1).addClass("searchPanel1")
+            .appendTo($(panel));
+        var htmlSearchBox = document.createElement("input");
+        $(htmlSearchBox).addClass("searchBox")
+            .attr("type", "text")
+            .attr("placeholder", "input keyword")
+            .appendTo($(searchPanel1));
+        var searchPanel2 = document.createElement("div");
+        $(searchPanel2).addClass("searchPanel2")
+            .appendTo($(panel));
+        var i = document.createElement("i");
+        $(i).addClass("fa")
+            .addClass("fa-search")
+            .addClass("fa-lg")
+            .appendTo($(searchPanel2));
 
-    public updateTheme(update: (theme: Theme) => void) {
-        update(this._theme);
-        this.setTheme(this._theme);
-    }
+        console.log(panel.outerHTML);
 
-    public getHighlightedNodeIds(): string[] {
-        return Object.keys(this._highlightedNodeIds);
-    }
-
-    public highlightNode(nodeId: string, showOrNot) {
-        if (showOrNot)
-            this._highlightedNodeIds[nodeId] = 0;
-        else
-            delete this._highlightedNodeIds[nodeId];
-    }
-
-    public bindInfoBox(htmlInfoPanel: HTMLElement, htmlInfoBox: HTMLElement) {
-        this._renderNodeDescriptions = function (descriptions: string[]) {
-
-            $(htmlInfoBox).empty();
-            descriptions.forEach((description: string) => {
-                $(htmlInfoBox).append(description);
-            }
-            );
-            $(htmlInfoPanel).show();
-        };
-    }
-
-    public bindSearchBox(htmlSearchBox: HTMLElement) {
+        //binds events
         var browser = this;
         $(htmlSearchBox).change(function () {
             $(htmlSearchBox).data("boundGraphNode", {});
@@ -226,13 +234,97 @@ export class GraphBrowser extends events.EventEmitter {
         };
     }
 
+    private createInfoPanel() {
+        /*
+        <div id="infoPanel" class="infoPanel">
+            <div>
+                <div id="infoPanel1" class="infoPanel1">node description</div>
+                <div id="infoPanel2" class="infoPanel2">
+                    <i id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></i>
+                </div>
+            </div>
+            <div id="infoBox" class="infoBox"></div>
+        </div>
+        */
+        var htmlInfoPanel = document.createElement("div");
+        $(htmlInfoPanel).addClass("infoPanel")
+            .appendTo($(document.body));
+        var div = document.createElement("div");
+        $(div).appendTo($(htmlInfoPanel));
+        var infoPanel1 = document.createElement("div");
+        $(infoPanel1).addClass("infoPanel1")
+            .text("information")
+            .appendTo($(div));
+        var infoPanel2 = document.createElement("div");
+        $(infoPanel2).addClass("infoPanel2")
+            .appendTo($(div));
+        var btnCloseInfoPanel = document.createElement("i");
+        $(btnCloseInfoPanel).addClass("fa")
+            .addClass("fa-close")
+            .addClass("fa-lg")
+            .addClass("btnCloseInfoPanel")
+            .attr("align", "center")
+            .appendTo($(infoPanel2));
+
+        var htmlInfoBox = document.createElement("div");
+        $(htmlInfoBox).addClass("infoBox").
+            appendTo($(htmlInfoPanel));
+
+        console.log(htmlInfoPanel.outerHTML);
+
+        //binds events
+
+        $(htmlInfoPanel).draggable();
+
+        $(btnCloseInfoPanel).click(function () {
+            $(htmlInfoPanel).hide();
+        });
+
+        this._renderNodeDescriptions = function (descriptions: string[]) {
+            $(htmlInfoBox).empty();
+            descriptions.forEach((description: string) => {
+                $(htmlInfoBox).append(description);
+            }
+            );
+            $(htmlInfoPanel).show();
+        };
+    }
+
+    public setTheme(theme: Theme) {
+        this._theme = theme;
+        this._jqueryGraphArea.css('background', theme.canvasBackground);
+        this._network.setOptions(theme.networkOptions);
+    }
+
+    public updateTheme(update: (theme: Theme) => void) {
+        update(this._theme);
+        this.setTheme(this._theme);
+    }
+
+    public getHighlightedNodeIds(): string[] {
+        return Object.keys(this._highlightedNodeIds);
+    }
+
+    public highlightNode(nodeId: string, showOrNot) {
+        if (showOrNot)
+            this._highlightedNodeIds[nodeId] = 0;
+        else
+            delete this._highlightedNodeIds[nodeId];
+    }
+
     public init(callback) {
         this._graphService.requestInit(callback);
     }
 
     private showMessage(msgCode: string) {
-        this._jqueryMessageBar.html(i18n.getMessage(msgCode));
-        this._jqueryMessageBar.show();
+        var pos = this._jqueryGraphArea.position();
+        var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
+        var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
+
+        this._jqueryMessageBar.css("left", left).
+            css("top", top).
+            html("<i class='fa fa-spinner fa-pulse'></i>" + i18n.getMessage(msgCode)).
+            show();
     }
 
     private hideMessage() {
@@ -309,12 +401,14 @@ export class GraphBrowser extends events.EventEmitter {
 
     public loadGraph(options, callback) {
         var browser = this;
+        browser.showMessage("LOADING_GRAPH");
         this._graphService.requestLoadGraph(options, function (graphData: GraphData) {
             browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes);
             browser._edges = new vis.DataSet<vis.Edge>(graphData.edges);
             browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
 
             callback();
+            browser.hideMessage();
         });
     }
 }

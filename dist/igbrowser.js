@@ -1214,27 +1214,28 @@ var i18n = function () {
     (0, _createClass3["default"])(i18n, null, [{
         key: "setLanguage",
         value: function setLanguage(language) {
-            i18n.RESOURCE_BUNDLE = MESSAGES.hasOwnProperty(language) ? MESSAGES[language] : MESSAGES["default"];
+            i18n.RESOURCE_BUNDLE = i18n.MESSAGES.hasOwnProperty(language) ? i18n.MESSAGES[language] : i18n.MESSAGES["default"];
         }
     }, {
         key: "getMessage",
         value: function getMessage(msgCode) {
-            var bundle = i18n.RESOURCE_BUNDLE === undefined ? MESSAGES["default"] : i18n.RESOURCE_BUNDLE;
+            var bundle = i18n.RESOURCE_BUNDLE === undefined ? i18n.MESSAGES["default"] : i18n.RESOURCE_BUNDLE;
             return bundle[msgCode];
         }
     }]);
     return i18n;
 }();
 
+i18n.MESSAGES_EN = {
+    "INITIALING": "initializing...",
+    "LOADING_GRAPH": "loading graph"
+};
+i18n.MESSAGES = {
+    "default": i18n.MESSAGES_EN,
+    "en": i18n.MESSAGES_EN
+};
 exports.i18n = i18n;
 //////////////////////////////////////////////////
-var MESSAGES = {
-    "default": MESSAGES_EN,
-    "en": MESSAGES_EN
-};
-var MESSAGES_EN = {
-    "INITIALING": "initializing..."
-};
 
 /***/ }),
 /* 61 */
@@ -2058,9 +2059,7 @@ var GraphBrowser = function (_events$EventEmitter) {
             return "<b>" + item.name + "</b>" + (item.title === undefined ? "" : "<br>" + item.title);
         };
         //message bar
-        _this._jqueryMessageBar = $(document.createElement("div"));
-        _this._jqueryMessageBar.addClass("messageBar");
-        _this._jqueryMessageBar.hide();
+        _this._jqueryMessageBar = $(document.createElement("div")).addClass("messageBar").appendTo($(document.body)).hide();
         _this._graphService = graphService;
         _this._nodes = new vis.DataSet();
         _this._edges = new vis.DataSet();
@@ -2070,126 +2069,121 @@ var GraphBrowser = function (_events$EventEmitter) {
             nodes: _this._nodes,
             edges: _this._edges
         }, _this._theme.networkOptions);
-        var browser = _this;
-        _this._network.on("click", function (args) {
-            var nodeIds = args.nodes;
-            if (nodeIds.length > 0) {
-                browser._graphService.requestGetNodeDescriptions(nodeIds, function (nodeInfos) {
-                    browser._renderNodeDescriptions(nodeInfos);
-                });
-            }
-        });
-        _this._network.on("doubleClick", function (args) {
-            //double click on backgroud (no nodes selected)
-            if (args.nodes.length == 0 && args.edges.length == 0) {
-                browser._highlightedNodeIds = [];
-                return;
-            }
-            var nodeIds = args.nodes;
-            nodeIds.forEach(function (nodeId) {
-                if (browser._highlightedNodeIds[nodeId] === undefined) {
-                    browser._highlightedNodeIds[nodeId] = 0;
-                } else {
-                    delete browser._highlightedNodeIds[nodeId];
-                }
-            });
-        });
-        _this._network.on("selectEdge", function (args) {
-            //set font size normal
-            if (args.edges.length > 0) {
-                var updates = [];
-                var edgeIds = args.edges;
-                edgeIds.forEach(function (edgeId) {
-                    updates.push({
-                        id: edgeId, font: {
-                            size: 12
-                        }
-                    });
-                });
-                browser._edges.update(updates);
-            }
-        });
-        _this._network.on("deselectEdge", function (args) {
-            //set font size 0
-            if (args.previousSelection.edges.length > 0) {
-                var updates = [];
-                var edgeIds = args.previousSelection.edges;
-                edgeIds.forEach(function (edgeId) {
-                    updates.push({
-                        id: edgeId, font: {
-                            size: 0
-                        }
-                    });
-                });
-                browser._edges.update(updates);
-            }
-        });
-        _this._network.on("beforeDrawing", function (ctx) {
-            var nodeIds = browser.getHighlightedNodeIds();
-            /*
-            nodeIds.forEach(nodeId => {
-                var box = browser._network.getBoundingBox(nodeId);
-                ctx.fillRect(box.left - 10, box.top - 10, box.right - box.left + 20, box.bottom - box.top + 20);
-                //ctx.fill();
-            });
-            */
-            if (nodeIds.length > 0) {
-                var nodePositions = browser._network.getPositions(nodeIds);
-                var colors = browser._theme.nodeHighlightColor;
-                for (var nodeId in nodePositions) {
-                    var node = browser._nodes.get(nodeId);
-                    if (node.hidden) continue;
-                    var pos = nodePositions[nodeId];
-                    var box = browser._network.getBoundingBox(nodeId);
-                    var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top, pos.x, pos.y, pos.y - box.top + 40);
-                    grd.addColorStop(0, colors[0]);
-                    grd.addColorStop(1, colors[1]);
-                    ctx.fillStyle = grd;
-                    ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
-                    ctx.fill();
-                }
-            }
-        });
+        _this.bindNetworkEvents();
+        _this.createSearchPanel();
+        _this.createInfoPanel();
         return _this;
     }
 
     (0, _createClass3["default"])(GraphBrowser, [{
-        key: "setTheme",
-        value: function setTheme(theme) {
-            this._theme = theme;
-            this._jqueryGraphArea.css('background', theme.canvasBackground);
-            this._network.setOptions(theme.networkOptions);
-        }
-    }, {
-        key: "updateTheme",
-        value: function updateTheme(update) {
-            update(this._theme);
-            this.setTheme(this._theme);
-        }
-    }, {
-        key: "getHighlightedNodeIds",
-        value: function getHighlightedNodeIds() {
-            return (0, _keys2["default"])(this._highlightedNodeIds);
-        }
-    }, {
-        key: "highlightNode",
-        value: function highlightNode(nodeId, showOrNot) {
-            if (showOrNot) this._highlightedNodeIds[nodeId] = 0;else delete this._highlightedNodeIds[nodeId];
-        }
-    }, {
-        key: "bindInfoBox",
-        value: function bindInfoBox(htmlInfoPanel, htmlInfoBox) {
-            this._renderNodeDescriptions = function (descriptions) {
-                $(htmlInfoBox).empty();
-                descriptions.forEach(function (description) {
-                    $(htmlInfoBox).append(description);
+        key: "bindNetworkEvents",
+        value: function bindNetworkEvents() {
+            var browser = this;
+            this._network.on("click", function (args) {
+                var nodeIds = args.nodes;
+                if (nodeIds.length > 0) {
+                    browser._graphService.requestGetNodeDescriptions(nodeIds, function (nodeInfos) {
+                        browser._renderNodeDescriptions(nodeInfos);
+                    });
+                }
+            });
+            this._network.on("doubleClick", function (args) {
+                //double click on backgroud (no nodes selected)
+                if (args.nodes.length == 0 && args.edges.length == 0) {
+                    browser._highlightedNodeIds = [];
+                    return;
+                }
+                var nodeIds = args.nodes;
+                nodeIds.forEach(function (nodeId) {
+                    if (browser._highlightedNodeIds[nodeId] === undefined) {
+                        browser._highlightedNodeIds[nodeId] = 0;
+                    } else {
+                        delete browser._highlightedNodeIds[nodeId];
+                    }
                 });
-                $(htmlInfoPanel).show();
-            };
+            });
+            this._network.on("selectEdge", function (args) {
+                //set font size normal
+                if (args.edges.length > 0) {
+                    var updates = [];
+                    var edgeIds = args.edges;
+                    edgeIds.forEach(function (edgeId) {
+                        updates.push({
+                            id: edgeId, font: {
+                                size: 12
+                            }
+                        });
+                    });
+                    browser._edges.update(updates);
+                }
+            });
+            this._network.on("deselectEdge", function (args) {
+                //set font size 0
+                if (args.previousSelection.edges.length > 0) {
+                    var updates = [];
+                    var edgeIds = args.previousSelection.edges;
+                    edgeIds.forEach(function (edgeId) {
+                        updates.push({
+                            id: edgeId, font: {
+                                size: 0
+                            }
+                        });
+                    });
+                    browser._edges.update(updates);
+                }
+            });
+            this._network.on("beforeDrawing", function (ctx) {
+                var nodeIds = browser.getHighlightedNodeIds();
+                /*
+                nodeIds.forEach(nodeId => {
+                    var box = browser._network.getBoundingBox(nodeId);
+                    ctx.fillRect(box.left - 10, box.top - 10, box.right - box.left + 20, box.bottom - box.top + 20);
+                    //ctx.fill();
+                });
+                */
+                if (nodeIds.length > 0) {
+                    var nodePositions = browser._network.getPositions(nodeIds);
+                    var colors = browser._theme.nodeHighlightColor;
+                    for (var nodeId in nodePositions) {
+                        var node = browser._nodes.get(nodeId);
+                        if (node.hidden) continue;
+                        var pos = nodePositions[nodeId];
+                        var box = browser._network.getBoundingBox(nodeId);
+                        var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top, pos.x, pos.y, pos.y - box.top + 40);
+                        grd.addColorStop(0, colors[0]);
+                        grd.addColorStop(1, colors[1]);
+                        ctx.fillStyle = grd;
+                        ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
+                        ctx.fill();
+                    }
+                }
+            });
         }
     }, {
-        key: "bindSearchBox",
-        value: function bindSearchBox(htmlSearchBox) {
+        key: "createSearchPanel",
+        value: function createSearchPanel() {
+            /*
+            <div id="searchPanel" class="searchPanel">
+                <div id="searchPanel1" class="searchPanel1">
+                    <input id="searchBox" class="searchBox" type="text" size="16" placeholder="input keyword">
+                </div>
+                <div id="searchPanel2" class="searchPanel2">
+                    <i align="center" class="fa fa-search fa-lg"></i>
+                </div>
+            </div>
+            */
+            var panel = document.createElement("div");
+            $(panel).addClass("searchPanel").appendTo($(document.body));
+            var searchPanel1 = document.createElement("div");
+            $(searchPanel1).addClass("searchPanel1").appendTo($(panel));
+            var htmlSearchBox = document.createElement("input");
+            $(htmlSearchBox).addClass("searchBox").attr("type", "text").attr("placeholder", "input keyword").appendTo($(searchPanel1));
+            var searchPanel2 = document.createElement("div");
+            $(searchPanel2).addClass("searchPanel2").appendTo($(panel));
+            var i = document.createElement("i");
+            $(i).addClass("fa").addClass("fa-search").addClass("fa-lg").appendTo($(searchPanel2));
+            console.log(panel.outerHTML);
+            //binds events
             var browser = this;
             $(htmlSearchBox).change(function () {
                 $(htmlSearchBox).data("boundGraphNode", {});
@@ -2222,6 +2216,69 @@ var GraphBrowser = function (_events$EventEmitter) {
             };
         }
     }, {
+        key: "createInfoPanel",
+        value: function createInfoPanel() {
+            /*
+            <div id="infoPanel" class="infoPanel">
+                <div>
+                    <div id="infoPanel1" class="infoPanel1">node description</div>
+                    <div id="infoPanel2" class="infoPanel2">
+                        <i id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></i>
+                    </div>
+                </div>
+                <div id="infoBox" class="infoBox"></div>
+            </div>
+            */
+            var htmlInfoPanel = document.createElement("div");
+            $(htmlInfoPanel).addClass("infoPanel").appendTo($(document.body));
+            var div = document.createElement("div");
+            $(div).appendTo($(htmlInfoPanel));
+            var infoPanel1 = document.createElement("div");
+            $(infoPanel1).addClass("infoPanel1").text("information").appendTo($(div));
+            var infoPanel2 = document.createElement("div");
+            $(infoPanel2).addClass("infoPanel2").appendTo($(div));
+            var btnCloseInfoPanel = document.createElement("i");
+            $(btnCloseInfoPanel).addClass("fa").addClass("fa-close").addClass("fa-lg").addClass("btnCloseInfoPanel").attr("align", "center").appendTo($(infoPanel2));
+            var htmlInfoBox = document.createElement("div");
+            $(htmlInfoBox).addClass("infoBox").appendTo($(htmlInfoPanel));
+            console.log(htmlInfoPanel.outerHTML);
+            //binds events
+            $(htmlInfoPanel).draggable();
+            $(btnCloseInfoPanel).click(function () {
+                $(htmlInfoPanel).hide();
+            });
+            this._renderNodeDescriptions = function (descriptions) {
+                $(htmlInfoBox).empty();
+                descriptions.forEach(function (description) {
+                    $(htmlInfoBox).append(description);
+                });
+                $(htmlInfoPanel).show();
+            };
+        }
+    }, {
+        key: "setTheme",
+        value: function setTheme(theme) {
+            this._theme = theme;
+            this._jqueryGraphArea.css('background', theme.canvasBackground);
+            this._network.setOptions(theme.networkOptions);
+        }
+    }, {
+        key: "updateTheme",
+        value: function updateTheme(update) {
+            update(this._theme);
+            this.setTheme(this._theme);
+        }
+    }, {
+        key: "getHighlightedNodeIds",
+        value: function getHighlightedNodeIds() {
+            return (0, _keys2["default"])(this._highlightedNodeIds);
+        }
+    }, {
+        key: "highlightNode",
+        value: function highlightNode(nodeId, showOrNot) {
+            if (showOrNot) this._highlightedNodeIds[nodeId] = 0;else delete this._highlightedNodeIds[nodeId];
+        }
+    }, {
         key: "init",
         value: function init(callback) {
             this._graphService.requestInit(callback);
@@ -2229,8 +2286,10 @@ var GraphBrowser = function (_events$EventEmitter) {
     }, {
         key: "showMessage",
         value: function showMessage(msgCode) {
-            this._jqueryMessageBar.html(messages_1.i18n.getMessage(msgCode));
-            this._jqueryMessageBar.show();
+            var pos = this._jqueryGraphArea.position();
+            var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
+            var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
+            this._jqueryMessageBar.css("left", left).css("top", top).html("<i class='fa fa-spinner fa-pulse'></i>" + messages_1.i18n.getMessage(msgCode)).show();
         }
     }, {
         key: "hideMessage",
@@ -2314,11 +2373,13 @@ var GraphBrowser = function (_events$EventEmitter) {
         key: "loadGraph",
         value: function loadGraph(options, callback) {
             var browser = this;
+            browser.showMessage("LOADING_GRAPH");
             this._graphService.requestLoadGraph(options, function (graphData) {
                 browser._nodes = new vis.DataSet(graphData.nodes);
                 browser._edges = new vis.DataSet(graphData.edges);
                 browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
                 callback();
+                browser.hideMessage();
             });
         }
     }]);

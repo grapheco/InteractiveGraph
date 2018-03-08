@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
     <title>GraphBrowser</title>
     <script type="text/javascript" src="../dist/igbrowser.js"></script>
-    <link type="text/css" rel="stylesheet" href="vis-network.min.css">
+    <link type="text/css" rel="stylesheet" href="../dist/igbrowser.css">
     <script src="./lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="./lib/jquery-3.2.1/jquery-ui.css">
     <script src="./lib/jquery-3.2.1/jquery-ui.js"></script>
@@ -15,83 +15,9 @@
             margin: 0px;
         }
 
-        .ui-draggable,
-        .ui-droppable {
-            background-position: top;
-        }
-
         #graphArea {
             height: 100%;
             border: 1px solid lightgray;
-        }
-
-        #infoBox {
-            font-size: 9px;
-            border: 1px;
-        }
-
-        #infoPanel {
-            display: none;
-            padding: 5px;
-            position: absolute;
-            left: 10px;
-            top: 80px;
-            width: 258px;
-            cursor: hand;
-            background: white;
-            color: midnightblue;
-            box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
-            z-index: 888;
-        }
-
-        #searchPanel {
-            padding: 4px;
-            position: absolute;
-            left: 10px;
-            top: 20px;
-            width: 260px;
-            height: 30px;
-            cursor: hand;
-            background: white;
-            color: #ecb80e;
-            box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
-            z-index: 900;
-        }
-
-        #searchPanel1 {
-            width: 220px;
-            float: left;
-        }
-
-        #searchBox {
-            width: 100%;
-            height: 100%;
-        }
-
-        #searchPanel2 {
-            width: 30px;
-            height: 20px;
-            background-color: #6495ed;
-            color: white;
-            float: left;
-            padding: 5px 0px 5px 10px;
-        }
-
-        #infoPanel1 {
-            width: 230px;
-            float: left;
-        }
-
-        #infoPanel2 {
-            width: 20px;
-            height: 20px;
-            float: right;
-            padding: 5px 0px 5px 5px;
-        }
-
-        ul.ui-autocomplete {
-            font-size: 12px;
-            z-index: 999;
         }
     </style>
 
@@ -126,23 +52,7 @@
 
         <div style="float:right" id="labelSelection" align="right"></div>
     </div>
-    <div id="searchPanel">
-        <div id="searchPanel1">
-            <input id="searchBox" type="text" size="16" placeholder="input keyword">
-        </div>
-        <div id="searchPanel2">
-            <i align="center" class="fa fa-search fa-lg"></i>
-        </div>
-    </div>
-    <div id="infoPanel">
-        <div>
-            <div id="infoPanel1">node description</div>
-            <div id="infoPanel2">
-                <i id="btnCloseInfoPanel" align="center" style="border:solid 1px darkgray" class="fa fa-close fa-lg"></i>
-            </div>
-        </div>
-        <div id="infoBox"></div>
-    </div>
+
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
 
@@ -159,10 +69,6 @@
         );
 
         console.log(browser);
-        browser.bindInfoBox(document.getElementById("infoPanel"), document.getElementById('infoBox'));
-        browser.bindSearchBox(document.getElementById('searchBox'));
-        //browser.bindSearchBox(document.getElementById('searchBox2'));
-        //browser.bindSearchBox(document.getElementById('searchBox3'));
 
         //use async.series to make serial calls
         browser.chained([
@@ -209,26 +115,6 @@
                 browser.scaleTo(ui.value / 100);
             }
         });
-
-        $("#infoPanel").draggable();
-
-        $("#btnCloseInfoPanel").click(function () {
-            $("#infoPanel").hide();
-        });
-
-        $("#fitHighlights").click(function () {
-            var nodeIds = [];
-            ["#searchBox", "#searchBox2", "#searchBox3"].forEach(
-                function (s) {
-                    var data = $(s).data("boundGraphNode");
-                    if (data !== undefined && data.id !== undefined) {
-                        nodeIds.push(data.id);
-                    }
-                }
-            )
-            browser.fits(nodeIds);
-        }
-        );
 
         $("#showDegrees").click(function () {
             var checked = $("#showDegrees").prop('checked');

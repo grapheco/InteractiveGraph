@@ -4,7 +4,7 @@
     <div>
         <input id="button1" type="button" value="offline canvas->canvas1" onclick="copy(offline_canvas, canvas1)" disabled />
     </div>
-    <canvas id="canvas1" width="10000" height="10000" border=1>
+    <canvas id="canvas1" width="100" height="100" border=1>
         canvas here
     </canvas>
     <script>
@@ -22,8 +22,8 @@
 
             ctx.beginPath();
             var i = 0;
-            for (var y = 0; y < canvas.height; y++) {
-                for (var x = 0; x < canvas.width; x++) {
+            for (var y = 0; y < canvas.height; y += 5) {
+                for (var x = 0; x < canvas.width; x += 5) {
                     ctx.fillStyle = list[i % list.length];
                     i++;
                     ctx.fillRect(x, y, x + 1, y + 1);
