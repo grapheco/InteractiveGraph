@@ -2234,7 +2234,7 @@ var GraphBrowser = function (_events$EventEmitter) {
             var div = document.createElement("div");
             $(div).appendTo($(htmlInfoPanel));
             var infoPanel1 = document.createElement("div");
-            $(infoPanel1).addClass("infoPanel1").text("information").appendTo($(div));
+            $(infoPanel1).addClass("infoPanel1").appendTo($(div));
             var infoPanel2 = document.createElement("div");
             $(infoPanel2).addClass("infoPanel2").appendTo($(div));
             var btnCloseInfoPanel = document.createElement("i");

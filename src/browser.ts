@@ -253,7 +253,6 @@ export class GraphBrowser extends events.EventEmitter {
         $(div).appendTo($(htmlInfoPanel));
         var infoPanel1 = document.createElement("div");
         $(infoPanel1).addClass("infoPanel1")
-            .text("information")
             .appendTo($(div));
         var infoPanel2 = document.createElement("div");
         $(infoPanel2).addClass("infoPanel2")
@@ -321,9 +320,10 @@ export class GraphBrowser extends events.EventEmitter {
         var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
         var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
 
-        this._jqueryMessageBar.css("left", left).
-            css("top", top).
-            html("<i class='fa fa-spinner fa-pulse'></i>" + i18n.getMessage(msgCode)).
+        this._jqueryMessageBar.css("left", left)
+            .css("top", top)
+            .css("text-align","center")
+            .html("<i class='fa fa-spinner fa-spin'></i> " + i18n.getMessage(msgCode)).
             show();
     }
 

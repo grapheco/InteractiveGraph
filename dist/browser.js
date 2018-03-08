@@ -207,7 +207,6 @@ class GraphBrowser extends events.EventEmitter {
         $(div).appendTo($(htmlInfoPanel));
         var infoPanel1 = document.createElement("div");
         $(infoPanel1).addClass("infoPanel1")
-            .text("information")
             .appendTo($(div));
         var infoPanel2 = document.createElement("div");
         $(infoPanel2).addClass("infoPanel2")
