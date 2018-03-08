@@ -99,4 +99,4 @@ __Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser
 
 in development mode, use `gulp dev` to generate `igbrowser.js`.
 
-__Step 2.__ open `test/index.html` in web browser, such as `file:///Users/bluejoe/IdeaProjects/InteractiveGraphBrowser/test/index.html`. No web server is required, local file browse is ok.
+__Step 2.__ open `examples/example1.html` in web browser, such as `file:///Users/bluejoe/IdeaProjects/InteractiveGraphBrowser/examples/example1.html`. No web server is required, local file browse is ok.
