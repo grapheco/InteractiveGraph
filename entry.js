@@ -1,12 +1,12 @@
 "use strict";
 
-exports.GraphBrowser = require("./dist/browser").GraphBrowser;
-exports.GsonSource = require("./dist/gson").GsonSource;
-exports.RemoteGraph = require("./dist/remote").RemoteGraph;
-exports.i18n = require("./dist/messages").i18n;
-exports.Themes = require("./dist/theme").Themes;
+exports.GraphBrowser = require("./build/browser").GraphBrowser;
+exports.GsonSource = require("./build/gson").GsonSource;
+exports.RemoteGraph = require("./build/remote").RemoteGraph;
+exports.i18n = require("./build/messages").i18n;
+exports.Themes = require("./build/theme").Themes;
 
-var utils = require("./dist/utils");
+var utils = require("./build/utils");
 exports.Utils = utils.Utils;
 exports.Point = utils.Point;
 exports.Rect = utils.Rect;

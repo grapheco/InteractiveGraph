@@ -6,16 +6,17 @@ import { Utils } from './utils';
 
 export class GsonSource implements GraphService {
     private _graphData: GraphData;
-    private _nodeLabelMap: object;
+    private _canvasData = { nodes: [], edges: [] };
+    private _mapLabel2Node: object;
     private _attachSource: (GraphJson, callback: () => void) => void;
-    private _nodeIdMap: Map<string, object> = new Map<string, object>();
+    private _mapId2Node: Map<string, object> = new Map<string, object>();
 
     private constructor(attachSource: (GsonSource, callback: () => void) => void) {
         this._attachSource = attachSource;
     }
 
     private _processGson(gson: Gson) {
-        this._nodeLabelMap = gson.nodeLabelMap;
+        this._mapLabel2Node = gson.nodeLabelMap;
         var local = this;
         var defaults: any = gson.defaultData || {};
 
@@ -41,7 +42,7 @@ export class GsonSource implements GraphService {
         };
 
         this._graphData.nodes.forEach(node => {
-            local._nodeIdMap.set(node['id'], node);
+            local._mapId2Node.set(node['id'], node);
         });
     }
 
@@ -61,15 +62,15 @@ export class GsonSource implements GraphService {
         });
     }
 
-    requestInit(callback: () => void) {
+    asyncInit(callback: () => void) {
         this._attachSource(this, callback);
     }
 
     getNodeLabelMap(): object {
-        return this._nodeLabelMap;
+        return this._mapLabel2Node;
     }
 
-    update4ShowNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void) {
+    asyncUpdateNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void) {
         var updates = this._updateNodes(function (node, update) {
             var nls: string[] = node.labels;
             if (nls.indexOf(nodeLabel) > -1) {
@@ -80,10 +81,10 @@ export class GsonSource implements GraphService {
         callback(updates);
     }
 
-    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
+    asyncGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
         var local = this;
         callback(nodeIds.map(nodeId => {
-            let node: any = local._nodeIdMap.get(nodeId);
+            let node: any = local._mapId2Node.get(nodeId);
             if (node.description !== undefined) {
                 return node.description;
             }
@@ -92,8 +93,8 @@ export class GsonSource implements GraphService {
         }));
     }
 
-    requestLoadGraph(options: object, callback: (graphData: object) => void) {
-        callback({
+    asyncLoadGraph(options: object, callback: (graphData: object) => void) {
+        this._canvasData = {
             nodes: this._graphData.nodes.map((node: any) => {
                 return {
                     id: node.id,
@@ -101,14 +102,17 @@ export class GsonSource implements GraphService {
                     title: node.title
                 }
             }), edges: this._graphData.edges
-        });
+        };
+
+        callback(this._canvasData);
     }
 
     private _updateNodes(fnDoUpdate: (node, update) => void): object[] {
         var updates = [];
-        this._graphData.nodes.forEach((node: any) => {
+        var gson = this;
+        this._canvasData.nodes.forEach((node: any) => {
             var update = { id: node.id };
-            fnDoUpdate(node, update);
+            fnDoUpdate(gson._mapId2Node.get(node.id), update);
             if (Object.keys(update).length > 1)
                 updates.push(update);
         });
@@ -116,7 +120,22 @@ export class GsonSource implements GraphService {
         return updates;
     }
 
-    requestSearch(keyword: string, limit: number, callback: (nodes: any[]) => void) {
+    public asyncSearch(expr: any, limit: number, callback: (nodes: any[]) => void) {
+        var results = expr instanceof Array ?
+            this._searchByExprArray(expr, limit) :
+            this._searchBySingleExpr(expr, limit);
+
+        callback(results);
+    }
+
+    private _searchBySingleExpr(expr: any, limit: number): any[] {
+        if (typeof (expr) === 'string')
+            return this._searchByKeyword(expr.toString(), limit);
+
+        return this._searchByExample(expr, limit);
+    }
+
+    private _searchByKeyword(keyword: string, limit: number): any[] {
         var results = [];
         for (var item in this._graphData.nodes) {
             var node: any = this._graphData.nodes[item];
@@ -127,7 +146,59 @@ export class GsonSource implements GraphService {
             }
         }
 
-        callback(results);
+        return results;
+    }
+
+    private _searchByExample(example: any, limit: number): any[] {
+        var results = [];
+
+        for (var item in this._graphData.nodes) {
+            var node: any = this._graphData.nodes[item];
+            var matches = true;
+            for (let key in example) {
+                if (node[key] != example[key]) {
+                    matches = false;
+                    break;
+                }
+            }
+
+            if (matches) {
+                results.push(node);
+                if (results.length > limit)
+                    break;
+            }
+        }
+
+        return results;
+    }
+
+    private _searchByExprArray(exprs: any[], limit: number): any[] {
+        var results = [];
+        exprs.forEach((expr) => {
+            results = results.concat(this._searchBySingleExpr(expr, limit));
+        });
+
+        return results;
+    }
+
+    asyncGetNeighbours(nodeId: string, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void) {
+        var neighbourEdges = Utils.distinct(
+            this._graphData.edges.filter((edge: any) => {
+                return edge.from == nodeId || edge.from == nodeId;
+            })
+        );
+
+        var neighbourNodeIds = Utils.distinct(
+            Utils.flatMap(neighbourEdges, (edge: any) => {
+                return [edge.from, edge.to];
+            })
+        );
+
+        var neighbourNodes = neighbourNodeIds.map((nodeId: string) => {
+            return this._mapId2Node.get(nodeId);
+        });
+
+        callback(neighbourNodes, neighbourEdges);
     }
 
     update4ShowNodes(showOptions): object[] {

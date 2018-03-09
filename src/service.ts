@@ -5,12 +5,13 @@
 import { GraphBrowser } from './browser';
 
 export interface GraphService {
-    requestInit(callback: () => void);
-    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void);
-    requestLoadGraph(options: object, callback: (graphData: object) => void);
-    requestSearch(keyword: string, limit: number, callback: (nodes: any[]) => void);
+    asyncInit(callback: () => void);
+    asyncGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void);
+    asyncLoadGraph(options: object, callback: (graphData: object) => void);
+    asyncSearch(expr: any, limit: number, callback: (nodes: any[]) => void);
+    asyncGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void);
 
     getNodeLabelMap(): object;
     update4ShowNodes(showOptions): object[];
-    update4ShowNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void);
+    asyncUpdateNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void);
 }

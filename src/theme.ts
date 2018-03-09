@@ -2,13 +2,15 @@ export interface Theme {
     canvasBackground: string;
     networkOptions: vis.Options;
     nodeHighlightColor: string[];
+    nodeUnexpanedColor: string;
 }
 
 export class Themes {
     static DEFAULT() {
         return {
             canvasBackground: "none",
-            nodeHighlightColor:[ "#00FF00","#FFFFFF"],
+            nodeHighlightColor: ["#00FF00", "#FFFFFF"],
+            nodeUnexpanedColor: 'rgba(88, 88, 88, 0.5)',
             networkOptions: {
                 nodes: {
                     shape: 'dot',
@@ -73,7 +75,8 @@ export class Themes {
     static BLACK() {
         return {
             canvasBackground: "#111111",
-            nodeHighlightColor:[ "yellow","black"],
+            nodeHighlightColor: ["yellow", "black"],
+            nodeUnexpanedColor: 'rgba(88, 88, 88, 0.5)',
             networkOptions: {
                 nodes: {
                     shape: 'dot',

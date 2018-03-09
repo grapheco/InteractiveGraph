@@ -3,6 +3,24 @@
  */
 ///////////////////////////////////
 export class Utils {
+	public static distinct(arr: any[]): any[] {
+		var ae = [];
+		arr.forEach((t) => {
+			if (ae.indexOf(t) < 0)
+				ae.push(t);
+		});
+		return ae;
+	}
+
+	public static flatMap(arr: any[], func: (t) => any[]): any[] {
+		var ae = [];
+		arr.forEach((t) => {
+			var r = func(t);
+			ae = ae.concat(r);
+		});
+		return ae;
+	}
+
 	public static mapValues(map) {
 		var arr = [];
 		for (let v in map.values()) {

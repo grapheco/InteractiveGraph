@@ -17,7 +17,7 @@ div.infoPanel {
     width: 258px;
     cursor: hand;
     background: white;
-    color:darkgray;
+    color:rgb(129, 128, 128);
     box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
     z-index: 888;
 }

@@ -70,25 +70,34 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.requestGetNodeDescriptions(nodeIds, function (nodeInfos) {
+                browser._graphService.asyncGetNodeDescriptions(nodeIds, function (nodeInfos) {
                     browser._renderNodeDescriptions(nodeInfos);
                 });
             }
         });
 
         this._network.on("doubleClick", function (args) {
+            console.debug(args);
+
             //double click on backgroud (no nodes selected)
             if (args.nodes.length == 0 && args.edges.length == 0) {
                 browser._highlightedNodeIds = [];
                 return;
             }
+
             var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
-                if (browser._highlightedNodeIds[nodeId] === undefined) {
-                    browser._highlightedNodeIds[nodeId] = 0;
+                var node: any = browser._nodes.get(nodeId);
+                if (node.unexpanded === true) {
+                    browser.expandNode(nodeId);
                 }
                 else {
-                    delete browser._highlightedNodeIds[nodeId];
+                    if (browser._highlightedNodeIds[nodeId] === undefined) {
+                        browser._highlightedNodeIds[nodeId] = 0;
+                    }
+                    else {
+                        delete browser._highlightedNodeIds[nodeId];
+                    }
                 }
             });
         });
@@ -130,6 +139,7 @@ export class GraphBrowser extends events.EventEmitter {
         });
 
         this._network.on("beforeDrawing", function (ctx) {
+            //draw highlighted nodes
             var nodeIds = browser.getHighlightedNodeIds();
             /*
             nodeIds.forEach(nodeId => {
@@ -160,6 +170,21 @@ export class GraphBrowser extends events.EventEmitter {
                     ctx.fill();
                 }
             }
+        });
+
+        this._network.on("afterDrawing", function (ctx) {
+            //draw unexpanded nodes
+            browser._nodes.forEach((item: any, nodeId) => {
+                if (item.unexpanded === true) {
+                    var nodePositions: any = browser._network.getPositions([nodeId]);
+                    var pos = nodePositions[nodeId];
+                    var box = browser._network.getBoundingBox(nodeId);
+
+                    ctx.fillStyle = browser._theme.nodeUnexpanedColor;
+                    ctx.circle(pos.x, pos.y, pos.y - box.top);
+                    ctx.fill();
+                }
+            });
         });
     }
 
@@ -193,8 +218,6 @@ export class GraphBrowser extends events.EventEmitter {
             .addClass("fa-search")
             .addClass("fa-lg")
             .appendTo($(searchPanel2));
-
-        console.log(panel.outerHTML);
 
         //binds events
         var browser = this;
@@ -234,6 +257,23 @@ export class GraphBrowser extends events.EventEmitter {
         };
     }
 
+    public expandNode(nodeId, callback?: (node) => void) {
+        var browser = this;
+        this._graphService.asyncGetNeighbours(nodeId,
+            function (neighbourNodes: object[], neighbourEdges: object[]) {
+                browser.addUnexpandedNodes(neighbourNodes);
+                browser._edges.update(neighbourEdges);
+
+                var node: any = browser._nodes.get(nodeId);
+                console.debug(node);
+                 node.unexpanded = false;
+                browser._network.redraw();
+
+                if (callback !== undefined)
+                    callback(node);
+            });
+    }
+
     private createInfoPanel() {
         /*
         <div id="infoPanel" class="infoPanel">
@@ -268,8 +308,6 @@ export class GraphBrowser extends events.EventEmitter {
         var htmlInfoBox = document.createElement("div");
         $(htmlInfoBox).addClass("infoBox").
             appendTo($(htmlInfoPanel));
-
-        console.log(htmlInfoPanel.outerHTML);
 
         //binds events
 
@@ -312,17 +350,17 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public init(callback) {
-        this._graphService.requestInit(callback);
+        this._graphService.asyncInit(callback);
     }
 
-    private showMessage(msgCode: string) {
+    private _showMessage(msgCode: string) {
         var pos = this._jqueryGraphArea.position();
         var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
         var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
 
         this._jqueryMessageBar.css("left", left)
             .css("top", top)
-            .css("text-align","center")
+            .css("text-align", "center")
             .html("<i class='fa fa-spinner fa-spin'></i> " + i18n.getMessage(msgCode)).
             show();
     }
@@ -337,7 +375,7 @@ export class GraphBrowser extends events.EventEmitter {
 
     public showNodesOfLabel(nodeLabel: string, showOrNot: boolean) {
         var browser = this;
-        this._graphService.update4ShowNodesOfLabel(nodeLabel, showOrNot, function (updates) {
+        this._graphService.asyncUpdateNodesOfLabel(nodeLabel, showOrNot, function (updates) {
             browser._nodes.update(updates);
         });
     }
@@ -382,11 +420,11 @@ export class GraphBrowser extends events.EventEmitter {
         this.showGraph({ showFaces: showOrNot });
     }
 
-    public search(keyword: string, callback: (nodes: any[]) => void) {
-        this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
+    public search(keyword: any, callback: (nodes: any[]) => void) {
+        this._graphService.asyncSearch(keyword, this._autoCompletionItemLimit, callback);
     }
 
-    public showGraph(showGraphOptions: ShowGraphOptions) {
+    public showGraph(showGraphOptions: ShowGraphOptions, callback?: () => void) {
         showGraphOptions = showGraphOptions || {};
         if (showGraphOptions.scale !== undefined)
             this.scaleTo(showGraphOptions.scale);
@@ -397,12 +435,15 @@ export class GraphBrowser extends events.EventEmitter {
         var updates = this._graphService.update4ShowNodes(showGraphOptions);
         if (updates.length > 0)
             this._nodes.update(updates);
+
+        if (callback !== undefined)
+            callback();
     }
 
     public loadGraph(options, callback) {
         var browser = this;
-        browser.showMessage("LOADING_GRAPH");
-        this._graphService.requestLoadGraph(options, function (graphData: GraphData) {
+        browser._showMessage("LOADING_GRAPH");
+        this._graphService.asyncLoadGraph(options, function (graphData: GraphData) {
             browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes);
             browser._edges = new vis.DataSet<vis.Edge>(graphData.edges);
             browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
@@ -410,5 +451,14 @@ export class GraphBrowser extends events.EventEmitter {
             callback();
             browser.hideMessage();
         });
+    }
+
+    public addUnexpandedNodes(nodes: any[]) {
+        nodes.forEach((node) => {
+            if (node.unexpanded === undefined)
+                node.unexpanded = true;
+        });
+
+        this._nodes.update(nodes);
     }
 }

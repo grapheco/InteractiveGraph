@@ -13,7 +13,8 @@ var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 
 var ENTRY = './entry.js';
-var DIST = __dirname + '/dist';
+var DIST = __dirname + '/build';
+var EXTERNAL_DIST = __dirname + '/../InterGraphBrowser/dist';
 var OUTPUT_JS = 'igbrowser.js';
 var OUTPUT_MAP = 'igbrowser.map';
 var OUTPUT_MIN_JS = 'igbrowser.min.js';
@@ -122,7 +123,14 @@ gulp.task('bundle-css', function () {
 
 gulp.task('copy', ['clean'], function () {
   var network = gulp.src('./src/img/**/*')
-    .pipe(gulp.dest(DIST + '/img'));
+    .pipe(gulp.dest(EXTERNAL_DIST + '/img'));
+
+  return network;
+});
+
+gulp.task('copy-external', ['bundle'], function () {
+  var network = gulp.src(DIST + '/igbrowser*.*')
+    .pipe(gulp.dest(EXTERNAL_DIST));
 
   return network;
 });
@@ -142,6 +150,6 @@ gulp.task('minify', ['bundle-js'], function (cb) {
 gulp.task('bundle', ['bundle-js', 'bundle-css', 'copy']);
 
 // The default task (called when you run `gulp`)
-gulp.task('dev', ['clean', 'build-ts', 'bundle']);
+gulp.task('dev', ['clean', 'build-ts', 'bundle', 'copy-external']);
 
 gulp.task('default', ['clean', 'build-ts', 'bundle', 'minify']);

@@ -7,7 +7,7 @@ export class i18n {
 
 	static MESSAGES_EN = {
 		"INITIALING": "initializing...",
-		"LOADING_GRAPH": "loading graph",
+		"LOADING_GRAPH": "loading graph...",
 	}
 
 	static MESSAGES = {
