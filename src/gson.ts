@@ -70,17 +70,6 @@ export class GsonSource implements GraphService {
         return this._mapLabel2Node;
     }
 
-    asyncUpdateNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void) {
-        var updates = this._updateNodes(function (node, update) {
-            var nls: string[] = node.labels;
-            if (nls.indexOf(nodeLabel) > -1) {
-                update.hidden = !showOrNot;
-            }
-        });
-
-        callback(updates);
-    }
-
     asyncGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
         var local = this;
         callback(nodeIds.map(nodeId => {
@@ -107,19 +96,6 @@ export class GsonSource implements GraphService {
         callback(this._canvasData);
     }
 
-    private _updateNodes(fnDoUpdate: (node, update) => void): object[] {
-        var updates = [];
-        var gson = this;
-        this._canvasData.nodes.forEach((node: any) => {
-            var update = { id: node.id };
-            fnDoUpdate(gson._mapId2Node.get(node.id), update);
-            if (Object.keys(update).length > 1)
-                updates.push(update);
-        });
-
-        return updates;
-    }
-
     public asyncSearch(expr: any, limit: number, callback: (nodes: any[]) => void) {
         var results = expr instanceof Array ?
             this._searchByExprArray(expr, limit) :
@@ -135,6 +111,14 @@ export class GsonSource implements GraphService {
         return this._searchByExample(expr, limit);
     }
 
+    private _node2SearchResult(node: any): SearchResult {
+        return {
+            nodeId: node.id,
+            value: node.name,
+            title: node.title
+        };
+    }
+
     private _searchByKeyword(keyword: string, limit: number): any[] {
         var results = [];
         for (var item in this._graphData.nodes) {
@@ -146,7 +130,7 @@ export class GsonSource implements GraphService {
             }
         }
 
-        return results;
+        return results.map(this._node2SearchResult);
     }
 
     private _searchByExample(example: any, limit: number): any[] {
@@ -169,7 +153,7 @@ export class GsonSource implements GraphService {
             }
         }
 
-        return results;
+        return results.map(this._node2SearchResult);
     }
 
     private _searchByExprArray(exprs: any[], limit: number): any[] {
@@ -201,8 +185,40 @@ export class GsonSource implements GraphService {
         callback(neighbourNodes, neighbourEdges);
     }
 
-    update4ShowNodes(showOptions): object[] {
-        return this._updateNodes(function (node, update) {
+    asyncUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
+        callback: (updates: object[]) => void) {
+        var gson = this;
+        var updates = [];
+        nodeIds.forEach((nodeId) => {
+            var update: any = { id: nodeId };
+            var node: any = gson._mapId2Node.get(nodeId);
+            var nls: string[] = node.labels;
+            if (nls.indexOf(className) > -1) {
+                update.hidden = !showOrNot;
+            }
+
+            updates.push(update);
+        });
+
+        callback(updates);
+    }
+
+    asyncUpdate4ShowNodes(nodeIds: any[], showOptions: ShowGraphOptions,
+        callback: (updates: object[]) => void) {
+        var gson = this;
+        var updates = [];
+        nodeIds.forEach((nodeId) => {
+            var update: any = { id: nodeId };
+            var node: any = gson._mapId2Node.get(nodeId);
+
+            ///////show label
+            if (showOptions.showLabel === true) {
+                update.label = node.name;
+            }
+            if (showOptions.showLabel === false) {
+                update.label = "";
+            }
+
             ///////show node?
             if (showOptions.showNodes === true) {
                 update.hidden = false;
@@ -235,7 +251,12 @@ export class GsonSource implements GraphService {
             if (showOptions.showDegrees === false) {
                 update.value = 1;
             }
+
+            if (Object.keys(update).length > 1)
+                updates.push(update);
         }
         );
+
+        callback(updates);
     }
 }

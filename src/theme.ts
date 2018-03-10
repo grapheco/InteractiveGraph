@@ -2,7 +2,7 @@ export interface Theme {
     canvasBackground: string;
     networkOptions: vis.Options;
     nodeHighlightColor: string[];
-    nodeUnexpanedColor: string;
+    nodeUnexpanedColor: string[];
 }
 
 export class Themes {
@@ -10,8 +10,11 @@ export class Themes {
         return {
             canvasBackground: "none",
             nodeHighlightColor: ["#00FF00", "#FFFFFF"],
-            nodeUnexpanedColor: "rgba(0,0,0,0.5)",
+            nodeUnexpanedColor: ["rgba(255, 0, 0, 0.5)", "rgba(0, 255, 0, 0.9)", "#FFFFFF"],
             networkOptions: {
+                layout: {
+                    improvedLayout: false
+                },
                 nodes: {
                     shape: 'dot',
                     scaling: {
@@ -76,7 +79,7 @@ export class Themes {
         return {
             canvasBackground: "#111111",
             nodeHighlightColor: ["yellow", "black"],
-            nodeUnexpanedColor: "rgba(255,0,0,0.5)",
+            nodeUnexpanedColor: ["rgba(255, 0, 0, 0.5)", "rgba(0, 255, 0, 0.5)", "#FFFFFF"],
             networkOptions: {
                 nodes: {
                     shape: 'dot',

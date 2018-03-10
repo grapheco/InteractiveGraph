@@ -12,6 +12,8 @@ export interface GraphService {
     asyncGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void);
 
     getNodeLabelMap(): object;
-    update4ShowNodes(showOptions): object[];
-    asyncUpdateNodesOfLabel(nodeLabel: string, showOrNot: boolean, callback: (updates: object[]) => void);
+    asyncUpdate4ShowNodes(nodeIds: any[], showOptions: ShowGraphOptions,
+        callback: (updates: object[]) => void);
+    asyncUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
+        callback: (updates: object[]) => void);
 }
