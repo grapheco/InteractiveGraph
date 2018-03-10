@@ -3,57 +3,6 @@ InteractiveGraphBrowser is a web-based browser for large graph databases.
 
 online demo: https://bluejoe2008.github.io/igbrowser/examples/example1.html
 
-<img src="https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/screen.png?raw=true">
-
-# how to start
-
-__Step 1.__ include main javascript file `igbrowser.js` and css file `igbrowser.css`:
-
-```
-    <script type="text/javascript" src="../dist/igbrowser.js"></script>
-    <link type="text/css" rel="stylesheet" href="../dist/igbrowser.css">
-```
-Alternatively, `igbrowser.min.js` and `igbrowser.min.css`, minified versions, are available in `dist` folder.
-
-__Step 2.__ define a HTML div: graphArea
-
-__Step 3.__ create a GraphBrowser object in java script:
-
-```
-    var browser = new igraph.GraphBrowser(
-        igraph.GsonSource.fromObject(gson),
-        document.getElementById('graphArea'));
-```
-
-in this case, a `GsonSource` is used, it loads `gson` as graph data. Alternatively, a `RemoteGraph` is required when loading a __very very large graph__ from remote server.
-
-__Step 4.__ manipulate the GraphBrowser:
-
-```
-    browser.chained([
-        function (callback) {
-            browser.init(callback);
-        },
-
-        function (callback) {
-            browser.loadGraph({}, callback);
-        },
-
-        function (callback) {
-            browser.showGraph({
-                scale: 0.6,
-                showFaces: true,
-                showDegrees: true,
-                showEdges: true,
-                showGroups: true
-            });
-        }
-    ]);
-```
-Most manipulation tasks work in async mode, so it is required to call `browser.chained` instead of call init(), loadGraph(), showGraph() directly.
-
-See https://github.com/graph-eco/InteractiveGraphBrowser/blob/master/examples/example1.html for details.
-
 # dependencies
 this project depends on following components:
 ```
