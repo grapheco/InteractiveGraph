@@ -25,7 +25,8 @@ export class GraphBrowser extends events.EventEmitter {
     private _autoCompletionItemLimit = 30;
     private _theme: Theme;
 
-    private _highlightedNodeIds = {};
+    private _mapNodeId2HighlightStatus: Map<string, number> = new Map<string, number>();
+    private _mapNodeId2ExpandStatus: Map<string, number> = new Map<string, number>();
 
     public _renderNodeDescriptions: (descriptions: string[]) => void = function (descriptions) {
         console.log(descriptions);
@@ -77,27 +78,27 @@ export class GraphBrowser extends events.EventEmitter {
         });
 
         this._network.on("doubleClick", function (args) {
-            console.debug(args);
-
             //double click on backgroud (no nodes selected)
             if (args.nodes.length == 0 && args.edges.length == 0) {
-                browser._highlightedNodeIds = [];
+                browser._mapNodeId2HighlightStatus.clear();
                 return;
             }
 
             var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
-                var node: any = browser._nodes.get(nodeId);
-                if (node.unexpanded === true) {
+                //if expanded?
+                if (browser._mapNodeId2ExpandStatus.get(nodeId) == -1) {
                     browser.expandNode(nodeId);
+
+                    return;
+                }
+
+                //hightlight?
+                if (!browser._mapNodeId2HighlightStatus.has(nodeId)) {
+                    browser._mapNodeId2HighlightStatus.set(nodeId, 0);
                 }
                 else {
-                    if (browser._highlightedNodeIds[nodeId] === undefined) {
-                        browser._highlightedNodeIds[nodeId] = 0;
-                    }
-                    else {
-                        delete browser._highlightedNodeIds[nodeId];
-                    }
+                    browser._mapNodeId2HighlightStatus.delete(nodeId);
                 }
             });
         });
@@ -174,17 +175,24 @@ export class GraphBrowser extends events.EventEmitter {
 
         this._network.on("afterDrawing", function (ctx) {
             //draw unexpanded nodes
-            browser._nodes.forEach((item: any, nodeId) => {
-                if (item.unexpanded === true) {
-                    var nodePositions: any = browser._network.getPositions([nodeId]);
-                    var pos = nodePositions[nodeId];
-                    var box = browser._network.getBoundingBox(nodeId);
+            ctx.save();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = browser._theme.nodeUnexpanedColor;
 
-                    ctx.fillStyle = browser._theme.nodeUnexpanedColor;
-                    ctx.circle(pos.x, pos.y, pos.y - box.top);
-                    ctx.fill();
+            browser._mapNodeId2ExpandStatus.forEach((v, k, map) => {
+                var node: any = browser._nodes.get(k);
+                if (!node.hidden) {
+                    var nodePositions: any = browser._network.getPositions([k]);
+                    var pos = nodePositions[k];
+                    ctx.font = "20px FontAwesome";
+                    ctx.strokeText(v == -1 ? "\uf0e0" : "\uf0e9", pos.x - 15, pos.y - 8);
+                    ctx.font = "10px Arail";
+                    ctx.strokeText(v == -1 ? "?" : "" + v, pos.x + 5, pos.y);
                 }
-            });
+            }
+            );
+
+            ctx.restore();
         });
     }
 
@@ -257,20 +265,13 @@ export class GraphBrowser extends events.EventEmitter {
         };
     }
 
-    public expandNode(nodeId, callback?: (node) => void) {
+    public expandNode(nodeId) {
         var browser = this;
         this._graphService.asyncGetNeighbours(nodeId,
             function (neighbourNodes: object[], neighbourEdges: object[]) {
                 browser.addUnexpandedNodes(neighbourNodes);
                 browser._edges.update(neighbourEdges);
-
-                var node: any = browser._nodes.get(nodeId);
-                console.debug(node);
-                 node.unexpanded = false;
-                browser._network.redraw();
-
-                if (callback !== undefined)
-                    callback(node);
+                browser._mapNodeId2ExpandStatus.set(nodeId, neighbourEdges.length);
             });
     }
 
@@ -339,14 +340,14 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public getHighlightedNodeIds(): string[] {
-        return Object.keys(this._highlightedNodeIds);
+        return Utils.toArray(this._mapNodeId2HighlightStatus.keys());
     }
 
     public highlightNode(nodeId: string, showOrNot) {
         if (showOrNot)
-            this._highlightedNodeIds[nodeId] = 0;
+            this._mapNodeId2HighlightStatus.set(nodeId, 0);
         else
-            delete this._highlightedNodeIds[nodeId];
+            this._mapNodeId2HighlightStatus.delete(nodeId);
     }
 
     public init(callback) {
@@ -365,7 +366,7 @@ export class GraphBrowser extends events.EventEmitter {
             show();
     }
 
-    private hideMessage() {
+    private _hideMessage() {
         this._jqueryMessageBar.hide();
     }
 
@@ -373,9 +374,9 @@ export class GraphBrowser extends events.EventEmitter {
         return this._graphService.getNodeLabelMap();
     }
 
-    public showNodesOfLabel(nodeLabel: string, showOrNot: boolean) {
+    public showNodesOfClass(className: string, showOrNot: boolean) {
         var browser = this;
-        this._graphService.asyncUpdateNodesOfLabel(nodeLabel, showOrNot, function (updates) {
+        this._graphService.asyncUpdateNodesOfLabel(className, showOrNot, function (updates) {
             browser._nodes.update(updates);
         });
     }
@@ -440,25 +441,44 @@ export class GraphBrowser extends events.EventEmitter {
             callback();
     }
 
+    private _filterGraphNodes(src: any): any {
+        return Utils.partOf(
+            ["id", "label", "title", "value", "image", "group"],
+            src);
+    }
+
+    private _filterGraphEdges(src: any): any {
+        return Utils.partOf(
+            ["id", "from", "to", "label", "title", "value"],
+            src);
+    }
+
     public loadGraph(options, callback) {
         var browser = this;
         browser._showMessage("LOADING_GRAPH");
         this._graphService.asyncLoadGraph(options, function (graphData: GraphData) {
-            browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes);
-            browser._edges = new vis.DataSet<vis.Edge>(graphData.edges);
+            browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes.map((item) => {
+                return browser._filterGraphNodes(item);
+            }));
+            browser._edges = new vis.DataSet<vis.Edge>(graphData.edges.map((item) => {
+                return browser._filterGraphEdges(item);
+            }));
             browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
 
             callback();
-            browser.hideMessage();
+            browser._hideMessage();
         });
     }
 
     public addUnexpandedNodes(nodes: any[]) {
+        var browser = this;
         nodes.forEach((node) => {
-            if (node.unexpanded === undefined)
-                node.unexpanded = true;
+            if (!this._mapNodeId2ExpandStatus.has(node.id))
+                this._mapNodeId2ExpandStatus.set(node.id, -1);
         });
 
-        this._nodes.update(nodes);
+        this._nodes.update(nodes.map((item) => {
+            return browser._filterGraphNodes(item);
+        }));
     }
 }

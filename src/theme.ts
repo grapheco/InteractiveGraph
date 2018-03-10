@@ -10,7 +10,7 @@ export class Themes {
         return {
             canvasBackground: "none",
             nodeHighlightColor: ["#00FF00", "#FFFFFF"],
-            nodeUnexpanedColor: 'rgba(88, 88, 88, 0.5)',
+            nodeUnexpanedColor: "rgba(0,0,0,0.5)",
             networkOptions: {
                 nodes: {
                     shape: 'dot',
@@ -76,7 +76,7 @@ export class Themes {
         return {
             canvasBackground: "#111111",
             nodeHighlightColor: ["yellow", "black"],
-            nodeUnexpanedColor: 'rgba(88, 88, 88, 0.5)',
+            nodeUnexpanedColor: "rgba(255,0,0,0.5)",
             networkOptions: {
                 nodes: {
                     shape: 'dot',

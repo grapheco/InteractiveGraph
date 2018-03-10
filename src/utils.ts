@@ -12,20 +12,36 @@ export class Utils {
 		return ae;
 	}
 
+	public static partOf(keys: string[], src: any) {
+		var filtered = {};
+		keys.forEach((key) => {
+			if (src[key] !== undefined) {
+				filtered[key] = src[key];
+			}
+		})
+
+		return filtered;
+	}
 	public static flatMap(arr: any[], func: (t) => any[]): any[] {
 		var ae = [];
 		arr.forEach((t) => {
 			var r = func(t);
 			ae = ae.concat(r);
 		});
+		
 		return ae;
 	}
 
-	public static mapValues(map) {
+	public static toArray<T>(it: IterableIterator<T>) {
 		var arr = [];
-		for (let v in map.values()) {
-			arr.push(v);
+		while (true) {
+			var v = it.next();
+			if (v.done)
+				break;
+
+			arr.push(v.value);
 		}
+
 		return arr;
 	}
 
