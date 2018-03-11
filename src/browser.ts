@@ -11,40 +11,50 @@ import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
+import { NodeFlag, NodeHighlightFlag, NodeExpansionFlag } from "./flags";
 
 export class GraphBrowser extends events.EventEmitter {
     static CANVAS_PADDING: number = 80;
-    private _jqueryMessageBar: JQuery<HTMLElement>;
-    private _jqueryGraphArea: JQuery<HTMLElement>;
-
-    private _graphService: GraphService;
-    private _network: vis.Network;
-    private _nodes: vis.DataSet<vis.Node>;
-    private _edges: vis.DataSet<vis.Edge>;
-    private _autoCompletionItemLimit = 30;
-    private _theme: Theme;
-    private _showGraphOptions: ShowGraphOptions = {};
-    public _renderNodeDescriptions: (descriptions: string[]) => void;
-    public _renderAutoCompletionItem: (item: SearchResult) => string;
-    private _mapNodeId2HighlightStatus: Map<string, number> = new Map<string, number>();
-    private _mapNodeId2ExpandStatus: Map<string, number> = new Map<string, number>();
+    _jqueryMessageBox: JQuery<HTMLElement>;
+    _jqueryGraphArea: JQuery<HTMLElement>;
+    _minScale: number = 0.1;
+    _maxScale: number = 2;
+    _graphService: GraphService;
+    _network: vis.Network;
+    _nodes: vis.DataSet<vis.Node>;
+    _edges: vis.DataSet<vis.Edge>;
+    _autoCompletionItemLimit = 30;
+    _theme: Theme;
+    _defaultShowGraphOptions: ShowGraphOptions = {
+        showNodes: true,
+        showEdges: true,
+        showLabels: true
+    };
+    _showGraphOptions: ShowGraphOptions = {};
+    _renderNodeDescriptions: (descriptions: string[]) => void;
+    _renderAutoCompletionItem: (item: vis.Node) => string;
+    _mapName2Flag: Map<string, NodeFlag<any>> = new Map<string, NodeFlag<any>>();
 
     public constructor(graphService: GraphService,
         htmlGraphArea: HTMLElement,
         theme: Theme) {
         super();
 
+        //flags
+        this._mapName2Flag.set("HIGHLIGHT", new NodeHighlightFlag());
+        this._mapName2Flag.set("EXPANSION", new NodeExpansionFlag());
+
         this._renderNodeDescriptions = (descriptions: string[]) => {
             console.log(descriptions);
         };
 
-        this._renderAutoCompletionItem = (item: SearchResult) => {
-            return "<b>" + item.value + "</b>"
-                + (item.title === undefined ? "" : "<br>" + item.title);
-        }
+        this._renderAutoCompletionItem = (item: vis.Node) => {
+            return "<b>" + item.label + "</b>";
+        };
+
         //message bar
-        this._jqueryMessageBar = $(document.createElement("div"))
-            .addClass("messageBar")
+        this._jqueryMessageBox = $(document.createElement("div"))
+            .addClass("messageBox")
             .appendTo($(document.body))
             .hide();
 
@@ -80,25 +90,28 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.on("doubleClick", function (args) {
             //double click on backgroud (no nodes selected)
             if (args.nodes.length == 0 && args.edges.length == 0) {
-                browser._mapNodeId2HighlightStatus.clear();
+                //browser._mapNodeId2HighlightStatus.clear();
+                browser._getSafeFlag("HIGHLIGHT").clear();
                 return;
             }
 
             var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
                 //if expanded?
-                if (browser._mapNodeId2ExpandStatus.get(nodeId) == -1) {
+                //if (browser._mapNodeId2ExpandStatus.get(nodeId) == -1) {
+                if (browser._getSafeFlag("EXPANSION").get(nodeId) == -1) {
                     browser.expandNode(nodeId);
 
                     return;
                 }
 
                 //hightlight?
-                if (!browser._mapNodeId2HighlightStatus.has(nodeId)) {
-                    browser._mapNodeId2HighlightStatus.set(nodeId, 0);
+                var flagHighlight = browser._getSafeFlag("HIGHLIGHT");
+                if (!flagHighlight.has(nodeId)) {
+                    flagHighlight.set(nodeId, 0);
                 }
                 else {
-                    browser._mapNodeId2HighlightStatus.delete(nodeId);
+                    flagHighlight.unset(nodeId);
                 }
             });
         });
@@ -140,76 +153,15 @@ export class GraphBrowser extends events.EventEmitter {
         });
 
         this._network.on("beforeDrawing", function (ctx) {
-            //draw highlighted nodes
-            var nodeIds = browser.getHighlightedNodeIds();
-            /*
-            nodeIds.forEach(nodeId => {
-                var box = browser._network.getBoundingBox(nodeId);
-                ctx.fillRect(box.left - 10, box.top - 10, box.right - box.left + 20, box.bottom - box.top + 20);
-                //ctx.fill();
-            });
-            */
-            if (nodeIds.length > 0) {
-                var nodePositions: any = browser._network.getPositions(nodeIds);
-                var colors = browser._theme.nodeHighlightColor;
-
-                for (let nodeId in nodePositions) {
-                    var node: any = browser._nodes.get(nodeId);
-                    if (node.hidden)
-                        continue;
-
-                    var pos = nodePositions[nodeId];
-                    var box = browser._network.getBoundingBox(nodeId);
-
-                    var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top,
-                        pos.x, pos.y, pos.y - box.top + 40);
-                    grd.addColorStop(0, colors[0]);
-                    grd.addColorStop(1, colors[1]);
-
-                    ctx.fillStyle = grd;
-                    ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
-                    ctx.fill();
-                }
-            }
+            browser._mapName2Flag.forEach((v, k, map) => {
+                v.beforeDrawing(browser, ctx);
+            })
         });
 
         this._network.on("afterDrawing", function (ctx) {
-            //draw unexpanded nodes
-            ctx.save();
-            ctx.lineWidth = 1;
-            var colors = browser._theme.nodeUnexpanedColor;
-            ctx.strokeStyle = colors[2];
-
-            browser._mapNodeId2ExpandStatus.forEach((v, k, map) => {
-                var nodeId = k;
-                var node: any = browser._nodes.get(nodeId);
-                if (!node.hidden) {
-                    var nodePositions: any = browser._network.getPositions([nodeId]);
-                    var pos = nodePositions[nodeId];
-                    /*
-                    ctx.font = "20px FontAwesome";
-                    ctx.strokeText(v == -1 ? "\uf0e0" : "\uf0e9", pos.x - 15, pos.y - 8);
-                    ctx.font = "10px Arail";
-                    ctx.strokeText(v == -1 ? "?" : "" + v, pos.x + 5, pos.y);
-                    */
-                    var box = browser._network.getBoundingBox(nodeId);
-                    var r = pos.y - box.top;
-                    var r2 = r / 1.414;
-                    var x2 = pos.x + r2;
-                    var y2 = pos.y + r2;
-                    ctx.circle(x2, y2, 10);
-
-                    ctx.fillStyle = v == -1 ? colors[0] : colors[1];
-                    ctx.fill();
-
-                    ctx.font = "10px Arail";
-                    var text: string = v == -1 ? "?" : "" + v;
-                    ctx.strokeText(text, x2 - 2.5 * text.length, y2 - 5);
-                }
-            }
-            );
-
-            ctx.restore();
+            browser._mapName2Flag.forEach((v, k, map) => {
+                v.afterDrawing(browser, ctx);
+            })
         });
     }
 
@@ -246,52 +198,53 @@ export class GraphBrowser extends events.EventEmitter {
 
         //binds events
         var browser = this;
-        $(htmlSearchBox).change(function () {
-            $(htmlSearchBox).data("boundSearchResult", {});
-        });
 
         $(htmlSearchBox).autocomplete({
             source: function (request, response) {
                 var term = request.term;
-                browser.search(term, function (nodes: SearchResult[]) {
-                    response(nodes);
+                browser.search(term, function (nodes: vis.Node[]) {
+                    response(nodes.map((node) => {
+                        return {
+                            value: node.label,
+                            label: node.label,
+                            node: node
+                        };
+                    }));
                 });
             },
-            change: function (event, ui) {
-                if (ui.item !== undefined) {
-                    $(htmlSearchBox).data("boundSearchResult", ui.item);
-                }
-                else {
-                    $(htmlSearchBox).data("boundSearchResult", {});
-                }
-                return false;
-            },
+
             select: function (event, ui) {
-                var result: SearchResult = ui.item;
-                if (result !== undefined) {
-                    $(htmlSearchBox).val(result.value);
-                    browser._network.fit({ nodes: [result.nodeId], animation: true });
-                    browser.highlightNode(result.nodeId, true);
+                var node: vis.Node = ui.item.node;
+                if (node !== undefined) {
+                    $(htmlSearchBox).val(node.label);
+                    browser.addOrUpdateNodes([node]);
+                    browser.markNode("" + node.id, "HIGHLIGHT", true);
+                    browser._network.fit({ nodes: ["" + node.id], animation: true });
                 }
 
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append(browser._renderAutoCompletionItem(item))
+                .append(browser._renderAutoCompletionItem(item.node))
                 .appendTo(ul);
         };
     }
 
     public expandNode(nodeId: string) {
         var browser = this;
-        this._graphService.asyncGetNeighbours(nodeId,
+        this._graphService.asyncGetNeighbours(
+            nodeId,
+            browser._showGraphOptions,
             function (neighbourNodes: object[], neighbourEdges: object[]) {
-                browser.addUnexpandedNodes(neighbourNodes.map((node: any) => {
-                    return node.id;
-                }));
+                browser.addOrUpdateNodes(neighbourNodes);
+
+                neighbourNodes.forEach((node: any) => {
+                    browser.markNode(node.id, "EXPANSION");
+                });
+
                 browser._edges.update(neighbourEdges);
-                browser._mapNodeId2ExpandStatus.set(nodeId, neighbourEdges.length);
+                browser.markNode(nodeId, "EXPANSION", neighbourEdges.length);
             });
     }
 
@@ -359,15 +312,8 @@ export class GraphBrowser extends events.EventEmitter {
         this.setTheme(this._theme);
     }
 
-    public getHighlightedNodeIds(): string[] {
-        return Utils.toArray(this._mapNodeId2HighlightStatus.keys());
-    }
-
-    public highlightNode(nodeId: string, showOrNot) {
-        if (showOrNot)
-            this._mapNodeId2HighlightStatus.set(nodeId, 0);
-        else
-            this._mapNodeId2HighlightStatus.delete(nodeId);
+    public getMarkedNodeIds(flagName: string): string[] {
+        return this._getSafeFlag(flagName).getMarkedNodeIds();
     }
 
     public init(callback) {
@@ -376,10 +322,10 @@ export class GraphBrowser extends events.EventEmitter {
 
     private _showMessage(msgCode: string) {
         var pos = this._jqueryGraphArea.position();
-        var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBar.width()) / 2;
-        var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBar.height()) / 2;
+        var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBox.width()) / 2;
+        var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBox.height()) / 2;
 
-        this._jqueryMessageBar.css("left", left)
+        this._jqueryMessageBox.css("left", left)
             .css("top", top)
             .css("text-align", "center")
             .html("<i class='fa fa-spinner fa-spin'></i> " + i18n.getMessage(msgCode)).
@@ -387,11 +333,11 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     private _hideMessage() {
-        this._jqueryMessageBar.hide();
+        this._jqueryMessageBox.hide();
     }
 
-    public getNodeLabelMap(): object {
-        return this._graphService.getNodeLabelMap();
+    public getMapName2Class(): object {
+        return this._graphService.getMapName2Class();
     }
 
     private _updateEdges(fnDoUpdate: (node, update) => void) {
@@ -434,21 +380,24 @@ export class GraphBrowser extends events.EventEmitter {
         this.updateGraph({ showFaces: showOrNot });
     }
 
-    public search(keyword: any, callback: (nodes: SearchResult[]) => void) {
-        this._graphService.asyncSearch(keyword, this._autoCompletionItemLimit, callback);
+    public search(keyword: any, callback: (nodes: vis.Node[]) => void) {
+        this._graphService.asyncSearch(keyword, this._autoCompletionItemLimit, this._showGraphOptions, callback);
     }
 
     public updateGraph(showGraphOptions: ShowGraphOptions, callback?: () => void) {
         showGraphOptions = showGraphOptions || {};
-        this._showGraphOptions = showGraphOptions;
-
-        if (showGraphOptions.scale !== undefined)
-            this.scaleTo(showGraphOptions.scale);
+        this._showGraphOptions = Utils.extend(this._showGraphOptions, showGraphOptions);
 
         if (showGraphOptions.showEdges !== undefined)
             this.showEdges(showGraphOptions.showEdges);
 
-        this._updateNodes(this._nodes.getIds(), showGraphOptions, callback);
+        if (showGraphOptions.showDegrees !== undefined
+            || showGraphOptions.showFaces !== undefined
+            || showGraphOptions.showGroups !== undefined
+            || showGraphOptions.showLabels !== undefined
+            || showGraphOptions.showTitles !== undefined)
+
+            this._updateNodes(this._nodes.getIds(), showGraphOptions, callback);
     }
 
     private _updateNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions, callback?: () => void) {
@@ -478,45 +427,56 @@ export class GraphBrowser extends events.EventEmitter {
             });
     }
 
-    private _filterGraphNodes(src: any): any {
-        return Utils.partOf(
-            ["id", "label", "title", "value", "image", "group", "shape"],
-            src);
-    }
-
-    private _filterGraphEdges(src: any): any {
-        return Utils.partOf(
-            ["id", "from", "to", "label", "title", "value"],
-            src);
-    }
-
-    public loadGraph(options, callback) {
+    public loadGraph(showGraphOptions: ShowGraphOptions, callback: () => void) {
         var browser = this;
         browser._showMessage("LOADING_GRAPH");
-        this._graphService.asyncLoadGraph(options, function (graphData: GraphData) {
-            browser._nodes = new vis.DataSet<vis.Node>(graphData.nodes.map((item) => {
-                return browser._filterGraphNodes(item);
-            }));
-            browser._edges = new vis.DataSet<vis.Edge>(graphData.edges.map((item) => {
-                return browser._filterGraphEdges(item);
-            }));
-            browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
+        this._showGraphOptions = Utils.extend(this._defaultShowGraphOptions, showGraphOptions);
 
-            callback();
-            browser._hideMessage();
-        });
+        this._graphService.asyncLoadGraph(this._showGraphOptions,
+            function (nodes: vis.Node[], edges: vis.Edge[]) {
+                browser._nodes = new vis.DataSet<vis.Node>(nodes);
+                browser._edges = new vis.DataSet<vis.Edge>(edges);
+                browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
+
+                callback();
+                browser._hideMessage();
+            });
     }
 
-    public addUnexpandedNodes(nodeIds: string[]) {
-        var browser = this;
-        nodeIds.forEach((nodeId: string) => {
-            if (!this._mapNodeId2ExpandStatus.has(nodeId))
-                this._mapNodeId2ExpandStatus.set(nodeId, -1);
-        });
+    public lockScale(minScale: number, maxScale?: number) {
 
-        //NOTE: must show label for new node!!!
-        var opts = { showLabel: true };
-        Utils.extend(opts, this._showGraphOptions);
-        this._updateNodes(nodeIds, opts);
+    }
+
+    public markNodes(nodeIds: string[], flagName: string, value?: any) {
+        nodeIds.forEach((nodeId) => {
+            this.markNode(nodeId, flagName, value);
+        }
+        );
+    }
+
+    public markNode(nodeId: string, flagName: string, value?: any) {
+        this._getSafeFlag(flagName).set(nodeId, value);
+    }
+
+    public unmarkNode(nodeId: string, flagName: string) {
+        this._getSafeFlag(flagName).unset(nodeId);
+    }
+
+    public unmarkNodes(nodeIds: string[], flagName: string) {
+        nodeIds.forEach((nodeId) => {
+            this.unmarkNode(nodeId, flagName);
+        }
+        );
+    }
+
+    private _getSafeFlag(flagName: string) {
+        if (!this._mapName2Flag.has(flagName))
+            throw new ReferenceError("unrecognized tag name: " + flagName);
+
+        return this._mapName2Flag.get(flagName);
+    }
+
+    public addOrUpdateNodes(nodes: any[]) {
+        this._nodes.update(nodes);
     }
 }

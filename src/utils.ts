@@ -28,7 +28,7 @@ export class Utils {
 			var r = func(t);
 			ae = ae.concat(r);
 		});
-		
+
 		return ae;
 	}
 
@@ -45,19 +45,61 @@ export class Utils {
 		return arr;
 	}
 
-	public static extend(baseObject: object, extension: object) {
-		for (let key in extension) {
-			if (extension.hasOwnProperty(key)) {
-				var baseValue = baseObject[key];
-				var extValue = extension[key];
-				if (baseValue instanceof Object && baseValue instanceof Object) {
-					Utils.extend(baseValue, extValue);
-				}
-				else {
-					baseObject[key] = extValue;
-				}
+	public static clone(value: any): any {
+		if (typeof (value) == 'string'
+			|| typeof (value) == 'number'
+			|| typeof (value) == 'boolean'
+			|| value instanceof Function) {
+			return value;
+		}
+
+		if (value instanceof Array) {
+			var arr: any[] = value;
+			return arr.map((item) => {
+				return Utils.clone(item);
+			});
+		}
+
+		if (typeof (value) == 'object') {
+			return Utils._cloneObject(value);
+		}
+
+		throw new TypeError("unsupported type: " + typeof (value));
+	}
+
+	private static _cloneObject(src: object): object {
+		var dest = {};
+		for (let key in src) {
+			if (src.hasOwnProperty(key)) {
+				var value = src[key];
+				dest[key] = Utils.clone(value);
 			}
 		}
+
+		return dest;
+	}
+
+	public static extend(base: object, delta: object): object {
+		//do not working on base object
+		var dest = Utils._cloneObject(base);
+
+		for (let key in delta) {
+			if (delta.hasOwnProperty(key)) {
+				var baseValue = base[key];
+				var extValue = delta[key];
+
+				if (typeof (extValue) == 'object' &&
+					typeof (baseValue) == 'object') {
+					dest[key] = Utils.extend(baseValue, extValue);
+					continue;
+				}
+
+				//base={a:{x:...}}, ext={a:2}
+				dest[key] = Utils.clone(extValue);
+			}
+		}
+
+		return dest;
 	}
 
 	/**

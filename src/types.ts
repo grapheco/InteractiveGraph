@@ -19,13 +19,6 @@ interface ShowGraphOptions {
     showNodes?: boolean;
     showDegrees?: boolean;
     showEdges?: boolean;
-    scale?: number;
-    showLabel?:boolean;
-    showTitle?:boolean;
-}
-
-interface SearchResult{
-    nodeId: any; 
-    value: string;
-    title?:string;
+    showLabels?: boolean;
+    showTitles?: boolean;
 }

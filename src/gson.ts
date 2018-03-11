@@ -23,18 +23,14 @@ export class GsonSource implements GraphService {
         this._graphData = {
             nodes:
                 gson.data.nodes.map(node => {
-                    var x = {};
-                    Utils.extend(x, defaults.nodes);
-                    Utils.extend(x, node);
+                    var x = Utils.extend(defaults.nodes || {}, node);
                     Utils.evaluate(x);
 
                     return x;
                 }),
             edges:
                 gson.data.edges.map(edge => {
-                    var x = {};
-                    Utils.extend(x, defaults.edges);
-                    Utils.extend(x, edge);
+                    var x = Utils.extend(defaults.edges || {}, edge);
                     Utils.evaluate(x);
 
                     return x;
@@ -66,7 +62,7 @@ export class GsonSource implements GraphService {
         this._attachSource(this, callback);
     }
 
-    getNodeLabelMap(): object {
+    getMapName2Class(): object {
         return this._mapLabel2Node;
     }
 
@@ -82,44 +78,36 @@ export class GsonSource implements GraphService {
         }));
     }
 
-    asyncLoadGraph(options: object, callback: (graphData: object) => void) {
-        this._canvasData = {
-            nodes: this._graphData.nodes.map((node: any) => {
-                return {
-                    id: node.id,
-                    label: node.label,
-                    title: node.title
-                }
-            }), edges: this._graphData.edges
-        };
-
-        callback(this._canvasData);
+    private _gsonNodes2VisNodes(nodes: object[], showGraphOptions: ShowGraphOptions): vis.Node[] {
+        return nodes.map((node: any) => {
+            return this._gsonNode2VisNode(node, showGraphOptions);
+        }
+        );
     }
 
-    public asyncSearch(expr: any, limit: number, callback: (nodes: any[]) => void) {
-        var results = expr instanceof Array ?
-            this._searchByExprArray(expr, limit) :
-            this._searchBySingleExpr(expr, limit);
+    asyncLoadGraph(showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[], edges: vis.Edge[]) => void) {
+        callback(this._gsonNodes2VisNodes(this._graphData.nodes, showGraphOptions),
+            this._graphData.edges);
+    }
+
+    public asyncSearch(expr: any, limit: number, showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[]) => void) {
+        var results = this._gsonNodes2VisNodes(
+            expr instanceof Array ?
+                this._searchByExprArray(expr, limit) :
+                this._searchBySingleExpr(expr, limit),
+            showGraphOptions);
 
         callback(results);
     }
 
-    private _searchBySingleExpr(expr: any, limit: number): any[] {
+    private _searchBySingleExpr(expr: any, limit: number): vis.Node[] {
         if (typeof (expr) === 'string')
             return this._searchByKeyword(expr.toString(), limit);
 
         return this._searchByExample(expr, limit);
     }
 
-    private _node2SearchResult(node: any): SearchResult {
-        return {
-            nodeId: node.id,
-            value: node.name,
-            title: node.title
-        };
-    }
-
-    private _searchByKeyword(keyword: string, limit: number): any[] {
+    private _searchByKeyword(keyword: string, limit: number): vis.Node[] {
         var results = [];
         for (var item in this._graphData.nodes) {
             var node: any = this._graphData.nodes[item];
@@ -130,10 +118,10 @@ export class GsonSource implements GraphService {
             }
         }
 
-        return results.map(this._node2SearchResult);
+        return results;
     }
 
-    private _searchByExample(example: any, limit: number): any[] {
+    private _searchByExample(example: any, limit: number): vis.Node[] {
         var results = [];
 
         for (var item in this._graphData.nodes) {
@@ -153,10 +141,10 @@ export class GsonSource implements GraphService {
             }
         }
 
-        return results.map(this._node2SearchResult);
+        return results;
     }
 
-    private _searchByExprArray(exprs: any[], limit: number): any[] {
+    private _searchByExprArray(exprs: any[], limit: number): vis.Node[] {
         var results = [];
         exprs.forEach((expr) => {
             results = results.concat(this._searchBySingleExpr(expr, limit));
@@ -165,8 +153,8 @@ export class GsonSource implements GraphService {
         return results;
     }
 
-    asyncGetNeighbours(nodeId: string, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void) {
-        var neighbourEdges = Utils.distinct(
+    asyncGetNeighbours(nodeId: string, showGraphOptions: ShowGraphOptions, callback: (neighbourNodes: vis.Node[], neighbourEdges: vis.Node[]) => void) {
+        var neighbourEdges: vis.Node[] = Utils.distinct(
             this._graphData.edges.filter((edge: any) => {
                 return edge.from == nodeId || edge.from == nodeId;
             })
@@ -178,8 +166,8 @@ export class GsonSource implements GraphService {
             })
         );
 
-        var neighbourNodes = neighbourNodeIds.map((nodeId: string) => {
-            return this._mapId2Node.get(nodeId);
+        var neighbourNodes: vis.Node[] = neighbourNodeIds.map((nodeId: string) => {
+            return this._gsonNode2VisNode(this._mapId2Node.get(nodeId), showGraphOptions);
         });
 
         callback(neighbourNodes, neighbourEdges);
@@ -203,54 +191,60 @@ export class GsonSource implements GraphService {
         callback(updates);
     }
 
-    asyncUpdate4ShowNodes(nodeIds: any[], showOptions: ShowGraphOptions,
+    private _gsonNode2VisNode(gsonNode: any, showGraphOptions: ShowGraphOptions): vis.Node {
+        var visNode: any = { id: gsonNode.id };
+
+        ///////show label
+        if (showGraphOptions.showLabels === true) {
+            visNode.label = gsonNode.name;
+        }
+        if (showGraphOptions.showLabels === false) {
+            visNode.label = "";
+        }
+
+        ///////show node?
+        if (showGraphOptions.showNodes === true) {
+            visNode.hidden = false;
+        }
+        if (showGraphOptions.showNodes === false) {
+            visNode.hidden = true;
+        }
+
+        ///////show face?
+        if (showGraphOptions.showFaces === true && gsonNode.image !== undefined && gsonNode.image != "") {
+            visNode.shape = 'circularImage';
+            visNode.image = gsonNode.image;
+        }
+        if (showGraphOptions.showFaces === false) {
+            visNode.shape = 'dot';
+        }
+
+        ///////show group?
+        if (showGraphOptions.showGroups === true && gsonNode.group !== undefined) {
+            visNode.group = gsonNode.group;
+        }
+        if (showGraphOptions.showGroups === false) {
+            visNode.group = 0;
+        }
+
+        ///////show degree?
+        if (showGraphOptions.showDegrees === true && gsonNode.degree !== undefined) {
+            visNode.value = gsonNode.degree;
+        }
+        if (showGraphOptions.showDegrees === false) {
+            visNode.value = 1;
+        }
+
+        return visNode;
+    }
+
+    asyncUpdate4ShowNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions,
         callback: (updates: object[]) => void) {
         var gson = this;
         var updates = [];
         nodeIds.forEach((nodeId) => {
-            var update: any = { id: nodeId };
             var node: any = gson._mapId2Node.get(nodeId);
-
-            ///////show label
-            if (showOptions.showLabel === true) {
-                update.label = node.name;
-            }
-            if (showOptions.showLabel === false) {
-                update.label = "";
-            }
-
-            ///////show node?
-            if (showOptions.showNodes === true) {
-                update.hidden = false;
-            }
-            if (showOptions.showNodes === false) {
-                update.hidden = true;
-            }
-
-            ///////show face?
-            if (showOptions.showFaces === true && node.image !== undefined && node.image != "") {
-                update.shape = 'circularImage';
-                update.image = node.image;
-            }
-            if (showOptions.showFaces === false) {
-                update.shape = 'dot';
-            }
-
-            ///////show group?
-            if (showOptions.showGroups === true && node.group !== undefined) {
-                update.group = node.group;
-            }
-            if (showOptions.showGroups === false) {
-                update.group = 0;
-            }
-
-            ///////show degree?
-            if (showOptions.showDegrees === true && node.degree !== undefined) {
-                update.value = node.degree;
-            }
-            if (showOptions.showDegrees === false) {
-                update.value = 1;
-            }
+            var update = this._gsonNode2VisNode(node, showGraphOptions);
 
             if (Object.keys(update).length > 1)
                 updates.push(update);
