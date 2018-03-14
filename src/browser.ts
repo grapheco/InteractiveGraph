@@ -11,38 +11,37 @@ import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { NodeFlag, NodeHighlightFlag, NodeExpansionFlag } from "./flags";
+import { NodeFlagType, NodeHighlightFlagType, NodeExpansionFlagType } from "./flags";
 
-export class GraphBrowser extends events.EventEmitter {
-    static CANVAS_PADDING: number = 80;
-    _jqueryMessageBox: JQuery<HTMLElement>;
-    _jqueryGraphArea: JQuery<HTMLElement>;
-    _minScale: number = 0.1;
-    _maxScale: number = 2;
-    _graphService: GraphService;
-    _network: vis.Network;
-    _nodes: vis.DataSet<vis.Node>;
-    _edges: vis.DataSet<vis.Edge>;
-    _autoCompletionItemLimit = 30;
-    _theme: Theme;
-    _defaultShowGraphOptions: ShowGraphOptions = {
+export class GraphBrowser {
+    private static CANVAS_PADDING: number = 80;
+    private _jqueryMessageBox: JQuery<HTMLElement>;
+    private _jqueryGraphArea: JQuery<HTMLElement>;
+    private _minScale: number = 0.1;
+    private _maxScale: number = 2;
+    private _graphService: GraphService;
+    private _network: vis.Network;
+    private _nodes: vis.DataSet<vis.Node>;
+    private _edges: vis.DataSet<vis.Edge>;
+    private _autoCompletionItemLimit = 30;
+    private _theme: Theme;
+    private _defaultShowGraphOptions: ShowGraphOptions = {
         showNodes: true,
         showEdges: true,
         showLabels: true
     };
-    _showGraphOptions: ShowGraphOptions = {};
+    private _showGraphOptions: ShowGraphOptions = {};
     _renderNodeDescriptions: (descriptions: string[]) => void;
     _renderAutoCompletionItem: (item: vis.Node) => string;
-    _mapName2Flag: Map<string, NodeFlag<any>> = new Map<string, NodeFlag<any>>();
+
+    private _flagTypeRegistry = {
+        "HIGHLIGHT": new NodeHighlightFlagType(),
+        "EXPANSION": new NodeExpansionFlagType(),
+    }
 
     public constructor(graphService: GraphService,
         htmlGraphArea: HTMLElement,
         theme: Theme) {
-        super();
-
-        //flags
-        this._mapName2Flag.set("HIGHLIGHT", new NodeHighlightFlag());
-        this._mapName2Flag.set("EXPANSION", new NodeExpansionFlag());
 
         this._renderNodeDescriptions = (descriptions: string[]) => {
             console.log(descriptions);
@@ -78,6 +77,7 @@ export class GraphBrowser extends events.EventEmitter {
     private bindNetworkEvents() {
         var browser = this;
 
+        //show details of selected node
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
@@ -87,35 +87,7 @@ export class GraphBrowser extends events.EventEmitter {
             }
         });
 
-        this._network.on("doubleClick", function (args) {
-            //double click on backgroud (no nodes selected)
-            if (args.nodes.length == 0 && args.edges.length == 0) {
-                //browser._mapNodeId2HighlightStatus.clear();
-                browser._getSafeFlag("HIGHLIGHT").clear();
-                return;
-            }
-
-            var nodeIds = args.nodes;
-            nodeIds.forEach(nodeId => {
-                //if expanded?
-                //if (browser._mapNodeId2ExpandStatus.get(nodeId) == -1) {
-                if (browser._getSafeFlag("EXPANSION").get(nodeId) == -1) {
-                    browser.expandNode(nodeId);
-
-                    return;
-                }
-
-                //hightlight?
-                var flagHighlight = browser._getSafeFlag("HIGHLIGHT");
-                if (!flagHighlight.has(nodeId)) {
-                    flagHighlight.set(nodeId, 0);
-                }
-                else {
-                    flagHighlight.unset(nodeId);
-                }
-            });
-        });
-
+        //hide deselected edges
         this._network.on("selectEdge", function (args) {
             //set font size normal
             if (args.edges.length > 0) {
@@ -134,6 +106,7 @@ export class GraphBrowser extends events.EventEmitter {
             }
         });
 
+        //hide deselected edges
         this._network.on("deselectEdge", function (args) {
             //set font size 0
             if (args.previousSelection.edges.length > 0) {
@@ -152,17 +125,11 @@ export class GraphBrowser extends events.EventEmitter {
             }
         });
 
-        this._network.on("beforeDrawing", function (ctx) {
-            browser._mapName2Flag.forEach((v, k, map) => {
-                v.beforeDrawing(browser, ctx);
-            })
-        });
-
-        this._network.on("afterDrawing", function (ctx) {
-            browser._mapName2Flag.forEach((v, k, map) => {
-                v.afterDrawing(browser, ctx);
-            })
-        });
+        for (var key in this._flagTypeRegistry) {
+            console.debug("initializing flag type: " + key);
+            this._flagTypeRegistry[key].init(this, this._network);
+            console.debug("initialized flag type: " + key);
+        }
     }
 
     private createSearchPanel() {
@@ -470,13 +437,32 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     private _getSafeFlag(flagName: string) {
-        if (!this._mapName2Flag.has(flagName))
+        if (!this._flagTypeRegistry[flagName] === undefined)
             throw new ReferenceError("unrecognized tag name: " + flagName);
 
-        return this._mapName2Flag.get(flagName);
+        return this._flagTypeRegistry[flagName];
     }
 
     public addOrUpdateNodes(nodes: any[]) {
         this._nodes.update(nodes);
+    }
+
+    public getTheme() {
+        return this._theme;
+    }
+
+    public getNodeById(nodeId: string) {
+        return this._nodes.get(nodeId);
+    }
+
+    public getFlags(nodeId: string) {
+        var flags: string[] = [];
+        for (var type in this._flagTypeRegistry) {
+            var flag: NodeFlagType<any> = this._flagTypeRegistry[type];
+            if (flag.has(nodeId))
+                flags.push(type);
+        }
+
+        return flags;
     }
 }
