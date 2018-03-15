@@ -11,9 +11,10 @@ import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
+import { ShowGraphOptions, BrowserEventName } from "./types";
 import { NodeFlagType, NodeHighlightFlagType, NodeExpansionFlagType } from "./flags";
 
-export class GraphBrowser {
+export class GraphBrowser extends events.EventEmitter {
     private static CANVAS_PADDING: number = 80;
     private _jqueryMessageBox: JQuery<HTMLElement>;
     private _jqueryGraphArea: JQuery<HTMLElement>;
@@ -25,28 +26,25 @@ export class GraphBrowser {
     private _edges: vis.DataSet<vis.Edge>;
     private _autoCompletionItemLimit = 30;
     private _theme: Theme;
+
     private _defaultShowGraphOptions: ShowGraphOptions = {
         showNodes: true,
         showEdges: true,
         showLabels: true
     };
+
     private _showGraphOptions: ShowGraphOptions = {};
-    _renderNodeDescriptions: (descriptions: string[]) => void;
     _renderAutoCompletionItem: (item: vis.Node) => string;
 
-    private _flagTypeRegistry = {
+    private _flagTypeRegistry: Map<string, NodeFlagType<any>> = Utils.toMap({
         "HIGHLIGHT": new NodeHighlightFlagType(),
         "EXPANSION": new NodeExpansionFlagType(),
-    }
+    });
 
     public constructor(graphService: GraphService,
         htmlGraphArea: HTMLElement,
         theme: Theme) {
-
-        this._renderNodeDescriptions = (descriptions: string[]) => {
-            console.log(descriptions);
-        };
-
+        super();
         this._renderAutoCompletionItem = (item: vis.Node) => {
             return "<b>" + item.label + "</b>";
         };
@@ -69,23 +67,46 @@ export class GraphBrowser {
             edges: this._edges
         }, this._theme.networkOptions);
 
-        this.bindNetworkEvents();
+        this._bindNetworkEvents();
         this.createSearchPanel();
         this.createInfoPanel();
     }
 
-    private bindNetworkEvents() {
-        var browser = this;
+    private _bindNetworkEvent(networkEventName, browserEventName) {
+        var browser: GraphBrowser = this;
+        this._network.on(networkEventName, function (args) {
+            browser.emit(browserEventName, browser._network, args);
+        });
+    }
+
+    private _bindNetworkEvents() {
+        var browser: GraphBrowser = this;
+        var eventsMap = Utils.toMap({
+            "click": BrowserEventName.NETWORK_CLICK,
+            "doubleClick": BrowserEventName.NETWORK_DBLCLICK,
+            "beforeDrawing": BrowserEventName.NETWORK_BEFORE_DRAWING,
+            "afterDrawing": BrowserEventName.NETWORK_AFTER_DRAWING,
+        });
+
+        eventsMap.forEach((v, k, map) => {
+            this._bindNetworkEvent(k, v);
+        });
 
         //show details of selected node
         this._network.on("click", function (args) {
             var nodeIds = args.nodes;
             if (nodeIds.length > 0) {
-                browser._graphService.asyncGetNodeDescriptions(nodeIds, function (nodeInfos) {
-                    browser._renderNodeDescriptions(nodeInfos);
-                });
+                browser.emit(BrowserEventName.NODE_SELECTED, nodeIds[0]);
             }
         });
+
+        this.on(BrowserEventName.NODE_SELECTED,
+            function (nodeId: string) {
+                browser._graphService.asyncGetNodeDescriptions([nodeId],
+                    function (nodeInfos) {
+                        browser.emit(BrowserEventName.NODE_SHOW_DESCRIPTION, nodeId, nodeInfos[0]);
+                    });
+            });
 
         //hide deselected edges
         this._network.on("selectEdge", function (args) {
@@ -125,11 +146,11 @@ export class GraphBrowser {
             }
         });
 
-        for (var key in this._flagTypeRegistry) {
-            console.debug("initializing flag type: " + key);
-            this._flagTypeRegistry[key].init(this, this._network);
-            console.debug("initialized flag type: " + key);
-        }
+        this._flagTypeRegistry.forEach((v, k, map) => {
+            console.debug("initializing flag type: " + k);
+            v.init(this);
+            console.debug("initialized flag type: " + k);
+        });
     }
 
     private createSearchPanel() {
@@ -164,7 +185,7 @@ export class GraphBrowser {
             .appendTo($(searchPanel2));
 
         //binds events
-        var browser = this;
+        var browser: GraphBrowser = this;
 
         $(htmlSearchBox).autocomplete({
             source: function (request, response) {
@@ -199,7 +220,7 @@ export class GraphBrowser {
     }
 
     public expandNode(nodeId: string) {
-        var browser = this;
+        var browser: GraphBrowser = this;
         this._graphService.asyncGetNeighbours(
             nodeId,
             browser._showGraphOptions,
@@ -258,14 +279,12 @@ export class GraphBrowser {
             $(htmlInfoPanel).hide();
         });
 
-        this._renderNodeDescriptions = function (descriptions: string[]) {
-            $(htmlInfoBox).empty();
-            descriptions.forEach((description: string) => {
+        this.on(BrowserEventName.NODE_SHOW_DESCRIPTION,
+            function (nodeId: string, description: string) {
+                $(htmlInfoBox).empty();
                 $(htmlInfoBox).append(description);
-            }
-            );
-            $(htmlInfoPanel).show();
-        };
+                $(htmlInfoPanel).show();
+            });
     }
 
     public setTheme(theme: Theme) {
@@ -436,11 +455,11 @@ export class GraphBrowser {
         );
     }
 
-    private _getSafeFlag(flagName: string) {
-        if (!this._flagTypeRegistry[flagName] === undefined)
+    private _getSafeFlag(flagName: string): NodeFlagType<any> {
+        if (!this._flagTypeRegistry.has(flagName))
             throw new ReferenceError("unrecognized tag name: " + flagName);
 
-        return this._flagTypeRegistry[flagName];
+        return this._flagTypeRegistry.get(flagName);
     }
 
     public addOrUpdateNodes(nodes: any[]) {
@@ -457,11 +476,10 @@ export class GraphBrowser {
 
     public getFlags(nodeId: string) {
         var flags: string[] = [];
-        for (var type in this._flagTypeRegistry) {
-            var flag: NodeFlagType<any> = this._flagTypeRegistry[type];
-            if (flag.has(nodeId))
-                flags.push(type);
-        }
+        this._flagTypeRegistry.forEach((v, k, map) => {
+            if (v.has(nodeId))
+                flags.push(k);
+        });
 
         return flags;
     }

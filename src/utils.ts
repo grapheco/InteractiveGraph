@@ -113,6 +113,17 @@ export class Utils {
 			}
 		}
 	}
+
+	public static toMap(o): Map<any, any> {
+		var m = new Map();
+		for (let key in o) {
+			if (o.hasOwnProperty(key)) {
+				m.set(key, o[key]);
+			}
+		}
+
+		return m;
+	}
 }
 
 //////////////Point/////////////////

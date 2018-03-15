@@ -3,6 +3,7 @@
  */
 import { GraphService } from './service';
 import { Utils } from './utils';
+import { GraphData, Gson, ShowGraphOptions } from './types';
 
 export class GsonSource implements GraphService {
     private _graphData: GraphData;

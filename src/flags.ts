@@ -1,5 +1,6 @@
 import { Utils, Rect, Point } from "./utils";
 import { GraphBrowser } from "./browser";
+import { BrowserEventName } from './types';
 
 export interface NodeFlagType<T> {
     clear();
@@ -8,7 +9,7 @@ export interface NodeFlagType<T> {
     set(nodeId: string, value?: any);
     has(nodeId: string): boolean;
     get(nodeId: string): any;
-    init(browser: GraphBrowser, network: vis.Network);
+    init(browser: GraphBrowser);
 }
 
 abstract class NodeFlagTypeBase<T>{
@@ -58,10 +59,10 @@ export class NodeExpansionFlagType extends NodeFlagTypeBase<number>
         return -1;
     }
 
-    init(browser: GraphBrowser, network: vis.Network) {
+    init(browser: GraphBrowser) {
         var thisFlag = this;
 
-        network.on("afterDrawing", function (ctx) {
+        browser.on(BrowserEventName.NETWORK_AFTER_DRAWING, function (network, ctx) {
             //draw unexpanded nodes
             ctx.save();
             ctx.lineWidth = 1;
@@ -101,7 +102,7 @@ export class NodeExpansionFlagType extends NodeFlagTypeBase<number>
             return true;
         });
 
-        network.on("doubleClick", function (args) {
+        browser.on(BrowserEventName.NETWORK_DBLCLICK, function (network, args) {
             var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
                 if (thisFlag.get(nodeId) == -1) {
@@ -119,9 +120,10 @@ export class NodeHighlightFlagType extends NodeFlagTypeBase<number>
         return 0;
     }
 
-    init(browser: GraphBrowser, network: vis.Network) {
+    init(browser: GraphBrowser) {
         var thisFlag = this;
-        network.on("beforeDrawing", function (ctx) {
+
+        browser.on(BrowserEventName.NETWORK_BEFORE_DRAWING, function (network, ctx) {
             //draw highlighted nodes
             var nodeIds = thisFlag.getMarkedNodeIds((value: number) => {
                 return value == 1;
@@ -151,7 +153,7 @@ export class NodeHighlightFlagType extends NodeFlagTypeBase<number>
             }
         });
 
-        network.on("doubleClick", function (args) {
+        browser.on(BrowserEventName.NETWORK_DBLCLICK, function (network, args) {
             //double click on backgroud (no nodes selected)
             if (args.nodes.length == 0 && args.edges.length == 0) {
                 thisFlag.clear();

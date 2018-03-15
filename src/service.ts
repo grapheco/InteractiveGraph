@@ -3,6 +3,7 @@
  */
 
 import { GraphBrowser } from './browser';
+import { ShowGraphOptions } from './types';
 
 export interface GraphService {
     asyncInit(callback: () => void);

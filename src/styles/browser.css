@@ -16,9 +16,8 @@ div.infoPanel {
     top: 80px;
     width: 258px;
     cursor: hand;
-    background: white;
-    color:rgb(129, 128, 128);
-    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    background: rgba(230, 217, 202, 0.8);
+    color:rgb(35, 34, 34);
     z-index: 888;
 }
 
@@ -68,7 +67,7 @@ div.infoPanel2 {
 }
 
 .btnCloseInfoPanel {
-    border: solid 1px darkgray;
+    color: darkgray;
 }
 
 ul.ui-autocomplete {
