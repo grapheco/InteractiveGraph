@@ -10,7 +10,7 @@ export class Themes {
         return {
             canvasBackground: "none",
             nodeHighlightColor: ["#00FF00", "#FFFFFF"],
-            nodeUnexpanedColor: ["rgba(0, 128, 0, 0.9)", "rgba(255, 0, 0, 0.9)", "#FFFFFF"],
+            nodeUnexpanedColor: ["rgba(255, 0, 0, 0.9)", "rgba(0, 128, 0, 0.9)", "#FFFFFF"],
             networkOptions: {
                 layout: {
                     improvedLayout: false
@@ -35,7 +35,8 @@ export class Themes {
                         highlight: '#ff0000',
                         hover: '#848484',
                     },
-                    selectionWidth: 0.1,
+                    hoverWidth: 0.05,
+                    selectionWidth: 0.08,
                     arrows: {
                         from: {},
                         to: {

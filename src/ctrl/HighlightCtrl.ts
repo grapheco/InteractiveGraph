@@ -1,0 +1,90 @@
+import { Utils, Rect, Point } from "../utils";
+import { GraphBrowser } from "../browser";
+import { BrowserEventName } from '../types';
+import { GraphService } from '../srv/service';
+import { i18n } from "../messages";
+import { Control } from "./Control";
+
+export class HighlightCtrl implements Control {
+    private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
+
+    public highlight(nodeId: string) {
+        this._mapNodeId2HighlightFlag.set(nodeId, true);
+    }
+
+    public toggle(nodeId: string) {
+        var highlighted = this._mapNodeId2HighlightFlag.get(nodeId);
+        if (highlighted)
+            this._mapNodeId2HighlightFlag.delete(nodeId);
+        else
+            this._mapNodeId2HighlightFlag.set(nodeId, true);
+    }
+
+    public unhighlight(nodeId: string) {
+        this._mapNodeId2HighlightFlag.delete(nodeId);
+    }
+
+    public unhighlightAll() {
+        this._mapNodeId2HighlightFlag.clear();
+    }
+
+    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
+        var thisCtrl = this;
+
+        browser.on(BrowserEventName.NETWORK_BEFORE_DRAWING, function (network, ctx) {
+            ctx.save();
+            //draw highlighted nodes
+            thisCtrl._mapNodeId2HighlightFlag.forEach((highlighted, nodeId, map) => {
+                if (highlighted) {
+                    var nodePositions: any = network.getPositions([nodeId]);
+                    var colors = browser.getTheme().nodeHighlightColor;
+
+                    var node: any = browser.getNodeById(nodeId);
+                    if (!node.hidden) {
+                        var pos = nodePositions[nodeId];
+                        var box = network.getBoundingBox(nodeId);
+
+                        if (pos.y < box.top) {
+                            console.warn("some exceptions happened");
+                            console.debug(pos, box);
+                            return;
+                        }
+
+                        var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top,
+                            pos.x, pos.y, pos.y - box.top + 40);
+                        grd.addColorStop(0, colors[0]);
+                        grd.addColorStop(1, colors[1]);
+
+
+                        ctx.fillStyle = grd;
+                        ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
+                        ctx.fill();
+                    }
+                }
+            });
+
+            ctx.restore();
+        });
+
+        //DANGER!!!
+        browser.removeAllListeners(BrowserEventName.FOCUS_NODE);
+        browser.on(BrowserEventName.FOCUS_NODE, function (network, nodeId) {
+            thisCtrl.highlight(nodeId);
+        });
+
+        //DANGER!!!
+        browser.removeAllListeners(BrowserEventName.NETWORK_DBLCLICK);
+        browser.on(BrowserEventName.NETWORK_DBLCLICK, function (network, args) {
+            //double click on backgroud (no nodes selected)
+            if (args.nodes.length == 0 && args.edges.length == 0) {
+                thisCtrl._mapNodeId2HighlightFlag.clear();
+                return;
+            }
+
+            var nodeIds = args.nodes;
+            nodeIds.forEach(nodeId => {
+                thisCtrl.toggle(nodeId);
+            });
+        });
+    }
+}

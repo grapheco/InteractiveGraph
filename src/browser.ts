@@ -3,20 +3,19 @@
  */
 
 import * as vis from "vis";
-import { GraphService } from './service';
+import { GraphService } from './srv/service';
 import { Utils, Rect, Point } from "./utils";
-import { i18n } from "./messages";
 import { } from "jquery";
 import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { ShowGraphOptions, BrowserEventName } from "./types";
-import { NodeFlagType, NodeHighlightFlagType, NodeExpansionFlagType } from "./flags";
+import { ShowGraphOptions, BrowserEventName, BrowserOptions } from "./types";
+import { Control, Controls } from "./ctrl/Control";
+import { MessageBoxCtrl } from "./ctrl/MessageBoxCtrl";
 
 export class GraphBrowser extends events.EventEmitter {
     private static CANVAS_PADDING: number = 80;
-    private _jqueryMessageBox: JQuery<HTMLElement>;
     private _jqueryGraphArea: JQuery<HTMLElement>;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
@@ -33,34 +32,33 @@ export class GraphBrowser extends events.EventEmitter {
         showLabels: true
     };
 
-    private _showGraphOptions: ShowGraphOptions = {};
-    _renderAutoCompletionItem: (item: vis.Node) => string;
+    public addControl(ctrlName: string, ctrl?: Control) {
+        if (ctrl === undefined)
+            ctrl = Controls.ALL[ctrlName];
 
-    private _flagTypeRegistry: Map<string, NodeFlagType<any>> = Utils.toMap({
-        "HIGHLIGHT": new NodeHighlightFlagType(),
-        "EXPANSION": new NodeExpansionFlagType(),
-    });
+        var control = ctrl;
+        this[ctrlName] = control;
+        return control;
+    }
+
+    private _showGraphOptions: ShowGraphOptions = {};
 
     public constructor(graphService: GraphService,
         htmlGraphArea: HTMLElement,
-        theme: Theme) {
+        options?: BrowserOptions) {
         super();
-        this._renderAutoCompletionItem = (item: vis.Node) => {
-            return "<b>" + item.label + "</b>";
-        };
-
-        //message bar
-        this._jqueryMessageBox = $(document.createElement("div"))
-            .addClass("messageBox")
-            .appendTo($(document.body))
-            .hide();
 
         this._graphService = graphService;
 
         this._nodes = new vis.DataSet<vis.Node>();
         this._edges = new vis.DataSet<vis.Edge>();
-        this._theme = theme || Themes.DEFAULT();
+
+        options = options || {};
         this._jqueryGraphArea = $(htmlGraphArea);
+
+        this.updateTheme(options.theme);
+        var showGraphOptions = options.showGraphOptions || {};
+        this._showGraphOptions = Utils.extend(this._defaultShowGraphOptions, showGraphOptions);
 
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
@@ -68,8 +66,22 @@ export class GraphBrowser extends events.EventEmitter {
         }, this._theme.networkOptions);
 
         this._bindNetworkEvents();
-        this.createSearchPanel();
-        this.createInfoPanel();
+
+        var controls = ["ctrlMessageBox"];
+        if (options.enableShowInfoCtrl !== false)
+            controls.push("ctrlShowInfo");
+        if (options.enableSearchCtrl !== false)
+            controls.push("ctrlSearch");
+        if (options.enableHighlightCtrl !== false)
+            controls.push("ctrlHighlight");
+        if (options.enableExpansionCtrl == true)
+            controls.push("ctrlExpansion");
+
+        controls.forEach((ctrlName) => {
+            var ctrl = this.addControl(ctrlName);
+            ctrl.init(this, this._network, this._graphService);
+            console.log("initialized " + ctrlName);
+        })
     }
 
     private _bindNetworkEvent(networkEventName, browserEventName) {
@@ -91,22 +103,6 @@ export class GraphBrowser extends events.EventEmitter {
         eventsMap.forEach((v, k, map) => {
             this._bindNetworkEvent(k, v);
         });
-
-        //show details of selected node
-        this._network.on("click", function (args) {
-            var nodeIds = args.nodes;
-            if (nodeIds.length > 0) {
-                browser.emit(BrowserEventName.NODE_SELECTED, nodeIds[0]);
-            }
-        });
-
-        this.on(BrowserEventName.NODE_SELECTED,
-            function (nodeId: string) {
-                browser._graphService.asyncGetNodeDescriptions([nodeId],
-                    function (nodeInfos) {
-                        browser.emit(BrowserEventName.NODE_SHOW_DESCRIPTION, nodeId, nodeInfos[0]);
-                    });
-            });
 
         //hide deselected edges
         this._network.on("selectEdge", function (args) {
@@ -145,181 +141,23 @@ export class GraphBrowser extends events.EventEmitter {
                 browser._edges.update(updates);
             }
         });
-
-        this._flagTypeRegistry.forEach((v, k, map) => {
-            console.debug("initializing flag type: " + k);
-            v.init(this);
-            console.debug("initialized flag type: " + k);
-        });
     }
 
-    private createSearchPanel() {
-        /*
-        <div id="searchPanel" class="searchPanel">
-            <div id="searchPanel1" class="searchPanel1">
-                <input id="searchBox" class="searchBox" type="text" size="16" placeholder="input keyword">
-            </div>
-            <div id="searchPanel2" class="searchPanel2">
-                <i align="center" class="fa fa-search fa-lg"></i>
-            </div>
-        </div>
-        */
-        var panel = document.createElement("div");
-        $(panel).addClass("searchPanel")
-            .appendTo($(document.body));
-        var searchPanel1 = document.createElement("div");
-        $(searchPanel1).addClass("searchPanel1")
-            .appendTo($(panel));
-        var htmlSearchBox = document.createElement("input");
-        $(htmlSearchBox).addClass("searchBox")
-            .attr("type", "text")
-            .attr("placeholder", "input keyword")
-            .appendTo($(searchPanel1));
-        var searchPanel2 = document.createElement("div");
-        $(searchPanel2).addClass("searchPanel2")
-            .appendTo($(panel));
-        var i = document.createElement("i");
-        $(i).addClass("fa")
-            .addClass("fa-search")
-            .addClass("fa-lg")
-            .appendTo($(searchPanel2));
+    public updateTheme(theme: Theme | Function) {
+        if (theme instanceof Function) {
+            theme(this._theme);
+        }
+        else {
+            this._theme = theme || Themes.DEFAULT();
+        }
 
-        //binds events
-        var browser: GraphBrowser = this;
-
-        $(htmlSearchBox).autocomplete({
-            source: function (request, response) {
-                var term = request.term;
-                browser.search(term, function (nodes: vis.Node[]) {
-                    response(nodes.map((node) => {
-                        return {
-                            value: node.label,
-                            label: node.label,
-                            node: node
-                        };
-                    }));
-                });
-            },
-
-            select: function (event, ui) {
-                var node: vis.Node = ui.item.node;
-                if (node !== undefined) {
-                    $(htmlSearchBox).val(node.label);
-                    browser.addOrUpdateNodes([node]);
-                    browser.markNode("" + node.id, "HIGHLIGHT", true);
-                    browser._network.fit({ nodes: ["" + node.id], animation: true });
-                }
-
-                return false;
-            }
-        }).data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>")
-                .append(browser._renderAutoCompletionItem(item.node))
-                .appendTo(ul);
-        };
-    }
-
-    public expandNode(nodeId: string) {
-        var browser: GraphBrowser = this;
-        this._graphService.asyncGetNeighbours(
-            nodeId,
-            browser._showGraphOptions,
-            function (neighbourNodes: object[], neighbourEdges: object[]) {
-                browser.addOrUpdateNodes(neighbourNodes);
-
-                neighbourNodes.forEach((node: any) => {
-                    browser.markNode(node.id, "EXPANSION");
-                });
-
-                browser._edges.update(neighbourEdges);
-                browser.markNode(nodeId, "EXPANSION", neighbourEdges.length);
-            });
-    }
-
-    private createInfoPanel() {
-        /*
-        <div id="infoPanel" class="infoPanel">
-            <div>
-                <div id="infoPanel1" class="infoPanel1">node description</div>
-                <div id="infoPanel2" class="infoPanel2">
-                    <i id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></i>
-                </div>
-            </div>
-            <div id="infoBox" class="infoBox"></div>
-        </div>
-        */
-        var htmlInfoPanel = document.createElement("div");
-        $(htmlInfoPanel).addClass("infoPanel")
-            .appendTo($(document.body));
-        var div = document.createElement("div");
-        $(div).appendTo($(htmlInfoPanel));
-        var infoPanel1 = document.createElement("div");
-        $(infoPanel1).addClass("infoPanel1")
-            .appendTo($(div));
-        var infoPanel2 = document.createElement("div");
-        $(infoPanel2).addClass("infoPanel2")
-            .appendTo($(div));
-        var btnCloseInfoPanel = document.createElement("i");
-        $(btnCloseInfoPanel).addClass("fa")
-            .addClass("fa-close")
-            .addClass("fa-lg")
-            .addClass("btnCloseInfoPanel")
-            .attr("align", "center")
-            .appendTo($(infoPanel2));
-
-        var htmlInfoBox = document.createElement("div");
-        $(htmlInfoBox).addClass("infoBox").
-            appendTo($(htmlInfoPanel));
-
-        //binds events
-
-        $(htmlInfoPanel).draggable();
-
-        $(btnCloseInfoPanel).click(function () {
-            $(htmlInfoPanel).hide();
-        });
-
-        this.on(BrowserEventName.NODE_SHOW_DESCRIPTION,
-            function (nodeId: string, description: string) {
-                $(htmlInfoBox).empty();
-                $(htmlInfoBox).append(description);
-                $(htmlInfoPanel).show();
-            });
-    }
-
-    public setTheme(theme: Theme) {
-        this._theme = theme;
-        this._jqueryGraphArea.css('background', theme.canvasBackground);
-        this._network.setOptions(theme.networkOptions);
-    }
-
-    public updateTheme(update: (theme: Theme) => void) {
-        update(this._theme);
-        this.setTheme(this._theme);
-    }
-
-    public getMarkedNodeIds(flagName: string): string[] {
-        return this._getSafeFlag(flagName).getMarkedNodeIds();
+        this._jqueryGraphArea.css('background', this._theme.canvasBackground);
+        if (this._network !== undefined)
+            this._network.setOptions(this._theme.networkOptions);
     }
 
     public init(callback) {
         this._graphService.asyncInit(callback);
-    }
-
-    private _showMessage(msgCode: string) {
-        var pos = this._jqueryGraphArea.position();
-        var left = pos.left + (this._jqueryGraphArea.width() - this._jqueryMessageBox.width()) / 2;
-        var top = pos.top + (this._jqueryGraphArea.height() - this._jqueryMessageBox.height()) / 2;
-
-        this._jqueryMessageBox.css("left", left)
-            .css("top", top)
-            .css("text-align", "center")
-            .html("<i class='fa fa-spinner fa-spin'></i> " + i18n.getMessage(msgCode)).
-            show();
-    }
-
-    private _hideMessage() {
-        this._jqueryMessageBox.hide();
     }
 
     public getMapName2Class(): object {
@@ -359,31 +197,39 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public showDegrees(showOrNot) {
-        this.updateGraph({ showDegrees: showOrNot });
+        this.redrawGraph((options: ShowGraphOptions) => {
+            options.showDegrees = showOrNot;
+        });
     }
 
     public showFaces(showOrNot) {
-        this.updateGraph({ showFaces: showOrNot });
+        this.redrawGraph((options: ShowGraphOptions) => {
+            options.showFaces = showOrNot;
+        });
     }
 
     public search(keyword: any, callback: (nodes: vis.Node[]) => void) {
         this._graphService.asyncSearch(keyword, this._autoCompletionItemLimit, this._showGraphOptions, callback);
     }
 
-    public updateGraph(showGraphOptions: ShowGraphOptions, callback?: () => void) {
-        showGraphOptions = showGraphOptions || {};
-        this._showGraphOptions = Utils.extend(this._showGraphOptions, showGraphOptions);
+    public redrawGraph(showGraphOptions: ShowGraphOptions | Function, callback?: () => void) {
+        if (showGraphOptions instanceof Function) {
+            showGraphOptions(this._showGraphOptions);
+        }
+        else {
+            this._showGraphOptions = showGraphOptions;
+        }
 
-        if (showGraphOptions.showEdges !== undefined)
-            this.showEdges(showGraphOptions.showEdges);
+        if (this._showGraphOptions.showEdges !== undefined)
+            this.showEdges(this._showGraphOptions.showEdges);
 
-        if (showGraphOptions.showDegrees !== undefined
-            || showGraphOptions.showFaces !== undefined
-            || showGraphOptions.showGroups !== undefined
-            || showGraphOptions.showLabels !== undefined
-            || showGraphOptions.showTitles !== undefined)
-
-            this._updateNodes(this._nodes.getIds(), showGraphOptions, callback);
+        if (this._showGraphOptions.showDegrees !== undefined
+            || this._showGraphOptions.showFaces !== undefined
+            || this._showGraphOptions.showGroups !== undefined
+            || this._showGraphOptions.showLabels !== undefined
+            || this._showGraphOptions.showTitles !== undefined) {
+            this._updateNodes(this._nodes.getIds(), this._showGraphOptions, callback);
+        }
     }
 
     private _updateNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions, callback?: () => void) {
@@ -413,10 +259,10 @@ export class GraphBrowser extends events.EventEmitter {
             });
     }
 
-    public loadGraph(showGraphOptions: ShowGraphOptions, callback: () => void) {
+    public loadGraph(callback: () => void) {
         var browser = this;
-        browser._showMessage("LOADING_GRAPH");
-        this._showGraphOptions = Utils.extend(this._defaultShowGraphOptions, showGraphOptions);
+        var ctrl: MessageBoxCtrl = browser['ctrlMessageBox'];
+        ctrl.showMessage("LOADING_GRAPH");
 
         this._graphService.asyncLoadGraph(this._showGraphOptions,
             function (nodes: vis.Node[], edges: vis.Edge[]) {
@@ -425,7 +271,7 @@ export class GraphBrowser extends events.EventEmitter {
                 browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
 
                 callback();
-                browser._hideMessage();
+                ctrl.hideMessage();
             });
     }
 
@@ -433,54 +279,48 @@ export class GraphBrowser extends events.EventEmitter {
 
     }
 
-    public markNodes(nodeIds: string[], flagName: string, value?: any) {
-        nodeIds.forEach((nodeId) => {
-            this.markNode(nodeId, flagName, value);
-        }
-        );
+    public getShowGraphOptions(): ShowGraphOptions {
+        return this._showGraphOptions;
     }
 
-    public markNode(nodeId: string, flagName: string, value?: any) {
-        this._getSafeFlag(flagName).set(nodeId, value);
-    }
+    /**
+     * insert a set of nodes, if some nodes exists, ignore the errors
+     * @param nodes nodes to be inserted
+     * @returns new nodes (without which exist already)
+     */
+    public insertNodes(nodes: any[]): string[] {
+        var newNodes = nodes.filter((node) => {
+            return this._nodes.get(node.id) === null;
+        });
 
-    public unmarkNode(nodeId: string, flagName: string) {
-        this._getSafeFlag(flagName).unset(nodeId);
-    }
-
-    public unmarkNodes(nodeIds: string[], flagName: string) {
-        nodeIds.forEach((nodeId) => {
-            this.unmarkNode(nodeId, flagName);
-        }
-        );
-    }
-
-    private _getSafeFlag(flagName: string): NodeFlagType<any> {
-        if (!this._flagTypeRegistry.has(flagName))
-            throw new ReferenceError("unrecognized tag name: " + flagName);
-
-        return this._flagTypeRegistry.get(flagName);
-    }
-
-    public addOrUpdateNodes(nodes: any[]) {
         this._nodes.update(nodes);
+        var newNodeIds = newNodes.map((node) => {
+            return node.id;
+        });
+
+        if (newNodes.length > 0) {
+            this.emit(BrowserEventName.INSERT_NODE, this._network, newNodeIds);
+        }
+
+        return newNodeIds;
     }
 
-    public getTheme() {
+    public focusNodes(nodeIds: string[]): void {
+        this._network.fit({ nodes: nodeIds, animation: true });
+        if (nodeIds.length > 0) {
+            this.emit(BrowserEventName.FOCUS_NODE, this._network, nodeIds);
+        }
+    }
+
+    public insertEdges(edges: any[]): void {
+        this._edges.update(edges);
+    }
+
+    public getTheme(): Theme {
         return this._theme;
     }
 
     public getNodeById(nodeId: string) {
         return this._nodes.get(nodeId);
-    }
-
-    public getFlags(nodeId: string) {
-        var flags: string[] = [];
-        this._flagTypeRegistry.forEach((v, k, map) => {
-            if (v.has(nodeId))
-                flags.push(k);
-        });
-
-        return flags;
     }
 }

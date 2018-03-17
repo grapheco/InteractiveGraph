@@ -2,8 +2,8 @@
  * Created by bluejoe on 2018/2/24.
  */
 import { GraphService } from './service';
-import { Utils } from './utils';
-import { GraphData, Gson, ShowGraphOptions } from './types';
+import { Utils } from '../utils';
+import { GraphData, Gson, ShowGraphOptions } from '../types';
 
 export class GsonSource implements GraphService {
     private _graphData: GraphData;
@@ -12,50 +12,73 @@ export class GsonSource implements GraphService {
     private _attachSource: (GraphJson, callback: () => void) => void;
     private _mapId2Node: Map<string, object> = new Map<string, object>();
 
+    private _defaultTranslateGson2GraphData: (source: Gson) => GraphData = function (source: Gson) {
+        var nodes = source.data.nodes;
+        var edges = source.data.edges;
+
+        nodes.forEach((node: any) => {
+            //set description
+            if (node.description === undefined) {
+                var description = "<p align=center>";
+                if (node.image !== undefined) {
+                    description += "<img src='" + node.image + "' width=150/><br>";
+                }
+                description += "<b>" + node.name + "</b>" + "[" + node.id + "]";
+                description += "</p>";
+
+                if (node.info !== undefined)
+                    description += "<p align=left>" + node.info + "</p>";
+
+                node.description = description;
+            }
+
+            //set label
+            if (node.label === undefined)
+                node.label = node.name;
+
+            //set group
+            if (node.group === undefined)
+                node.group = node.labels[0];
+        });
+
+        return {
+            nodes: nodes,
+            edges: edges
+        };
+    }
+
     private constructor(attachSource: (GsonSource, callback: () => void) => void) {
         this._attachSource = attachSource;
     }
 
-    private _processGson(gson: Gson) {
+    private _processGson(gson: Gson, translate?: (source: Gson) => GraphData) {
         this._mapLabel2Node = gson.nodeLabelMap;
         var local = this;
-        var defaults: any = gson.defaultData || {};
+        if (translate === undefined) {
+            translate = local._defaultTranslateGson2GraphData;
+        }
 
-        this._graphData = {
-            nodes:
-                gson.data.nodes.map(node => {
-                    var x = Utils.extend(defaults.nodes || {}, node);
-                    Utils.evaluate(x);
-
-                    return x;
-                }),
-            edges:
-                gson.data.edges.map(edge => {
-                    var x = Utils.extend(defaults.edges || {}, edge);
-                    Utils.evaluate(x);
-
-                    return x;
-                })
-        };
+        this._graphData = translate(gson);
 
         this._graphData.nodes.forEach(node => {
             local._mapId2Node.set(node['id'], node);
         });
     }
 
-    public static fromObject(gson: Gson) {
+    public static fromObject(gson: Gson, translate?: (source: Gson) => GraphData) {
         return new GsonSource(function (local: GsonSource, callback: () => void) {
-            local._processGson(gson);
+            local._processGson(gson, translate);
             callback();
         });
     }
 
-    public static fromScript(gsonScriptURL, getGsonFromScript: () => Gson) {
+    public static fromFile(gsonURL, translate?: (source: Gson) => GraphData) {
         return new GsonSource(function (local: GsonSource, callback: () => void) {
-            $.getScript(gsonScriptURL, function (data, status) {
-                local._processGson(getGsonFromScript());
+            $.getJSON(gsonURL, function (data) {
+                local._processGson(data, translate);
+
                 callback();
-            })
+            });
         });
     }
 

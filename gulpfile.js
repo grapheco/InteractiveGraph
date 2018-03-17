@@ -8,18 +8,20 @@ var webpack = require('webpack');
 var uglify = require('uglify-js');
 var rimraf = require('rimraf');
 var argv = require('yargs').argv;
+var replace = require('gulp-replace-pro');
 
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 
 var ENTRY = './entry.js';
-var DIST = __dirname + '/build';
-var EXTERNAL_DIST = __dirname + '/../InterGraphBrowser/dist';
-var OUTPUT_JS = 'igbrowser.js';
-var OUTPUT_MAP = 'igbrowser.map';
-var OUTPUT_MIN_JS = 'igbrowser.min.js';
-var OUTPUT_CSS = 'igbrowser.css';
-var OUTPUT_MIN_CSS = 'igbrowser.min.css';
+var BUILD = __dirname + '/build';
+var DEBUG_DIR = __dirname + '/../grapheco-browser/debug';
+var RELEASE_DIR = __dirname + '/../grapheco-browser/release';
+var OUTPUT_JS = 'grapheco-browser.js';
+var OUTPUT_MAP = 'grapheco-browser.map';
+var OUTPUT_MIN_JS = 'grapheco-browser.min.js';
+var OUTPUT_CSS = 'grapheco-browser.css';
+var OUTPUT_MIN_CSS = 'grapheco-browser.min.css';
 var TS_SOURCE = './src/**/*.ts';
 var CSS_SOURCE = './src/**/*.css';
 
@@ -43,9 +45,9 @@ var webpackModule = {
 var webpackConfig = {
   entry: ENTRY,
   output: {
-    library: 'igraph',
+    library: 'grapheco',
     libraryTarget: 'umd',
-    path: DIST,
+    path: BUILD,
     filename: OUTPUT_JS,
     sourcePrefix: '  '
   },
@@ -82,10 +84,11 @@ function handleCompilerCallback(err, stats) {
 }
 
 // clean the dist/img directory
-gulp.task('clean', function (cb) {
-  rimraf(DIST + '/*', cb);
+gulp.task('clean-build', function (cb) {
+  rimraf(BUILD + '/*', cb);
 });
 
+//.ts --> .js
 gulp.task('build-ts', function (cb) {
   return gulp.src(TS_SOURCE)
     .pipe(tsp({
@@ -98,11 +101,12 @@ gulp.task('build-ts', function (cb) {
         console.info(results);
       }
     }))
-    .pipe(gulp.dest(DIST));
+    .pipe(gulp.dest(BUILD));
 
   cb();
 });
 
+//pack js files into a single file
 gulp.task('bundle-js', ['build-ts'], function (cb) {
   compiler.run(function (err, stats) {
     handleCompilerCallback(err, stats);
@@ -114,42 +118,81 @@ gulp.task('bundle-js', ['build-ts'], function (cb) {
 gulp.task('bundle-css', function () {
   return gulp.src(CSS_SOURCE)
     .pipe(concat(OUTPUT_CSS))
-    .pipe(gulp.dest(DIST))
-    // TODO: nicer to put minifying css in a separate task?
+    .pipe(gulp.dest(BUILD));
+});
+
+gulp.task('clean-debug-dist', function (cb) {
+  rimraf(DEBUG_DIR + '/dist/', cb);
+});
+
+gulp.task('copy-resources-to-debug', ['clean-build', 'clean-debug-dist'], function () {
+  var network = gulp.src('./src/img/**/*')
+    .pipe(gulp.dest(DEBUG_DIR + '/dist/img'));
+
+  return network;
+});
+
+gulp.task('copy-output-to-debug', ['bundle'], function () {
+  var network = gulp.src(BUILD + '/*.*')
+    .pipe(gulp.dest(DEBUG_DIR + '/dist'));
+
+  return network;
+});
+
+gulp.task('minify-css', ['bundle'], function () {
+  return gulp.src(BUILD + "/" + OUTPUT_CSS)
     .pipe(cleanCSS())
     .pipe(rename(OUTPUT_MIN_CSS))
-    .pipe(gulp.dest(DIST));
+    .pipe(gulp.dest(BUILD));
 });
 
-gulp.task('copy', ['clean'], function () {
-  var network = gulp.src('./src/img/**/*')
-    .pipe(gulp.dest(EXTERNAL_DIST + '/img'));
-
-  return network;
-});
-
-gulp.task('copy-external', ['bundle'], function () {
-  var network = gulp.src(DIST + '/igbrowser*.*')
-    .pipe(gulp.dest(EXTERNAL_DIST));
-
-  return network;
-});
-
-gulp.task('minify', ['bundle-js'], function (cb) {
-  var result = uglify.minify([DIST + '/' + OUTPUT_JS], uglifyConfig);
+gulp.task('minify-js', ['bundle'], function (cb) {
+  var result = uglify.minify([BUILD + '/' + OUTPUT_JS], uglifyConfig);
 
   // note: we add a newline '\n' to the end of the minified file to prevent
   //       any issues when concatenating the file downstream (the file ends
   //       with a comment).
-  fs.writeFileSync(DIST + '/' + OUTPUT_MIN_JS, result.code + '\n');
-  fs.writeFileSync(DIST + '/' + OUTPUT_MAP, result.map.replace(/"\.\/dist\//g, '"'));
+  fs.writeFileSync(BUILD + '/' + OUTPUT_MIN_JS, result.code + '\n');
+  fs.writeFileSync(BUILD + '/' + OUTPUT_MAP, result.map.replace(/"\.\/dist\//g, '"'));
 
   cb();
 });
 
-gulp.task('bundle', ['bundle-js', 'bundle-css', 'copy']);
+gulp.task('bundle', ['bundle-js', 'bundle-css']);
 
-// The default task (called when you run `gulp`)
-gulp.task('dev', ['clean', 'build-ts', 'bundle', 'copy-external']);
+gulp.task('debug', ['clean-build', 'build-ts', 'bundle', 'copy-resources-to-debug', 'copy-output-to-debug']);
 
-gulp.task('default', ['clean', 'build-ts', 'bundle', 'minify']);
+gulp.task('clean-release', function (cb) {
+  rimraf(RELEASE_DIR + '/*', cb);
+});
+
+gulp.task('copy-dist-to-release', ['minify-js', 'minify-css', 'clean-release'], function (cb) {
+  var network = gulp.src(BUILD + '/*.min.*')
+    .pipe(gulp.dest(RELEASE_DIR + '/dist'));
+
+  return network;
+});
+
+gulp.task('copy-resources-to-release', ['clean-release'], function () {
+  var network = gulp.src('./src/img/**/*')
+    .pipe(gulp.dest(RELEASE_DIR + '/dist/img'));
+
+  return network;
+});
+
+gulp.task('copy-examples-to-release', ['clean-release'], function (cb) {
+  var network = gulp.src(DEBUG_DIR + '/examples/**/*')
+    .pipe(gulp.dest(RELEASE_DIR + '/examples'));
+
+  return network;
+});
+
+gulp.task('update-release-html', ['copy-examples-to-release'], function () {
+  gulp.src(DEBUG_DIR + '/examples/**/*.html')
+    .pipe(replace({
+      '../dist/grapheco-browser.': '../dist/grapheco-browser.min.'
+    }))
+    .pipe(gulp.dest(RELEASE_DIR + '/examples'));
+});
+
+gulp.task('release', ['debug', 'copy-dist-to-release', 'copy-resources-to-release', 'copy-examples-to-release', 'update-release-html']);

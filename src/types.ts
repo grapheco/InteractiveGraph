@@ -1,3 +1,5 @@
+import { Theme } from './Theme';
+
 export interface GraphData {
     nodes: object[];
     edges: object[];
@@ -24,11 +26,19 @@ export interface ShowGraphOptions {
 }
 
 export enum BrowserEventName {
-    QUERY_SELECT = "QUERY_SELECT",
+    FOCUS_NODE = "FOCUS_EXISTING_NODE",
+    INSERT_NODE = "ADD_NEW_NODE",
     NETWORK_BEFORE_DRAWING = "NETWORK_BEFORE_DRAWING",
     NETWORK_AFTER_DRAWING = "NETWORK_END_DRAWING",
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
     NETWORK_CLICK = "NETWORK_CLICK",
-    NODE_SELECTED = "NODE_SELECTED",
-    NODE_SHOW_DESCRIPTION = "NODE_SHOW_DESCRIPTION",
+}
+
+export interface BrowserOptions {
+    theme?: Theme;
+    enableSearchCtrl?: boolean;
+    enableShowInfoCtrl?: boolean;
+    enableHighlightCtrl?: boolean;
+    enableExpansionCtrl?: boolean;
+    showGraphOptions?: ShowGraphOptions;
 }

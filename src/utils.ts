@@ -22,11 +22,14 @@ export class Utils {
 
 		return filtered;
 	}
+
 	public static flatMap(arr: any[], func: (t) => any[]): any[] {
 		var ae = [];
 		arr.forEach((t) => {
 			var r = func(t);
-			ae = ae.concat(r);
+			r.forEach((ri) => {
+				ae.push(ri);
+			});
 		});
 
 		return ae;
@@ -79,6 +82,11 @@ export class Utils {
 		return dest;
 	}
 
+	/**
+	 * base + delta
+	 * @param base 
+	 * @param delta 
+	 */
 	public static extend(base: object, delta: object): object {
 		//do not working on base object
 		var dest = Utils._cloneObject(base);
