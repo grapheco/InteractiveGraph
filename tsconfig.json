@@ -4,15 +4,15 @@
     "target": "es6",
     "noImplicitAny": false,
     "sourceMap": false,
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "rootDir": "./src/main/scripts",
+    "outDir": "./build",
     "watch": true
   },
   "include": [
-    "./src/*.ts"
+    "./src/main/scripts/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "build"
   ]
 }

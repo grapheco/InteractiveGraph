@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { GraphBrowser } from "../browser";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../srv/service';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -22,9 +22,10 @@ export class SearchCtrl implements Control {
         </div>
         */
         var thisCtrl = this;
-
+        var offset = browser._jqueryGraphArea.offset();
         var panel = document.createElement("div");
         $(panel).addClass("searchPanel")
+            .offset({ left: offset.left + 10, top: offset.top + 20 })
             .appendTo($(document.body));
         var searchPanel1 = document.createElement("div");
         $(searchPanel1).addClass("searchPanel1")

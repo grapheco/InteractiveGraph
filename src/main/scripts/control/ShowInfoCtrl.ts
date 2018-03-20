@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { GraphBrowser } from "../browser";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../srv/service';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -18,8 +18,11 @@ export class ShowInfoCtrl implements Control {
              <div id="infoBox" class="infoBox"></div>
          </div>
          */
+        var offset = browser._jqueryGraphArea.offset();
+
         var htmlInfoPanel = document.createElement("div");
         $(htmlInfoPanel).addClass("infoPanel")
+            .offset({ left: offset.left + 10, top: offset.top + 80 })
             .appendTo($(document.body));
         var div = document.createElement("div");
         $(div).appendTo($(htmlInfoPanel));
@@ -56,7 +59,7 @@ export class ShowInfoCtrl implements Control {
             function (network, args) {
                 var nodeIds = args.nodes;
                 if (nodeIds.length > 0) {
-                    service.asyncGetNodeDescriptions(nodeIds,
+                    service.requestGetNodeDescriptions(nodeIds,
                         function (nodeInfos) {
                             $(htmlInfoBox).empty();
                             $(htmlInfoBox).append(nodeInfos[0]);

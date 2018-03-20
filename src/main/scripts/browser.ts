@@ -3,7 +3,7 @@
  */
 
 import * as vis from "vis";
-import { GraphService } from './srv/service';
+import { GraphService } from './service/service';
 import { Utils, Rect, Point } from "./utils";
 import { } from "jquery";
 import { } from "jqueryui";
@@ -11,12 +11,14 @@ import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
 import { ShowGraphOptions, BrowserEventName, BrowserOptions } from "./types";
-import { Control, Controls } from "./ctrl/Control";
-import { MessageBoxCtrl } from "./ctrl/MessageBoxCtrl";
+import { Control, Controls } from "./control/Control";
+import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
+
+var PI: number = 3.1415926;
+var CANVAS_PADDING: number = 80;
 
 export class GraphBrowser extends events.EventEmitter {
-    private static CANVAS_PADDING: number = 80;
-    private _jqueryGraphArea: JQuery<HTMLElement>;
+    public _jqueryGraphArea: JQuery<HTMLElement>;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
     private _graphService: GraphService;
@@ -76,6 +78,8 @@ export class GraphBrowser extends events.EventEmitter {
             controls.push("ctrlHighlight");
         if (options.enableExpansionCtrl == true)
             controls.push("ctrlExpansion");
+        if (options.enableRelFinderCtrl == true)
+            controls.push("ctrlRelFinder");
 
         controls.forEach((ctrlName) => {
             var ctrl = this.addControl(ctrlName);
@@ -157,7 +161,7 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public init(callback) {
-        this._graphService.asyncInit(callback);
+        this._graphService.requestInit(callback);
     }
 
     public getMapName2Class(): object {
@@ -192,7 +196,7 @@ export class GraphBrowser extends events.EventEmitter {
         this._network.fit({ nodes: nodeIds, animation: animation });
     }
 
-    public chained(tasksWithCallback) {
+    public pipe(tasksWithCallback) {
         series(tasksWithCallback);
     }
 
@@ -209,7 +213,7 @@ export class GraphBrowser extends events.EventEmitter {
     }
 
     public search(keyword: any, callback: (nodes: vis.Node[]) => void) {
-        this._graphService.asyncSearch(keyword, this._autoCompletionItemLimit, this._showGraphOptions, callback);
+        this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, this._showGraphOptions, callback);
     }
 
     public redrawGraph(showGraphOptions: ShowGraphOptions | Function, callback?: () => void) {
@@ -232,8 +236,31 @@ export class GraphBrowser extends events.EventEmitter {
         }
     }
 
+    public placeNodes(nodeIds: string[]) {
+        if (nodeIds.length == 0)
+            return;
+
+        var updates = [];
+
+        var ratio = 1 - 1 / nodeIds.length;
+        var canvasWidth = this._jqueryGraphArea.width();
+        var canvasHeight = this._jqueryGraphArea.height();
+
+        var angle = PI, scopeX = ratio * canvasWidth / 3, scopeY = ratio * canvasHeight / 3;
+        var delta = 2 * PI / nodeIds.length;
+
+        nodeIds.forEach((nodeId) => {
+            var x = scopeX * Math.cos(angle);
+            var y = scopeY * Math.sin(angle);
+            angle += delta;
+            updates.push({ id: nodeId, x: x, y: y });
+        });
+
+        this._nodes.update(updates);
+    }
+
     private _updateNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions, callback?: () => void) {
-        this._graphService.asyncUpdate4ShowNodes(
+        this._graphService.requestUpdate4ShowNodes(
             nodeIds,
             showGraphOptions,
             (updates) => {
@@ -247,7 +274,7 @@ export class GraphBrowser extends events.EventEmitter {
 
     public showNodesOfClass(className: string, showOrNot: boolean, callback?: () => void) {
         var browser = this;
-        this._graphService.asyncUpdateNodesOfClass(className,
+        this._graphService.requestUpdateNodesOfClass(className,
             this._nodes.getIds(),
             showOrNot,
             (updates) => {
@@ -264,7 +291,7 @@ export class GraphBrowser extends events.EventEmitter {
         var ctrl: MessageBoxCtrl = browser['ctrlMessageBox'];
         ctrl.showMessage("LOADING_GRAPH");
 
-        this._graphService.asyncLoadGraph(this._showGraphOptions,
+        this._graphService.requestLoadGraph(this._showGraphOptions,
             function (nodes: vis.Node[], edges: vis.Edge[]) {
                 browser._nodes = new vis.DataSet<vis.Node>(nodes);
                 browser._edges = new vis.DataSet<vis.Edge>(edges);

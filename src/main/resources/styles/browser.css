@@ -12,8 +12,6 @@ div.infoPanel {
     display: none;
     padding: 5px;
     position: absolute;
-    left: 10px;
-    top: 80px;
     width: 258px;
     cursor: hand;
     background: rgba(230, 217, 202, 0.8);
@@ -24,8 +22,6 @@ div.infoPanel {
 div.searchPanel {
     padding: 4px;
     position: absolute;
-    left: 10px;
-    top: 20px;
     width: 260px;
     height: 30px;
     cursor: hand;

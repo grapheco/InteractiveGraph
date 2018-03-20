@@ -11,7 +11,7 @@ export interface GraphData {
 export interface Gson {
     data: GraphData;
     dbinfo: object;
-    nodeLabelMap: object;
+    labels: object;
     defaultData: GraphData;
 }
 
@@ -40,5 +40,22 @@ export interface BrowserOptions {
     enableShowInfoCtrl?: boolean;
     enableHighlightCtrl?: boolean;
     enableExpansionCtrl?: boolean;
+    enableRelFinderCtrl?: boolean;
     showGraphOptions?: ShowGraphOptions;
+}
+
+export interface RelationPath {
+    nodes: object[];
+    edges: object[];
+}
+
+export interface QueryResults {
+    hasMore: boolean,
+    paths: RelationPath[];
+    queryId: string;
+}
+
+export interface Pair<K,V> {
+    _1: K,
+    _2: V;
 }

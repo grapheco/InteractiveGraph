@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { GraphBrowser } from "../browser";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../srv/service';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -24,7 +24,7 @@ export class ExpansionCtrl implements Control {
 
     public expand(nodeId: string) {
         var thisCtrl = this;
-        this._graphService.asyncGetNeighbours(
+        this._graphService.requestGetNeighbours(
             nodeId,
             thisCtrl._browser.getShowGraphOptions(),
             function (neighbourNodes: object[], neighbourEdges: object[]) {

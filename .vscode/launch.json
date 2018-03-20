@@ -5,11 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "type": "node",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "file://${workspaceFolder}/test/index.html",
-            "webRoot": "${workspaceFolder}"
+            "name": "run test <selected file>",
+            "program": "${file}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "run test all",
+            "program": "${workspaceFolder}/src/test/scripts/testAll.js"
         }
     ]
 }

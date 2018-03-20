@@ -3,14 +3,21 @@
  */
 import { GraphService } from './service';
 import { Utils } from '../utils';
-import { GraphData, Gson, ShowGraphOptions } from '../types';
+import { } from "jquery";
+import { GraphData, Pair, Gson, ShowGraphOptions, QueryResults, RelationPath } from '../types';
 
 export class GsonSource implements GraphService {
     private _graphData: GraphData;
-    private _canvasData = { nodes: [], edges: [] };
-    private _mapLabel2Node: object;
+    private _labels: object;
     private _attachSource: (GraphJson, callback: () => void) => void;
-    private _mapId2Node: Map<string, object> = new Map<string, object>();
+
+    //indices
+    private _indexDB = {
+        _mapId2Node: new Map<string, object>(),
+        _mapId2Edge: new Map<string, object>(),
+        _mapNodeId2NeighbourNodeIds: new Map<string, Set<string>>(),
+        _mapNodePair2EdgeIds: new Map<string, Set<string>>(),
+    };
 
     private _defaultTranslateGson2GraphData: (source: Gson) => GraphData = function (source: Gson) {
         var nodes = source.data.nodes;
@@ -52,17 +59,49 @@ export class GsonSource implements GraphService {
     }
 
     private _processGson(gson: Gson, translate?: (source: Gson) => GraphData) {
-        this._mapLabel2Node = gson.nodeLabelMap;
+        this._labels = gson.labels;
         var local = this;
         if (translate === undefined) {
             translate = local._defaultTranslateGson2GraphData;
         }
 
         this._graphData = translate(gson);
+        this._createIndexDB();
+    }
 
-        this._graphData.nodes.forEach(node => {
-            local._mapId2Node.set(node['id'], node);
+    private _createIndexDB() {
+        //create indices
+        var indexDB = this._indexDB;
+
+        this._graphData.nodes.forEach((x: any) => {
+            indexDB._mapId2Node.set(x.id, x);
         });
+
+        this._graphData.edges.forEach((x: any) => {
+            indexDB._mapId2Edge.set(x.id, x);
+
+            //create adjacent matrix
+            var pairs = [{ _1: x.from, _2: x.to }, { _1: x.to, _2: x.from }];
+            pairs.forEach((pair: Pair<string, string>) => {
+                if (!indexDB._mapNodeId2NeighbourNodeIds.has(pair._1))
+                    indexDB._mapNodeId2NeighbourNodeIds.set(pair._1, new Set<string>());
+
+                var neighbours = indexDB._mapNodeId2NeighbourNodeIds.get(pair._1);
+                neighbours.add(pair._2);
+            });
+
+            //create node pair->edges
+            pairs.forEach((pair: Pair<string, string>) => {
+                var key = "" + pair._1 + "-" + pair._2;
+                if (!indexDB._mapNodePair2EdgeIds.has(key))
+                    indexDB._mapNodePair2EdgeIds.set(key, new Set<string>());
+
+                var edges = indexDB._mapNodePair2EdgeIds.get(key);
+                edges.add(x.id);
+            });
+        });
+
+        console.debug(indexDB);
     }
 
     public static fromObject(gson: Gson, translate?: (source: Gson) => GraphData) {
@@ -82,18 +121,18 @@ export class GsonSource implements GraphService {
         });
     }
 
-    asyncInit(callback: () => void) {
+    requestInit(callback: () => void) {
         this._attachSource(this, callback);
     }
 
     getMapName2Class(): object {
-        return this._mapLabel2Node;
+        return this._labels;
     }
 
-    asyncGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
+    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
         var local = this;
         callback(nodeIds.map(nodeId => {
-            let node: any = local._mapId2Node.get(nodeId);
+            let node: any = local._getNode(nodeId);
             if (node.description !== undefined) {
                 return node.description;
             }
@@ -109,12 +148,12 @@ export class GsonSource implements GraphService {
         );
     }
 
-    asyncLoadGraph(showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[], edges: vis.Edge[]) => void) {
+    requestLoadGraph(showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[], edges: vis.Edge[]) => void) {
         callback(this._gsonNodes2VisNodes(this._graphData.nodes, showGraphOptions),
             this._graphData.edges);
     }
 
-    public asyncSearch(expr: any, limit: number, showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[]) => void) {
+    public requestSearch(expr: any, limit: number, showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[]) => void) {
         var results = this._gsonNodes2VisNodes(
             expr instanceof Array ?
                 this._searchByExprArray(expr, limit) :
@@ -133,8 +172,8 @@ export class GsonSource implements GraphService {
 
     private _searchByKeyword(keyword: string, limit: number): vis.Node[] {
         var results = [];
-        for (var item in this._graphData.nodes) {
-            var node: any = this._graphData.nodes[item];
+        var node: any;
+        for (node of this._graphData.nodes) {
             if (node.name.indexOf(keyword) > -1) {
                 results.push(node);
                 if (results.length > limit)
@@ -148,8 +187,7 @@ export class GsonSource implements GraphService {
     private _searchByExample(example: any, limit: number): vis.Node[] {
         var results = [];
 
-        for (var item in this._graphData.nodes) {
-            var node: any = this._graphData.nodes[item];
+        for (var node of this._graphData.nodes) {
             var matches = true;
             for (let key in example) {
                 if (node[key] != example[key]) {
@@ -177,7 +215,7 @@ export class GsonSource implements GraphService {
         return results;
     }
 
-    asyncGetNeighbours(nodeId: string, showGraphOptions: ShowGraphOptions, callback: (neighbourNodes: vis.Node[], neighbourEdges: vis.Node[]) => void) {
+    requestGetNeighbours(nodeId: string, showGraphOptions: ShowGraphOptions, callback: (neighbourNodes: vis.Node[], neighbourEdges: vis.Node[]) => void) {
         var neighbourEdges: vis.Node[] = Utils.distinct(
             this._graphData.edges.filter((edge: any) => {
                 return edge.from == nodeId || edge.from == nodeId;
@@ -191,19 +229,19 @@ export class GsonSource implements GraphService {
         );
 
         var neighbourNodes: vis.Node[] = neighbourNodeIds.map((nodeId: string) => {
-            return this._gsonNode2VisNode(this._mapId2Node.get(nodeId), showGraphOptions);
+            return this._gsonNode2VisNode(this._getNode(nodeId), showGraphOptions);
         });
 
         callback(neighbourNodes, neighbourEdges);
     }
 
-    asyncUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
+    requestUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
         callback: (updates: object[]) => void) {
         var gson = this;
         var updates = [];
         nodeIds.forEach((nodeId) => {
             var update: any = { id: nodeId };
-            var node: any = gson._mapId2Node.get(nodeId);
+            var node: any = gson._getNode(nodeId);
             var nls: string[] = node.labels;
             if (nls.indexOf(className) > -1) {
                 update.hidden = !showOrNot;
@@ -262,12 +300,12 @@ export class GsonSource implements GraphService {
         return visNode;
     }
 
-    asyncUpdate4ShowNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions,
+    requestUpdate4ShowNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions,
         callback: (updates: object[]) => void) {
         var gson = this;
         var updates = [];
         nodeIds.forEach((nodeId) => {
-            var node: any = gson._mapId2Node.get(nodeId);
+            var node: any = gson._getNode(nodeId);
             var update = this._gsonNode2VisNode(node, showGraphOptions);
 
             if (Object.keys(update).length > 1)
@@ -276,5 +314,91 @@ export class GsonSource implements GraphService {
         );
 
         callback(updates);
+    }
+
+    private _getNode(nodeId: string) {
+        return this._indexDB._mapId2Node.get(nodeId);
+    }
+
+    private _getEdge(edgeId: string) {
+        return this._indexDB._mapId2Edge.get(edgeId);
+    }
+
+    private _getEdgesInPath(startNodeId: string, path: string[]): string[] {
+        var edges = [];
+        var lastNodeId = startNodeId;
+
+        for (var node of path) {
+            this._getEdgesBetween(lastNodeId, node).forEach((edge) => {
+                edges.push(edge);
+            });
+
+            lastNodeId = node;
+        }
+
+        return edges;
+    }
+
+    private _getEdgesBetween(startNodeId, endNodeId): Set<string> {
+        return this._indexDB._mapNodePair2EdgeIds.get("" + startNodeId + "-" + endNodeId);
+    }
+
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number,
+        callback: (queryResults: QueryResults) => void) {
+        var gson = this;
+        var results: string[][] = [];
+        this._findRelations(startNodeId, endNodeId, maxDepth, new Set<string>(), results, [], 0);
+
+        var paths: RelationPath[] = results.map((path: string[]) => {
+            return {
+                nodes: path.map((id: string) => {
+                    return gson._getNode(id);
+                }),
+                edges: this._getEdgesInPath(startNodeId, path).map((id: string) => {
+                    return gson._getEdge(id);
+                }),
+            };
+        });
+
+        callback({
+            hasMore: false,
+            paths: paths,
+            queryId: '0',
+        });
+    }
+
+    requestGetMoreRelations(queryId: string,
+        callback: (queryResults: QueryResults) => void) {
+    }
+
+    private _getNeighbours(nodeId: string): Set<string> {
+        return this._indexDB._mapNodeId2NeighbourNodeIds.get(nodeId);
+    }
+
+    private _findRelations(startNodeId: string, endNodeId: string, maxDepth: number,
+        visitedNodes: Set<string>, results: string[][], path: string[], depth: number) {
+        if (depth >= maxDepth)
+            return;
+
+        visitedNodes.add(startNodeId);
+        var gson = this;
+        //get all adj nodes
+        var neighbours = this._getNeighbours(startNodeId);
+        for (var neighbour of neighbours) {
+            //already visited?
+            if (visitedNodes.has(neighbour))
+                continue;
+
+            var newPath = path.concat([neighbour]);
+            if (neighbour == endNodeId) {
+                //BINGO!!!
+                results.push(newPath);
+            }
+            else {
+                gson._findRelations(neighbour,
+                    endNodeId, maxDepth, visitedNodes,
+                    results, newPath, depth + 1);
+            }
+        }
     }
 }

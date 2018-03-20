@@ -9,7 +9,6 @@ var uglify = require('uglify-js');
 var rimraf = require('rimraf');
 var argv = require('yargs').argv;
 var replace = require('gulp-replace-pro');
-
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 
@@ -17,13 +16,15 @@ var ENTRY = './entry.js';
 var BUILD = __dirname + '/build';
 var DEBUG_DIR = __dirname + '/../grapheco-browser/debug';
 var RELEASE_DIR = __dirname + '/../grapheco-browser/release';
+var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io';
 var OUTPUT_JS = 'grapheco-browser.js';
 var OUTPUT_MAP = 'grapheco-browser.map';
 var OUTPUT_MIN_JS = 'grapheco-browser.min.js';
 var OUTPUT_CSS = 'grapheco-browser.css';
 var OUTPUT_MIN_CSS = 'grapheco-browser.min.css';
-var TS_SOURCE = './src/**/*.ts';
-var CSS_SOURCE = './src/**/*.css';
+var TS_SOURCE = './src/main/scripts/**/*.ts';
+var CSS_SOURCE = './src/main/resources/**/*.css';
+var IMG_SOURCE = './src/main/resources/img/**/*';
 
 var webpackModule = {
   loaders: [
@@ -126,7 +127,7 @@ gulp.task('clean-debug-dist', function (cb) {
 });
 
 gulp.task('copy-resources-to-debug', ['clean-build', 'clean-debug-dist'], function () {
-  var network = gulp.src('./src/img/**/*')
+  var network = gulp.src(IMG_SOURCE)
     .pipe(gulp.dest(DEBUG_DIR + '/dist/img'));
 
   return network;
@@ -196,3 +197,16 @@ gulp.task('update-release-html', ['copy-examples-to-release'], function () {
 });
 
 gulp.task('release', ['debug', 'copy-dist-to-release', 'copy-resources-to-release', 'copy-examples-to-release', 'update-release-html']);
+
+gulp.task('clean-demo', ['release'], function (cb) {
+  rimraf(DEMO_PROJECT_DIR + '/gebrowser/*', cb);
+});
+
+gulp.task('deploy-demo', ['clean-demo'], function () {
+  var network = gulp.src(RELEASE_DIR + '/**/*')
+    .pipe(gulp.dest(DEMO_PROJECT_DIR + '/gebrowser'));
+
+  return network;
+});
+
+gulp.task('deploy', ['release', 'clean-demo', 'deploy-demo']);
