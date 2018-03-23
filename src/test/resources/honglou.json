@@ -765,7 +765,7 @@
       {
         "name": "贾宝玉",
         "degree": 52,
-        "image": "./img/photo/贾宝玉.jpg",
+        "image": "./images/photo/贾宝玉.jpg",
         "id": 3863,
         "labels": [
           "person"
@@ -802,7 +802,7 @@
       {
         "name": "贾敬",
         "degree": 6,
-        "image": "./img/photo/贾敬.jpg",
+        "image": "./images/photo/贾敬.jpg",
         "id": 3867,
         "labels": [
           "person"
@@ -812,7 +812,7 @@
       {
         "name": "贾赦",
         "degree": 15,
-        "image": "./img/photo/贾赦.jpg",
+        "image": "./images/photo/贾赦.jpg",
         "id": 3868,
         "labels": [
           "person"
@@ -822,7 +822,7 @@
       {
         "name": "贾政",
         "degree": 24,
-        "image": "./img/photo/贾政.jpg",
+        "image": "./images/photo/贾政.jpg",
         "id": 3869,
         "labels": [
           "person"
@@ -832,7 +832,7 @@
       {
         "name": "贾蓉",
         "degree": 11,
-        "image": "./img/photo/贾蓉.jpg",
+        "image": "./images/photo/贾蓉.jpg",
         "id": 3870,
         "labels": [
           "person"
@@ -842,7 +842,7 @@
       {
         "name": "贾蔷",
         "degree": 7,
-        "image": "./img/photo/贾蔷.jpg",
+        "image": "./images/photo/贾蔷.jpg",
         "id": 3871,
         "labels": [
           "person"
@@ -852,7 +852,7 @@
       {
         "name": "贾兰",
         "degree": 4,
-        "image": "./img/photo/贾兰.jpg",
+        "image": "./images/photo/贾兰.jpg",
         "id": 3872,
         "labels": [
           "person"
@@ -862,7 +862,7 @@
       {
         "name": "贾珍",
         "degree": 19,
-        "image": "./img/photo/贾珍.jpg",
+        "image": "./images/photo/贾珍.jpg",
         "id": 3873,
         "labels": [
           "person"
@@ -872,7 +872,7 @@
       {
         "name": "贾琏",
         "degree": 25,
-        "image": "./img/photo/贾琏.jpg",
+        "image": "./images/photo/贾琏.jpg",
         "id": 3874,
         "labels": [
           "person"
@@ -900,7 +900,7 @@
       {
         "name": "贾环",
         "degree": 10,
-        "image": "./img/photo/贾环.jpg",
+        "image": "./images/photo/贾环.jpg",
         "id": 3877,
         "labels": [
           "person"
@@ -937,7 +937,7 @@
       {
         "name": "秦钟",
         "degree": 10,
-        "image": "./img/photo/秦钟.jpg",
+        "image": "./images/photo/秦钟.jpg",
         "id": 3881,
         "labels": [
           "person"
@@ -974,7 +974,7 @@
       {
         "name": "薛蟠",
         "degree": 17,
-        "image": "./img/photo/薛蟠.jpg",
+        "image": "./images/photo/薛蟠.jpg",
         "id": 3885,
         "labels": [
           "person"
@@ -984,7 +984,7 @@
       {
         "name": "薛蝌",
         "degree": 5,
-        "image": "./img/photo/薛蝌.jpg",
+        "image": "./images/photo/薛蝌.jpg",
         "id": 3886,
         "labels": [
           "person"
@@ -1021,7 +1021,7 @@
       {
         "name": "柳湘莲",
         "degree": 8,
-        "image": "./img/photo/柳湘莲.jpg",
+        "image": "./images/photo/柳湘莲.jpg",
         "id": 3890,
         "labels": [
           "person"
@@ -1031,7 +1031,7 @@
       {
         "name": "贾雨村",
         "degree": 9,
-        "image": "./img/photo/贾雨村.jpg",
+        "image": "./images/photo/贾雨村.jpg",
         "id": 3891,
         "labels": [
           "person"
@@ -1041,7 +1041,7 @@
       {
         "name": "贾瑞",
         "degree": 4,
-        "image": "./img/photo/贾瑞.jpg",
+        "image": "./images/photo/贾瑞.jpg",
         "id": 3892,
         "labels": [
           "person"
@@ -1060,7 +1060,7 @@
       {
         "name": "贾芸",
         "degree": 7,
-        "image": "./img/photo/贾芸.jpg",
+        "image": "./images/photo/贾芸.jpg",
         "id": 3894,
         "labels": [
           "person"
@@ -1070,7 +1070,7 @@
       {
         "name": "倪二",
         "degree": 2,
-        "image": "./img/photo/倪二.jpg",
+        "image": "./images/photo/倪二.jpg",
         "id": 3895,
         "labels": [
           "person"
@@ -1080,7 +1080,7 @@
       {
         "name": "林如海",
         "degree": 5,
-        "image": "./img/photo/林如海.jpg",
+        "image": "./images/photo/林如海.jpg",
         "id": 3896,
         "labels": [
           "person"
@@ -1090,7 +1090,7 @@
       {
         "name": "焦大",
         "degree": 2,
-        "image": "./img/photo/焦大.jpg",
+        "image": "./images/photo/焦大.jpg",
         "id": 3897,
         "labels": [
           "person"
@@ -1145,7 +1145,7 @@
       {
         "name": "甄士隐",
         "degree": 8,
-        "image": "./img/photo/甄士隐.jpg",
+        "image": "./images/photo/甄士隐.jpg",
         "id": 3903,
         "labels": [
           "person"
@@ -1155,7 +1155,7 @@
       {
         "name": "邢忠",
         "degree": 2,
-        "image": "./img/photo/邢忠.jpg",
+        "image": "./images/photo/邢忠.jpg",
         "id": 3904,
         "labels": [
           "person"
@@ -1165,7 +1165,7 @@
       {
         "name": "板儿",
         "degree": 7,
-        "image": "./img/photo/板儿.jpg",
+        "image": "./images/photo/板儿.jpg",
         "id": 3905,
         "labels": [
           "person"
@@ -1175,7 +1175,7 @@
       {
         "name": "孙绍祖",
         "degree": 5,
-        "image": "./img/photo/孙绍祖.jpg",
+        "image": "./images/photo/孙绍祖.jpg",
         "id": 3906,
         "labels": [
           "person"
@@ -1185,7 +1185,7 @@
       {
         "name": "李贵",
         "degree": 2,
-        "image": "./img/photo/李贵.jpg",
+        "image": "./images/photo/李贵.jpg",
         "id": 3907,
         "labels": [
           "person"
@@ -1213,7 +1213,7 @@
       {
         "name": "贾代儒",
         "degree": 14,
-        "image": "./img/photo/贾代儒.jpg",
+        "image": "./images/photo/贾代儒.jpg",
         "id": 3910,
         "labels": [
           "person"
@@ -1223,7 +1223,7 @@
       {
         "name": "赖大",
         "degree": 4,
-        "image": "./img/photo/赖大.jpg",
+        "image": "./images/photo/赖大.jpg",
         "id": 3911,
         "labels": [
           "person"
@@ -1251,7 +1251,7 @@
       {
         "name": "花自芳",
         "degree": 1,
-        "image": "./img/photo/花自芳.jpg",
+        "image": "./images/photo/花自芳.jpg",
         "id": 3914,
         "labels": [
           "person"
@@ -1288,7 +1288,7 @@
       {
         "name": "周瑞",
         "degree": 4,
-        "image": "./img/photo/周瑞.jpg",
+        "image": "./images/photo/周瑞.jpg",
         "id": 3918,
         "labels": [
           "person"
@@ -1298,7 +1298,7 @@
       {
         "name": "林之孝",
         "degree": 3,
-        "image": "./img/photo/林之孝.jpg",
+        "image": "./images/photo/林之孝.jpg",
         "id": 3919,
         "labels": [
           "person"
@@ -1362,7 +1362,7 @@
       {
         "name": "茗烟",
         "degree": 5,
-        "image": "./img/photo/茗烟.jpg",
+        "image": "./images/photo/茗烟.jpg",
         "id": 3926,
         "labels": [
           "person"
@@ -1372,7 +1372,7 @@
       {
         "name": "潘又安",
         "degree": 2,
-        "image": "./img/photo/潘又安.jpg",
+        "image": "./images/photo/潘又安.jpg",
         "id": 3927,
         "labels": [
           "person"
@@ -1382,7 +1382,7 @@
       {
         "name": "贾芹",
         "degree": 2,
-        "image": "./img/photo/贾芹.jpg",
+        "image": "./images/photo/贾芹.jpg",
         "id": 3929,
         "labels": [
           "person"
@@ -1428,7 +1428,7 @@
       {
         "name": "赖尚荣",
         "degree": 3,
-        "image": "./img/photo/赖尚荣.jpg",
+        "image": "./images/photo/赖尚荣.jpg",
         "id": 3934,
         "labels": [
           "person"
@@ -1483,7 +1483,7 @@
       {
         "name": "冷子兴",
         "degree": 5,
-        "image": "./img/photo/冷子兴.jpg",
+        "image": "./images/photo/冷子兴.jpg",
         "id": 3940,
         "labels": [
           "person"
@@ -1493,7 +1493,7 @@
       {
         "name": "卜世仁",
         "degree": 1,
-        "image": "./img/photo/卜世仁.jpg",
+        "image": "./images/photo/卜世仁.jpg",
         "id": 3941,
         "labels": [
           "person"
@@ -1503,7 +1503,7 @@
       {
         "name": "冯紫英",
         "degree": 1,
-        "image": "./img/photo/冯紫英.jpg",
+        "image": "./images/photo/冯紫英.jpg",
         "id": 3942,
         "labels": [
           "person"
@@ -1531,7 +1531,7 @@
       {
         "name": "卫若兰",
         "degree": 2,
-        "image": "./img/photo/卫若兰.jpg",
+        "image": "./images/photo/卫若兰.jpg",
         "id": 3945,
         "labels": [
           "person"
@@ -1559,7 +1559,7 @@
       {
         "name": "旺儿",
         "degree": 5,
-        "image": "./img/photo/旺儿.jpg",
+        "image": "./images/photo/旺儿.jpg",
         "id": 3948,
         "labels": [
           "person"
@@ -1614,7 +1614,7 @@
       {
         "name": "北静王",
         "degree": 3,
-        "image": "./img/photo/北静王.jpg",
+        "image": "./images/photo/北静王.jpg",
         "id": 3954,
         "labels": [
           "person"
@@ -1660,7 +1660,7 @@
       {
         "name": "乌进孝",
         "degree": 1,
-        "image": "./img/photo/乌进孝.jpg",
+        "image": "./images/photo/乌进孝.jpg",
         "id": 3959,
         "labels": [
           "person"
@@ -1733,7 +1733,7 @@
       {
         "name": "癞头和尚",
         "degree": 3,
-        "image": "./img/photo/癞头和尚.jpg",
+        "image": "./images/photo/癞头和尚.jpg",
         "id": 3968,
         "labels": [
           "person"
@@ -1743,7 +1743,7 @@
       {
         "name": "跛足道人",
         "degree": 4,
-        "image": "./img/photo/跛足道人.jpg",
+        "image": "./images/photo/跛足道人.jpg",
         "id": 3969,
         "labels": [
           "person"
@@ -1780,7 +1780,7 @@
       {
         "name": "林黛玉",
         "degree": 21,
-        "image": "./img/photo/林黛玉.jpg",
+        "image": "./images/photo/林黛玉.jpg",
         "id": 4037,
         "labels": [
           "person"
@@ -1790,7 +1790,7 @@
       {
         "name": "薛宝钗",
         "degree": 17,
-        "image": "./img/photo/薛宝钗.jpg",
+        "image": "./images/photo/薛宝钗.jpg",
         "id": 4038,
         "labels": [
           "person"
@@ -1800,7 +1800,7 @@
       {
         "name": "贾巧姐",
         "degree": 7,
-        "image": "./img/photo/贾巧姐.jpg",
+        "image": "./images/photo/贾巧姐.jpg",
         "id": 4039,
         "labels": [
           "person"
@@ -1810,7 +1810,7 @@
       {
         "name": "贾惜春",
         "degree": 8,
-        "image": "./img/photo/贾惜春.jpg",
+        "image": "./images/photo/贾惜春.jpg",
         "id": 4040,
         "labels": [
           "person"
@@ -1820,7 +1820,7 @@
       {
         "name": "王熙凤",
         "degree": 25,
-        "image": "./img/photo/王熙凤.jpg",
+        "image": "./images/photo/王熙凤.jpg",
         "id": 4041,
         "labels": [
           "person"
@@ -1830,7 +1830,7 @@
       {
         "name": "贾迎春",
         "degree": 10,
-        "image": "./img/photo/贾迎春.jpg",
+        "image": "./images/photo/贾迎春.jpg",
         "id": 4042,
         "labels": [
           "person"
@@ -1840,7 +1840,7 @@
       {
         "name": "李纨",
         "degree": 12,
-        "image": "./img/photo/李纨.jpg",
+        "image": "./images/photo/李纨.jpg",
         "id": 4043,
         "labels": [
           "person"
@@ -1850,7 +1850,7 @@
       {
         "name": "贾元春",
         "degree": 9,
-        "image": "./img/photo/贾元春.jpg",
+        "image": "./images/photo/贾元春.jpg",
         "id": 4044,
         "labels": [
           "person"
@@ -1860,7 +1860,7 @@
       {
         "name": "贾探春",
         "degree": 14,
-        "image": "./img/photo/贾探春.jpg",
+        "image": "./images/photo/贾探春.jpg",
         "id": 4045,
         "labels": [
           "person"
@@ -1870,7 +1870,7 @@
       {
         "name": "邢夫人",
         "degree": 12,
-        "image": "./img/photo/邢夫人.jpg",
+        "image": "./images/photo/邢夫人.jpg",
         "id": 4046,
         "labels": [
           "person"
@@ -1880,7 +1880,7 @@
       {
         "name": "赵姨娘",
         "degree": 11,
-        "image": "./img/photo/赵姨娘.jpg",
+        "image": "./images/photo/赵姨娘.jpg",
         "id": 4047,
         "labels": [
           "person"
@@ -1899,7 +1899,7 @@
       {
         "name": "贾母",
         "degree": 14,
-        "image": "./img/photo/贾母.jpg",
+        "image": "./images/photo/贾母.jpg",
         "id": 4049,
         "labels": [
           "person"
@@ -1909,7 +1909,7 @@
       {
         "name": "妙玉",
         "degree": 3,
-        "image": "./img/photo/妙玉.jpg",
+        "image": "./images/photo/妙玉.jpg",
         "id": 4050,
         "labels": [
           "person"
@@ -1919,7 +1919,7 @@
       {
         "name": "王夫人",
         "degree": 21,
-        "image": "./img/photo/王夫人.jpg",
+        "image": "./images/photo/王夫人.jpg",
         "id": 4051,
         "labels": [
           "person"
@@ -1929,7 +1929,7 @@
       {
         "name": "史湘云",
         "degree": 12,
-        "image": "./img/photo/史湘云.jpg",
+        "image": "./images/photo/史湘云.jpg",
         "id": 4052,
         "labels": [
           "person"
@@ -1939,7 +1939,7 @@
       {
         "name": "秦可卿",
         "degree": 13,
-        "image": "./img/photo/秦可卿.jpg",
+        "image": "./images/photo/秦可卿.jpg",
         "id": 4053,
         "labels": [
           "person"
@@ -1958,7 +1958,7 @@
       {
         "name": "袭人",
         "degree": 8,
-        "image": "./img/photo/袭人.jpg",
+        "image": "./images/photo/袭人.jpg",
         "id": 4055,
         "labels": [
           "person"
@@ -1968,7 +1968,7 @@
       {
         "name": "平儿",
         "degree": 7,
-        "image": "./img/photo/平儿.jpg",
+        "image": "./images/photo/平儿.jpg",
         "id": 4056,
         "labels": [
           "person"
@@ -1978,7 +1978,7 @@
       {
         "name": "鸳鸯",
         "degree": 5,
-        "image": "./img/photo/鸳鸯.jpg",
+        "image": "./images/photo/鸳鸯.jpg",
         "id": 4057,
         "labels": [
           "person"
@@ -1988,7 +1988,7 @@
       {
         "name": "紫鹃",
         "degree": 6,
-        "image": "./img/photo/紫鹃.jpg",
+        "image": "./images/photo/紫鹃.jpg",
         "id": 4058,
         "labels": [
           "person"
@@ -1998,7 +1998,7 @@
       {
         "name": "莺儿",
         "degree": 3,
-        "image": "./img/photo/莺儿.jpg",
+        "image": "./images/photo/莺儿.jpg",
         "id": 4059,
         "labels": [
           "person"
@@ -2008,7 +2008,7 @@
       {
         "name": "玉钏",
         "degree": 3,
-        "image": "./img/photo/玉钏.jpg",
+        "image": "./images/photo/玉钏.jpg",
         "id": 4060,
         "labels": [
           "person"
@@ -2018,7 +2018,7 @@
       {
         "name": "金钏",
         "degree": 4,
-        "image": "./img/photo/金钏.jpg",
+        "image": "./images/photo/金钏.jpg",
         "id": 4061,
         "labels": [
           "person"
@@ -2028,7 +2028,7 @@
       {
         "name": "彩云",
         "degree": 2,
-        "image": "./img/photo/彩云.jpg",
+        "image": "./images/photo/彩云.jpg",
         "id": 4062,
         "labels": [
           "person"
@@ -2038,7 +2038,7 @@
       {
         "name": "司棋",
         "degree": 7,
-        "image": "./img/photo/司棋.jpg",
+        "image": "./images/photo/司棋.jpg",
         "id": 4063,
         "labels": [
           "person"
@@ -2048,7 +2048,7 @@
       {
         "name": "芳官",
         "degree": 2,
-        "image": "./img/photo/芳官.jpg",
+        "image": "./images/photo/芳官.jpg",
         "id": 4064,
         "labels": [
           "person"
@@ -2058,7 +2058,7 @@
       {
         "name": "麝月",
         "degree": 4,
-        "image": "./img/photo/麝月.jpg",
+        "image": "./images/photo/麝月.jpg",
         "id": 4065,
         "labels": [
           "person"
@@ -2068,7 +2068,7 @@
       {
         "name": "香菱",
         "degree": 9,
-        "image": "./img/photo/香菱.jpg",
+        "image": "./images/photo/香菱.jpg",
         "id": 4066,
         "labels": [
           "person"
@@ -2087,7 +2087,7 @@
       {
         "name": "宝蟾",
         "degree": 4,
-        "image": "./img/photo/宝蟾.jpg",
+        "image": "./images/photo/宝蟾.jpg",
         "id": 4068,
         "labels": [
           "person"
@@ -2151,7 +2151,7 @@
       {
         "name": "薛姨妈",
         "degree": 10,
-        "image": "./img/photo/薛姨妈.jpg",
+        "image": "./images/photo/薛姨妈.jpg",
         "id": 4075,
         "labels": [
           "person"
@@ -2161,7 +2161,7 @@
       {
         "name": "夏金桂",
         "degree": 7,
-        "image": "./img/photo/夏金桂.jpg",
+        "image": "./images/photo/夏金桂.jpg",
         "id": 4076,
         "labels": [
           "person"
@@ -2171,7 +2171,7 @@
       {
         "name": "薛宝琴",
         "degree": 6,
-        "image": "./img/photo/薛宝琴.jpg",
+        "image": "./images/photo/薛宝琴.jpg",
         "id": 4077,
         "labels": [
           "person"
@@ -2181,7 +2181,7 @@
       {
         "name": "邢岫烟",
         "degree": 6,
-        "image": "./img/photo/邢岫烟.jpg",
+        "image": "./images/photo/邢岫烟.jpg",
         "id": 4078,
         "labels": [
           "person"
@@ -2191,7 +2191,7 @@
       {
         "name": "尤氏",
         "degree": 9,
-        "image": "./img/photo/尤氏.jpg",
+        "image": "./images/photo/尤氏.jpg",
         "id": 4079,
         "labels": [
           "person"
@@ -2201,7 +2201,7 @@
       {
         "name": "尤二姐",
         "degree": 7,
-        "image": "./img/photo/尤二姐.jpg",
+        "image": "./images/photo/尤二姐.jpg",
         "id": 4080,
         "labels": [
           "person"
@@ -2211,7 +2211,7 @@
       {
         "name": "尤三姐",
         "degree": 5,
-        "image": "./img/photo/尤三姐.jpg",
+        "image": "./images/photo/尤三姐.jpg",
         "id": 4081,
         "labels": [
           "person"
@@ -2221,7 +2221,7 @@
       {
         "name": "刘姥姥",
         "degree": 4,
-        "image": "./img/photo/刘姥姥.jpg",
+        "image": "./images/photo/刘姥姥.jpg",
         "id": 4082,
         "labels": [
           "person"
@@ -2249,7 +2249,7 @@
       {
         "name": "小红",
         "degree": 7,
-        "image": "./img/photo/小红.jpg",
+        "image": "./images/photo/小红.jpg",
         "id": 4085,
         "labels": [
           "person"
@@ -2268,7 +2268,7 @@
       {
         "name": "瑞珠",
         "degree": 3,
-        "image": "./img/photo/瑞珠.jpg",
+        "image": "./images/photo/瑞珠.jpg",
         "id": 4087,
         "labels": [
           "person"
@@ -2278,7 +2278,7 @@
       {
         "name": "藕官",
         "degree": 3,
-        "image": "./img/photo/藕官.jpg",
+        "image": "./images/photo/藕官.jpg",
         "id": 4088,
         "labels": [
           "person"
@@ -2288,7 +2288,7 @@
       {
         "name": "蕊官",
         "degree": 1,
-        "image": "./img/photo/蕊官.jpg",
+        "image": "./images/photo/蕊官.jpg",
         "id": 4089,
         "labels": [
           "person"
@@ -2298,7 +2298,7 @@
       {
         "name": "入画",
         "degree": 2,
-        "image": "./img/photo/入画.jpg",
+        "image": "./images/photo/入画.jpg",
         "id": 4090,
         "labels": [
           "person"
@@ -2335,7 +2335,7 @@
       {
         "name": "绣橘",
         "degree": 1,
-        "image": "./img/photo/绣橘.jpg",
+        "image": "./images/photo/绣橘.jpg",
         "id": 4094,
         "labels": [
           "person"
@@ -2345,7 +2345,7 @@
       {
         "name": "侍书",
         "degree": 2,
-        "image": "./img/photo/侍书.jpg",
+        "image": "./images/photo/侍书.jpg",
         "id": 4095,
         "labels": [
           "person"
@@ -2364,7 +2364,7 @@
       {
         "name": "翠缕",
         "degree": 1,
-        "image": "./img/photo/翠缕.jpg",
+        "image": "./images/photo/翠缕.jpg",
         "id": 4097,
         "labels": [
           "person"
@@ -2410,7 +2410,7 @@
       {
         "name": "善姐",
         "degree": 2,
-        "image": "./img/photo/善姐.jpg",
+        "image": "./images/photo/善姐.jpg",
         "id": 4102,
         "labels": [
           "person"
@@ -2447,7 +2447,7 @@
       {
         "name": "宝珠",
         "degree": 2,
-        "image": "./img/photo/宝珠.jpg",
+        "image": "./images/photo/宝珠.jpg",
         "id": 4106,
         "labels": [
           "person"
@@ -2529,7 +2529,7 @@
       {
         "name": "秋桐",
         "degree": 3,
-        "image": "./img/photo/秋桐.jpg",
+        "image": "./images/photo/秋桐.jpg",
         "id": 4115,
         "labels": [
           "person"
@@ -2548,7 +2548,7 @@
       {
         "name": "娇杏",
         "degree": 3,
-        "image": "./img/photo/娇杏.jpg",
+        "image": "./images/photo/娇杏.jpg",
         "id": 4117,
         "labels": [
           "person"
@@ -2576,7 +2576,7 @@
       {
         "name": "王嬷嬷",
         "degree": 2,
-        "image": "./img/photo/王嬷嬷.jpg",
+        "image": "./images/photo/王嬷嬷.jpg",
         "id": 4120,
         "labels": [
           "person"
@@ -2586,7 +2586,7 @@
       {
         "name": "李嬷嬷",
         "degree": 3,
-        "image": "./img/photo/李嬷嬷.jpg",
+        "image": "./images/photo/李嬷嬷.jpg",
         "id": 4121,
         "labels": [
           "person"
@@ -2596,7 +2596,7 @@
       {
         "name": "多姑娘",
         "degree": 4,
-        "image": "./img/photo/多姑娘.jpg",
+        "image": "./images/photo/多姑娘.jpg",
         "id": 4122,
         "labels": [
           "person"
@@ -2624,7 +2624,7 @@
       {
         "name": "王善保家的",
         "degree": 6,
-        "image": "./img/photo/王善保家的.jpg",
+        "image": "./images/photo/王善保家的.jpg",
         "id": 4125,
         "labels": [
           "person"
@@ -2679,7 +2679,7 @@
       {
         "name": "周瑞家的",
         "degree": 6,
-        "image": "./img/photo/周瑞家的.jpg",
+        "image": "./images/photo/周瑞家的.jpg",
         "id": 4131,
         "labels": [
           "person"
@@ -2689,7 +2689,7 @@
       {
         "name": "林之孝家的",
         "degree": 4,
-        "image": "./img/photo/林之孝家的.jpg",
+        "image": "./images/photo/林之孝家的.jpg",
         "id": 4132,
         "labels": [
           "person"
@@ -2699,7 +2699,7 @@
       {
         "name": "柳五儿",
         "degree": 2,
-        "image": "./img/photo/柳五儿.jpg",
+        "image": "./images/photo/柳五儿.jpg",
         "id": 4133,
         "labels": [
           "person"
@@ -2709,7 +2709,7 @@
       {
         "name": "秦显家的",
         "degree": 1,
-        "image": "./img/photo/秦显家的.jpg",
+        "image": "./images/photo/秦显家的.jpg",
         "id": 4134,
         "labels": [
           "person"
@@ -2755,7 +2755,7 @@
       {
         "name": "龄官",
         "degree": 2,
-        "image": "./img/photo/龄官.jpg",
+        "image": "./images/photo/龄官.jpg",
         "id": 4140,
         "labels": [
           "person"
@@ -2774,7 +2774,7 @@
       {
         "name": "赖嬷嬷",
         "degree": 2,
-        "image": "./img/photo/赖嬷嬷.jpg",
+        "image": "./images/photo/赖嬷嬷.jpg",
         "id": 4142,
         "labels": [
           "person"
@@ -2811,7 +2811,7 @@
       {
         "name": "坠儿",
         "degree": 3,
-        "image": "./img/photo/坠儿.jpg",
+        "image": "./images/photo/坠儿.jpg",
         "id": 4146,
         "labels": [
           "person"
@@ -2848,7 +2848,7 @@
       {
         "name": "司棋母",
         "degree": 2,
-        "image": "./img/photo/司棋母.jpg",
+        "image": "./images/photo/司棋母.jpg",
         "id": 4150,
         "labels": [
           "person"
@@ -2867,7 +2867,7 @@
       {
         "name": "尤老娘",
         "degree": 1,
-        "image": "./img/photo/尤老娘.jpg",
+        "image": "./images/photo/尤老娘.jpg",
         "id": 4152,
         "labels": [
           "person"
@@ -2904,7 +2904,7 @@
       {
         "name": "赵嬷嬷",
         "degree": 3,
-        "image": "./img/photo/赵嬷嬷.jpg",
+        "image": "./images/photo/赵嬷嬷.jpg",
         "id": 4156,
         "labels": [
           "person"
@@ -2950,7 +2950,7 @@
       {
         "name": "代儒夫人",
         "degree": 2,
-        "image": "./img/photo/代儒夫人.jpg",
+        "image": "./images/photo/代儒夫人.jpg",
         "id": 4162,
         "labels": [
           "person"
@@ -2960,7 +2960,7 @@
       {
         "name": "春燕",
         "degree": 2,
-        "image": "./img/photo/春燕.jpg",
+        "image": "./images/photo/春燕.jpg",
         "id": 4163,
         "labels": [
           "person"
@@ -2970,7 +2970,7 @@
       {
         "name": "何婆子",
         "degree": 1,
-        "image": "./img/photo/何婆子.jpg",
+        "image": "./images/photo/何婆子.jpg",
         "id": 4164,
         "labels": [
           "person"
@@ -2980,7 +2980,7 @@
       {
         "name": "碧痕",
         "degree": 1,
-        "image": "./img/photo/碧痕.jpg",
+        "image": "./images/photo/碧痕.jpg",
         "id": 4165,
         "labels": [
           "person"
@@ -3008,7 +3008,7 @@
       {
         "name": "马道婆",
         "degree": 4,
-        "image": "./img/photo/马道婆.jpg",
+        "image": "./images/photo/马道婆.jpg",
         "id": 4168,
         "labels": [
           "person"
@@ -3018,7 +3018,7 @@
       {
         "name": "南安太妃",
         "degree": 5,
-        "image": "./img/photo/南安太妃.jpg",
+        "image": "./images/photo/南安太妃.jpg",
         "id": 4169,
         "labels": [
           "person"

@@ -72,7 +72,7 @@ export class RelFinderCtrl implements Control {
 
         this._service.requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
             thisCtrl._browser.getShowGraphOptions(),
-            this._collectFoundRelations.bind(this), true);
+            this._collectFoundRelations.bind(this));
     }
 
     public stopQuery() {

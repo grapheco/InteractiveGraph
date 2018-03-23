@@ -449,7 +449,7 @@ export class GraphRAM implements GraphService {
     private _findRelationsDFS(startNodeId: string, endNodeId: string, maxDepth: number,
         results: string[][], path: string[], depth: number) {
 
-        if (depth >= maxDepth)
+        if (depth > maxDepth)
             return;
 
         var newPath = path.concat([startNodeId]);
@@ -481,7 +481,7 @@ export class GraphRAM implements GraphService {
         while (queue.length > 0) {
             var one = queue.shift();
 
-            if (one.depth >= maxDepth)
+            if (one.depth > maxDepth)
                 continue;
 
             if (one.nodeId == endNodeId) {

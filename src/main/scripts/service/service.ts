@@ -19,7 +19,7 @@ export interface GraphService {
         callback: (updates: object[]) => void);
 
     //FIXME: bad design, kill showGraphOptions
-    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, showGraphOptions: ShowGraphOptions, callback: (queryResults: QueryResults) => void, algDfsOrBfs: boolean);
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, showGraphOptions: ShowGraphOptions, callback: (queryResults: QueryResults) => void);
     requestGetMoreRelations(queryId: string, showGraphOptions: ShowGraphOptions, callback: (queryResults: QueryResults) => void);
     requestStopFindRelations(queryId: string);
 }

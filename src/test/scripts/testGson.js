@@ -23,7 +23,7 @@ var graph = GraphRAM.fromGson(gson);
 graph.requestInit(function () {
     var startNodeId = 'A';
     var endNodeId = 'B';
-    var maxDepth = 6;
+    var maxDepth = 4;
     var results = [];
 
     graph._findRelationsDFS(startNodeId, endNodeId, maxDepth, results, [], 0);
