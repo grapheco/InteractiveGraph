@@ -80,8 +80,8 @@ export class ExpansionCtrl implements Control {
         });
 
         //DANGER!!!
-        browser.removeAllListeners(BrowserEventName.INSERT_NODE);
-        browser.on(BrowserEventName.INSERT_NODE, function (network, nodeId) {
+        browser.removeAllListeners(BrowserEventName.INSERT_NODES);
+        browser.on(BrowserEventName.INSERT_NODES, function (network, nodeId) {
             thisCtrl.collapse(nodeId);
         });
 

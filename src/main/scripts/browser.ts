@@ -326,17 +326,45 @@ export class GraphBrowser extends events.EventEmitter {
         });
 
         if (newNodes.length > 0) {
-            this.emit(BrowserEventName.INSERT_NODE, this._network, newNodeIds);
+            this.emit(BrowserEventName.INSERT_NODES, this._network, newNodeIds);
         }
 
         return newNodeIds;
     }
 
+    /**
+     * delete matched nodes
+     * @param filter a function tells id the node should be deleted, set undefined if want to delete all
+     */
+    public deleteNodes(filter: (node) => boolean) {
+        if (filter === undefined) {
+            this._nodes.clear();
+            return;
+        }
+
+        var nodeIds = [];
+        this._nodes.forEach((node) => {
+            if (filter(node))
+                nodeIds.push(node.id);
+        })
+
+        this._nodes.remove(nodeIds);
+    }
+
     public focusNodes(nodeIds: string[]): void {
         this._network.fit({ nodes: nodeIds, animation: true });
         if (nodeIds.length > 0) {
-            this.emit(BrowserEventName.FOCUS_NODE, this._network, nodeIds);
+            this.emit(BrowserEventName.FOCUS_NODES, this._network, nodeIds);
         }
+    }
+
+    public fixNodes(nodeIds: string[]): void {
+        this._nodes.update(nodeIds.map((nodeId) => {
+            return {
+                id: nodeId,
+                fixed: true
+            };
+        }));
     }
 
     public insertEdges(edges: any[]): void {

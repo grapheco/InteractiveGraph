@@ -26,8 +26,8 @@ export interface ShowGraphOptions {
 }
 
 export enum BrowserEventName {
-    FOCUS_NODE = "FOCUS_EXISTING_NODE",
-    INSERT_NODE = "ADD_NEW_NODE",
+    FOCUS_NODES = "FOCUS_NODES",
+    INSERT_NODES = "INSERT_NODES",
     NETWORK_BEFORE_DRAWING = "NETWORK_BEFORE_DRAWING",
     NETWORK_AFTER_DRAWING = "NETWORK_END_DRAWING",
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
@@ -55,7 +55,7 @@ export interface QueryResults {
     queryId: string;
 }
 
-export interface Pair<K,V> {
+export interface Pair<K, V> {
     _1: K,
     _2: V;
 }

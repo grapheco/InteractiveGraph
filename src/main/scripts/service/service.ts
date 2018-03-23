@@ -18,6 +18,8 @@ export interface GraphService {
     requestUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
         callback: (updates: object[]) => void);
 
-    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryResults: QueryResults) => void);
-    requestGetMoreRelations(queryId: string, callback: (queryResults: QueryResults) => void);
+    //FIXME: bad design, kill showGraphOptions
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, showGraphOptions: ShowGraphOptions, callback: (queryResults: QueryResults) => void, algDfsOrBfs: boolean);
+    requestGetMoreRelations(queryId: string, showGraphOptions: ShowGraphOptions, callback: (queryResults: QueryResults) => void);
+    requestStopFindRelations(queryId: string);
 }

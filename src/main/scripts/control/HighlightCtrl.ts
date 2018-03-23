@@ -8,8 +8,11 @@ import { Control } from "./Control";
 export class HighlightCtrl implements Control {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
-    public highlight(nodeId: string) {
-        this._mapNodeId2HighlightFlag.set(nodeId, true);
+    public highlight(nodeIds: string | string[]) {
+        var x: string[] = nodeIds instanceof Array ? nodeIds : [nodeIds];
+        x.forEach((nodeId) => {
+            this._mapNodeId2HighlightFlag.set(nodeId, true);
+        });
     }
 
     public toggle(nodeId: string) {
@@ -20,8 +23,11 @@ export class HighlightCtrl implements Control {
             this._mapNodeId2HighlightFlag.set(nodeId, true);
     }
 
-    public unhighlight(nodeId: string) {
-        this._mapNodeId2HighlightFlag.delete(nodeId);
+    public unhighlight(nodeIds: string | string[]) {
+        var x: string[] = nodeIds instanceof Array ? nodeIds : [nodeIds];
+        x.forEach((nodeId) => {
+            this._mapNodeId2HighlightFlag.delete(nodeId);
+        });
     }
 
     public unhighlightAll() {
@@ -67,9 +73,9 @@ export class HighlightCtrl implements Control {
         });
 
         //DANGER!!!
-        browser.removeAllListeners(BrowserEventName.FOCUS_NODE);
-        browser.on(BrowserEventName.FOCUS_NODE, function (network, nodeId) {
-            thisCtrl.highlight(nodeId);
+        browser.removeAllListeners(BrowserEventName.FOCUS_NODES);
+        browser.on(BrowserEventName.FOCUS_NODES, function (network, nodeIds) {
+            thisCtrl.highlight(nodeIds);
         });
 
         //DANGER!!!
