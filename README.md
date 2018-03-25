@@ -1,7 +1,7 @@
 # InteractiveGraphBrowser
 InteractiveGraphBrowser is a web-based browser for large graph databases.
 
-online demo: https://bluejoe2008.github.io/igbrowser/examples/example1.html
+online demo: https://bluejoe2008.github.io/gebrowser/examples/example1.html
 
 # dependencies
 this project depends on following components:
