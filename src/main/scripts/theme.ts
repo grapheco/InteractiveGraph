@@ -1,6 +1,8 @@
 export interface Theme {
     canvasBackground: string;
+    //TODO: hide detailed options
     networkOptions: vis.Options;
+    //TODO: this option belongs to some ctrl
     nodeHighlightColor: string[];
     nodeUnexpanedColor: string[];
 }
@@ -27,16 +29,18 @@ export class Themes {
                     }
                 },
                 edges: {
-                    width: 0.05,
+                    width: 0.01,
                     font: {
-                        size: 0,
+                        size: 11,
                     },
                     color: {
+                        //inherit: 'to',
+                        opacity: 0.4,
+                        //color: '#cccccc',
                         highlight: '#ff0000',
-                        hover: '#848484',
+                        hover: '#ff0000',
                     },
                     hoverWidth: 0.05,
-                    selectionWidth: 0.08,
                     arrows: {
                         from: {},
                         to: {
@@ -71,6 +75,7 @@ export class Themes {
                     hideEdgesOnDrag: true,
                     selectable: true,
                     navigationButtons: true,
+                    //selectConnectedEdges: false,
                 }
             }
         };

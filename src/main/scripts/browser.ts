@@ -16,9 +16,11 @@ import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
 
 var PI: number = 3.1415926;
 var CANVAS_PADDING: number = 80;
+var MAX_EDGES_COUNT = 5000;
+var MAX_NODES_COUNT = 5000;
 
 export class GraphBrowser extends events.EventEmitter {
-    public _jqueryGraphArea: JQuery<HTMLElement>;
+    private _htmlGraphArea: HTMLElement;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
     private _graphService: GraphService;
@@ -33,6 +35,10 @@ export class GraphBrowser extends events.EventEmitter {
         showEdges: true,
         showLabels: true
     };
+
+    public getContainerElement(): HTMLElement {
+        return this._htmlGraphArea;
+    }
 
     public addControl(ctrlName: string, ctrl?: Control) {
         if (ctrl === undefined)
@@ -56,11 +62,22 @@ export class GraphBrowser extends events.EventEmitter {
         this._edges = new vis.DataSet<vis.Edge>();
 
         options = options || {};
-        this._jqueryGraphArea = $(htmlGraphArea);
+        this._htmlGraphArea = htmlGraphArea;
 
         this.updateTheme(options.theme);
         var showGraphOptions = options.showGraphOptions || {};
         this._showGraphOptions = Utils.extend(this._defaultShowGraphOptions, showGraphOptions);
+
+        if (options.edgeColorInherit !== undefined) {
+            this._theme.networkOptions.edges.color = {
+                'inherit': options.edgeColorInherit
+            }
+        }
+
+        if (options.hideUnselectedEdgeLabel === true) {
+            this._theme.networkOptions.edges.font['size'] = 0;
+            this._enableHideUnselectedEdgeLabel();
+        }
 
         this._network = new vis.Network(htmlGraphArea, {
             nodes: this._nodes,
@@ -88,28 +105,11 @@ export class GraphBrowser extends events.EventEmitter {
         })
     }
 
-    private _bindNetworkEvent(networkEventName, browserEventName) {
-        var browser: GraphBrowser = this;
-        this._network.on(networkEventName, function (args) {
-            browser.emit(browserEventName, browser._network, args);
-        });
-    }
-
-    private _bindNetworkEvents() {
-        var browser: GraphBrowser = this;
-        var eventsMap = Utils.toMap({
-            "click": BrowserEventName.NETWORK_CLICK,
-            "doubleClick": BrowserEventName.NETWORK_DBLCLICK,
-            "beforeDrawing": BrowserEventName.NETWORK_BEFORE_DRAWING,
-            "afterDrawing": BrowserEventName.NETWORK_AFTER_DRAWING,
-        });
-
-        eventsMap.forEach((v, k, map) => {
-            this._bindNetworkEvent(k, v);
-        });
+    private _enableHideUnselectedEdgeLabel() {
+        var browser = this;
 
         //hide deselected edges
-        this._network.on("selectEdge", function (args) {
+        this.on(BrowserEventName.NETWORK_SELECT_EDGES, function (network, args) {
             //set font size normal
             if (args.edges.length > 0) {
                 var updates = [];
@@ -117,7 +117,7 @@ export class GraphBrowser extends events.EventEmitter {
                 edgeIds.forEach(edgeId => {
                     updates.push({
                         id: edgeId, font: {
-                            size: 12,
+                            size: 11,
                         }
                     });
                 }
@@ -128,7 +128,7 @@ export class GraphBrowser extends events.EventEmitter {
         });
 
         //hide deselected edges
-        this._network.on("deselectEdge", function (args) {
+        this.on(BrowserEventName.NETWORK_DESELECT_EDGES, function (network, args) {
             //set font size 0
             if (args.previousSelection.edges.length > 0) {
                 var updates = [];
@@ -147,6 +147,31 @@ export class GraphBrowser extends events.EventEmitter {
         });
     }
 
+    private _bindNetworkEvent(networkEventName, browserEventName) {
+        var browser: GraphBrowser = this;
+        this._network.on(networkEventName, function (args) {
+            //console.debug(browserEventName, args);
+            browser.emit(browserEventName, browser._network, args);
+        });
+    }
+
+    private _bindNetworkEvents() {
+        var browser: GraphBrowser = this;
+        var eventsMap = Utils.toMap({
+            "click": BrowserEventName.NETWORK_CLICK,
+            "doubleClick": BrowserEventName.NETWORK_DBLCLICK,
+            "beforeDrawing": BrowserEventName.NETWORK_BEFORE_DRAWING,
+            "afterDrawing": BrowserEventName.NETWORK_AFTER_DRAWING,
+            "selectEdge": BrowserEventName.NETWORK_SELECT_EDGES,
+            "deselectEdge": BrowserEventName.NETWORK_DESELECT_EDGES,
+            "dragging": BrowserEventName.NETWORK_DRAGGING,
+        });
+
+        eventsMap.forEach((v, k, map) => {
+            this._bindNetworkEvent(k, v);
+        });
+    }
+
     public updateTheme(theme: Theme | Function) {
         if (theme instanceof Function) {
             theme(this._theme);
@@ -155,9 +180,11 @@ export class GraphBrowser extends events.EventEmitter {
             this._theme = theme || Themes.DEFAULT();
         }
 
-        this._jqueryGraphArea.css('background', this._theme.canvasBackground);
-        if (this._network !== undefined)
+        $(this._htmlGraphArea).css('background', this._theme.canvasBackground);
+
+        if (this._network !== undefined) {
             this._network.setOptions(this._theme.networkOptions);
+        }
     }
 
     public init(callback) {
@@ -242,9 +269,10 @@ export class GraphBrowser extends events.EventEmitter {
 
         var updates = [];
 
-        var ratio = 1 - 1 / nodeIds.length;
-        var canvasWidth = this._jqueryGraphArea.width();
-        var canvasHeight = this._jqueryGraphArea.height();
+        var ratio = 1 - 1 / (nodeIds.length * nodeIds.length);
+        var jq = $(this._htmlGraphArea);
+        var canvasWidth = jq.width();
+        var canvasHeight = jq.height();
 
         var angle = PI, scopeX = ratio * canvasWidth / 3, scopeY = ratio * canvasHeight / 3;
         var delta = 2 * PI / nodeIds.length;
@@ -253,7 +281,7 @@ export class GraphBrowser extends events.EventEmitter {
             var x = scopeX * Math.cos(angle);
             var y = scopeY * Math.sin(angle);
             angle += delta;
-            updates.push({ id: nodeId, x: x, y: y });
+            updates.push({ id: nodeId, x: x, y: y, physics: false });
         });
 
         this._nodes.update(updates);
@@ -295,6 +323,12 @@ export class GraphBrowser extends events.EventEmitter {
             function (nodes: vis.Node[], edges: vis.Edge[]) {
                 browser._nodes = new vis.DataSet<vis.Node>(nodes);
                 browser._edges = new vis.DataSet<vis.Edge>(edges);
+
+                if (nodes.length > MAX_NODES_COUNT || edges.length > MAX_EDGES_COUNT)
+                    browser.updateTheme((theme: Theme) => {
+                        theme.networkOptions.physics = false;
+                    });
+
                 browser._network.setData({ nodes: browser._nodes, edges: browser._edges });
 
                 callback();

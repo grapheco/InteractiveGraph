@@ -28,10 +28,15 @@ export interface ShowGraphOptions {
 export enum BrowserEventName {
     FOCUS_NODES = "FOCUS_NODES",
     INSERT_NODES = "INSERT_NODES",
+    NETWORK_SELECT_NODES = "NETWORK_SELECT_NODES",
+    NETWORK_DESELECT_NODES = "NETWORK_DESELECT_NODES",
+    NETWORK_SELECT_EDGES = "NETWORK_SELECT_EDGES",
+    NETWORK_DESELECT_EDGES = "NETWORK_DESELECT_EDGES",
     NETWORK_BEFORE_DRAWING = "NETWORK_BEFORE_DRAWING",
     NETWORK_AFTER_DRAWING = "NETWORK_END_DRAWING",
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
     NETWORK_CLICK = "NETWORK_CLICK",
+    NETWORK_DRAGGING = "NETWORK_DRAGGING",
 }
 
 export interface BrowserOptions {
@@ -42,6 +47,9 @@ export interface BrowserOptions {
     enableExpansionCtrl?: boolean;
     enableRelFinderCtrl?: boolean;
     showGraphOptions?: ShowGraphOptions;
+
+    hideUnselectedEdgeLabel?: boolean;
+    edgeColorInherit?: string;
 }
 
 export interface RelationPath {

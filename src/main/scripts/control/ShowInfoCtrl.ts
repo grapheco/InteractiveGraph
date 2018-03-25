@@ -18,7 +18,7 @@ export class ShowInfoCtrl implements Control {
              <div id="infoBox" class="infoBox"></div>
          </div>
          */
-        var offset = browser._jqueryGraphArea.offset();
+        var offset = $(browser.getContainerElement()).offset();
 
         var htmlInfoPanel = document.createElement("div");
         $(htmlInfoPanel).addClass("infoPanel")

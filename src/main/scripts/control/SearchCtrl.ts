@@ -22,7 +22,7 @@ export class SearchCtrl implements Control {
         </div>
         */
         var thisCtrl = this;
-        var offset = browser._jqueryGraphArea.offset();
+        var offset = $(browser.getContainerElement()).offset();
         var panel = document.createElement("div");
         $(panel).addClass("searchPanel")
             .offset({ left: offset.left + 10, top: offset.top + 20 })

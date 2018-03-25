@@ -7,7 +7,7 @@ import { Control } from "./Control";
 
 export class MessageBoxCtrl implements Control {
     private _jqueryMessageBox: JQuery<HTMLElement>;
-    private _browser;
+    private _browser:GraphBrowser;
 
     init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
         //message bar
@@ -19,7 +19,7 @@ export class MessageBoxCtrl implements Control {
     }
 
     public showMessage(msgCode: string) {
-        var jaa = this._browser._jqueryGraphArea;
+        var jaa = $(this._browser.getContainerElement());
         var pos = jaa.position();
         var left = pos.left + (jaa.width() - this._jqueryMessageBox.width()) / 2;
         var top = pos.top + (jaa.height() - this._jqueryMessageBox.height()) / 2;

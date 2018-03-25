@@ -21,6 +21,7 @@ export class GraphRAM implements GraphService {
         _mapNodePair2EdgeIds: new Map<string, Set<string>>(),
     };
 
+    //TODO: defines translators() in gson
     private _defaultTranslateGson2GraphData: (source: Gson) => GraphData = function (source: Gson) {
         var nodes = source.data.nodes;
         var edges = source.data.edges;
@@ -34,11 +35,16 @@ export class GraphRAM implements GraphService {
                 if (node.image !== undefined) {
                     description += "<img src='" + node.image + "' width=150/><br>";
                 }
-                description += "<b>" + node.name + "</b>" + "[" + node.id + "]";
+                description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
                 description += "</p>";
 
-                if (node.info !== undefined)
+                if (node.info !== undefined) {
                     description += "<p align=left>" + node.info + "</p>";
+                }
+                else {
+                    if (node.title !== undefined)
+                        description += "<p align=left>" + node.title + "</p>";
+                }
 
                 node.description = description;
             }
@@ -46,13 +52,13 @@ export class GraphRAM implements GraphService {
             if (node.id === undefined)
                 node.id = counterNode++;
 
-            //set label
-            if (node.label === undefined && node.name !== undefined)
-                node.label = node.name;
+            //set title
+            if (node.title === undefined && node.label !== undefined)
+                node.title = "<b>" + node.label + "</b>" + "[" + node.id + "]";
 
             //set group
-            if (node.group === undefined && node.labels instanceof Array)
-                node.group = node.labels[0];
+            if (node.group === undefined && node.categories instanceof Array)
+                node.group = node.categories[0];
         });
 
         edges.forEach((edge: any) => {
@@ -228,7 +234,7 @@ export class GraphRAM implements GraphService {
         var results = [];
         var node: any;
         for (node of this._nodes) {
-            if (node.name.indexOf(keyword) > -1) {
+            if (node.label.indexOf(keyword) > -1) {
                 results.push(node);
                 if (results.length > limit)
                     break;
@@ -315,12 +321,28 @@ export class GraphRAM implements GraphService {
     private _gsonNode2VisNode(gsonNode: any, showGraphOptions: ShowGraphOptions): vis.Node {
         var visNode: any = { id: gsonNode.id };
 
+        if (gsonNode.x !== undefined) {
+            visNode.x = gsonNode.x;
+        }
+
+        if (gsonNode.y !== undefined) {
+            visNode.y = gsonNode.y;
+        }
+
         ///////show label
         if (showGraphOptions.showLabels === true) {
-            visNode.label = gsonNode.name;
+            visNode.label = gsonNode.label;
         }
         if (showGraphOptions.showLabels === false) {
-            visNode.label = "";
+            visNode.label = null;
+        }
+
+        ///////show label
+        if (showGraphOptions.showTitles === true) {
+            visNode.title = gsonNode.title;
+        }
+        if (showGraphOptions.showTitles === false) {
+            visNode.title = null;
         }
 
         ///////show node?
@@ -345,12 +367,12 @@ export class GraphRAM implements GraphService {
             visNode.group = gsonNode.group;
         }
         if (showGraphOptions.showGroups === false) {
-            visNode.group = 0;
+            visNode.group = null;
         }
 
         ///////show degree?
-        if (showGraphOptions.showDegrees === true && gsonNode.degree !== undefined) {
-            visNode.value = gsonNode.degree;
+        if (showGraphOptions.showDegrees === true && gsonNode.value !== undefined) {
+            visNode.value = gsonNode.value;
         }
         if (showGraphOptions.showDegrees === false) {
             visNode.value = 1;
