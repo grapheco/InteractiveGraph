@@ -1,8 +1,15 @@
 import { Theme } from './Theme';
+import { Control } from './control/Control';
+import { ToolbarCtrl } from './control/ToolbarCtrl';
 
 export interface GraphData {
     nodes: object[];
     edges: object[];
+}
+
+export interface ScreenData {
+    nodes: vis.DataSet<vis.Node>,
+    edges: vis.DataSet<vis.Edge>
 }
 
 /** 
@@ -13,6 +20,20 @@ export interface Gson {
     dbinfo: object;
     labels: object;
     defaultData: GraphData;
+}
+
+export interface ButtonOptions {
+    disabled?: boolean,
+    icon?: string,
+    iconPosition?: string,
+    caption?: string,
+    tooltip?: string,
+    click?: Function
+}
+
+export interface EVENT_ARGS_CREATE_BUTTONS {
+    toolbar: ToolbarCtrl,
+    htmlElement: HTMLElement;
 }
 
 export interface ShowGraphOptions {
@@ -28,6 +49,7 @@ export interface ShowGraphOptions {
 export enum BrowserEventName {
     FOCUS_NODES = "FOCUS_NODES",
     INSERT_NODES = "INSERT_NODES",
+    CREATE_BUTTONS = "CREATE_BUTTONS",
     NETWORK_SELECT_NODES = "NETWORK_SELECT_NODES",
     NETWORK_DESELECT_NODES = "NETWORK_DESELECT_NODES",
     NETWORK_SELECT_EDGES = "NETWORK_SELECT_EDGES",
@@ -41,13 +63,7 @@ export enum BrowserEventName {
 
 export interface BrowserOptions {
     theme?: Theme;
-    enableSearchCtrl?: boolean;
-    enableShowInfoCtrl?: boolean;
-    enableHighlightCtrl?: boolean;
-    enableExpansionCtrl?: boolean;
-    enableRelFinderCtrl?: boolean;
     showGraphOptions?: ShowGraphOptions;
-
     hideUnselectedEdgeLabel?: boolean;
     edgeColorInherit?: string;
 }

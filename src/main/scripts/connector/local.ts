@@ -1,13 +1,13 @@
 /**
  * Created by bluejoe on 2018/2/24.
  */
-import { GraphService } from './service';
+import { Connector } from './base';
 import { Utils } from '../utils';
 import { } from "jquery";
 import { GraphData, Pair, Gson, ShowGraphOptions, QueryResults, RelationPath } from '../types';
 import * as vis from "vis";
 
-export class GraphRAM implements GraphService {
+export class LocalGraph implements Connector {
     private _nodes: object[];
     private _edges: object[];
     private _labels: object;
@@ -127,7 +127,7 @@ export class GraphRAM implements GraphService {
     }
 
     public static fromGson(gson: Gson, translate?: (source: Gson) => GraphData) {
-        var graph = new GraphRAM();
+        var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             graph._processGson(gson, translate);
             callbackAfterLoad();
@@ -137,7 +137,7 @@ export class GraphRAM implements GraphService {
     }
 
     public static fromGsonString(gsonString: string, translate?: (source: Gson) => GraphData) {
-        var graph = new GraphRAM();
+        var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             graph._processGson(JSON.parse(gsonString), translate);
             callbackAfterLoad();
@@ -147,7 +147,7 @@ export class GraphRAM implements GraphService {
     }
 
     public static fromGsonFile(gsonURL, translate?: (source: Gson) => GraphData) {
-        var graph = new GraphRAM();
+        var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             $.getJSON(gsonURL, function (data) {
                 graph._processGson(data, translate);
@@ -158,7 +158,7 @@ export class GraphRAM implements GraphService {
         return graph;
     }
 
-    getMapName2Class(): object {
+    getNodeCategories(): object {
         return this._labels;
     }
 
@@ -175,15 +175,15 @@ export class GraphRAM implements GraphService {
         }
     }
 
-    requestInit(callback: () => void) {
-        var local: GraphRAM = this;
+    requestConnect(callback: () => void) {
+        var local: LocalGraph = this;
         this._async(() => {
             local._callbackLoadData(callback);
         });
     }
 
     requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
-        var local: GraphRAM = this;
+        var local: LocalGraph = this;
         this._async(() =>
             callback(nodeIds.map(nodeId => {
                 let node: any = local._getNode(nodeId);
@@ -195,28 +195,19 @@ export class GraphRAM implements GraphService {
             })));
     }
 
-    private _gsonNodes2VisNodes(nodes: object[], showGraphOptions: ShowGraphOptions): vis.Node[] {
-        return nodes.map((node: any) => {
-            return this._gsonNode2VisNode(node, showGraphOptions);
-        }
-        );
-    }
-
-    requestLoadGraph(showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[], edges: vis.Edge[]) => void) {
-        var local: GraphRAM = this;
+    requestLoadGraph(callback: (nodes: vis.Node[], edges: vis.Edge[]) => void) {
+        var local: LocalGraph = this;
         this._async(() =>
-            callback(local._gsonNodes2VisNodes(local._nodes, showGraphOptions),
-                local._edges));
+            callback(local._nodes, local._edges));
     }
 
-    requestSearch(expr: any, limit: number, showGraphOptions: ShowGraphOptions, callback: (nodes: vis.Node[]) => void) {
-        var local: GraphRAM = this;
+    requestSearch(expr: any, limit: number, callback: (nodes: vis.Node[]) => void) {
+        var local: LocalGraph = this;
         this._async(() => {
-            var results = local._gsonNodes2VisNodes(
+            var results =
                 expr instanceof Array ?
                     local._searchByExprArray(expr, limit) :
-                    local._searchBySingleExpr(expr, limit),
-                showGraphOptions);
+                    local._searchBySingleExpr(expr, limit);
 
             callback(results);
         }
@@ -275,8 +266,8 @@ export class GraphRAM implements GraphService {
         return results;
     }
 
-    requestGetNeighbours(nodeId: string, showGraphOptions: ShowGraphOptions, callback: (neighbourNodes: vis.Node[], neighbourEdges: vis.Node[]) => void) {
-        var local: GraphRAM = this;
+    requestGetNeighbours(nodeId: string, callback: (neighbourNodes: vis.Node[], neighbourEdges: vis.Node[]) => void) {
+        var local: LocalGraph = this;
         this._async(() => {
             var neighbourEdges: vis.Node[] = Utils.distinct(
                 local._edges.filter((edge: any) => {
@@ -291,7 +282,7 @@ export class GraphRAM implements GraphService {
             );
 
             var neighbourNodes: vis.Node[] = neighbourNodeIds.map((nodeId: string) => {
-                return local._gsonNode2VisNode(local._getNode(nodeId), showGraphOptions);
+                return local._getNode(nodeId);
             });
 
             callback(neighbourNodes, neighbourEdges);
@@ -300,7 +291,7 @@ export class GraphRAM implements GraphService {
 
     requestUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
         callback: (updates: object[]) => void) {
-        var local: GraphRAM = this;
+        var local: LocalGraph = this;
         this._async(() => {
             var updates = [];
             nodeIds.forEach((nodeId) => {
@@ -313,87 +304,6 @@ export class GraphRAM implements GraphService {
 
                 updates.push(update);
             });
-
-            callback(updates);
-        });
-    }
-
-    private _gsonNode2VisNode(gsonNode: any, showGraphOptions: ShowGraphOptions): vis.Node {
-        var visNode: any = { id: gsonNode.id };
-
-        if (gsonNode.x !== undefined) {
-            visNode.x = gsonNode.x;
-        }
-
-        if (gsonNode.y !== undefined) {
-            visNode.y = gsonNode.y;
-        }
-
-        ///////show label
-        if (showGraphOptions.showLabels === true) {
-            visNode.label = gsonNode.label;
-        }
-        if (showGraphOptions.showLabels === false) {
-            visNode.label = null;
-        }
-
-        ///////show label
-        if (showGraphOptions.showTitles === true) {
-            visNode.title = gsonNode.title;
-        }
-        if (showGraphOptions.showTitles === false) {
-            visNode.title = null;
-        }
-
-        ///////show node?
-        if (showGraphOptions.showNodes === true) {
-            visNode.hidden = false;
-        }
-        if (showGraphOptions.showNodes === false) {
-            visNode.hidden = true;
-        }
-
-        ///////show face?
-        if (showGraphOptions.showFaces === true && gsonNode.image !== undefined && gsonNode.image != "") {
-            visNode.shape = 'circularImage';
-            visNode.image = gsonNode.image;
-        }
-        if (showGraphOptions.showFaces === false) {
-            visNode.shape = 'dot';
-        }
-
-        ///////show group?
-        if (showGraphOptions.showGroups === true && gsonNode.group !== undefined) {
-            visNode.group = gsonNode.group;
-        }
-        if (showGraphOptions.showGroups === false) {
-            visNode.group = null;
-        }
-
-        ///////show degree?
-        if (showGraphOptions.showDegrees === true && gsonNode.value !== undefined) {
-            visNode.value = gsonNode.value;
-        }
-        if (showGraphOptions.showDegrees === false) {
-            visNode.value = 1;
-        }
-
-        return visNode;
-    }
-
-    requestUpdate4ShowNodes(nodeIds: any[], showGraphOptions: ShowGraphOptions,
-        callback: (updates: object[]) => void) {
-        var local: GraphRAM = this;
-        this._async(() => {
-            var updates = [];
-            nodeIds.forEach((nodeId) => {
-                var node: any = local._getNode(nodeId);
-                var update = local._gsonNode2VisNode(node, showGraphOptions);
-
-                if (Object.keys(update).length > 1)
-                    updates.push(update);
-            }
-            );
 
             callback(updates);
         });
@@ -428,9 +338,9 @@ export class GraphRAM implements GraphService {
         return this._indexDB._mapNodePair2EdgeIds.get("" + startNodeId + "-" + endNodeId);
     }
 
-    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, showGraphOptions: ShowGraphOptions,
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number,
         callback: (queryResults: QueryResults) => void, algDfsOrBfs: boolean = true) {
-        var graph: GraphRAM = this;
+        var graph: LocalGraph = this;
         this._async((timerId: number) => {
             var results: string[][] = [];
             var pointer = 0;
@@ -444,7 +354,7 @@ export class GraphRAM implements GraphService {
             var paths: RelationPath[] = results.map((path: string[]) => {
                 return {
                     nodes: path.map((id: string) => {
-                        return graph._gsonNode2VisNode(graph._getNode(id), showGraphOptions);
+                        return graph._getNode(id);
                     }),
                     edges: graph._getEdgesInPath(path).map((id: string) => {
                         return graph._getEdge(id);
@@ -460,7 +370,7 @@ export class GraphRAM implements GraphService {
         });
     }
 
-    requestGetMoreRelations(queryId: string, showGraphOptions: ShowGraphOptions,
+    requestGetMoreRelations(queryId: string,
         callback: (queryResults: QueryResults) => void) {
     }
 

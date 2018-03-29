@@ -1,11 +1,11 @@
 import { Utils, Rect, Point } from "../utils";
-import { GraphBrowser } from "../browser";
+import { MainFrame } from "../framework";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../service/service';
+import { Connector } from '../connector/base';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class HighlightCtrl implements Control {
+export class HighlightCtrl extends Control {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
     public highlight(nodeIds: string | string[]) {
@@ -34,7 +34,7 @@ export class HighlightCtrl implements Control {
         this._mapNodeId2HighlightFlag.clear();
     }
 
-    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
+    init(browser: MainFrame) {
         var thisCtrl = this;
 
         browser.on(BrowserEventName.NETWORK_BEFORE_DRAWING, function (network, ctx) {

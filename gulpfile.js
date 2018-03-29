@@ -12,10 +12,10 @@ var replace = require('gulp-replace-pro');
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 
-var ENTRY = './entry.js';
+var ENTRY = './exports.js';
 var BUILD = __dirname + '/build';
-var DEBUG_DIR = __dirname + '/../grapheco-browser/debug';
-var RELEASE_DIR = __dirname + '/../grapheco-browser/release';
+var DEBUG_DIR = __dirname + '/../grapheco-browser-release/debug';
+var RELEASE_DIR = __dirname + '/../grapheco-browser-release/release';
 var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io';
 var OUTPUT_JS = 'grapheco-browser.js';
 var OUTPUT_MAP = 'grapheco-browser.map';
@@ -175,7 +175,7 @@ gulp.task('copy-dist-to-release', ['minify-js', 'minify-css', 'clean-release'], 
 });
 
 gulp.task('copy-resources-to-release', ['clean-release'], function () {
-  var network = gulp.src('./src/img/**/*')
+  var network = gulp.src(IMG_SOURCE)
     .pipe(gulp.dest(RELEASE_DIR + '/dist/img'));
 
   return network;

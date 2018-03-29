@@ -1,15 +1,15 @@
 import { Utils, Rect, Point } from "../utils";
-import { GraphBrowser } from "../browser";
+import { MainFrame } from "../framework";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../service/service';
+import { Connector } from '../connector/base';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class MessageBoxCtrl implements Control {
+export class MessageBoxCtrl extends Control {
     private _jqueryMessageBox: JQuery<HTMLElement>;
-    private _browser:GraphBrowser;
+    private _browser: MainFrame;
 
-    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
+    init(browser: MainFrame) {
         //message bar
         this._browser = browser;
         this._jqueryMessageBox = $(document.createElement("div"))

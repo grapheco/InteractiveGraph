@@ -1,15 +1,13 @@
 import { Utils, Rect, Point } from "../utils";
-import { GraphBrowser } from "../browser";
+import { MainFrame } from "../framework";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../service/service';
+import { Connector } from '../connector/base';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class ExpansionCtrl implements Control {
+export class ExpansionCtrl extends Control {
     private _mapNodeId2ExpansionValue: Map<string, number> = new Map<string, number>();
-    private _graphService: GraphService;
-    private _browser: GraphBrowser;
-    private _network: vis.Network;
+    private _browser: MainFrame;
 
     public collapse(nodeId: string | string[]) {
         var nodeIds: string[] = (nodeId instanceof Array) ? nodeId : [nodeId];
@@ -24,9 +22,8 @@ export class ExpansionCtrl implements Control {
 
     public expand(nodeId: string) {
         var thisCtrl = this;
-        this._graphService.requestGetNeighbours(
+        this._browser.getConnector().requestGetNeighbours(
             nodeId,
-            thisCtrl._browser.getShowGraphOptions(),
             function (neighbourNodes: object[], neighbourEdges: object[]) {
                 thisCtrl._browser.insertNodes(neighbourNodes);
                 thisCtrl._browser.insertEdges(neighbourEdges);
@@ -34,10 +31,8 @@ export class ExpansionCtrl implements Control {
             });
     }
 
-    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
-        this._graphService = service;
+    public init(browser: MainFrame) {
         this._browser = browser;
-        this._network = network;
 
         var thisCtrl = this;
 
@@ -50,7 +45,7 @@ export class ExpansionCtrl implements Control {
 
             thisCtrl._mapNodeId2ExpansionValue.forEach((v, nodeId, map) => {
                 var node: any = browser.getNodeById(nodeId);
-                if (!node.hidden) {
+                if (node.hidden !== true) {
                     var nodePositions: any = network.getPositions([nodeId]);
                     var pos = nodePositions[nodeId];
                     /*

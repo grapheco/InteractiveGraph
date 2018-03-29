@@ -1,4 +1,4 @@
-import { GraphService } from './service';
+import { Connector } from './base';
 
 export class RemoteGraph /*implements GraphService*/ {
     private _url: string;

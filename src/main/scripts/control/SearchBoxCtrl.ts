@@ -1,23 +1,23 @@
 import { Utils, Rect, Point } from "../utils";
-import { GraphBrowser } from "../browser";
+import { MainFrame } from "../framework";
 import { BrowserEventName } from '../types';
-import { GraphService } from '../service/service';
+import { Connector } from '../connector/base';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class SearchCtrl implements Control {
+export class SearchBoxCtrl extends Control {
     private _renderAutoCompletionItem = function (item: vis.Node) {
         return "<b>" + item.label + "</b>";
     }
 
-    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
+    init(browser: MainFrame) {
         /*
         <div id="searchPanel" class="searchPanel">
             <div id="searchPanel1" class="searchPanel1">
                 <input id="searchBox" class="searchBox" type="text" size="16" placeholder="input keyword">
             </div>
             <div id="searchPanel2" class="searchPanel2">
-                <i align="center" class="fa fa-search fa-lg"></i>
+                <span align="center" class="fa fa-search fa-lg"></i>
             </div>
         </div>
         */
@@ -38,7 +38,7 @@ export class SearchCtrl implements Control {
         var searchPanel2 = document.createElement("div");
         $(searchPanel2).addClass("searchPanel2")
             .appendTo($(panel));
-        var i = document.createElement("i");
+        var i = document.createElement("span");
         $(i).addClass("fa")
             .addClass("fa-search")
             .addClass("fa-lg")

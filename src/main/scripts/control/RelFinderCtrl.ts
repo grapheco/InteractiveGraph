@@ -1,16 +1,14 @@
 import { Utils, Rect, Point } from "../utils";
-import { GraphBrowser } from "../browser";
+import { MainFrame } from "../framework";
 import { BrowserEventName, QueryResults, RelationPath } from '../types';
-import { GraphService } from '../service/service';
+import { Connector } from '../connector/base';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 import { Themes, Theme } from "../theme";
 
-export class RelFinderCtrl implements Control {
+export class RelFinderCtrl extends Control {
 
-    private _browser: GraphBrowser;
-    private _network: vis.Network;
-    private _service: GraphService;
+    private _browser: MainFrame;
     private _queryId: string;
     private _stopped;
     private _queryStartNodeIds: string[];
@@ -23,10 +21,8 @@ export class RelFinderCtrl implements Control {
         '#f800cf', '6500d5', '#9e00fd',
         '#fb8617', '#f6ff0a', '#96e508'];
 
-    init(browser: GraphBrowser, network: vis.Network, service: GraphService) {
+    init(browser: MainFrame) {
         this._browser = browser;
-        this._network = network;
-        this._service = service;
 
         var onselect = function (network, args) {
             if (this._queryStartNodeIds !== undefined) {
@@ -36,6 +32,7 @@ export class RelFinderCtrl implements Control {
                 var selectedNodeIds: string[] = args.nodes;
                 var selectedEdgeIds: string[] = args.edges;
                 var colorIndex = 0;
+                var updates = [];
 
                 if (selectedNodeIds.length == 1 && this._queryStartNodeIds.indexOf(selectedNodeIds[0]) < 0) {
                     this._collectedPaths.forEach((path: RelationPath) => {
@@ -59,7 +56,7 @@ export class RelFinderCtrl implements Control {
                             path.nodes.forEach((x: any) => { inPathNodeIds.push(x.id); });
                             path.edges.forEach((x: any) => {
                                 inPathEdgeIds.push(x.id);
-                                this._browser._edges.update({
+                                updates.push({
                                     id: x.id, color: {
                                         highlight: this._pathColors[colorIndex % this._pathColors.length]
                                     }
@@ -70,6 +67,7 @@ export class RelFinderCtrl implements Control {
                         }
                     });
 
+                    browser.updateEdges(updates);
                     network.selectNodes(Utils.distinct(inPathNodeIds));
                     network.selectEdges(Utils.distinct(inPathEdgeIds));
                 }
@@ -92,7 +90,6 @@ export class RelFinderCtrl implements Control {
         //collect paths
         queryResults.paths.forEach((path: RelationPath) => {
             thisCtrl._consumerPathBuffer.push(path);
-            thisCtrl._collectedPaths.push(path);
         })
 
         //has more?
@@ -100,8 +97,7 @@ export class RelFinderCtrl implements Control {
             return;
 
         if (queryResults.hasMore) {
-            thisCtrl._service.requestGetMoreRelations(queryResults.queryId,
-                thisCtrl._browser.getShowGraphOptions(),
+            thisCtrl._browser.getConnector().requestGetMoreRelations(queryResults.queryId,
                 thisCtrl._collectFoundRelations.bind(thisCtrl));
         }
     }
@@ -119,8 +115,10 @@ export class RelFinderCtrl implements Control {
             () => {
                 if (thisCtrl._consumerPathBuffer.length > 0) {
                     var path = thisCtrl._consumerPathBuffer.shift();
+
                     thisCtrl._browser.insertNodes(path.nodes);
                     thisCtrl._browser.insertEdges(path.edges);
+                    thisCtrl._collectedPaths.push(path);
                 }
             },
             refreshInterval);
@@ -135,8 +133,7 @@ export class RelFinderCtrl implements Control {
             },
             30000);
 
-        this._service.requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
-            thisCtrl._browser.getShowGraphOptions(),
+        this._browser.getConnector().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
             this._collectFoundRelations.bind(this));
     }
 
@@ -144,6 +141,6 @@ export class RelFinderCtrl implements Control {
         this._stopped = true;
         window.clearInterval(this._renderTimer);
         window.clearInterval(this._checkDataTimer);
-        this._service.requestStopFindRelations(this._queryId);
+        this._browser.getConnector().requestStopFindRelations(this._queryId);
     }
 }

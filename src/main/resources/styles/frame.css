@@ -3,6 +3,10 @@
     background-position: top;
 }
 
+button.ui-button-2 {
+    padding: .3em .4em;
+}
+
 div.infoBox {
     font-size: 9px;
     border: 1px;
@@ -16,6 +20,17 @@ div.infoPanel {
     cursor: hand;
     background: rgba(230, 217, 202, 0.8);
     color:rgb(35, 34, 34);
+    z-index: 888;
+}
+
+div.toolbarPanel {
+    padding: 4px;
+    width: 260px;
+    position: absolute;
+    cursor: hand;
+    background: rgba(230, 217, 202, 0.8);
+    color:rgb(35, 34, 34);
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
     z-index: 888;
 }
 
