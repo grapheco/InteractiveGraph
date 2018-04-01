@@ -48,7 +48,13 @@ export class Utils {
 		return arr;
 	}
 
-	public static clone(value: any): any {
+	public static deepClone(value: any): any {
+		if (value === undefined)
+			return undefined;
+
+		if (value === null)
+			return null;
+
 		if (typeof (value) == 'string'
 			|| typeof (value) == 'number'
 			|| typeof (value) == 'boolean'
@@ -59,23 +65,23 @@ export class Utils {
 		if (value instanceof Array) {
 			var arr: any[] = value;
 			return arr.map((item) => {
-				return Utils.clone(item);
+				return Utils.deepClone(item);
 			});
 		}
 
 		if (typeof (value) == 'object') {
-			return Utils._cloneObject(value);
+			return Utils._deepCloneObject(value);
 		}
 
 		throw new TypeError("unsupported type: " + typeof (value));
 	}
 
-	private static _cloneObject(src: object): object {
+	private static _deepCloneObject(src: object): object {
 		var dest = {};
 		for (let key in src) {
 			if (src.hasOwnProperty(key)) {
 				var value = src[key];
-				dest[key] = Utils.clone(value);
+				dest[key] = Utils.deepClone(value);
 			}
 		}
 
@@ -87,9 +93,9 @@ export class Utils {
 	 * @param base 
 	 * @param delta 
 	 */
-	public static extend(base: object, delta: object): object {
+	public static deepExtend(base: object, delta: object): object {
 		//do not working on base object
-		var dest = Utils._cloneObject(base);
+		var dest = Utils._deepCloneObject(base);
 
 		for (let key in delta) {
 			if (delta.hasOwnProperty(key)) {
@@ -98,12 +104,12 @@ export class Utils {
 
 				if (typeof (extValue) == 'object' &&
 					typeof (baseValue) == 'object') {
-					dest[key] = Utils.extend(baseValue, extValue);
+					dest[key] = Utils.deepExtend(baseValue, extValue);
 					continue;
 				}
 
 				//base={a:{x:...}}, ext={a:2}
-				dest[key] = Utils.clone(extValue);
+				dest[key] = Utils.deepClone(extValue);
 			}
 		}
 

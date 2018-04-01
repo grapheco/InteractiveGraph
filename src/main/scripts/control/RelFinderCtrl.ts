@@ -1,14 +1,14 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName, QueryResults, RelationPath } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, QueryResults, RelationPath, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 import { Themes, Theme } from "../theme";
 
 export class RelFinderCtrl extends Control {
 
-    private _browser: MainFrame;
+    private _frame: MainFrame;
     private _queryId: string;
     private _stopped;
     private _queryStartNodeIds: string[];
@@ -21,10 +21,11 @@ export class RelFinderCtrl extends Control {
         '#f800cf', '6500d5', '#9e00fd',
         '#fb8617', '#f6ff0a', '#96e508'];
 
-    init(browser: MainFrame) {
-        this._browser = browser;
+    onCreate(args: EVENT_ARGS_FRAME) {
+        var frame = args.frame;
+        this._frame = frame;
 
-        var onselect = function (network, args) {
+        var onselect = function (args: EVENT_ARGS_FRAME_INPUT) {
             if (this._queryStartNodeIds !== undefined) {
                 var inPathNodeIds: string[] = [];
                 var inPathEdgeIds: string[] = [];
@@ -67,20 +68,20 @@ export class RelFinderCtrl extends Control {
                         }
                     });
 
-                    browser.updateEdges(updates);
-                    network.selectNodes(Utils.distinct(inPathNodeIds));
-                    network.selectEdges(Utils.distinct(inPathEdgeIds));
+                    frame.updateEdges(updates);
+                    args.network.selectNodes(Utils.distinct(inPathNodeIds));
+                    args.network.selectEdges(Utils.distinct(inPathEdgeIds));
                 }
             }
         }
 
-        browser.updateTheme((theme: Theme) => {
+        frame.updateTheme((theme: Theme) => {
             theme.networkOptions.edges.font['size'] = 11;
         });
 
-        browser.removeAllListeners(BrowserEventName.NETWORK_SELECT_EDGES);
-        browser.removeAllListeners(BrowserEventName.NETWORK_DESELECT_EDGES);
-        browser.on(BrowserEventName.NETWORK_CLICK, onselect.bind(this));
+        frame.off(FrameEventName.NETWORK_SELECT_EDGES);
+        frame.off(FrameEventName.NETWORK_DESELECT_EDGES);
+        frame.on(FrameEventName.NETWORK_CLICK, onselect.bind(this));
     }
 
     private _collectFoundRelations(queryResults: QueryResults) {
@@ -97,14 +98,14 @@ export class RelFinderCtrl extends Control {
             return;
 
         if (queryResults.hasMore) {
-            thisCtrl._browser.getConnector().requestGetMoreRelations(queryResults.queryId,
+            thisCtrl._frame.getConnector().requestGetMoreRelations(queryResults.queryId,
                 thisCtrl._collectFoundRelations.bind(thisCtrl));
         }
     }
 
     public startQuery(nodeIds: string[], refreshInterval: number = 1000, maxDepth: number = 6) {
         this._stopped = false;
-        this._browser.focusNodes(nodeIds);
+        this._frame.focusNodes(nodeIds);
         var thisCtrl = this;
         //create a render timer
         this._consumerPathBuffer = [];
@@ -116,8 +117,8 @@ export class RelFinderCtrl extends Control {
                 if (thisCtrl._consumerPathBuffer.length > 0) {
                     var path = thisCtrl._consumerPathBuffer.shift();
 
-                    thisCtrl._browser.insertNodes(path.nodes);
-                    thisCtrl._browser.insertEdges(path.edges);
+                    thisCtrl._frame.insertNodes(path.nodes);
+                    thisCtrl._frame.insertEdges(path.edges);
                     thisCtrl._collectedPaths.push(path);
                 }
             },
@@ -133,7 +134,7 @@ export class RelFinderCtrl extends Control {
             },
             30000);
 
-        this._browser.getConnector().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
+        this._frame.getConnector().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
             this._collectFoundRelations.bind(this));
     }
 
@@ -141,6 +142,9 @@ export class RelFinderCtrl extends Control {
         this._stopped = true;
         window.clearInterval(this._renderTimer);
         window.clearInterval(this._checkDataTimer);
-        this._browser.getConnector().requestStopFindRelations(this._queryId);
+        this._frame.getConnector().requestStopFindRelations(this._queryId);
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
     }
 }

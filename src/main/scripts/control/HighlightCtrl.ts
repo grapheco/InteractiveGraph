@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -34,21 +34,22 @@ export class HighlightCtrl extends Control {
         this._mapNodeId2HighlightFlag.clear();
     }
 
-    init(browser: MainFrame) {
+    onCreate(args: EVENT_ARGS_FRAME) {
         var thisCtrl = this;
-
-        browser.on(BrowserEventName.NETWORK_BEFORE_DRAWING, function (network, ctx) {
+        var frame = args.frame;
+        frame.on(FrameEventName.NETWORK_BEFORE_DRAWING, function (args: EVENT_ARGS_FRAME_DRAWING) {
+            var ctx = args.context2d;
             ctx.save();
             //draw highlighted nodes
             thisCtrl._mapNodeId2HighlightFlag.forEach((highlighted, nodeId, map) => {
                 if (highlighted) {
-                    var nodePositions: any = network.getPositions([nodeId]);
-                    var colors = browser.getTheme().nodeHighlightColor;
+                    var nodePositions: any = args.network.getPositions([nodeId]);
+                    var colors = args.theme.nodeHighlightColor;
 
-                    var node: any = browser.getNodeById(nodeId);
+                    var node: any = frame.getNodeById(nodeId);
                     if (!node.hidden) {
                         var pos = nodePositions[nodeId];
-                        var box = network.getBoundingBox(nodeId);
+                        var box = args.network.getBoundingBox(nodeId);
 
                         if (pos.y < box.top) {
                             console.warn("some exceptions happened");
@@ -63,7 +64,7 @@ export class HighlightCtrl extends Control {
 
 
                         ctx.fillStyle = grd;
-                        ctx.circle(pos.x, pos.y, pos.y - box.top + 40);
+                        (<any>ctx).circle(pos.x, pos.y, pos.y - box.top + 40);
                         ctx.fill();
                     }
                 }
@@ -73,14 +74,14 @@ export class HighlightCtrl extends Control {
         });
 
         //DANGER!!!
-        browser.removeAllListeners(BrowserEventName.FOCUS_NODES);
-        browser.on(BrowserEventName.FOCUS_NODES, function (network, nodeIds) {
-            thisCtrl.highlight(nodeIds);
+        frame.off(FrameEventName.FOCUS_NODES);
+        frame.on(FrameEventName.FOCUS_NODES, function (args: EVENT_ARGS_FRAME_INPUT) {
+            thisCtrl.highlight(args.nodes);
         });
 
         //DANGER!!!
-        browser.removeAllListeners(BrowserEventName.NETWORK_DBLCLICK);
-        browser.on(BrowserEventName.NETWORK_DBLCLICK, function (network, args) {
+        frame.off(FrameEventName.NETWORK_DBLCLICK);
+        frame.on(FrameEventName.NETWORK_DBLCLICK, function (args: EVENT_ARGS_FRAME_INPUT) {
             //double click on backgroud (no nodes selected)
             if (args.nodes.length == 0 && args.edges.length == 0) {
                 thisCtrl._mapNodeId2HighlightFlag.clear();
@@ -92,5 +93,8 @@ export class HighlightCtrl extends Control {
                 thisCtrl.toggle(nodeId);
             });
         });
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
     }
 }

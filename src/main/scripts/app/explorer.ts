@@ -1,19 +1,19 @@
-import { BaseApp } from './base';
+import { BaseApp } from './app';
 import { MainFrame } from '../framework';
-import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
+import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
+import { EVENT_ARGS_FRAME } from '../types';
 
 export class GraphExplorer extends BaseApp {
-    protected _pickedNodeIds: string[];
-    
-    public constructor(htmlGraphArea: HTMLElement) {
-        super(htmlGraphArea);
+
+    public constructor(htmlFrame: HTMLElement) {
+        super(htmlFrame);
     }
 
-    createFramework(htmlGraphArea: HTMLElement): MainFrame {
-        var frame = new MainFrame(
-            htmlGraphArea, {
+    createFramework(htmlFrame: HTMLElement, callback: (args: EVENT_ARGS_FRAME) => void): MainFrame {
+        return new MainFrame(
+            htmlFrame, {
                 showGraphOptions: {
                     showLabels: true,
                     showFaces: true,
@@ -21,28 +21,14 @@ export class GraphExplorer extends BaseApp {
                     showEdges: true,
                     showGroups: true
                 }
-            });
-
-        frame.addControl("search", new SearchBoxCtrl());
-        frame.addControl("info", new InfoBoxCtrl());
-        frame.addControl("expansion", new ExpansionCtrl());
-
-        return frame;
+            },callback);
     }
 
-    public pickup(keywords: object[], callback) {
-        var framework = this._framework;
-        var app = this;
-        framework.search(keywords, function (nodes) {
-            var nodeIds = framework.insertNodes(nodes);
-            app._pickedNodeIds = nodeIds;
-            framework.placeNodes(nodeIds);
-            framework.updateNodes(nodeIds.map(function (nodeId: any) {
-                return { id: nodeId, physics: false };
-            }));
+    protected onCreateFrame(args: EVENT_ARGS_FRAME) {
+        var frame = args.frame;
 
-            if (callback !== undefined)
-                callback();
-        });
+        frame.addControl("search", new SearchBarCtrl());
+        frame.addControl("info", new InfoBoxCtrl());
+        frame.addControl("expansion", new ExpansionCtrl());
     }
 }

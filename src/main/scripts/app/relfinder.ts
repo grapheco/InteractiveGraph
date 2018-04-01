@@ -1,21 +1,21 @@
-import { BaseApp } from './base';
+import { BaseApp } from './app';
 import { MainFrame } from '../framework';
-import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
+import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { RelFinderCtrl } from '../control/RelFinderCtrl';
+import { EVENT_ARGS_FRAME } from '../types';
 
 export class RelationFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
-    protected _pickedNodeIds: string[];
 
-    public constructor(htmlGraphArea: HTMLElement) {
-        super(htmlGraphArea);
+    public constructor(htmlFrame: HTMLElement) {
+        super(htmlFrame);
     }
 
-    public createFramework(htmlGraphArea: HTMLElement): MainFrame {
-        var frame = new MainFrame(
-            htmlGraphArea, {
+    public createFramework(htmlFrame: HTMLElement, callback: (args: EVENT_ARGS_FRAME) => void): MainFrame {
+        return new MainFrame(
+            htmlFrame, {
                 showGraphOptions: {
                     showLabels: true,
                     showFaces: true,
@@ -23,9 +23,12 @@ export class RelationFinder extends BaseApp {
                     showEdges: true,
                     showGroups: true
                 }
-            });
+            },callback);
+    }
 
-        frame.addControl("search", new SearchBoxCtrl());
+    protected onCreateFrame(args: EVENT_ARGS_FRAME) {
+        var frame = args.frame;
+        frame.addControl("search", new SearchBarCtrl());
         frame.addControl("info", new InfoBoxCtrl());
 
         this._relfinder = <any>frame.addControl("relfinder", new RelFinderCtrl());
@@ -34,26 +37,8 @@ export class RelationFinder extends BaseApp {
             theme.networkOptions.edges.length = 0.5;
             theme.networkOptions.physics.timestep = 0.1;
         });
-
-        return frame;
     }
 
-    public pickup(keywords: object[], callback) {
-        var framework = this._framework;
-        var app = this;
-        framework.search(keywords, function (nodes) {
-            var nodeIds = framework.insertNodes(nodes);
-            app._pickedNodeIds = nodeIds;
-            framework.placeNodes(nodeIds);
-            framework.updateNodes(nodeIds.map(function (nodeId: any) {
-                return { id: nodeId, physics: false };
-            }));
-
-            if (callback !== undefined)
-                callback();
-        });
-    }
-    
     public startQuery(refreshInterval: number = 1000, maxDepth: number = 6) {
         var app = this;
         this._framework.deleteNodes(function (node) {

@@ -1,17 +1,17 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, EVENT_ARGS_FRAME } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
 export class MessageBoxCtrl extends Control {
     private _jqueryMessageBox: JQuery<HTMLElement>;
-    private _browser: MainFrame;
+    private _htmlFrame: HTMLElement;
 
-    init(browser: MainFrame) {
+    onCreate(args: EVENT_ARGS_FRAME) {
         //message bar
-        this._browser = browser;
+        this._htmlFrame = args.htmlFrame;
         this._jqueryMessageBox = $(document.createElement("div"))
             .addClass("messageBox")
             .appendTo($(document.body))
@@ -19,7 +19,7 @@ export class MessageBoxCtrl extends Control {
     }
 
     public showMessage(msgCode: string) {
-        var jaa = $(this._browser.getContainerElement());
+        var jaa = $(this._htmlFrame);
         var pos = jaa.position();
         var left = pos.left + (jaa.width() - this._jqueryMessageBox.width()) / 2;
         var top = pos.top + (jaa.height() - this._jqueryMessageBox.height()) / 2;
@@ -33,5 +33,8 @@ export class MessageBoxCtrl extends Control {
 
     public hideMessage() {
         this._jqueryMessageBox.hide();
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
     }
 }

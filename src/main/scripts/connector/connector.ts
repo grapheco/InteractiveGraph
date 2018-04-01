@@ -13,7 +13,7 @@ export interface Connector {
     requestGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void);
 
     getNodeCategories(): object;
-    requestUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
+    requestUpdateNodesOfCategory(className: string, nodeIds: any[], showOrNot: boolean,
         callback: (updates: object[]) => void);
 
     requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryResults: QueryResults) => void);

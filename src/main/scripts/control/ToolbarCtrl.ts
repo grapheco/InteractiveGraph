@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName, ButtonOptions, EVENT_ARGS_CREATE_BUTTONS } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, ButtonOptions, EVENT_ARGS_FRAME } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 import { } from "jquery";
@@ -10,8 +10,8 @@ import { } from "jqueryui";
 export class ToolbarCtrl extends Control {
     private _htmlToolbar: HTMLElement;
 
-    public addTool(f: (ctrl: ToolbarCtrl, htmlToolbar: HTMLElement) => void) {
-        f(this, this._htmlToolbar);
+    public addTool(e: HTMLElement){
+        $(e).appendTo($(this._htmlToolbar));
     }
 
     public addButton(info: ButtonOptions): HTMLElement {
@@ -35,10 +35,27 @@ export class ToolbarCtrl extends Control {
             span.removeClass("ui-icon");
         }
 
-        if (info.click !== undefined)
-            $(e).click(<any>info.click);
+        if (info.click !== undefined) {
+            //toggle button
+            if (info.checked !== undefined) {
+                $(e).click(() => {
+                    $(e).toggleClass("ui-button-checked");
+                    var checked = $(e).hasClass("ui-button-checked");
+                    info.click(checked);
+                });
+            }
+            else {
+                $(e).click(<any>info.click);
+            }
+        }
 
         $(e).addClass("ui-button-2");
+
+        //toggle button
+        if (info.checked === true) {
+            $(e).addClass("ui-button-checked");
+        }
+
         return e;
     }
 
@@ -48,13 +65,13 @@ export class ToolbarCtrl extends Control {
         })
     }
 
-    init(browser: MainFrame) {
-        var jaa = $(browser.getContainerElement());
+    onCreate(args: EVENT_ARGS_FRAME) {
+        var jaa = $(args.htmlFrame);
         var offset = jaa.offset();
 
         var htmlCtrl = document.createElement("div");
         $(htmlCtrl).addClass("toolbarPanel")
-            .offset({ left: offset.left + jaa.width() - 330, top: offset.top + 20 })
+            .offset({ left: offset.left + jaa.width() - 400, top: offset.top + 20 })
             .appendTo($(document.body));
 
         //<div id="toolbar" class="ui-widget-header ui-corner-all">
@@ -63,14 +80,12 @@ export class ToolbarCtrl extends Control {
         $(div).attr("id", "toolbar")
             .addClass("controlgroup");
 
-        browser.emit(BrowserEventName.CREATE_BUTTONS, <EVENT_ARGS_CREATE_BUTTONS>{
-            toolbar: this,
-            htmlElement: div
-        });
-
         (<any>$(".controlgroup")).controlgroup();
 
         $(div).appendTo($(htmlCtrl));
         $(htmlCtrl).draggable();
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
     }
 }

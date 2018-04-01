@@ -4,7 +4,26 @@
 }
 
 button.ui-button-2 {
-    padding: .3em .4em;
+    text-align: center;
+    width: 32;
+    height: 32;
+    padding: 8px;
+    border-radius: 6px;
+    transition: none;
+    color: black;
+    border-style: none;
+}
+
+button.ui-button-2:hover {
+    border-style: none;
+}
+
+button.ui-button-2:focus {
+    outline: none;
+}
+
+button.ui-button-checked {
+    border-style: solid;
 }
 
 div.infoBox {
@@ -23,13 +42,27 @@ div.infoPanel {
     z-index: 888;
 }
 
+div.ui-slider-handle:focus{
+    outline: none;
+}
+
+div.scaleSlider{
+    float:left;
+    width: 190pt;
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    margin-right: 10px;
+}
+
 div.toolbarPanel {
     padding: 4px;
-    width: 260px;
+    width: 320px;
     position: absolute;
     cursor: hand;
-    background: rgba(230, 217, 202, 0.8);
-    color:rgb(35, 34, 34);
+    border-width: 2px;
+    background: white;
+    color: darkgray;
+    font-size: 11px;
     box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
     z-index: 888;
 }

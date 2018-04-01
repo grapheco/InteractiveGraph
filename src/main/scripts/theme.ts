@@ -18,6 +18,7 @@ export class Themes {
                     improvedLayout: false
                 },
                 nodes: {
+                    borderWidth: 0,
                     shape: 'dot',
                     scaling: {
                         min: 10,

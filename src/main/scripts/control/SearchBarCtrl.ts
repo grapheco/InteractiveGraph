@@ -1,16 +1,19 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, EVENT_ARGS_FRAME } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class SearchBoxCtrl extends Control {
+export class SearchBarCtrl extends Control {
+    private _htmlSearchBar: HTMLElement;
+    
     private _renderAutoCompletionItem = function (item: vis.Node) {
         return "<b>" + item.label + "</b>";
     }
 
-    init(browser: MainFrame) {
+    onCreate(args: EVENT_ARGS_FRAME) {
+        var frame = args.frame;
         /*
         <div id="searchPanel" class="searchPanel">
             <div id="searchPanel1" class="searchPanel1">
@@ -22,8 +25,9 @@ export class SearchBoxCtrl extends Control {
         </div>
         */
         var thisCtrl = this;
-        var offset = $(browser.getContainerElement()).offset();
+        var offset = $(args.htmlFrame).offset();
         var panel = document.createElement("div");
+        this._htmlSearchBar = panel;
         $(panel).addClass("searchPanel")
             .offset({ left: offset.left + 10, top: offset.top + 20 })
             .appendTo($(document.body));
@@ -48,7 +52,7 @@ export class SearchBoxCtrl extends Control {
         $(htmlSearchBox).autocomplete({
             source: function (request, response) {
                 var term = request.term;
-                browser.search(term, function (nodes: vis.Node[]) {
+                frame.search(term, function (nodes: vis.Node[]) {
                     response(nodes.map((node) => {
                         return {
                             value: node.label,
@@ -63,8 +67,8 @@ export class SearchBoxCtrl extends Control {
                 var node: vis.Node = ui.item.node;
                 if (node !== undefined) {
                     $(htmlSearchBox).val(node.label);
-                    browser.insertNodes([node]);
-                    browser.focusNodes(["" + node.id]);
+                    frame.insertNodes([node]);
+                    frame.focusNodes(["" + node.id]);
                 }
 
                 return false;
@@ -74,5 +78,9 @@ export class SearchBoxCtrl extends Control {
                 .append(thisCtrl._renderAutoCompletionItem(item.node))
                 .appendTo(ul);
         };
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
+        $(this._htmlSearchBar).remove();
     }
 }

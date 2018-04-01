@@ -1,10 +1,10 @@
 /**
  * Created by bluejoe on 2018/2/24.
  */
-import { Connector } from './base';
+import { Connector } from './connector';
 import { Utils } from '../utils';
 import { } from "jquery";
-import { GraphData, Pair, Gson, ShowGraphOptions, QueryResults, RelationPath } from '../types';
+import { NodeNEdges, Pair, Gson, ShowGraphOptions, QueryResults, RelationPath } from '../types';
 import * as vis from "vis";
 
 export class LocalGraph implements Connector {
@@ -22,7 +22,7 @@ export class LocalGraph implements Connector {
     };
 
     //TODO: defines translators() in gson
-    private _defaultTranslateGson2GraphData: (source: Gson) => GraphData = function (source: Gson) {
+    private _defaultTranslateGson2GraphData: (source: Gson) => NodeNEdges = function (source: Gson) {
         var nodes = source.data.nodes;
         var edges = source.data.edges;
         var counterNode = 1;
@@ -77,8 +77,8 @@ export class LocalGraph implements Connector {
             this._callbackLoadData = loadData;
     }
 
-    private _processGson(gson: Gson, translate?: (source: Gson) => GraphData) {
-        this._labels = gson.labels;
+    private _processGson(gson: Gson, translate?: (source: Gson) => NodeNEdges) {
+        this._labels = gson.categories;
         var local = this;
         if (translate === undefined) {
             translate = local._defaultTranslateGson2GraphData;
@@ -126,7 +126,7 @@ export class LocalGraph implements Connector {
         console.debug(indexDB);
     }
 
-    public static fromGson(gson: Gson, translate?: (source: Gson) => GraphData) {
+    public static fromGson(gson: Gson, translate?: (source: Gson) => NodeNEdges) {
         var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             graph._processGson(gson, translate);
@@ -136,7 +136,7 @@ export class LocalGraph implements Connector {
         return graph;
     }
 
-    public static fromGsonString(gsonString: string, translate?: (source: Gson) => GraphData) {
+    public static fromGsonString(gsonString: string, translate?: (source: Gson) => NodeNEdges) {
         var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             graph._processGson(JSON.parse(gsonString), translate);
@@ -146,7 +146,7 @@ export class LocalGraph implements Connector {
         return graph;
     }
 
-    public static fromGsonFile(gsonURL, translate?: (source: Gson) => GraphData) {
+    public static fromGsonFile(gsonURL, translate?: (source: Gson) => NodeNEdges) {
         var graph = new LocalGraph();
         graph._callbackLoadData = (callbackAfterLoad: () => void) => {
             $.getJSON(gsonURL, function (data) {
@@ -289,7 +289,7 @@ export class LocalGraph implements Connector {
         });
     }
 
-    requestUpdateNodesOfClass(className: string, nodeIds: any[], showOrNot: boolean,
+    requestUpdateNodesOfCategory(className: string, nodeIds: any[], showOrNot: boolean,
         callback: (updates: object[]) => void) {
         var local: LocalGraph = this;
         this._async(() => {
@@ -297,7 +297,7 @@ export class LocalGraph implements Connector {
             nodeIds.forEach((nodeId) => {
                 var update: any = { id: nodeId };
                 var node: any = local._getNode(nodeId);
-                var nls: string[] = node.labels;
+                var nls: string[] = node.categories;
                 if (nls.indexOf(className) > -1) {
                     update.hidden = !showOrNot;
                 }

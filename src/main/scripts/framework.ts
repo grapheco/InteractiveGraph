@@ -3,31 +3,30 @@
  */
 
 import * as vis from "vis";
-import { Connector } from './connector/base';
+import { Connector } from './connector/connector';
 import { Utils, Rect, Point } from "./utils";
 import { } from "jquery";
 import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { ShowGraphOptions, ScreenData, BrowserEventName, BrowserOptions, EVENT_ARGS_CREATE_BUTTONS } from "./types";
+import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, BrowserOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "./types";
 import { Control } from "./control/Control";
-import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
 import { ToolbarCtrl } from "./control/ToolbarCtrl";
 
-var PI: number = 3.1415926;
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
 var MAX_NODES_COUNT = 5000;
 
-export class MainFrame extends events.EventEmitter {
-    private _htmlGraphArea: HTMLElement;
+export class MainFrame {
+    private _htmlFrame: HTMLElement;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
     private _connector: Connector;
     private _network: vis.Network;
+    private _emmiter = new events.EventEmitter();
 
-    private _screenData: ScreenData = {
+    private _screenData: NodeNEdgeSets = {
         nodes: new vis.DataSet<vis.Node>(),
         edges: new vis.DataSet<vis.Edge>()
     };
@@ -53,59 +52,79 @@ export class MainFrame extends events.EventEmitter {
         return this._connector;
     }
 
-    public constructor(htmlGraphArea: HTMLElement, options?: BrowserOptions) {
-        super();
+    public fire(event: string, extra?: object) {
+        var args: any = this._createEventArgs();
 
-        options = options || {};
-        this._htmlGraphArea = htmlGraphArea;
-
-        this.updateTheme(options.theme);
-        var showGraphOptions = options.showGraphOptions || {};
-        this._showGraphOptions = Utils.extend(this._defaultShowGraphOptions, showGraphOptions);
-
-        if (options.edgeColorInherit !== undefined) {
-            this._theme.networkOptions.edges.color = {
-                'inherit': options.edgeColorInherit
+        if (extra !== undefined) {
+            for (let key in extra) {
+                if (extra.hasOwnProperty(key)) {
+                    args[key] = extra[key];
+                }
             }
         }
 
-        if (options.hideUnselectedEdgeLabel === true) {
-            this._theme.networkOptions.edges.font['size'] = 0;
-            this._enableHideUnselectedEdgeLabel();
-        }
+        this._emmiter.emit(event, args);
+    }
 
-        this._network = new vis.Network(htmlGraphArea, this._screenData,
+    public on(event: string, listener: (args: EVENT_ARGS_FRAME) => void) {
+        this._emmiter.on(event, listener);
+    }
+
+    public off(event: string, listener?: (args: EVENT_ARGS_FRAME) => void): Function[] {
+        if (listener === undefined) {
+            var listeners = this._emmiter.listeners(event);
+            this._emmiter.removeAllListeners(event);
+            return listeners;
+        }
+        else {
+            this._emmiter.removeListener(event, listener);
+            return [listener];
+        }
+    }
+
+    public constructor(htmlFrame: HTMLElement, options: BrowserOptions,
+        onCreateFrame: (args: EVENT_ARGS_FRAME) => void) {
+        options = options || {};
+        this._htmlFrame = htmlFrame;
+
+        this.updateTheme(options.theme);
+        var showGraphOptions = options.showGraphOptions || {};
+        this._showGraphOptions = Utils.deepExtend(this._defaultShowGraphOptions, showGraphOptions);
+
+        this._network = new vis.Network(htmlFrame, this._screenData,
             this._theme.networkOptions);
 
         this._bindNetworkEvents();
 
-        this.on(BrowserEventName.CREATE_BUTTONS, (args: EVENT_ARGS_CREATE_BUTTONS) => {
-            args.toolbar.addButton({
-                icon: "fa fa-search fa-1x",
-                tooltip: "help"
-            });
-        });
+        if (onCreateFrame !== undefined) {
+            onCreateFrame(this._createEventArgs());
+        }
     }
 
-    public getScreenData(): ScreenData {
+    public getScreenData(): NodeNEdgeSets {
         return this._screenData;
+    }
+
+    public removeControl(name: string) {
+        var ctrl: Control = this.ctrls[name];
+        ctrl.emit(FrameEventName.DESTROY_CONTROL, this._createEventArgs());
+        this.fire(FrameEventName.REMOVE_CONTROL, { ctrl: ctrl });
     }
 
     public addControl(name: string, ctrl: Control): Control {
         this.ctrls[name] = ctrl;
-        ctrl.init(this);
-        console.log("initialized " + name);
-
+        ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
+        this.fire(FrameEventName.ADD_CONTROL, { ctrl: ctrl });
         return ctrl;
-    }
-
-    public getContainerElement(): HTMLElement {
-        return this._htmlGraphArea;
     }
 
     public connect(connector: Connector, callback) {
         this._connector = connector;
-        this._connector.requestConnect(callback);
+        this._connector.requestConnect(() => {
+            this.fire(FrameEventName.GRAPH_CONNECTED);
+            if (callback != undefined)
+                callback();
+        });
     }
 
     public getNodeCategories() {
@@ -120,7 +139,7 @@ export class MainFrame extends events.EventEmitter {
             this._theme = theme || Themes.DEFAULT();
         }
 
-        $(this._htmlGraphArea).css('background', this._theme.canvasBackground);
+        $(this._htmlFrame).css('background', this._theme.canvasBackground);
 
         if (this._network !== undefined) {
             this._network.setOptions(this._theme.networkOptions);
@@ -151,13 +170,13 @@ export class MainFrame extends events.EventEmitter {
             this._showGraphOptions = showGraphOptions;
         }
 
-        var browser = this;
-        browser._screenData.nodes.update(browser._rawData.nodes.map((x) => {
-            return browser._formatNode(x, browser._showGraphOptions);
+        var frame = this;
+        frame._screenData.nodes.update(frame._rawData.nodes.map((x) => {
+            return frame._formatNode(x, frame._showGraphOptions);
         })
         );
-        browser._screenData.edges.update(browser._rawData.edges.map((x) => {
-            return browser._formatEdge(x, browser._showGraphOptions);
+        frame._screenData.edges.update(frame._rawData.edges.map((x) => {
+            return frame._formatEdge(x, frame._showGraphOptions);
         })
         );
     }
@@ -170,33 +189,9 @@ export class MainFrame extends events.EventEmitter {
         this._screenData.edges.update(updates);
     }
 
-    public placeNodes(nodeIds: string[]) {
-        if (nodeIds.length == 0)
-            return;
-
-        var updates = [];
-
-        var ratio = 1 - 1 / (nodeIds.length * nodeIds.length);
-        var jq = $(this._htmlGraphArea);
-        var canvasWidth = jq.width();
-        var canvasHeight = jq.height();
-
-        var angle = PI, scopeX = ratio * canvasWidth / 3, scopeY = ratio * canvasHeight / 3;
-        var delta = 2 * PI / nodeIds.length;
-
-        nodeIds.forEach((nodeId) => {
-            var x = scopeX * Math.cos(angle);
-            var y = scopeY * Math.sin(angle);
-            angle += delta;
-            updates.push({ id: nodeId, x: x, y: y, physics: false });
-        });
-
-        this._screenData.nodes.update(updates);
-    }
-
     public showNodesOfCategory(className: string, showOrNot: boolean, callback?: () => void) {
         var browser = this;
-        this._connector.requestUpdateNodesOfClass(className,
+        this._connector.requestUpdateNodesOfCategory(className,
             this._screenData.nodes.getIds(),
             showOrNot,
             (updates) => {
@@ -219,9 +214,6 @@ export class MainFrame extends events.EventEmitter {
      */
     public load(options, callback: () => void) {
         var browser = this;
-        var ctrl: MessageBoxCtrl = browser.ctrls['messageBox'];
-        ctrl.showMessage("LOADING_GRAPH");
-
         this._connector.requestLoadGraph(
             function (nodes: vis.Node[], edges: vis.Edge[]) {
                 browser._rawData = { nodes: nodes, edges: edges };
@@ -248,8 +240,8 @@ export class MainFrame extends events.EventEmitter {
                     browser.scaleTo(options.scale);
                 }
 
-                ctrl.hideMessage();
-                callback();
+                if (callback !== undefined)
+                    callback();
             });
     }
 
@@ -276,7 +268,7 @@ export class MainFrame extends events.EventEmitter {
         }));
 
         if (newNodeIds.length > 0) {
-            this.emit(BrowserEventName.INSERT_NODES, this._network, newNodeIds);
+            this.fire(FrameEventName.INSERT_NODES, { nodes: newNodeIds });
         }
 
         return newNodeIds;
@@ -304,7 +296,7 @@ export class MainFrame extends events.EventEmitter {
     public focusNodes(nodeIds: string[]): void {
         this._network.fit({ nodes: nodeIds, animation: true });
         if (nodeIds.length > 0) {
-            this.emit(BrowserEventName.FOCUS_NODES, this._network, nodeIds);
+            this.fire(FrameEventName.FOCUS_NODES, { nodes: nodeIds });
         }
     }
 
@@ -315,79 +307,43 @@ export class MainFrame extends events.EventEmitter {
         }));
     }
 
-    public getTheme(): Theme {
-        return this._theme;
-    }
-
     public getNodeById(nodeId: string) {
         return this._screenData.nodes.get(nodeId);
     }
 
-    private _enableHideUnselectedEdgeLabel() {
-        var browser = this;
-
-        //hide deselected edges
-        this.on(BrowserEventName.NETWORK_SELECT_EDGES, function (network, args) {
-            //set font size normal
-            if (args.edges.length > 0) {
-                var updates = [];
-                var edgeIds: string[] = args.edges;
-                edgeIds.forEach(edgeId => {
-                    updates.push({
-                        id: edgeId, font: {
-                            size: 11,
-                        }
-                    });
-                }
-                );
-
-                browser._screenData.edges.update(updates);
-            }
-        });
-
-        //hide deselected edges
-        this.on(BrowserEventName.NETWORK_DESELECT_EDGES, function (network, args) {
-            //set font size 0
-            if (args.previousSelection.edges.length > 0) {
-                var updates = [];
-                var edgeIds: string[] = args.previousSelection.edges;
-                edgeIds.forEach(edgeId => {
-                    updates.push({
-                        id: edgeId, font: {
-                            size: 0,
-                        }
-                    });
-                }
-                );
-
-                browser._screenData.edges.update(updates);
-            }
-        });
-    }
-
-    private _bindNetworkEvent(networkEventName, browserEventName) {
+    private _bindNetworkEvent(networkEventName, frameEventName) {
         var browser: MainFrame = this;
         this._network.on(networkEventName, function (args) {
-            //console.debug(browserEventName, args);
-            browser.emit(browserEventName, browser._network, args);
+            browser.fire(frameEventName,
+                args instanceof CanvasRenderingContext2D ? { context2d: args } : args);
         });
     }
 
     private _bindNetworkEvents() {
         var browser: MainFrame = this;
         var eventsMap = Utils.toMap({
-            "click": BrowserEventName.NETWORK_CLICK,
-            "doubleClick": BrowserEventName.NETWORK_DBLCLICK,
-            "beforeDrawing": BrowserEventName.NETWORK_BEFORE_DRAWING,
-            "afterDrawing": BrowserEventName.NETWORK_AFTER_DRAWING,
-            "selectEdge": BrowserEventName.NETWORK_SELECT_EDGES,
-            "deselectEdge": BrowserEventName.NETWORK_DESELECT_EDGES,
-            "dragging": BrowserEventName.NETWORK_DRAGGING,
+            "click": FrameEventName.NETWORK_CLICK,
+            "doubleClick": FrameEventName.NETWORK_DBLCLICK,
+            "beforeDrawing": FrameEventName.NETWORK_BEFORE_DRAWING,
+            "afterDrawing": FrameEventName.NETWORK_AFTER_DRAWING,
+            "selectEdge": FrameEventName.NETWORK_SELECT_EDGES,
+            "deselectEdge": FrameEventName.NETWORK_DESELECT_EDGES,
+            "dragging": FrameEventName.NETWORK_DRAGGING,
         });
 
         eventsMap.forEach((v, k, map) => {
             this._bindNetworkEvent(k, v);
         });
+    }
+
+    private _createEventArgs(): EVENT_ARGS_FRAME {
+        return {
+            frame: this,
+            network: this._network,
+            connector: this._connector,
+            theme: this._theme,
+            htmlFrame: this._htmlFrame,
+        }
     }
 
     private _formatEdge(gsonEdge: any, showGraphOptions?: ShowGraphOptions): vis.Edge {
@@ -397,10 +353,7 @@ export class MainFrame extends events.EventEmitter {
         var visEdge: any = { id: gsonEdge.id };
         visEdge.from = gsonEdge.from;
         visEdge.to = gsonEdge.to;
-
-        if (showGraphOptions.showEdges === false) {
-            visEdge.hidden = true;
-        }
+        visEdge.hidden = (showGraphOptions.showEdges === false);
 
         return visEdge;
     }

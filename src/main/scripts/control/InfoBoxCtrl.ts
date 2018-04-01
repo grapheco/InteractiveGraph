@@ -1,13 +1,17 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { BrowserEventName } from '../types';
-import { Connector } from '../connector/base';
+import { FrameEventName, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
+import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
+import { MainFrameWatcher } from "./watcher";
 
 export class InfoBoxCtrl extends Control {
-    
-    init(browser: MainFrame) {
+    private _frameWatcher: MainFrameWatcher;
+    private _htmlInfoPanel: HTMLElement;
+
+    onCreate(args: EVENT_ARGS_FRAME) {
+        var frame = args.frame;
         /*
          <div id="infoPanel" class="infoPanel">
              <div>
@@ -19,7 +23,7 @@ export class InfoBoxCtrl extends Control {
              <div id="infoBox" class="infoBox"></div>
          </div>
          */
-        var offset = $(browser.getContainerElement()).offset();
+        var offset = $(args.htmlFrame).offset();
 
         var htmlInfoPanel = document.createElement("div");
         $(htmlInfoPanel).addClass("infoPanel")
@@ -48,19 +52,22 @@ export class InfoBoxCtrl extends Control {
         //binds events
 
         $(htmlInfoPanel).draggable();
+        this._htmlInfoPanel = htmlInfoPanel;
 
         $(btnCloseInfoPanel).click(function () {
             $(htmlInfoPanel).hide();
         });
 
+        var watcher = new MainFrameWatcher(frame);
+        this._frameWatcher = watcher;
         //show details of selected node
         //DANGER!!!
-        browser.removeAllListeners(BrowserEventName.NETWORK_CLICK);
-        browser.on(BrowserEventName.NETWORK_CLICK,
-            function (network, args) {
+        watcher.off(FrameEventName.NETWORK_CLICK);
+        watcher.on(FrameEventName.NETWORK_CLICK,
+            function (args: EVENT_ARGS_FRAME_INPUT) {
                 var nodeIds = args.nodes;
                 if (nodeIds.length > 0) {
-                    browser.getConnector().requestGetNodeDescriptions(nodeIds,
+                    frame.getConnector().requestGetNodeDescriptions(nodeIds,
                         function (nodeInfos) {
                             $(htmlInfoBox).empty();
                             $(htmlInfoBox).append(nodeInfos[0]);
@@ -68,5 +75,11 @@ export class InfoBoxCtrl extends Control {
                         });
                 }
             });
+    }
+
+    public onDestroy(args: EVENT_ARGS_FRAME) {
+        $(this._htmlInfoPanel).hide();
+        $(this._htmlInfoPanel).remove();
+        this._frameWatcher.undo();
     }
 }
