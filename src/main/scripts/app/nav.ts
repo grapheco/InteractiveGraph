@@ -7,102 +7,108 @@ import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
 import { Connector } from '../connector/connector';
+import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
 
 export class GraphNavigator extends BaseApp {
     public constructor(htmlFrame: HTMLElement) {
-        super(htmlFrame);
-    }
-
-    protected createFramework(htmlFrame: HTMLElement, callback: (args: EVENT_ARGS_FRAME) => void): MainFrame {
-        return new MainFrame(
-            htmlFrame, {
-                showGraphOptions: {
-                    showLabels: true,
-                    showTitles: true,
-                    showFaces: true,
-                    showDegrees: true,
-                    showEdges: true,
-                    showGroups: true
-                }
-            },callback);
+        super(htmlFrame, {
+            showGraphOptions: {
+                showLabels: true,
+                showTitles: true,
+                showFaces: true,
+                showDegrees: true,
+                showEdges: true,
+                showGroups: true
+            }
+        });
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
         var frame = args.frame;
         frame.addControl("search", new SearchBarCtrl());
         frame.addControl("info", new InfoBoxCtrl());
+        frame.addControl("hilight", new HighlightNodeCtrl());
 
         var toolbar = <ToolbarCtrl>frame.addControl("toolbar", new ToolbarCtrl());
         var app = this;
 
         toolbar.addButton({
-            icon: "fa fa-user-circle-o fa-lg",
+            icon: "fa fa-user-circle-o",
             checked: true,
             tooltip: "show faces",
             click: (checked: boolean) => { app.toggleFaces(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-gavel fa-lg",
+            icon: "fa fa-gavel",
             checked: true,
             tooltip: "show degrees",
-            click: (checked: boolean) => { app.toggleDegrees(checked); }
+            click: (checked: boolean) => { app.toggleWeights(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-share-alt fa-lg",
+            icon: "fa fa-share-alt",
             checked: true,
             tooltip: "show edges",
             click: (checked: boolean) => { app.toggleEdges(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-strikethrough fa-lg",
+            icon: "fa fa-strikethrough",
             checked: false,
             tooltip: "always show edge's label",
             click: (checked: boolean) => { app.toggleShowEdgeLabelAlways(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-circle-o fa-lg",
+            icon: "fa fa-circle-o",
             checked: false,
             tooltip: "show border",
             click: (checked: boolean) => { app.toggleNodeBorder(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-transgender-alt fa-lg",
+            icon: "fa fa-transgender-alt",
             checked: false,
             tooltip: "show edge color",
             click: (checked: boolean) => { app.toggleEdgeColor(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-clone fa-lg",
+            icon: "fa fa-clone",
             checked: false,
             tooltip: "show shadow",
             click: (checked: boolean) => { app.toggleShadow(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-search fa-lg",
+            icon: "fa fa-arrows",
+            checked: true,
+            tooltip: "show navigation buttons",
+            click: (checked: boolean) => { app.toggleNavigationButtons(checked); }
+        });
+
+        toolbar.addButton({
+            icon: "fa fa-search",
             checked: true,
             tooltip: "show search bar",
             click: (checked: boolean) => { app.toggleSearchBar(checked); }
         });
 
         toolbar.addButton({
-            icon: "fa fa-info-circle fa-lg",
+            icon: "fa fa-info-circle",
             checked: true,
             tooltip: "show info",
             click: (checked: boolean) => { app.toggleInfoBox(checked); }
         });
 
-        this.addThemeSelect(toolbar);
         this.addScaleSlider(toolbar, frame);
+        this._addThemeSelect(toolbar);
         this._framework.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            app.addCategoriesSelect(toolbar, args.connector);
+            app._addCategoriesSelect(toolbar, args.connector);
         });
+
+        this.toggleShowEdgeLabelAlways(false);
     }
 
     private addScaleSlider(toolbar: ToolbarCtrl, frame: MainFrame) {
@@ -138,86 +144,7 @@ export class GraphNavigator extends BaseApp {
         }
     }
 
-    private toggleNodeBorder(checked: boolean) {
-        this._framework.updateTheme((theme: Theme) => {
-            theme.networkOptions.nodes.borderWidth = checked ? 1 : 0;
-        });
-    }
-
-    private toggleEdgeColor(checked: boolean) {
-        this._framework.updateTheme((theme: Theme) => {
-            if (checked) {
-                theme.networkOptions.edges.color = {
-                    'inherit': 'to'
-                };
-            }
-            else {
-                theme.networkOptions.edges.color = {
-                    opacity: 0.4,
-                    highlight: '#ff0000',
-                    hover: '#ff0000'
-                };
-            }
-        });
-    }
-
-    private toggleShowEdgeLabelAlways(checked: boolean) {
-        this._framework.updateTheme((theme: Theme) => {
-            if (checked) {
-                theme.networkOptions.edges.font['size'] = 11;
-            }
-            else {
-                theme.networkOptions.edges.font['size'] = 0;
-                this._hideUnselectedEdgeLabel();
-            }
-        });
-    }
-
-    private _hideUnselectedEdgeLabel() {
-        var frame = this._framework;
-
-        //hide deselected edges
-        frame.on(FrameEventName.NETWORK_SELECT_EDGES,
-            (args: EVENT_ARGS_FRAME_INPUT) => {
-                //set font size normal
-                if (args.edges.length > 0) {
-                    var updates = [];
-                    var edgeIds: string[] = args.edges;
-                    edgeIds.forEach(edgeId => {
-                        updates.push({
-                            id: edgeId, font: {
-                                size: 11,
-                            }
-                        });
-                    }
-                    );
-
-                    frame.updateEdges(updates);
-                }
-            });
-
-        //hide deselected edges
-        frame.on(FrameEventName.NETWORK_DESELECT_EDGES,
-            (args: EVENT_ARGS_FRAME_INPUT) => {
-                //set font size 0
-                if (args.previousSelection.edges.length > 0) {
-                    var updates = [];
-                    var edgeIds: string[] = args.previousSelection.edges;
-                    edgeIds.forEach(edgeId => {
-                        updates.push({
-                            id: edgeId, font: {
-                                size: 0,
-                            }
-                        });
-                    }
-                    );
-
-                    frame.updateEdges(updates);
-                }
-            });
-    }
-
-    private addCategoriesSelect(toolbar: ToolbarCtrl, connector: Connector) {
+    private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: Connector) {
         var app = this;
         var map = this._framework.getNodeCategories();
         var span = document.createElement("span");
@@ -243,7 +170,7 @@ export class GraphNavigator extends BaseApp {
         toolbar.addTool(span);
     }
 
-    private addThemeSelect(toolbar: ToolbarCtrl) {
+    private _addThemeSelect(toolbar: ToolbarCtrl) {
         var select = document.createElement("select");
 
         $("<option></option>").val('DEFAULT').text("THEME_DEFAULT").appendTo($(select));
@@ -256,13 +183,5 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addTool(select);
-    }
-
-    public updateGraph(showGraphOptions: Function, callback?: () => void) {
-        this._framework.updateGraph(showGraphOptions, callback);
-    }
-
-    public updateTheme(theme: Theme | Function) {
-        this._framework.updateTheme(theme);
     }
 }

@@ -11,7 +11,7 @@ exports.i18n = require("./build/messages").i18n;
 exports.Themes = require("./build/theme").Themes;
 
 exports.ExpansionCtrl = require("./build/control/ExpansionCtrl").ExpansionCtrl;
-exports.HighlightCtrl = require("./build/control/HighlightCtrl").HighlightCtrl;
+exports.HighlightNodeCtrl = require("./build/control/HighlightNodeCtrl").HighlightNodeCtrl;
 exports.InfoBoxCtrl = require("./build/control/InfoBoxCtrl").InfoBoxCtrl;
 exports.MessageBoxCtrl = require("./build/control/MessageBoxCtrl").MessageBoxCtrl;
 exports.RelFinderCtrl = require("./build/control/RelFinderCtrl").RelFinderCtrl;

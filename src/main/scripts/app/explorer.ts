@@ -8,20 +8,15 @@ import { EVENT_ARGS_FRAME } from '../types';
 export class GraphExplorer extends BaseApp {
 
     public constructor(htmlFrame: HTMLElement) {
-        super(htmlFrame);
-    }
-
-    createFramework(htmlFrame: HTMLElement, callback: (args: EVENT_ARGS_FRAME) => void): MainFrame {
-        return new MainFrame(
-            htmlFrame, {
-                showGraphOptions: {
-                    showLabels: true,
-                    showFaces: true,
-                    showDegrees: true,
-                    showEdges: true,
-                    showGroups: true
-                }
-            },callback);
+        super(htmlFrame, {
+            showGraphOptions: {
+                showLabels: true,
+                showFaces: true,
+                showDegrees: true,
+                showEdges: true,
+                showGroups: true
+            }
+        });
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {

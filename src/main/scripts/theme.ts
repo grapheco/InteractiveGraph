@@ -33,6 +33,7 @@ export class Themes {
                     width: 0.01,
                     font: {
                         size: 11,
+                        color: 'green',
                     },
                     color: {
                         //inherit: 'to',
@@ -105,7 +106,8 @@ export class Themes {
                 edges: {
                     width: 0.05,
                     font: {
-                        size: 0,
+                        size: 11,
+                        color: 'green',
                     },
                     color: {
                         highlight: '#ff0000',

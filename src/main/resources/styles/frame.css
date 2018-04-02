@@ -3,26 +3,44 @@
     background-position: top;
 }
 
-button.ui-button-2 {
+button.ui-button2 {
     text-align: center;
     width: 32;
     height: 32;
-    padding: 8px;
+    padding: 2px;
     border-radius: 6px;
     transition: none;
-    color: black;
+    color: #1051cae3;
     border-style: none;
+    font-size: 1.6em;
+    cursor: hand;
 }
 
-button.ui-button-2:hover {
-    border-style: none;
+button.ui-button2:active {
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-bottom: 0px;
+    padding-right: 0px;
 }
 
-button.ui-button-2:focus {
+.ui-tool{
+    padding: 4px;
+    vertical-align: middle;
+    float: left;
+    color: #1051cae3;
+}
+
+button.ui-button2:hover {
+    border-style: none;
+    color:white;
+    background-color:  #1051cae3;
+}
+
+button.ui-button2:focus {
     outline: none;
 }
 
-button.ui-button-checked {
+button.ui-button2-checked {
     border-style: solid;
 }
 
@@ -48,10 +66,8 @@ div.ui-slider-handle:focus{
 
 div.scaleSlider{
     float:left;
-    width: 190pt;
-    margin-top: 10px; 
-    margin-bottom: 10px; 
-    margin-right: 10px;
+    width: 290px;
+    margin-top: 3px;
 }
 
 div.toolbarPanel {

@@ -65,6 +65,13 @@ export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeNEdgeIds {
     previousSelection?: NodeNEdgeIds;
 }
 
+export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {
+    width?: number;
+    height?: number;
+    oldWidth?: number;
+    oldHeight?: number;
+}
+
 export enum FrameEventName {
     DESTROY_CONTROL = "DESTROY_CONTROL",
     REMOVE_CONTROL = "REMOVE_CONTROL",
@@ -83,6 +90,7 @@ export enum FrameEventName {
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
     NETWORK_CLICK = "NETWORK_CLICK",
     NETWORK_DRAGGING = "NETWORK_DRAGGING",
+    FRAME_RESIZE = "FRAME_RESIZE",
 }
 
 export interface BrowserOptions {

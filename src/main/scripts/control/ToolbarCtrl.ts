@@ -1,6 +1,6 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { FrameEventName, ButtonOptions, EVENT_ARGS_FRAME } from '../types';
+import { FrameEventName, ButtonOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE } from '../types';
 import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
@@ -10,8 +10,10 @@ import { } from "jqueryui";
 export class ToolbarCtrl extends Control {
     private _htmlToolbar: HTMLElement;
 
-    public addTool(e: HTMLElement){
-        $(e).appendTo($(this._htmlToolbar));
+    public addTool(e: HTMLElement) {
+        var container = document.createElement("span");
+        $(container).addClass("ui-tool").appendTo($(this._htmlToolbar));
+        $(e).appendTo($(container));
     }
 
     public addButton(info: ButtonOptions): HTMLElement {
@@ -21,26 +23,28 @@ export class ToolbarCtrl extends Control {
         x.showLabel = true;
         x.label = (info.caption === undefined ? "" : info.caption);
 
-        $(e).appendTo($(this._htmlToolbar))
-            .button(x);
+        $(e).addClass("ui-button2")
+            .appendTo($(this._htmlToolbar));
 
         if (info.tooltip !== undefined)
             $(e).attr("title", info.tooltip);
 
-        //fa icons
-        var span = $("span", e);
-
-        //ui-icon conflicts with fa, remove it! 
-        if (span.hasClass("fa")) {
-            span.removeClass("ui-icon");
+        var span = document.createElement("span");
+        if (info.icon !== undefined) {
+            $(span).addClass(info.icon);
         }
+        else {
+            $(span).text(info.caption);
+        }
+
+        $(span).appendTo($(e));
 
         if (info.click !== undefined) {
             //toggle button
             if (info.checked !== undefined) {
                 $(e).click(() => {
-                    $(e).toggleClass("ui-button-checked");
-                    var checked = $(e).hasClass("ui-button-checked");
+                    $(e).toggleClass("ui-button2-checked");
+                    var checked = $(e).hasClass("ui-button2-checked");
                     info.click(checked);
                 });
             }
@@ -49,11 +53,9 @@ export class ToolbarCtrl extends Control {
             }
         }
 
-        $(e).addClass("ui-button-2");
-
         //toggle button
         if (info.checked === true) {
-            $(e).addClass("ui-button-checked");
+            $(e).addClass("ui-button2-checked");
         }
 
         return e;
@@ -66,24 +68,31 @@ export class ToolbarCtrl extends Control {
     }
 
     onCreate(args: EVENT_ARGS_FRAME) {
-        var jaa = $(args.htmlFrame);
-        var offset = jaa.offset();
-
         var htmlCtrl = document.createElement("div");
         $(htmlCtrl).addClass("toolbarPanel")
-            .offset({ left: offset.left + jaa.width() - 400, top: offset.top + 20 })
             .appendTo($(document.body));
 
-        //<div id="toolbar" class="ui-widget-header ui-corner-all">
         var div = document.createElement("div");
         this._htmlToolbar = div;
-        $(div).attr("id", "toolbar")
-            .addClass("controlgroup");
-
-        (<any>$(".controlgroup")).controlgroup();
+        $(div).attr("id", "toolbar");
 
         $(div).appendTo($(htmlCtrl));
         $(htmlCtrl).draggable();
+
+        this.posite(args.htmlFrame, htmlCtrl);
+        //resize
+        this.on(FrameEventName.FRAME_RESIZE,
+            this.posite.bind(this, args.htmlFrame, htmlCtrl));
+    }
+
+    private posite(htmlFrame: HTMLElement, htmlCtrl: HTMLElement) {
+        var jaa = $(htmlFrame);
+        var offset = jaa.offset();
+
+        $(htmlCtrl).offset({
+            left: offset.left + jaa.width() - $(htmlCtrl).width() - 6,
+            top: offset.top
+        });
     }
 
     public onDestroy(args: EVENT_ARGS_FRAME) {

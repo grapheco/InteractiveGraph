@@ -10,20 +10,15 @@ export class RelationFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
 
     public constructor(htmlFrame: HTMLElement) {
-        super(htmlFrame);
-    }
-
-    public createFramework(htmlFrame: HTMLElement, callback: (args: EVENT_ARGS_FRAME) => void): MainFrame {
-        return new MainFrame(
-            htmlFrame, {
-                showGraphOptions: {
-                    showLabels: true,
-                    showFaces: true,
-                    showDegrees: true,
-                    showEdges: true,
-                    showGroups: true
-                }
-            },callback);
+        super(htmlFrame, {
+            showGraphOptions: {
+                showLabels: true,
+                showFaces: true,
+                showDegrees: true,
+                showEdges: true,
+                showGroups: true
+            }
+        });
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {

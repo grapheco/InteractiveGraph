@@ -5,7 +5,7 @@ import { Connector } from '../connector/connector';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
-export class HighlightCtrl extends Control {
+export class HighlightNodeCtrl extends Control {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
     public highlight(nodeIds: string | string[]) {

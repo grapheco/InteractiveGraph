@@ -10,7 +10,7 @@ import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, BrowserOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "./types";
+import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, BrowserOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE } from "./types";
 import { Control } from "./control/Control";
 import { ToolbarCtrl } from "./control/ToolbarCtrl";
 
@@ -38,7 +38,7 @@ export class MainFrame {
 
     private _autoCompletionItemLimit = 30;
     private _theme: Theme;
-    public ctrls = {};
+    private _ctrls: Map<string, Control> = new Map<string, Control>();
 
     private _defaultShowGraphOptions: ShowGraphOptions = {
         showNodes: true,
@@ -47,6 +47,27 @@ export class MainFrame {
     };
 
     private _showGraphOptions: ShowGraphOptions = {};
+
+    public constructor(htmlFrame: HTMLElement, options: BrowserOptions) {
+        options = options || {};
+        this._htmlFrame = htmlFrame;
+
+        this.updateTheme(options.theme);
+        var showGraphOptions = options.showGraphOptions || {};
+        this._showGraphOptions = Utils.deepExtend(this._defaultShowGraphOptions, showGraphOptions);
+
+        this._network = new vis.Network(htmlFrame, this._screenData,
+            this._theme.networkOptions);
+
+        this._bindNetworkEvents();
+
+        var frame = this;
+        this.on(FrameEventName.FRAME_RESIZE, (args: EVENT_ARGS_FRAME_RESIZE) => {
+            frame._ctrls.forEach((ctrl: Control, name: string, map) => {
+                ctrl.emit(FrameEventName.FRAME_RESIZE, args);
+            });
+        });
+    }
 
     public getConnector() {
         return this._connector;
@@ -82,37 +103,19 @@ export class MainFrame {
         }
     }
 
-    public constructor(htmlFrame: HTMLElement, options: BrowserOptions,
-        onCreateFrame: (args: EVENT_ARGS_FRAME) => void) {
-        options = options || {};
-        this._htmlFrame = htmlFrame;
-
-        this.updateTheme(options.theme);
-        var showGraphOptions = options.showGraphOptions || {};
-        this._showGraphOptions = Utils.deepExtend(this._defaultShowGraphOptions, showGraphOptions);
-
-        this._network = new vis.Network(htmlFrame, this._screenData,
-            this._theme.networkOptions);
-
-        this._bindNetworkEvents();
-
-        if (onCreateFrame !== undefined) {
-            onCreateFrame(this._createEventArgs());
-        }
-    }
-
     public getScreenData(): NodeNEdgeSets {
         return this._screenData;
     }
 
     public removeControl(name: string) {
-        var ctrl: Control = this.ctrls[name];
+        var ctrl: Control = this._ctrls.get(name);
         ctrl.emit(FrameEventName.DESTROY_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.REMOVE_CONTROL, { ctrl: ctrl });
+        this._ctrls.delete(name);
     }
 
     public addControl(name: string, ctrl: Control): Control {
-        this.ctrls[name] = ctrl;
+        this._ctrls.set(name, ctrl);
         ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.ADD_CONTROL, { ctrl: ctrl });
         return ctrl;
@@ -329,6 +332,7 @@ export class MainFrame {
             "selectEdge": FrameEventName.NETWORK_SELECT_EDGES,
             "deselectEdge": FrameEventName.NETWORK_DESELECT_EDGES,
             "dragging": FrameEventName.NETWORK_DRAGGING,
+            "resize": FrameEventName.FRAME_RESIZE,
         });
 
         eventsMap.forEach((v, k, map) => {
@@ -354,6 +358,7 @@ export class MainFrame {
         visEdge.from = gsonEdge.from;
         visEdge.to = gsonEdge.to;
         visEdge.hidden = (showGraphOptions.showEdges === false);
+        visEdge.label = gsonEdge.label;
 
         return visEdge;
     }
