@@ -5,31 +5,33 @@ import { MessageBoxCtrl } from '../control/MessageBoxCtrl';
 import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
-import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
-import { Connector } from '../connector/connector';
+import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
+import { GraphService } from '../service/service';
 import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
+import { ConnectCtrl } from '../control/ConnectCtrl';
 
 export class GraphNavigator extends BaseApp {
+    private _searchBar: SearchBarCtrl;
+    private _infoBox: InfoBoxCtrl;
+
     public constructor(htmlFrame: HTMLElement) {
         super(htmlFrame, {
-            showGraphOptions: {
-                showLabels: true,
-                showTitles: true,
-                showFaces: true,
-                showDegrees: true,
-                showEdges: true,
-                showGroups: true
-            }
+            showLabels: true,
+            showTitles: true,
+            showFaces: true,
+            showDegrees: true,
+            showEdges: true,
+            showGroups: true
         });
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
         var frame = args.frame;
-        frame.addControl("search", new SearchBarCtrl());
-        frame.addControl("info", new InfoBoxCtrl());
-        frame.addControl("hilight", new HighlightNodeCtrl());
-
-        var toolbar = <ToolbarCtrl>frame.addControl("toolbar", new ToolbarCtrl());
+        this._searchBar = frame.addControl("search", new SearchBarCtrl());
+        this._infoBox = frame.addControl("info", new InfoBoxCtrl());
+        var connect = frame.addControl("connect", new ConnectCtrl());
+        var hilight = frame.addControl("hilight", new HighlightNodeCtrl());
+        var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
         var app = this;
 
         toolbar.addButton({
@@ -102,10 +104,25 @@ export class GraphNavigator extends BaseApp {
             click: (checked: boolean) => { app.toggleInfoBox(checked); }
         });
 
+        toolbar.addButton({
+            icon: "fa fa-file-code-o",
+            tooltip: "load GSON string",
+            click: (checked: boolean) => { connect.loadGsonString(); }
+        });
+
+        toolbar.addButton({
+            icon: "fa fa-folder-open-o",
+            tooltip: "load GSON url",
+            click: (checked: boolean) => { connect.loadGsonUrl(); }
+        });
+
         this.addScaleSlider(toolbar, frame);
         this._addThemeSelect(toolbar);
-        this._framework.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
+
+        this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             app._addCategoriesSelect(toolbar, args.connector);
+            hilight.clear();
+            app.showGraph({}, () => { });
         });
 
         this.toggleShowEdgeLabelAlways(false);
@@ -128,25 +145,25 @@ export class GraphNavigator extends BaseApp {
 
     private toggleInfoBox(checked: boolean) {
         if (checked) {
-            this._framework.addControl("info", new InfoBoxCtrl());
+            this._infoBox.enable();
         }
         else {
-            this._framework.removeControl("info");
+            this._infoBox.disable();
         }
     }
 
     private toggleSearchBar(checked: boolean) {
         if (checked) {
-            this._framework.addControl("search", new SearchBarCtrl());
+            this._searchBar.show();
         }
         else {
-            this._framework.removeControl("search");
+            this._searchBar.hide();
         }
     }
 
-    private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: Connector) {
+    private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: GraphService) {
         var app = this;
-        var map = this._framework.getNodeCategories();
+        var map = this._frame.getNodeCategories();
         var span = document.createElement("span");
         for (var key in map) {
             var check = document.createElement("input");
@@ -158,7 +175,7 @@ export class GraphNavigator extends BaseApp {
                 .attr("type", "checkbox")
                 .attr("checked", "true")
                 .click(function () {
-                    app._framework.showNodesOfCategory($(this).attr("key"),
+                    app._frame.showNodesOfCategory($(this).attr("key"),
                         $(this).prop('checked'));
                 });
 
@@ -179,7 +196,7 @@ export class GraphNavigator extends BaseApp {
         $(select).change(function () {
             var value = <string>$(select).val();
             var func = Themes[value];
-            app._framework.updateTheme(func());
+            app._frame.updateTheme(func());
         });
 
         toolbar.addTool(select);

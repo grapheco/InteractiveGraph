@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { FrameEventName, QueryResults, RelationPath, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from '../types';
-import { Connector } from '../connector/connector';
+import { FrameEventName, QUERY_RESULTS, RELATION_PATH, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS } from '../types';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 import { Themes, Theme } from "../theme";
@@ -14,8 +14,8 @@ export class RelFinderCtrl extends Control {
     private _queryStartNodeIds: string[];
     private _renderTimer: number;
     private _checkDataTimer: number;
-    private _consumerPathBuffer: RelationPath[];
-    private _collectedPaths: RelationPath[];
+    private _consumerPathBuffer: RELATION_PATH[];
+    private _collectedPaths: RELATION_PATH[];
     private _pathColors = [
         '#fa0006', '#1cd8f8', '#1a6cfd',
         '#f800cf', '6500d5', '#9e00fd',
@@ -36,7 +36,7 @@ export class RelFinderCtrl extends Control {
                 var updates = [];
 
                 if (selectedNodeIds.length == 1 && this._queryStartNodeIds.indexOf(selectedNodeIds[0]) < 0) {
-                    this._collectedPaths.forEach((path: RelationPath) => {
+                    this._collectedPaths.forEach((path: RELATION_PATH) => {
                         var inPath = false;
                         for (var x of path.nodes) {
                             if (selectedNodeIds.indexOf(x['id']) >= 0) {
@@ -75,8 +75,8 @@ export class RelFinderCtrl extends Control {
             }
         }
 
-        frame.updateTheme((theme: Theme) => {
-            theme.networkOptions.edges.font['size'] = 11;
+        frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.edges.font['size'] = 11;
         });
 
         frame.off(FrameEventName.NETWORK_SELECT_EDGES);
@@ -84,12 +84,12 @@ export class RelFinderCtrl extends Control {
         frame.on(FrameEventName.NETWORK_CLICK, onselect.bind(this));
     }
 
-    private _collectFoundRelations(queryResults: QueryResults) {
+    private _collectFoundRelations(queryResults: QUERY_RESULTS) {
         var thisCtrl = this;
         this._queryId = queryResults.queryId;
 
         //collect paths
-        queryResults.paths.forEach((path: RelationPath) => {
+        queryResults.paths.forEach((path: RELATION_PATH) => {
             thisCtrl._consumerPathBuffer.push(path);
         })
 
@@ -105,6 +105,7 @@ export class RelFinderCtrl extends Control {
 
     public startQuery(nodeIds: string[], refreshInterval: number = 1000, maxDepth: number = 6) {
         this._stopped = false;
+        this._frame.placeNodes(nodeIds);
         this._frame.focusNodes(nodeIds);
         var thisCtrl = this;
         //create a render timer

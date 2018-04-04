@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
 import { FrameEventName, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
-import { Connector } from '../connector/connector';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -30,7 +30,7 @@ export class HighlightNodeCtrl extends Control {
         });
     }
 
-    public unhighlightAll() {
+    public clear() {
         this._mapNodeId2HighlightFlag.clear();
     }
 
@@ -44,7 +44,6 @@ export class HighlightNodeCtrl extends Control {
             thisCtrl._mapNodeId2HighlightFlag.forEach((highlighted, nodeId, map) => {
                 if (highlighted) {
                     var nodePositions: any = args.network.getPositions([nodeId]);
-                    var colors = args.theme.nodeHighlightColor;
 
                     var node: any = frame.getNodeById(nodeId);
                     if (!node.hidden) {
@@ -59,8 +58,8 @@ export class HighlightNodeCtrl extends Control {
 
                         var grd = ctx.createRadialGradient(pos.x, pos.y, pos.y - box.top,
                             pos.x, pos.y, pos.y - box.top + 40);
-                        grd.addColorStop(0, colors[0]);
-                        grd.addColorStop(1, colors[1]);
+                        grd.addColorStop(0, args.theme.highlight.gradientInnerColor);
+                        grd.addColorStop(1, args.theme.highlight.gradientOutterColor);
 
 
                         ctx.fillStyle = grd;

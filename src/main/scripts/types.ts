@@ -2,19 +2,20 @@ import { Theme } from './Theme';
 import { MainFrame } from './framework';
 import { Control } from './control/Control';
 import { ToolbarCtrl } from './control/ToolbarCtrl';
-import { Connector } from './connector/connector';
+import { GraphService } from './service/service';
+import { RelFinderCtrl } from './control/RelFinderCtrl';
 
-export interface NodeNEdges {
+export interface NODES_EDGES {
     nodes: object[];
     edges: object[];
 }
 
-export interface NodeNEdgeIds {
+export interface NODE_EDGE_IDS {
     nodes: string[];
     edges: string[];
 }
 
-export interface NodeNEdgeSets {
+export interface NODE_EDGE_SET {
     nodes: vis.DataSet<vis.Node>,
     edges: vis.DataSet<vis.Edge>
 }
@@ -22,14 +23,14 @@ export interface NodeNEdgeSets {
 /** 
  * graph json objects
 */
-export interface Gson {
-    data: NodeNEdges;
+export interface GSON {
+    data: NODES_EDGES;
     dbinfo: object;
     categories: object;
-    defaultData: NodeNEdges;
+    defaultData: NODES_EDGES;
 }
 
-export interface ButtonOptions {
+export interface BUTTON_OPTIONS {
     disabled?: boolean,
     icon?: string,
     iconPosition?: string,
@@ -39,7 +40,23 @@ export interface ButtonOptions {
     click?: Function
 }
 
-export interface ShowGraphOptions {
+export interface GRAPH_NODE extends vis.Node {
+
+}
+
+export interface GRAPH_EDGE extends vis.Edge {
+
+}
+
+export interface NETWORK extends vis.Network {
+
+}
+
+export interface NETWORK_OPTIONS extends vis.Options {
+
+}
+
+export interface FRAME_OPTIONS {
     showFaces?: boolean;
     showGroups?: boolean;
     showNodes?: boolean;
@@ -53,16 +70,16 @@ export interface EVENT_ARGS_FRAME {
     frame: MainFrame;
     network: vis.Network;
     theme: Theme;
-    connector: Connector;
-    htmlFrame: HTMLElement;
+    connector: GraphService;
+    htmlMainFrame: HTMLElement;
 }
 
 export interface EVENT_ARGS_FRAME_DRAWING extends EVENT_ARGS_FRAME {
     context2d: CanvasRenderingContext2D;
 }
 
-export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeNEdgeIds {
-    previousSelection?: NodeNEdgeIds;
+export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NODE_EDGE_IDS {
+    previousSelection?: NODE_EDGE_IDS;
 }
 
 export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {
@@ -72,7 +89,12 @@ export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {
     oldHeight?: number;
 }
 
+export interface EVENT_ARGS_RELFINDER extends EVENT_ARGS_FRAME {
+    maxDepth: number;
+}
+
 export enum FrameEventName {
+    THEME_CHANGED = "THEME_CHANGED",
     DESTROY_CONTROL = "DESTROY_CONTROL",
     REMOVE_CONTROL = "REMOVE_CONTROL",
     CREATE_CONTROL = "CREATE_CONTROL",
@@ -91,25 +113,34 @@ export enum FrameEventName {
     NETWORK_CLICK = "NETWORK_CLICK",
     NETWORK_DRAGGING = "NETWORK_DRAGGING",
     FRAME_RESIZE = "FRAME_RESIZE",
+    RELFINDER_START = "RELFINDER_START",
+    RELFINDER_STOP = "RELFINDER_STOP"
 }
 
-export interface BrowserOptions {
-    theme?: Theme;
-    showGraphOptions?: ShowGraphOptions;
-}
-
-export interface RelationPath {
+export interface RELATION_PATH {
     nodes: object[];
     edges: object[];
 }
 
-export interface QueryResults {
+export interface QUERY_RESULTS {
     hasMore: boolean,
-    paths: RelationPath[];
+    paths: RELATION_PATH[];
     queryId: string;
 }
 
-export interface Pair<K, V> {
+export interface PAIR<K, V> {
     _1: K,
     _2: V;
+}
+
+export interface RECT {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+}
+
+export interface POINT {
+    x: number;
+    y: number;
 }

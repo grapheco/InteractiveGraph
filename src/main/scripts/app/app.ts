@@ -1,34 +1,36 @@
 import { MainFrame } from '../framework';
-import { LocalGraph } from '../connector/local';
-import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, EVENT_ARGS_FRAME, BrowserOptions, EVENT_ARGS_FRAME_INPUT } from "../types";
+import { LocalGraph } from '../service/local';
+import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS, GRAPH_NODE } from "../types";
 import { MessageBoxCtrl } from "../control/MessageBoxCtrl";
-import { Connector } from '../connector/connector';
+import { GraphService } from '../service/service';
 import { Theme } from '../Theme';
 
 export abstract class BaseApp {
     protected _toggleEdgeLabelHandlers;
-    protected _framework: MainFrame;
+    protected _frame: MainFrame;
     protected _htmlFrame: HTMLElement;
-    protected _pickedNodeIds: string[];
     protected _messageBox: MessageBoxCtrl;
 
-    protected constructor(htmlFrame: HTMLElement, initialOptions: BrowserOptions) {
+    protected constructor(htmlFrame: HTMLElement,
+        initialOptions: FRAME_OPTIONS, extra?: object) {
         this._toggleEdgeLabelHandlers = {
             onselect: this._toggleEdgeLabelOnSelect.bind(this),
             ondeselect: this._toggleEdgeLabelOnDeselect.bind(this)
         };
 
         this._htmlFrame = htmlFrame;
-        this._framework = new MainFrame(htmlFrame, initialOptions);
-        this._framework.on(FrameEventName.FRAME_CREATED, this.onCreateFrame.bind(this));
-        this._framework.fire(FrameEventName.FRAME_CREATED, {});
-        this._messageBox = <any>this._framework.addControl("messagebox", new MessageBoxCtrl());
+        var frame = new MainFrame(htmlFrame, initialOptions);
+        frame.on(FrameEventName.FRAME_CREATED, this.onCreateFrame.bind(this));
+
+        this._frame = frame;
+        frame.fire(FrameEventName.FRAME_CREATED, extra || {});
+        this._messageBox = <any>this._frame.addControl("messagebox", new MessageBoxCtrl());
     }
 
     protected abstract onCreateFrame(args: EVENT_ARGS_FRAME);
 
     public loadGson(url: string, callback) {
-        this._framework.connect(LocalGraph.fromGsonFile(url), callback);
+        this._frame.connect(LocalGraph.fromGsonFile(url), callback);
     }
 
     public connect(url: string, callback) {
@@ -38,55 +40,34 @@ export abstract class BaseApp {
     public showGraph(options, callback: () => void) {
         var app = this;
         this._messageBox.showMessage("LOADING_GRAPH");
-        this._framework.load(options, function () {
+        this._frame.load(options, function () {
             app._messageBox.hideMessage();
             if (callback !== undefined)
                 callback();
         });
     }
 
-    public pickup(keywords: object[], callback) {
-        var framework = this._framework;
+    public pickup(keywords: object[], callback: (nodes: GRAPH_NODE[]) => void) {
+        var frame = this._frame;
         var app = this;
-        framework.search(keywords, function (nodes) {
-            var nodeIds = framework.insertNodes(nodes);
-            app._pickedNodeIds = nodeIds;
-            app.placeNodes(nodeIds);
-            framework.updateNodes(nodeIds.map(function (nodeId: any) {
+        frame.search(keywords, (nodes: GRAPH_NODE[]) => {
+            var nodeIds = frame.insertNodes(nodes);
+            frame.placeNodes(nodeIds);
+            frame.updateNodes(nodeIds.map(function (nodeId: any) {
                 return { id: nodeId, physics: false };
             }));
 
             if (callback !== undefined)
-                callback();
+                callback(nodes);
         });
     }
 
-    public placeNodes(nodeIds: string[]) {
-        if (nodeIds.length == 0)
-            return;
-
-        var updates = [];
-
-        var ratio = 1 - 1 / (nodeIds.length * nodeIds.length);
-        var jq = $(this._htmlFrame);
-        var canvasWidth = jq.width();
-        var canvasHeight = jq.height();
-
-        var angle = Math.PI, scopeX = ratio * canvasWidth / 3, scopeY = ratio * canvasHeight / 3;
-        var delta = 2 * Math.PI / nodeIds.length;
-
-        nodeIds.forEach((nodeId) => {
-            var x = scopeX * Math.cos(angle);
-            var y = scopeY * Math.sin(angle);
-            angle += delta;
-            updates.push({ id: nodeId, x: x, y: y, physics: false });
-        });
-
-        this._framework.updateNodes(updates);
+    public clearScreen() {
+        this._frame.clearScreen();
     }
 
-    public updateGraph(showGraphOptions: ShowGraphOptions | Function, callback?: () => void) {
-        this._framework.updateGraph(showGraphOptions);
+    public updateGraph(showGraphOptions: FRAME_OPTIONS | Function, callback?: () => void) {
+        this._frame.updateGraph(showGraphOptions);
     }
 
     public toggleWeights(checked: boolean) {
@@ -108,62 +89,62 @@ export abstract class BaseApp {
     }
 
     public toggleShadow(checked: boolean) {
-        this._framework.updateTheme(function (theme) {
-            theme.networkOptions.nodes.shadow = checked;
+        this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.nodes.shadow = checked;
         });
     }
 
     public toggleNavigationButtons(checked: boolean) {
-        this._framework.updateTheme(function (theme) {
-            theme.networkOptions.interaction.navigationButtons = checked;
+        this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.interaction.navigationButtons = checked;
         });
     }
 
     public toggleNodeBorder(checked: boolean) {
-        this._framework.updateTheme((theme: Theme) => {
-            theme.networkOptions.nodes.borderWidth = checked ? 1 : 0;
+        this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.nodes.borderWidth = checked ? 1 : 0;
         });
     }
 
     public toggleShowEdgeLabelAlways(checked: boolean) {
         if (checked) {
-            this._framework.updateTheme((theme: Theme) => {
-                theme.networkOptions.edges.font['size'] = 11;
+            this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                options.edges.font['size'] = 11;
             });
 
-            this._framework.off(FrameEventName.NETWORK_SELECT_EDGES,
+            this._frame.off(FrameEventName.NETWORK_SELECT_EDGES,
                 this._toggleEdgeLabelHandlers.onselect
             );
 
-            this._framework.off(FrameEventName.NETWORK_DESELECT_EDGES,
+            this._frame.off(FrameEventName.NETWORK_DESELECT_EDGES,
                 this._toggleEdgeLabelHandlers.ondeselect
             );
         }
         else {
-            this._framework.updateTheme((theme: Theme) => {
-                theme.networkOptions.edges.font['size'] = 0;
+            this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                options.edges.font['size'] = 0;
             });
 
-            this._framework.on(FrameEventName.NETWORK_SELECT_EDGES,
+            this._frame.on(FrameEventName.NETWORK_SELECT_EDGES,
                 this._toggleEdgeLabelHandlers.onselect
             );
 
             //hide deselected edges
-            this._framework.on(FrameEventName.NETWORK_DESELECT_EDGES,
+            this._frame.on(FrameEventName.NETWORK_DESELECT_EDGES,
                 this._toggleEdgeLabelHandlers.ondeselect
             );
         }
     }
 
     public toggleEdgeColor(checked: boolean) {
-        this._framework.updateTheme((theme: Theme) => {
+        this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
             if (checked) {
-                theme.networkOptions.edges.color = {
+                options.edges.color = {
                     'inherit': 'to'
                 };
             }
             else {
-                theme.networkOptions.edges.color = {
+                options.edges.color = {
                     opacity: 0.4,
                     highlight: '#ff0000',
                     hover: '#ff0000'
@@ -173,7 +154,7 @@ export abstract class BaseApp {
     }
 
     private _toggleEdgeLabelOnSelect(args: EVENT_ARGS_FRAME_INPUT) {
-        var frame = this._framework;
+        var frame = this._frame;
         var app = this;
 
         //set font size normal
@@ -194,11 +175,11 @@ export abstract class BaseApp {
     }
 
     public updateTheme(theme: Theme | Function) {
-        this._framework.updateTheme(theme);
+        this._frame.updateTheme(theme);
     }
 
     private _toggleEdgeLabelOnDeselect(args: EVENT_ARGS_FRAME_INPUT) {
-        var frame = this._framework;
+        var frame = this._frame;
         var app = this;
         //set font size 0
         if (args.previousSelection.edges.length > 0) {

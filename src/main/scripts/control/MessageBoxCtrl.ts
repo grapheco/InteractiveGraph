@@ -1,30 +1,31 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
 import { FrameEventName, EVENT_ARGS_FRAME } from '../types';
-import { Connector } from '../connector/connector';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
+import { Control, UIControl } from "./Control";
 
-export class MessageBoxCtrl extends Control {
-    private _jqueryMessageBox: JQuery<HTMLElement>;
+export class MessageBoxCtrl extends UIControl {
     private _htmlFrame: HTMLElement;
 
     onCreate(args: EVENT_ARGS_FRAME) {
         //message bar
-        this._htmlFrame = args.htmlFrame;
-        this._jqueryMessageBox = $(document.createElement("div"))
-            .addClass("messageBox")
+        this._htmlFrame = args.htmlMainFrame;
+        this._htmlContainer = document.createElement("div");
+        $(this._htmlContainer).addClass("messageBox")
             .appendTo($(document.body))
             .hide();
     }
 
     public showMessage(msgCode: string) {
         var jaa = $(this._htmlFrame);
-        var pos = jaa.position();
-        var left = pos.left + (jaa.width() - this._jqueryMessageBox.width()) / 2;
-        var top = pos.top + (jaa.height() - this._jqueryMessageBox.height()) / 2;
+        var box = $(this._htmlContainer);
 
-        this._jqueryMessageBox.css("left", left)
+        var pos = jaa.position();
+        var left = pos.left + (jaa.width() - box.width()) / 2;
+        var top = pos.top + (jaa.height() - box.height()) / 2;
+
+        box.css("left", left)
             .css("top", top)
             .css("text-align", "center")
             .html("<i class='fa fa-spinner fa-spin'></i> " + i18n.getMessage(msgCode)).
@@ -32,9 +33,10 @@ export class MessageBoxCtrl extends Control {
     }
 
     public hideMessage() {
-        this._jqueryMessageBox.hide();
+        super.hide();
     }
 
-    public onDestroy(args: EVENT_ARGS_FRAME) {
+    public onResize(args: EVENT_ARGS_FRAME) {
+
     }
 }

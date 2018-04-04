@@ -1,22 +1,20 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { FrameEventName, ButtonOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE } from '../types';
-import { Connector } from '../connector/connector';
+import { FrameEventName, BUTTON_OPTIONS, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, RECT } from '../types';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
+import { Control, UIControl } from "./Control";
 import { } from "jquery";
 import { } from "jqueryui";
 
-export class ToolbarCtrl extends Control {
-    private _htmlToolbar: HTMLElement;
-
+export class ToolbarCtrl extends UIControl {
     public addTool(e: HTMLElement) {
         var container = document.createElement("span");
-        $(container).addClass("ui-tool").appendTo($(this._htmlToolbar));
+        $(container).addClass("ui-tool").appendTo($(this._htmlContainer));
         $(e).appendTo($(container));
     }
 
-    public addButton(info: ButtonOptions): HTMLElement {
+    public addButton(info: BUTTON_OPTIONS): HTMLElement {
         var e = document.createElement("button");
 
         var x: any = info;
@@ -24,7 +22,7 @@ export class ToolbarCtrl extends Control {
         x.label = (info.caption === undefined ? "" : info.caption);
 
         $(e).addClass("ui-button2")
-            .appendTo($(this._htmlToolbar));
+            .appendTo($(this._htmlContainer));
 
         if (info.tooltip !== undefined)
             $(e).attr("title", info.tooltip);
@@ -69,24 +67,29 @@ export class ToolbarCtrl extends Control {
 
     onCreate(args: EVENT_ARGS_FRAME) {
         var htmlCtrl = document.createElement("div");
+        this._htmlContainer = htmlCtrl;
         $(htmlCtrl).addClass("toolbarPanel")
             .appendTo($(document.body));
 
         var div = document.createElement("div");
-        this._htmlToolbar = div;
+
         $(div).attr("id", "toolbar");
 
         $(div).appendTo($(htmlCtrl));
         $(htmlCtrl).draggable();
 
-        this.posite(args.htmlFrame, htmlCtrl);
-        //resize
-        this.on(FrameEventName.FRAME_RESIZE,
-            this.posite.bind(this, args.htmlFrame, htmlCtrl));
+        super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
+            return {
+                x: frameRect.right - 6 - ctrlRect.right + ctrlRect.left,
+                y: frameRect.top
+            };
+        });
+
+        this.onResize(args);
     }
 
-    private posite(htmlFrame: HTMLElement, htmlCtrl: HTMLElement) {
-        var jaa = $(htmlFrame);
+    private posite(htmlMainFrame: HTMLElement, htmlCtrl: HTMLElement) {
+        var jaa = $(htmlMainFrame);
         var offset = jaa.offset();
 
         $(htmlCtrl).offset({

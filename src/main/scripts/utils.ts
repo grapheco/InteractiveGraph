@@ -166,6 +166,7 @@ export class Rect {
 	public y1: number;
 	public x2: number;
 	public y2: number;
+
 	public constructor(x1, y1, x2, y2) {
 		this.x1 = Math.min(x1, x2);
 		this.y1 = Math.min(y1, y2);

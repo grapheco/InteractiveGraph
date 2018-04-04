@@ -3,14 +3,14 @@
  */
 
 import * as vis from "vis";
-import { Connector } from './connector/connector';
+import { GraphService } from './service/service';
 import { Utils, Rect, Point } from "./utils";
 import { } from "jquery";
 import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { ShowGraphOptions, NodeNEdgeSets, FrameEventName, BrowserOptions, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE } from "./types";
+import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE, GRAPH_NODE, NETWORK_OPTIONS, GRAPH_EDGE } from "./types";
 import { Control } from "./control/Control";
 import { ToolbarCtrl } from "./control/ToolbarCtrl";
 
@@ -22,13 +22,14 @@ export class MainFrame {
     private _htmlFrame: HTMLElement;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
-    private _connector: Connector;
+    private _connector: GraphService;
     private _network: vis.Network;
     private _emmiter = new events.EventEmitter();
+    private _networkOptions: NETWORK_OPTIONS;
 
-    private _screenData: NodeNEdgeSets = {
-        nodes: new vis.DataSet<vis.Node>(),
-        edges: new vis.DataSet<vis.Edge>()
+    private _screenData: NODE_EDGE_SET = {
+        nodes: new vis.DataSet<GRAPH_NODE>(),
+        edges: new vis.DataSet<GRAPH_EDGE>()
     };
 
     private _rawData = {
@@ -37,36 +38,21 @@ export class MainFrame {
     };
 
     private _autoCompletionItemLimit = 30;
-    private _theme: Theme;
     private _ctrls: Map<string, Control> = new Map<string, Control>();
+    private _showGraphOptions: FRAME_OPTIONS = {};
+    private _theme: Theme;
 
-    private _defaultShowGraphOptions: ShowGraphOptions = {
-        showNodes: true,
-        showEdges: true,
-        showLabels: true
-    };
-
-    private _showGraphOptions: ShowGraphOptions = {};
-
-    public constructor(htmlFrame: HTMLElement, options: BrowserOptions) {
-        options = options || {};
+    public constructor(htmlFrame: HTMLElement, showGraphOptions: FRAME_OPTIONS, theme?: Theme) {
         this._htmlFrame = htmlFrame;
 
-        this.updateTheme(options.theme);
-        var showGraphOptions = options.showGraphOptions || {};
-        this._showGraphOptions = Utils.deepExtend(this._defaultShowGraphOptions, showGraphOptions);
-
-        this._network = new vis.Network(htmlFrame, this._screenData,
-            this._theme.networkOptions);
+        this.updateTheme(theme);
+        var showGraphOptions = showGraphOptions || {};
+        this._showGraphOptions = Utils.deepExtend(this._createDefaultShowGraphOptions(), showGraphOptions);
+        this._networkOptions = this._createDefaultNetworkOptions();
+        this._network = new vis.Network(htmlFrame, this._screenData, this._networkOptions);
 
         this._bindNetworkEvents();
-
-        var frame = this;
-        this.on(FrameEventName.FRAME_RESIZE, (args: EVENT_ARGS_FRAME_RESIZE) => {
-            frame._ctrls.forEach((ctrl: Control, name: string, map) => {
-                ctrl.emit(FrameEventName.FRAME_RESIZE, args);
-            });
-        });
+        this._bindControlEvents(FrameEventName.FRAME_RESIZE);
     }
 
     public getConnector() {
@@ -74,17 +60,7 @@ export class MainFrame {
     }
 
     public fire(event: string, extra?: object) {
-        var args: any = this._createEventArgs();
-
-        if (extra !== undefined) {
-            for (let key in extra) {
-                if (extra.hasOwnProperty(key)) {
-                    args[key] = extra[key];
-                }
-            }
-        }
-
-        this._emmiter.emit(event, args);
+        this._emmiter.emit(event, this._composeEventArgs(extra));
     }
 
     public on(event: string, listener: (args: EVENT_ARGS_FRAME) => void) {
@@ -103,7 +79,7 @@ export class MainFrame {
         }
     }
 
-    public getScreenData(): NodeNEdgeSets {
+    public getScreenData(): NODE_EDGE_SET {
         return this._screenData;
     }
 
@@ -114,14 +90,14 @@ export class MainFrame {
         this._ctrls.delete(name);
     }
 
-    public addControl(name: string, ctrl: Control): Control {
+    public addControl<T extends Control>(name: string, ctrl: T): T {
         this._ctrls.set(name, ctrl);
         ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.ADD_CONTROL, { ctrl: ctrl });
         return ctrl;
     }
 
-    public connect(connector: Connector, callback) {
+    public connect(connector: GraphService, callback) {
         this._connector = connector;
         this._connector.requestConnect(() => {
             this.fire(FrameEventName.GRAPH_CONNECTED);
@@ -143,10 +119,18 @@ export class MainFrame {
         }
 
         $(this._htmlFrame).css('background', this._theme.canvasBackground);
+        this._notifyControls(FrameEventName.THEME_CHANGED, { theme: this._theme });
+    }
 
-        if (this._network !== undefined) {
-            this._network.setOptions(this._theme.networkOptions);
+    public updateNetworkOptions(options: NETWORK_OPTIONS | Function) {
+        if (options instanceof Function) {
+            options(this._networkOptions);
         }
+        else {
+            this._networkOptions = options;
+        }
+
+        this._network.setOptions(this._networkOptions);
     }
 
     public scaleTo(scale: number) {
@@ -161,11 +145,11 @@ export class MainFrame {
         series(tasksWithCallback);
     }
 
-    public search(keyword: any, callback: (nodes: vis.Node[]) => void) {
+    public search(keyword: any, callback: (nodes: GRAPH_NODE[]) => void) {
         this._connector.requestSearch(keyword, this._autoCompletionItemLimit, callback);
     }
 
-    public updateGraph(showGraphOptions: ShowGraphOptions | Function, callback?: () => void) {
+    public updateGraph(showGraphOptions: FRAME_OPTIONS | Function, callback?: () => void) {
         if (showGraphOptions instanceof Function) {
             showGraphOptions(this._showGraphOptions);
         }
@@ -206,7 +190,7 @@ export class MainFrame {
             });
     }
 
-    public clear() {
+    public clearScreen() {
         this._screenData.nodes.clear();
         this._screenData.edges.clear();
     }
@@ -218,14 +202,14 @@ export class MainFrame {
     public load(options, callback: () => void) {
         var browser = this;
         this._connector.requestLoadGraph(
-            function (nodes: vis.Node[], edges: vis.Edge[]) {
+            function (nodes: GRAPH_NODE[], edges: GRAPH_EDGE[]) {
                 browser._rawData = { nodes: nodes, edges: edges };
 
-                browser._screenData.nodes = new vis.DataSet<vis.Node>(browser._rawData.nodes.map((x) => {
+                browser._screenData.nodes = new vis.DataSet<GRAPH_NODE>(browser._rawData.nodes.map((x) => {
                     return browser._formatNode(x);
                 })
                 );
-                browser._screenData.edges = new vis.DataSet<vis.Edge>(browser._rawData.edges.map((x) => {
+                browser._screenData.edges = new vis.DataSet<GRAPH_EDGE>(browser._rawData.edges.map((x) => {
                     return browser._formatEdge(x);
                 })
                 );
@@ -233,8 +217,8 @@ export class MainFrame {
                 //too large!!
                 if (browser._rawData.nodes.length > MAX_NODES_COUNT ||
                     browser._rawData.edges.length > MAX_EDGES_COUNT)
-                    browser.updateTheme((theme: Theme) => {
-                        theme.networkOptions.physics = false;
+                    browser.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                        options.physics = false;
                     });
 
                 browser._network.setData(browser._screenData);
@@ -314,6 +298,30 @@ export class MainFrame {
         return this._screenData.nodes.get(nodeId);
     }
 
+    public placeNodes(nodeIds: string[]) {
+        if (nodeIds.length == 0)
+            return;
+
+        var updates = [];
+
+        var ratio = 1 - 1 / (nodeIds.length * nodeIds.length);
+        var jq = $(this._htmlFrame);
+        var canvasWidth = jq.width();
+        var canvasHeight = jq.height();
+
+        var angle = Math.PI, scopeX = ratio * canvasWidth / 3, scopeY = ratio * canvasHeight / 3;
+        var delta = 2 * Math.PI / nodeIds.length;
+
+        nodeIds.forEach((nodeId) => {
+            var x = scopeX * Math.cos(angle);
+            var y = scopeY * Math.sin(angle);
+            angle += delta;
+            updates.push({ id: nodeId, x: x, y: y, physics: false });
+        });
+
+        this.updateNodes(updates);
+    }
+
     private _bindNetworkEvent(networkEventName, frameEventName) {
         var browser: MainFrame = this;
         this._network.on(networkEventName, function (args) {
@@ -346,11 +354,11 @@ export class MainFrame {
             network: this._network,
             connector: this._connector,
             theme: this._theme,
-            htmlFrame: this._htmlFrame,
+            htmlMainFrame: this._htmlFrame,
         }
     }
 
-    private _formatEdge(gsonEdge: any, showGraphOptions?: ShowGraphOptions): vis.Edge {
+    private _formatEdge(gsonEdge: any, showGraphOptions?: FRAME_OPTIONS): GRAPH_EDGE {
         if (showGraphOptions === undefined)
             showGraphOptions = this._showGraphOptions;
 
@@ -363,7 +371,7 @@ export class MainFrame {
         return visEdge;
     }
 
-    private _formatNode(gsonNode: any, showGraphOptions?: ShowGraphOptions): vis.Node {
+    private _formatNode(gsonNode: any, showGraphOptions?: FRAME_OPTIONS): GRAPH_NODE {
         if (showGraphOptions === undefined)
             showGraphOptions = this._showGraphOptions;
 
@@ -427,5 +435,116 @@ export class MainFrame {
         }
 
         return visNode;
+    }
+
+    private _bindControlEvents(event: string, event2?: string) {
+        var frame = this;
+        if (event2 === undefined)
+            event2 = event;
+
+        this.on(event, (args: EVENT_ARGS_FRAME_RESIZE) => {
+            frame._ctrls.forEach((ctrl: Control, name: string, map) => {
+                ctrl.emit(event2, args);
+            });
+        });
+    }
+
+    private _notifyControls(event: string, extra?: object) {
+        var args = this._composeEventArgs(extra);
+        this._ctrls.forEach((ctrl: Control, name: string, map) => {
+            ctrl.emit(event, args);
+        });
+    }
+
+    private _createDefaultShowGraphOptions(): FRAME_OPTIONS {
+        return {
+            showNodes: true,
+            showEdges: true,
+            showLabels: true
+        };
+    }
+
+    private _composeEventArgs(extra?: object): EVENT_ARGS_FRAME {
+        var args: any = this._createEventArgs();
+
+        if (extra !== undefined) {
+            for (let key in extra) {
+                if (extra.hasOwnProperty(key)) {
+                    args[key] = extra[key];
+                }
+            }
+        }
+
+        return args;
+    }
+
+    private _createDefaultNetworkOptions(): NETWORK_OPTIONS {
+        return {
+            layout: {
+                improvedLayout: false
+            },
+            nodes: {
+                borderWidth: 0,
+                shape: 'dot',
+                scaling: {
+                    min: 10,
+                    max: 30
+                },
+                font: {
+                    size: 14,
+                    strokeWidth: 7
+                }
+            },
+            edges: {
+                width: 0.01,
+                font: {
+                    size: 11,
+                    color: 'green',
+                },
+                color: {
+                    //inherit: 'to',
+                    opacity: 0.4,
+                    //color: '#cccccc',
+                    highlight: '#ff0000',
+                    hover: '#ff0000',
+                },
+                hoverWidth: 0.05,
+                arrows: {
+                    from: {},
+                    to: {
+                        enabled: true,
+                        scaleFactor: 0.5,
+                    }
+                },
+                smooth: {
+                    enabled: true,
+                    type: 'continuous',
+                    roundness: 0.5,
+                }
+            },
+            physics: {
+                stabilization: false,
+                solver: 'forceAtlas2Based',
+                barnesHut: {
+                    gravitationalConstant: -80000,
+                    springConstant: 0.001,
+                    springLength: 200
+                },
+                forceAtlas2Based: {
+                    gravitationalConstant: -26,
+                    centralGravity: 0.005,
+                    springLength: 230,
+                    springConstant: 0.18
+                },
+            },
+            interaction: {
+                tooltipDelay: 200,
+                hover: true,
+                hideEdgesOnDrag: true,
+                selectable: true,
+                navigationButtons: true,
+                //selectConnectedEdges: false,
+            }
+        };
     }
 }

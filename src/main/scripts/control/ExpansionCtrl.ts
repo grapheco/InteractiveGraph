@@ -1,7 +1,7 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
 import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
-import { Connector } from '../connector/connector';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control } from "./Control";
 
@@ -18,6 +18,10 @@ export class ExpansionCtrl extends Control {
 
     public isExpanded(nodeId: string) {
         return this._mapNodeId2ExpansionValue.get(nodeId) != -1;
+    }
+
+    public clear(){
+        this._mapNodeId2ExpansionValue.clear();
     }
 
     public expand(nodeId: string) {
@@ -41,8 +45,8 @@ export class ExpansionCtrl extends Control {
             var ctx = args.context2d;
             ctx.save();
             ctx.lineWidth = 1;
-            var colors = args.theme.nodeUnexpanedColor;
-            ctx.strokeStyle = colors[2];
+
+            ctx.strokeStyle = args.theme.expansion.fontColor;
 
             thisCtrl._mapNodeId2ExpansionValue.forEach((v, nodeId, map) => {
                 var node: any = frame.getNodeById(nodeId);
@@ -62,7 +66,10 @@ export class ExpansionCtrl extends Control {
                     var y2 = pos.y + r2;
                     (<any>ctx).circle(x2, y2, v == -1 ? 6 : 10);
 
-                    ctx.fillStyle = v == -1 ? colors[0] : colors[1];
+                    ctx.fillStyle = (v == -1 ?
+                        args.theme.expansion.backgroudColorCollapsed :
+                        args.theme.expansion.backgroudColorExpanded
+                    );
                     ctx.fill();
 
                     ctx.font = "10px Arail";

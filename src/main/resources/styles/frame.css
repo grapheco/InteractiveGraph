@@ -23,7 +23,7 @@ button.ui-button2:active {
     padding-right: 0px;
 }
 
-.ui-tool{
+.ui-tool {
     padding: 4px;
     vertical-align: middle;
     float: left;
@@ -32,8 +32,8 @@ button.ui-button2:active {
 
 button.ui-button2:hover {
     border-style: none;
-    color:white;
-    background-color:  #1051cae3;
+    color: white;
+    background-color: #1051cae3;
 }
 
 button.ui-button2:focus {
@@ -56,17 +56,17 @@ div.infoPanel {
     width: 258px;
     cursor: hand;
     background: rgba(230, 217, 202, 0.8);
-    color:rgb(35, 34, 34);
+    color: rgb(35, 34, 34);
     z-index: 888;
 }
 
-div.ui-slider-handle:focus{
+div.ui-slider-handle:focus {
     outline: none;
 }
 
-div.scaleSlider{
-    float:left;
-    width: 290px;
+div.scaleSlider {
+    float: left;
+    width: 314px;
     margin-top: 3px;
 }
 
@@ -95,6 +95,53 @@ div.searchPanel {
     z-index: 900;
 }
 
+div.line {
+    height: 30px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+span.ui-spinner {
+    font-size: 0.6em;
+}
+
+span.relfinder-icon {
+    margin-top: 8px;
+    color: #1051cae3;
+    font-size: 1.1em;
+}
+
+button.relfinder-btn {
+    font-size: 0.9em;
+    border-radius: 5px;
+}
+
+div.relfinder-searchbox-container {
+    width: 220px;
+    float: right;
+}
+
+div.relfinder-dlg {
+    padding: 4px;
+    position: absolute;
+    width: 260px;
+    cursor: hand;
+    background: white;
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    z-index: 900;
+}
+
+textarea.connect-gson-string {
+    width: 360px;
+    height: 250px;
+}
+
+input.connect-gson-url {
+    width: 360px;
+}
+
 div.searchPanel1 {
     width: 220px;
     float: left;
@@ -111,7 +158,7 @@ div.searchPanel2 {
     background-color: #6495ed;
     color: white;
     float: left;
-    padding: 5px 0px 5px 10px;
+    padding: 7px 0px 3px 10px;
 }
 
 div.infoPanel1 {
@@ -139,6 +186,6 @@ div.messageBox {
     position: absolute;
     width: 300px;
     background-color: lightgray;
-    color:black;
-    padding: 20px 20px 20px 20px;  
+    color: black;
+    padding: 20px 20px 20px 20px;
 }

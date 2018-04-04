@@ -5,8 +5,8 @@ exports.BaseApp = require("./build/app/app").BaseApp;
 exports.GraphExplorer = require("./build/app/explorer").GraphExplorer;
 exports.RelationFinder = require("./build/app/relfinder").RelationFinder;
 exports.GraphNavigator = require("./build/app/nav").GraphNavigator;
-exports.LocalGraph = require("./build/connector/local").LocalGraph;
-exports.RemoteGraph = require("./build/connector/remote").RemoteGraph;
+exports.LocalGraph = require("./build/service/local").LocalGraph;
+exports.RemoteGraph = require("./build/service/remote").RemoteGraph;
 exports.i18n = require("./build/messages").i18n;
 exports.Themes = require("./build/theme").Themes;
 

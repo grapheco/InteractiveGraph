@@ -1,17 +1,14 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../framework";
-import { FrameEventName, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
-import { Connector } from '../connector/connector';
+import { FrameEventName, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME, RECT } from '../types';
+import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
-import { MainFrameWatcher } from "./watcher";
+import { Control, UIControl } from "./Control";
 
-export class InfoBoxCtrl extends Control {
-    private _frameWatcher: MainFrameWatcher;
-    private _htmlInfoPanel: HTMLElement;
-
+export class InfoBoxCtrl extends UIControl {
     onCreate(args: EVENT_ARGS_FRAME) {
         var frame = args.frame;
+        var ctrl = this;
         /*
          <div id="infoPanel" class="infoPanel">
              <div>
@@ -23,12 +20,10 @@ export class InfoBoxCtrl extends Control {
              <div id="infoBox" class="infoBox"></div>
          </div>
          */
-        var offset = $(args.htmlFrame).offset();
+        var offset = $(args.htmlMainFrame).offset();
 
         var htmlInfoPanel = document.createElement("div");
-        $(htmlInfoPanel).addClass("infoPanel")
-            .offset({ left: offset.left + 10, top: offset.top + 80 })
-            .appendTo($(document.body));
+        $(htmlInfoPanel).addClass("infoPanel").appendTo($(document.body));
         var div = document.createElement("div");
         $(div).appendTo($(htmlInfoPanel));
         var infoPanel1 = document.createElement("div");
@@ -52,34 +47,37 @@ export class InfoBoxCtrl extends Control {
         //binds events
 
         $(htmlInfoPanel).draggable();
-        this._htmlInfoPanel = htmlInfoPanel;
+        this._htmlContainer = htmlInfoPanel;
 
         $(btnCloseInfoPanel).click(function () {
             $(htmlInfoPanel).hide();
         });
 
-        var watcher = new MainFrameWatcher(frame);
-        this._frameWatcher = watcher;
         //show details of selected node
         //DANGER!!!
-        watcher.off(FrameEventName.NETWORK_CLICK);
-        watcher.on(FrameEventName.NETWORK_CLICK,
+        frame.off(FrameEventName.NETWORK_CLICK);
+        frame.on(FrameEventName.NETWORK_CLICK,
             function (args: EVENT_ARGS_FRAME_INPUT) {
-                var nodeIds = args.nodes;
-                if (nodeIds.length > 0) {
-                    frame.getConnector().requestGetNodeDescriptions(nodeIds,
-                        function (nodeInfos) {
-                            $(htmlInfoBox).empty();
-                            $(htmlInfoBox).append(nodeInfos[0]);
-                            $(htmlInfoPanel).show();
-                        });
+                if (!ctrl._disabled) {
+                    var nodeIds = args.nodes;
+                    if (nodeIds.length > 0) {
+                        frame.getConnector().requestGetNodeDescriptions(nodeIds,
+                            function (nodeInfos) {
+                                $(htmlInfoBox).empty();
+                                $(htmlInfoBox).append(nodeInfos[0]);
+                                $(htmlInfoPanel).show();
+                            });
+                    }
                 }
             });
-    }
 
-    public onDestroy(args: EVENT_ARGS_FRAME) {
-        $(this._htmlInfoPanel).hide();
-        $(this._htmlInfoPanel).remove();
-        this._frameWatcher.undo();
+        super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
+            return {
+                x: frameRect.left + 10,
+                y: frameRect.top + 80
+            };
+        });
+
+        this.onResize(args);
     }
 }
