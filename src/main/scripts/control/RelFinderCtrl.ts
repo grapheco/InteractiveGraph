@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, QUERY_RESULTS, RELATION_PATH, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -7,7 +7,6 @@ import { Control } from "./Control";
 import { Themes, Theme } from "../theme";
 
 export class RelFinderCtrl extends Control {
-
     private _frame: MainFrame;
     private _queryId: string;
     private _stopped;
@@ -22,7 +21,7 @@ export class RelFinderCtrl extends Control {
         '#fb8617', '#f6ff0a', '#96e508'];
 
     onCreate(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+        var frame = args.mainFrame;
         this._frame = frame;
 
         var onselect = function (args: EVENT_ARGS_FRAME_INPUT) {
@@ -84,7 +83,8 @@ export class RelFinderCtrl extends Control {
         frame.on(FrameEventName.NETWORK_CLICK, onselect.bind(this));
     }
 
-    private _collectFoundRelations(queryResults: QUERY_RESULTS) {
+    private _collectFoundRelations(
+        queryResults: QUERY_RESULTS) {
         var thisCtrl = this;
         this._queryId = queryResults.queryId;
 
@@ -98,12 +98,16 @@ export class RelFinderCtrl extends Control {
             return;
 
         if (queryResults.hasMore) {
-            thisCtrl._frame.getConnector().requestGetMoreRelations(queryResults.queryId,
-                thisCtrl._collectFoundRelations.bind(thisCtrl));
+            this._frame.getGraphService().requestGetMoreRelations(queryResults.queryId,
+                (queryResults: QUERY_RESULTS) => {
+                    thisCtrl._collectFoundRelations(queryResults);
+                });
         }
     }
 
-    public startQuery(nodeIds: string[], refreshInterval: number = 1000, maxDepth: number = 6) {
+    public startQuery(nodeIds: string[],
+        refreshInterval: number = 1000,
+        maxDepth: number = 6) {
         this._stopped = false;
         this._frame.placeNodes(nodeIds);
         this._frame.focusNodes(nodeIds);
@@ -135,15 +139,17 @@ export class RelFinderCtrl extends Control {
             },
             30000);
 
-        this._frame.getConnector().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
-            this._collectFoundRelations.bind(this));
+        this._frame.getGraphService().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
+            (queryResults: QUERY_RESULTS) => {
+                thisCtrl._collectFoundRelations(queryResults);
+            });
     }
 
     public stopQuery() {
         this._stopped = true;
         window.clearInterval(this._renderTimer);
         window.clearInterval(this._checkDataTimer);
-        this._frame.getConnector().requestStopFindRelations(this._queryId);
+        this._frame.getGraphService().requestStopFindRelations(this._queryId);
     }
 
     public onDestroy(args: EVENT_ARGS_FRAME) {

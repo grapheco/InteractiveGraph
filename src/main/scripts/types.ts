@@ -1,33 +1,46 @@
 import { Theme } from './Theme';
-import { MainFrame } from './framework';
+import { MainFrame } from './mainframe';
 import { Control } from './control/Control';
 import { ToolbarCtrl } from './control/ToolbarCtrl';
 import { GraphService } from './service/service';
 import { RelFinderCtrl } from './control/RelFinderCtrl';
+import * as vis from "vis";
 
-export interface NODES_EDGES {
+export interface NodesEdges {
     nodes: object[];
     edges: object[];
 }
 
-export interface NODE_EDGE_IDS {
+export interface NodeEdgeIds {
     nodes: string[];
     edges: string[];
 }
 
-export interface NODE_EDGE_SET {
-    nodes: vis.DataSet<vis.Node>,
-    edges: vis.DataSet<vis.Edge>
+export class GraphNodeSet extends vis.DataSet<vis.Node> {
+}
+
+export class GraphEdgeSet extends vis.DataSet<vis.Edge> {
+}
+
+export interface NodeEdgeSet {
+    nodes: GraphNodeSet,
+    edges: GraphEdgeSet
 }
 
 /** 
  * graph json objects
 */
 export interface GSON {
-    data: NODES_EDGES;
-    dbinfo: object;
-    categories: object;
-    defaultData: NODES_EDGES;
+    data: {
+        nodes: object[];
+        edges?: object[];
+    }
+    dbinfo?: object;
+    categories?: object;
+    translator?: {
+        nodes?: (node: object) => void;
+        edges?: (node: object) => void;
+    };
 }
 
 export interface BUTTON_OPTIONS {
@@ -40,15 +53,15 @@ export interface BUTTON_OPTIONS {
     click?: Function
 }
 
-export interface GRAPH_NODE extends vis.Node {
+export interface GraphNode extends vis.Node {
 
 }
 
-export interface GRAPH_EDGE extends vis.Edge {
+export interface GraphEdge extends vis.Edge {
 
 }
 
-export interface NETWORK extends vis.Network {
+export class GraphNetwork extends vis.Network {
 
 }
 
@@ -67,10 +80,9 @@ export interface FRAME_OPTIONS {
 }
 
 export interface EVENT_ARGS_FRAME {
-    frame: MainFrame;
-    network: vis.Network;
+    mainFrame: MainFrame;
+    network: GraphNetwork;
     theme: Theme;
-    connector: GraphService;
     htmlMainFrame: HTMLElement;
 }
 
@@ -78,8 +90,8 @@ export interface EVENT_ARGS_FRAME_DRAWING extends EVENT_ARGS_FRAME {
     context2d: CanvasRenderingContext2D;
 }
 
-export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NODE_EDGE_IDS {
-    previousSelection?: NODE_EDGE_IDS;
+export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeEdgeIds {
+    previousSelection?: NodeEdgeIds;
 }
 
 export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {

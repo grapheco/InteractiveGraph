@@ -1,17 +1,17 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
-import { FrameEventName, EVENT_ARGS_FRAME, GRAPH_NODE, RECT } from '../types';
+import { MainFrame } from "../mainframe";
+import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control, UIControl } from "./Control";
 
 export class SearchBarCtrl extends UIControl {
-    private _renderAutoCompletionItem = function (item: GRAPH_NODE) {
+    private _renderAutoCompletionItem = function (item: GraphNode) {
         return "<b>" + item.label + "</b>";
     }
 
-    onCreate(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
+        var frame = args.mainFrame;
         /*
         <div id="searchPanel" class="searchPanel">
             <div id="searchPanel1" class="searchPanel1">
@@ -24,19 +24,17 @@ export class SearchBarCtrl extends UIControl {
         */
         var thisCtrl = this;
         var offset = $(args.htmlMainFrame).offset();
-        var panel = document.createElement("div");
-        this._htmlContainer = panel;
-        $(panel).addClass("searchPanel").appendTo($(document.body));
+        $(htmlContainer).addClass("searchPanel");
         
         var searchPanel1 = document.createElement("div");
         $(searchPanel1).addClass("searchPanel1")
-            .appendTo($(panel));
+            .appendTo($(htmlContainer));
 
         $(this.createSearchBox(frame)).appendTo($(searchPanel1))
 
         var searchPanel2 = document.createElement("div");
         $(searchPanel2).addClass("searchPanel2")
-            .appendTo($(panel));
+            .appendTo($(htmlContainer));
         var i = document.createElement("span");
         $(i).addClass("fa")
             .addClass("fa-search")
@@ -49,8 +47,6 @@ export class SearchBarCtrl extends UIControl {
                 y: frameRect.top + 20
             };
         });
-
-        this.onResize(args);
     }
 
     public createSearchBox(frame: MainFrame): HTMLElement {
@@ -65,7 +61,7 @@ export class SearchBarCtrl extends UIControl {
         $(htmlSearchBox).autocomplete({
             source: function (request, response) {
                 var term = request.term;
-                frame.search(term, function (nodes: GRAPH_NODE[]) {
+                frame.search(term, function (nodes: GraphNode[]) {
                     response(nodes.map((node) => {
                         return {
                             value: node.label,
@@ -89,7 +85,7 @@ export class SearchBarCtrl extends UIControl {
 
             select: function (event, ui) {
                 console.log(ui.item);
-                var node: GRAPH_NODE = ui.item.node;
+                var node: GraphNode = ui.item.node;
                 if (node !== undefined) {
                     $(htmlSearchBox).val(node.label);
                     $(htmlSearchBox).data("node", node);

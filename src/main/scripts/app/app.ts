@@ -1,6 +1,6 @@
-import { MainFrame } from '../framework';
+import { MainFrame } from '../mainframe';
 import { LocalGraph } from '../service/local';
-import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS, GRAPH_NODE } from "../types";
+import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS, GraphNode } from "../types";
 import { MessageBoxCtrl } from "../control/MessageBoxCtrl";
 import { GraphService } from '../service/service';
 import { Theme } from '../Theme';
@@ -47,10 +47,10 @@ export abstract class BaseApp {
         });
     }
 
-    public pickup(keywords: object[], callback: (nodes: GRAPH_NODE[]) => void) {
+    public pickup(keywords: object[], callback: (nodes: GraphNode[]) => void) {
         var frame = this._frame;
         var app = this;
-        frame.search(keywords, (nodes: GRAPH_NODE[]) => {
+        frame.search(keywords, (nodes: GraphNode[]) => {
             var nodeIds = frame.insertNodes(nodes);
             frame.placeNodes(nodeIds);
             frame.updateNodes(nodeIds.map(function (nodeId: any) {

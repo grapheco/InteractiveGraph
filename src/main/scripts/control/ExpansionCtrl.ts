@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -20,13 +20,13 @@ export class ExpansionCtrl extends Control {
         return this._mapNodeId2ExpansionValue.get(nodeId) != -1;
     }
 
-    public clear(){
+    public clear() {
         this._mapNodeId2ExpansionValue.clear();
     }
 
     public expand(nodeId: string) {
         var thisCtrl = this;
-        this._frame.getConnector().requestGetNeighbours(
+        this._frame.getGraphService().requestGetNeighbours(
             nodeId,
             function (neighbourNodes: object[], neighbourEdges: object[]) {
                 thisCtrl._frame.insertNodes(neighbourNodes);
@@ -36,7 +36,7 @@ export class ExpansionCtrl extends Control {
     }
 
     public onCreate(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+        var frame = args.mainFrame;
         this._frame = frame;
         var thisCtrl = this;
 

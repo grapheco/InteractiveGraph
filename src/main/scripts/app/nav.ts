@@ -1,11 +1,11 @@
-import { MainFrame } from '../framework';
+import { MainFrame } from '../mainframe';
 import { BaseApp } from './app';
 import { Themes, Theme } from "../theme";
 import { MessageBoxCtrl } from '../control/MessageBoxCtrl';
 import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
-import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
+import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
 import { GraphService } from '../service/service';
 import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
@@ -26,7 +26,7 @@ export class GraphNavigator extends BaseApp {
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+        var frame = args.mainFrame;
         this._searchBar = frame.addControl("search", new SearchBarCtrl());
         this._infoBox = frame.addControl("info", new InfoBoxCtrl());
         var connect = frame.addControl("connect", new ConnectCtrl());
@@ -120,7 +120,7 @@ export class GraphNavigator extends BaseApp {
         this._addThemeSelect(toolbar);
 
         this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            app._addCategoriesSelect(toolbar, args.connector);
+            app._addCategoriesSelect(toolbar, frame.getGraphService());
             hilight.clear();
             app.showGraph({}, () => { });
         });
@@ -164,7 +164,12 @@ export class GraphNavigator extends BaseApp {
     private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: GraphService) {
         var app = this;
         var map = this._frame.getNodeCategories();
-        var span = document.createElement("span");
+        var span = document.getElementById("categories-select");
+        if (span != null)
+            span.remove();
+
+        span = document.createElement("span");
+        $(span).attr("id", "categories-select");
         for (var key in map) {
             var check = document.createElement("input");
             var label = document.createElement("label");

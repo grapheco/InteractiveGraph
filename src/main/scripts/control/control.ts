@@ -1,10 +1,11 @@
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import * as events from "events";
 import { FrameEventName, EVENT_ARGS_FRAME, RECT, POINT } from "../types";
 import { Rect, Point } from "../utils";
 
 export abstract class Control extends events.EventEmitter {
     protected _disabled: boolean = false;
+
     abstract onCreate(args: EVENT_ARGS_FRAME);
     abstract onDestroy(args: EVENT_ARGS_FRAME);
 
@@ -29,8 +30,18 @@ export abstract class UIControl extends Control {
 
     constructor() {
         super();
+    }
+
+    abstract onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME);
+
+    public onCreate(args: EVENT_ARGS_FRAME) {
+        this._htmlContainer = document.createElement("div");
+        $(this._htmlContainer).appendTo($(args.htmlMainFrame));
+        
         //resize
         this.on(FrameEventName.FRAME_RESIZE, this.onResize.bind(this));
+        this.onCreateUI(this._htmlContainer, args);
+        this.emit(FrameEventName.FRAME_RESIZE, args);
     }
 
     public show() {

@@ -1,11 +1,11 @@
-import { MainFrame } from "../framework";
-import { FRAME_OPTIONS, QUERY_RESULTS, GRAPH_NODE, GRAPH_EDGE } from '../types';
+import { MainFrame } from "../mainframe";
+import { FRAME_OPTIONS, QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
 
 export interface GraphService {
     requestConnect(callback: () => void);
     requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void);
-    requestLoadGraph(callback: (nodes: GRAPH_NODE[], edges: GRAPH_EDGE[]) => void);
-    requestSearch(expr: any, limit: number, callback: (nodes: GRAPH_NODE[]) => void);
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void);
+    requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void);
     requestGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void);
 
     getNodeCategories(): object;

@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, BUTTON_OPTIONS, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, RECT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -65,18 +65,13 @@ export class ToolbarCtrl extends UIControl {
         })
     }
 
-    onCreate(args: EVENT_ARGS_FRAME) {
-        var htmlCtrl = document.createElement("div");
-        this._htmlContainer = htmlCtrl;
-        $(htmlCtrl).addClass("toolbarPanel")
-            .appendTo($(document.body));
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
+        $(htmlContainer).addClass("toolbarPanel")
 
         var div = document.createElement("div");
-
         $(div).attr("id", "toolbar");
-
-        $(div).appendTo($(htmlCtrl));
-        $(htmlCtrl).draggable();
+        $(div).appendTo($(htmlContainer));
+        $(htmlContainer).draggable();
 
         super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
             return {
@@ -84,8 +79,6 @@ export class ToolbarCtrl extends UIControl {
                 y: frameRect.top
             };
         });
-
-        this.onResize(args);
     }
 
     private posite(htmlMainFrame: HTMLElement, htmlCtrl: HTMLElement) {

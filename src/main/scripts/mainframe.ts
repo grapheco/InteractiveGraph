@@ -10,7 +10,7 @@ import { } from "jqueryui";
 import * as events from "events";
 import * as series from "async/series";
 import { Themes, Theme } from "./theme";
-import { FRAME_OPTIONS, NODE_EDGE_SET, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE, GRAPH_NODE, NETWORK_OPTIONS, GRAPH_EDGE } from "./types";
+import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE, GraphNode, NETWORK_OPTIONS, GraphEdge, GraphNodeSet, GraphEdgeSet, GraphNetwork } from "./types";
 import { Control } from "./control/Control";
 import { ToolbarCtrl } from "./control/ToolbarCtrl";
 
@@ -22,14 +22,14 @@ export class MainFrame {
     private _htmlFrame: HTMLElement;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
-    private _connector: GraphService;
-    private _network: vis.Network;
+    private _graphService: GraphService;
+    private _network: GraphNetwork;
     private _emmiter = new events.EventEmitter();
     private _networkOptions: NETWORK_OPTIONS;
 
-    private _screenData: NODE_EDGE_SET = {
-        nodes: new vis.DataSet<GRAPH_NODE>(),
-        edges: new vis.DataSet<GRAPH_EDGE>()
+    private _screenData: NodeEdgeSet = {
+        nodes: new GraphNodeSet(),
+        edges: new GraphEdgeSet()
     };
 
     private _rawData = {
@@ -49,14 +49,10 @@ export class MainFrame {
         var showGraphOptions = showGraphOptions || {};
         this._showGraphOptions = Utils.deepExtend(this._createDefaultShowGraphOptions(), showGraphOptions);
         this._networkOptions = this._createDefaultNetworkOptions();
-        this._network = new vis.Network(htmlFrame, this._screenData, this._networkOptions);
+        this._network = new GraphNetwork(htmlFrame, this._screenData, this._networkOptions);
 
         this._bindNetworkEvents();
         this._bindControlEvents(FrameEventName.FRAME_RESIZE);
-    }
-
-    public getConnector() {
-        return this._connector;
     }
 
     public fire(event: string, extra?: object) {
@@ -79,7 +75,11 @@ export class MainFrame {
         }
     }
 
-    public getScreenData(): NODE_EDGE_SET {
+    public getGraphService() {
+        return this._graphService;
+    }
+
+    public getScreenData(): NodeEdgeSet {
         return this._screenData;
     }
 
@@ -97,9 +97,9 @@ export class MainFrame {
         return ctrl;
     }
 
-    public connect(connector: GraphService, callback) {
-        this._connector = connector;
-        this._connector.requestConnect(() => {
+    public connect(service: GraphService, callback) {
+        this._graphService = service;
+        this._graphService.requestConnect(() => {
             this.fire(FrameEventName.GRAPH_CONNECTED);
             if (callback != undefined)
                 callback();
@@ -107,7 +107,7 @@ export class MainFrame {
     }
 
     public getNodeCategories() {
-        return this._connector.getNodeCategories();
+        return this._graphService.getNodeCategories();
     }
 
     public updateTheme(theme: Theme | Function) {
@@ -145,8 +145,8 @@ export class MainFrame {
         series(tasksWithCallback);
     }
 
-    public search(keyword: any, callback: (nodes: GRAPH_NODE[]) => void) {
-        this._connector.requestSearch(keyword, this._autoCompletionItemLimit, callback);
+    public search(keyword: any, callback: (nodes: GraphNode[]) => void) {
+        this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
     }
 
     public updateGraph(showGraphOptions: FRAME_OPTIONS | Function, callback?: () => void) {
@@ -178,7 +178,7 @@ export class MainFrame {
 
     public showNodesOfCategory(className: string, showOrNot: boolean, callback?: () => void) {
         var browser = this;
-        this._connector.requestUpdateNodesOfCategory(className,
+        this._graphService.requestUpdateNodesOfCategory(className,
             this._screenData.nodes.getIds(),
             showOrNot,
             (updates) => {
@@ -201,15 +201,15 @@ export class MainFrame {
      */
     public load(options, callback: () => void) {
         var browser = this;
-        this._connector.requestLoadGraph(
-            function (nodes: GRAPH_NODE[], edges: GRAPH_EDGE[]) {
+        this._graphService.requestLoadGraph(
+            function (nodes: GraphNode[], edges: GraphEdge[]) {
                 browser._rawData = { nodes: nodes, edges: edges };
 
-                browser._screenData.nodes = new vis.DataSet<GRAPH_NODE>(browser._rawData.nodes.map((x) => {
+                browser._screenData.nodes = new GraphNodeSet(browser._rawData.nodes.map((x) => {
                     return browser._formatNode(x);
                 })
                 );
-                browser._screenData.edges = new vis.DataSet<GRAPH_EDGE>(browser._rawData.edges.map((x) => {
+                browser._screenData.edges = new GraphEdgeSet(browser._rawData.edges.map((x) => {
                     return browser._formatEdge(x);
                 })
                 );
@@ -350,15 +350,14 @@ export class MainFrame {
 
     private _createEventArgs(): EVENT_ARGS_FRAME {
         return {
-            frame: this,
+            mainFrame: this,
             network: this._network,
-            connector: this._connector,
             theme: this._theme,
             htmlMainFrame: this._htmlFrame,
         }
     }
 
-    private _formatEdge(gsonEdge: any, showGraphOptions?: FRAME_OPTIONS): GRAPH_EDGE {
+    private _formatEdge(gsonEdge: any, showGraphOptions?: FRAME_OPTIONS): GraphEdge {
         if (showGraphOptions === undefined)
             showGraphOptions = this._showGraphOptions;
 
@@ -371,7 +370,7 @@ export class MainFrame {
         return visEdge;
     }
 
-    private _formatNode(gsonNode: any, showGraphOptions?: FRAME_OPTIONS): GRAPH_NODE {
+    private _formatNode(gsonNode: any, showGraphOptions?: FRAME_OPTIONS): GraphNode {
         if (showGraphOptions === undefined)
             showGraphOptions = this._showGraphOptions;
 

@@ -136,10 +136,14 @@ div.relfinder-dlg {
 textarea.connect-gson-string {
     width: 360px;
     height: 250px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+    font-size: 12px !important;
 }
 
 input.connect-gson-url {
     width: 360px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+    font-size: 12px !important;
 }
 
 div.searchPanel1 {

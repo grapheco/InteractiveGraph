@@ -1,10 +1,10 @@
 import { BaseApp } from './app';
-import { MainFrame } from '../framework';
+import { MainFrame } from '../mainframe';
 import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { RelFinderCtrl } from '../control/RelFinderCtrl';
-import { EVENT_ARGS_FRAME, NETWORK_OPTIONS, FrameEventName, GRAPH_NODE, EVENT_ARGS_RELFINDER } from '../types';
+import { EVENT_ARGS_FRAME, NETWORK_OPTIONS, FrameEventName, GraphNode, EVENT_ARGS_RELFINDER } from '../types';
 import { Theme } from '../Theme';
 import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
@@ -28,7 +28,7 @@ export class RelationFinder extends BaseApp {
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+        var frame = args.mainFrame;
         var app = this;
 
         frame.addControl("info", new InfoBoxCtrl());
@@ -136,9 +136,9 @@ export class RelationFinder extends BaseApp {
         this._relfinder.stopQuery();
     }
 
-    public pickup(keywords: object[], callback: (nodes: GRAPH_NODE[]) => void) {
+    public pickup(keywords: object[], callback: (nodes: GraphNode[]) => void) {
         var app = this;
-        super.pickup(keywords, (nodes: GRAPH_NODE[]) => {
+        super.pickup(keywords, (nodes: GraphNode[]) => {
             this._dlgSelectionCtrl.selectNodes(nodes);
 
             if (callback !== undefined)

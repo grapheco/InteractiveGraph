@@ -1,7 +1,7 @@
 import { GraphService } from './service';
 import { Utils } from '../utils';
 import { } from "jquery";
-import { NODES_EDGES, PAIR, GSON, FRAME_OPTIONS, QUERY_RESULTS, RELATION_PATH, GRAPH_NODE, GRAPH_EDGE } from '../types';
+import { NodesEdges, PAIR, GSON, FRAME_OPTIONS, QUERY_RESULTS, RELATION_PATH, GraphNode, GraphEdge } from '../types';
 import * as vis from "vis";
 
 export class LocalGraph implements GraphService {
@@ -18,47 +18,37 @@ export class LocalGraph implements GraphService {
         _mapNodePair2EdgeIds: new Map<string, Set<string>>(),
     };
 
-    //TODO: defines translators() in gson
-    private _defaultTranslateGson2GraphData: (source: GSON) => NODES_EDGES = function (source: GSON) {
-        var nodes = source.data.nodes;
-        var edges = source.data.edges;
+    private _translate(gson: GSON): NodesEdges {
+        var nodes = gson.data.nodes;
+        var edges = gson.data.edges;
         var counterNode = 1;
         var counterEdge = 1;
 
-        nodes.forEach((node: any) => {
-            //set description
-            if (node.description === undefined) {
-                var description = "<p align=center>";
-                if (node.image !== undefined) {
-                    description += "<img src='" + node.image + "' width=150/><br>";
-                }
-                description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
-                description += "</p>";
-
-                if (node.info !== undefined) {
-                    description += "<p align=left>" + node.info + "</p>";
-                }
-                else {
-                    if (node.title !== undefined)
-                        description += "<p align=left>" + node.title + "</p>";
-                }
-
-                node.description = description;
+        var transNode = (node: any) => { };
+        var transEdge = (node: any) => { };
+        if (gson.translator !== undefined) {
+            if (gson.translator.nodes !== undefined && gson.translator.nodes instanceof Function) {
+                transNode = gson.translator.nodes;
             }
+            if (gson.translator.edges !== undefined && gson.translator.edges instanceof Function) {
+                transNode = gson.translator.edges;
+            }
+        }
 
+        nodes.forEach((node: any) => {
+            transNode(node);
             if (node.id === undefined)
                 node.id = counterNode++;
-
             //set title
             if (node.title === undefined && node.label !== undefined)
                 node.title = "<b>" + node.label + "</b>" + "[" + node.id + "]";
-
             //set group
             if (node.group === undefined && node.categories instanceof Array)
                 node.group = node.categories[0];
         });
 
         edges.forEach((edge: any) => {
+            transEdge(edge);
             if (edge.id === undefined)
                 edge.id = counterEdge++;
         });
@@ -69,20 +59,15 @@ export class LocalGraph implements GraphService {
         };
     }
 
-    private constructor(loadData?: (callback: () => void) => void) {
-        if (loadData !== undefined)
-            this._callbackLoadData = loadData;
+    private constructor() {
     }
 
-    private _processGson(gson: GSON, translate?: (source: GSON) => NODES_EDGES) {
+    private _processGson(gson: GSON) {
         this._labels = gson.categories;
         var local = this;
-        if (translate === undefined) {
-            translate = local._defaultTranslateGson2GraphData;
-        }
 
         //translate gson to composite empty fields
-        var data = translate(gson);
+        var data = this._translate(gson);
         this._nodes = data.nodes;
         this._edges = data.edges;
         this._createIndexDB();
@@ -121,33 +106,39 @@ export class LocalGraph implements GraphService {
         });
     }
 
-    public static fromGson(gson: GSON, translate?: (source: GSON) => NODES_EDGES) {
+    public static fromGson(gson: GSON) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callbackAfterLoad: () => void) => {
-            graph._processGson(gson, translate);
-            callbackAfterLoad();
+        graph._callbackLoadData = (callback: () => void) => {
+            graph._processGson(gson);
+            callback();
         };
 
         return graph;
     }
 
-    public static fromGsonString(gsonString: string, translate?: (source: GSON) => NODES_EDGES) {
+    private static _string2GSON(gsonString: string): GSON {
+        var __gson__: GSON;
+        eval("__gson__=" + gsonString);
+        return __gson__;
+    }
+
+    public static fromGsonString(gsonString: string) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callbackAfterLoad: () => void) => {
-            graph._processGson(JSON.parse(gsonString), translate);
-            callbackAfterLoad();
+        graph._callbackLoadData = (callback: () => void) => {
+            graph._processGson(LocalGraph._string2GSON(gsonString));
+            callback();
         };
 
         return graph;
     }
 
-    public static fromGsonFile(gsonURL, translate?: (source: GSON) => NODES_EDGES) {
+    public static fromGsonFile(gsonUrl) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callbackAfterLoad: () => void) => {
-            $.getJSON(gsonURL, function (data) {
-                graph._processGson(data, translate);
-                callbackAfterLoad();
-            });
+        graph._callbackLoadData = (callback: () => void) => {
+            $.get(gsonUrl, { t: new Date().getTime() }, function (data) {
+                graph._processGson(LocalGraph._string2GSON(data));
+                callback();
+            }, "text");
         };
 
         return graph;
@@ -190,13 +181,13 @@ export class LocalGraph implements GraphService {
             })));
     }
 
-    requestLoadGraph(callback: (nodes: GRAPH_NODE[], edges: GRAPH_EDGE[]) => void) {
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void) {
         var local: LocalGraph = this;
         this._async(() =>
             callback(local._nodes, local._edges));
     }
 
-    requestSearch(expr: any, limit: number, callback: (nodes: GRAPH_NODE[]) => void) {
+    requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void) {
         var local: LocalGraph = this;
         this._async(() => {
             var results =
@@ -209,14 +200,14 @@ export class LocalGraph implements GraphService {
         );
     }
 
-    private _searchBySingleExpr(expr: any, limit: number): GRAPH_NODE[] {
+    private _searchBySingleExpr(expr: any, limit: number): GraphNode[] {
         if (typeof (expr) === 'string')
             return this._searchByKeyword(expr.toString(), limit);
 
         return this._searchByExample(expr, limit);
     }
 
-    private _searchByKeyword(keyword: string, limit: number): GRAPH_NODE[] {
+    private _searchByKeyword(keyword: string, limit: number): GraphNode[] {
         var results = [];
         var node: any;
         for (node of this._nodes) {
@@ -230,7 +221,7 @@ export class LocalGraph implements GraphService {
         return results;
     }
 
-    private _searchByExample(example: any, limit: number): GRAPH_NODE[] {
+    private _searchByExample(example: any, limit: number): GraphNode[] {
         var results = [];
 
         for (var node of this._nodes) {
@@ -252,7 +243,7 @@ export class LocalGraph implements GraphService {
         return results;
     }
 
-    private _searchByExprArray(exprs: any[], limit: number): GRAPH_NODE[] {
+    private _searchByExprArray(exprs: any[], limit: number): GraphNode[] {
         var results = [];
         exprs.forEach((expr) => {
             results = results.concat(this._searchBySingleExpr(expr, limit));
@@ -261,10 +252,10 @@ export class LocalGraph implements GraphService {
         return results;
     }
 
-    requestGetNeighbours(nodeId: string, callback: (neighbourNodes: GRAPH_NODE[], neighbourEdges: GRAPH_NODE[]) => void) {
+    requestGetNeighbours(nodeId: string, callback: (neighbourNodes: GraphNode[], neighbourEdges: GraphNode[]) => void) {
         var local: LocalGraph = this;
         this._async(() => {
-            var neighbourEdges: GRAPH_NODE[] = Utils.distinct(
+            var neighbourEdges: GraphNode[] = Utils.distinct(
                 local._edges.filter((edge: any) => {
                     return edge.from == nodeId || edge.from == nodeId;
                 })
@@ -276,7 +267,7 @@ export class LocalGraph implements GraphService {
                 })
             );
 
-            var neighbourNodes: GRAPH_NODE[] = neighbourNodeIds.map((nodeId: string) => {
+            var neighbourNodes: GraphNode[] = neighbourNodeIds.map((nodeId: string) => {
                 return local._getNode(nodeId);
             });
 

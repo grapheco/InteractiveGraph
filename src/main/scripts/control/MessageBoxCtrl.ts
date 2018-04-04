@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -8,13 +8,10 @@ import { Control, UIControl } from "./Control";
 export class MessageBoxCtrl extends UIControl {
     private _htmlFrame: HTMLElement;
 
-    onCreate(args: EVENT_ARGS_FRAME) {
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
         //message bar
         this._htmlFrame = args.htmlMainFrame;
-        this._htmlContainer = document.createElement("div");
-        $(this._htmlContainer).addClass("messageBox")
-            .appendTo($(document.body))
-            .hide();
+        $(htmlContainer).addClass("messageBox").hide();
     }
 
     public showMessage(msgCode: string) {

@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -11,13 +11,11 @@ export class ConnectCtrl extends UIControl {
     private _dlgLoadGsonString: JQuery;
     private _dlgLoadGsonUrl: JQuery;
 
-    public onCreate(args: EVENT_ARGS_FRAME) {
-        this._frame = args.frame;
-        this._htmlContainer = document.createElement("div");
-        $(this._htmlContainer).appendTo($(args.htmlMainFrame));
-        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(this._htmlContainer));
-
-        this._dlgLoadGsonUrl = $('<div title="load GSON"><p>input remote GSON url:<br><input class="connect-gson-url"></p></div>').appendTo($(this._htmlContainer));
+    public onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
+        this._frame = args.mainFrame;
+        
+        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
+        this._dlgLoadGsonUrl = $('<div title="load GSON"><p>input remote GSON url:<br><input class="connect-gson-url"></p></div>').appendTo($(htmlContainer));
 
         var gson = {
             data: {

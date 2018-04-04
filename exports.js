@@ -1,6 +1,6 @@
 "use strict";
 
-exports.MainFrame = require("./build/framework").MainFrame;
+exports.MainFrame = require("./build/mainframe").MainFrame;
 exports.BaseApp = require("./build/app/app").BaseApp;
 exports.GraphExplorer = require("./build/app/explorer").GraphExplorer;
 exports.RelationFinder = require("./build/app/relfinder").RelationFinder;

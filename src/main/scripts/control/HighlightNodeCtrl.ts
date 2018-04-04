@@ -1,5 +1,5 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
@@ -36,7 +36,7 @@ export class HighlightNodeCtrl extends Control {
 
     onCreate(args: EVENT_ARGS_FRAME) {
         var thisCtrl = this;
-        var frame = args.frame;
+        var frame = args.mainFrame;
         frame.on(FrameEventName.NETWORK_BEFORE_DRAWING, function (args: EVENT_ARGS_FRAME_DRAWING) {
             var ctx = args.context2d;
             ctx.save();

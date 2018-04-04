@@ -1,57 +1,41 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
+import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME, RECT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control, UIControl } from "./Control";
 
 export class InfoBoxCtrl extends UIControl {
-    onCreate(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
+        var frame = args.mainFrame;
         var ctrl = this;
         /*
          <div id="infoPanel" class="infoPanel">
              <div>
                  <div id="infoPanel1" class="infoPanel1">node description</div>
                  <div id="infoPanel2" class="infoPanel2">
-                     <span id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></i>
+                     <span id="btnCloseInfoPanel" align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span>
                  </div>
              </div>
              <div id="infoBox" class="infoBox"></div>
          </div>
          */
         var offset = $(args.htmlMainFrame).offset();
-
-        var htmlInfoPanel = document.createElement("div");
-        $(htmlInfoPanel).addClass("infoPanel").appendTo($(document.body));
+        $(htmlContainer).addClass("infoPanel");
         var div = document.createElement("div");
-        $(div).appendTo($(htmlInfoPanel));
-        var infoPanel1 = document.createElement("div");
-        $(infoPanel1).addClass("infoPanel1")
+        $(div).appendTo($(htmlContainer));
+        $('<div class="infoPanel1"></div>')
             .appendTo($(div));
-        var infoPanel2 = document.createElement("div");
-        $(infoPanel2).addClass("infoPanel2")
+        var infoPanel2 = $(' <div class="infoPanel2"></div>')
             .appendTo($(div));
-        var btnCloseInfoPanel = document.createElement("span");
-        $(btnCloseInfoPanel).addClass("fa")
-            .addClass("fa-close")
-            .addClass("fa-lg")
-            .addClass("btnCloseInfoPanel")
-            .attr("align", "center")
-            .appendTo($(infoPanel2));
+        var btnCloseInfoPanel = $('<span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span>').click(function () {
+            $(htmlContainer).hide();
+        }).appendTo($(infoPanel2));
 
-        var htmlInfoBox = document.createElement("div");
-        $(htmlInfoBox).addClass("infoBox").
-            appendTo($(htmlInfoPanel));
+        var htmlInfoBox = $('<div class="infoBox"></div>').appendTo($(htmlContainer));
 
         //binds events
-
-        $(htmlInfoPanel).draggable();
-        this._htmlContainer = htmlInfoPanel;
-
-        $(btnCloseInfoPanel).click(function () {
-            $(htmlInfoPanel).hide();
-        });
+        $(htmlContainer).draggable();
 
         //show details of selected node
         //DANGER!!!
@@ -61,11 +45,11 @@ export class InfoBoxCtrl extends UIControl {
                 if (!ctrl._disabled) {
                     var nodeIds = args.nodes;
                     if (nodeIds.length > 0) {
-                        frame.getConnector().requestGetNodeDescriptions(nodeIds,
+                        frame.getGraphService().requestGetNodeDescriptions(nodeIds,
                             function (nodeInfos) {
                                 $(htmlInfoBox).empty();
                                 $(htmlInfoBox).append(nodeInfos[0]);
-                                $(htmlInfoPanel).show();
+                                $(htmlContainer).show();
                             });
                     }
                 }
@@ -77,7 +61,5 @@ export class InfoBoxCtrl extends UIControl {
                 y: frameRect.top + 80
             };
         });
-
-        this.onResize(args);
     }
 }

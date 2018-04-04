@@ -1,6 +1,6 @@
 import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../framework";
-import { FrameEventName, EVENT_ARGS_FRAME, GRAPH_NODE, RECT } from '../types';
+import { MainFrame } from "../mainframe";
+import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control, UIControl } from "./Control";
@@ -9,16 +9,11 @@ import { SearchBarCtrl } from "./SearchBarCtrl";
 export class RelFinderDialogCtrl extends UIControl {
     private _searchBoxes: JQuery[];
 
-    onCreate(args: EVENT_ARGS_FRAME) {
-        var frame = args.frame;
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
+        var frame = args.mainFrame;
         var ctrl = this;
-        var offset = $(args.htmlMainFrame).offset();
-        var panel = document.createElement("div");
-        this._htmlContainer = panel;
 
-        $(panel).addClass("relfinder-dlg")
-            .appendTo($(document.body))
-            .draggable();
+        $(htmlContainer).addClass("relfinder-dlg").draggable();
 
         //input box
         var sbCtrl = new SearchBarCtrl();
@@ -26,7 +21,7 @@ export class RelFinderDialogCtrl extends UIControl {
         this._searchBoxes = [];
         for (var m = 0; m < 2; m++) {
             var line = document.createElement("div");
-            $(line).addClass("line").appendTo($(panel));
+            $(line).addClass("line").appendTo($(htmlContainer));
             $('<span class="fa relfinder-icon"></span>')
                 .addClass(icons[m])
                 .appendTo($(line));
@@ -41,7 +36,7 @@ export class RelFinderDialogCtrl extends UIControl {
 
         //maxdepth spinner
         var line = document.createElement("div");
-        $(line).addClass("line").appendTo($(panel));
+        $(line).addClass("line").appendTo($(htmlContainer));
 
         $(document.createElement("label")).text("maxdepth: ").appendTo($(line));
         var spinner = $(document.createElement("input"))
@@ -55,7 +50,7 @@ export class RelFinderDialogCtrl extends UIControl {
 
         //buttons: start/stop
         var div = $('<p align="center"></p>');
-        div.appendTo($(panel));
+        div.appendTo($(htmlContainer));
 
         $('<button type="button" class="btn relfinder-btn">find relations</button>')
             .appendTo($(div))
@@ -83,14 +78,12 @@ export class RelFinderDialogCtrl extends UIControl {
                 y: frameRect.top + 45
             };
         });
-
-        this.onResize(args);
     }
 
     public getSelectedNodeIds(): string[] {
         var nodeIds: string[] = [];
         this._searchBoxes.forEach((j: JQuery) => {
-            var data: GRAPH_NODE = j.data("node");
+            var data: GraphNode = j.data("node");
             if (data !== undefined && data !== null)
                 nodeIds.push(<any>data.id);
         });
@@ -98,7 +91,7 @@ export class RelFinderDialogCtrl extends UIControl {
         return nodeIds;
     }
 
-    public selectNodes(nodes: GRAPH_NODE[]) {
+    public selectNodes(nodes: GraphNode[]) {
         var i = 0;
 
         this._searchBoxes.forEach((sb: JQuery) => {
@@ -107,7 +100,7 @@ export class RelFinderDialogCtrl extends UIControl {
         });
 
         var ctrl = this;
-        nodes.forEach((node: GRAPH_NODE) => {
+        nodes.forEach((node: GraphNode) => {
             ctrl._searchBoxes[i].val(node.label);
             ctrl._searchBoxes[i].data("node", node);
             i++;
