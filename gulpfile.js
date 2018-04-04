@@ -14,30 +14,31 @@ var tsp = ts.createProject('tsconfig.json');
 
 var ENTRY = './exports.js';
 var BUILD = __dirname + '/build';
-var DEBUG_DIR = __dirname + '/../grapheco-browser-release/debug';
-var RELEASE_DIR = __dirname + '/../grapheco-browser-release/release';
-var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io';
-var OUTPUT_JS = 'grapheco-browser.js';
-var OUTPUT_MAP = 'grapheco-browser.map';
-var OUTPUT_MIN_JS = 'grapheco-browser.min.js';
-var OUTPUT_CSS = 'grapheco-browser.css';
-var OUTPUT_MIN_CSS = 'grapheco-browser.min.css';
+var DEBUG_DIR = __dirname + '/../interactive-graph-release/debug';
+var RELEASE_DIR = __dirname + '/../interactive-graph-release/release';
+var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io/intergraph';
+var OUTPUT_JS = 'intergraph.js';
+var OUTPUT_MAP = 'intergraph.map';
+var OUTPUT_MIN_JS = 'intergraph.min.js';
+var OUTPUT_CSS = 'intergraph.css';
+var OUTPUT_MIN_CSS = 'intergraph.min.css';
 var TS_SOURCE = './src/main/scripts/**/*.ts';
 var CSS_SOURCE = './src/main/resources/**/*.css';
 var IMG_SOURCE = './src/main/resources/img/**/*';
+var WEBPACK_LIBRARY = 'intergraph';
+var RELEASE_REPLACE_1 = '../dist/grapheco-browser.';
+var RELEASE_REPLACE_2 = '../dist/grapheco-browser.min.';
 
 var webpackModule = {
-  loaders: [
-    {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
-      query: {
-        cacheDirectory: true, // use cache to improve speed
-        babelrc: true // use the .baberc file
-      }
+  loaders: [{
+    test: /\.js$/,
+    exclude: /node_modules/,
+    loader: 'babel-loader',
+    query: {
+      cacheDirectory: true, // use cache to improve speed
+      babelrc: true // use the .baberc file
     }
-  ],
+  }],
 
   // exclude requires of moment.js language files
   wrappedContextRegExp: /$^/
@@ -46,7 +47,7 @@ var webpackModule = {
 var webpackConfig = {
   entry: ENTRY,
   output: {
-    library: 'grapheco',
+    library: WEBPACK_LIBRARY,
     libraryTarget: 'umd',
     path: BUILD,
     filename: OUTPUT_JS,
@@ -191,7 +192,7 @@ gulp.task('copy-examples-to-release', ['clean-release'], function (cb) {
 gulp.task('update-release-html', ['copy-examples-to-release'], function () {
   gulp.src(DEBUG_DIR + '/examples/**/*.html')
     .pipe(replace({
-      '../dist/grapheco-browser.': '../dist/grapheco-browser.min.'
+      RELEASE_REPLACE_1: RELEASE_REPLACE_2
     }))
     .pipe(gulp.dest(RELEASE_DIR + '/examples'));
 });
@@ -199,12 +200,12 @@ gulp.task('update-release-html', ['copy-examples-to-release'], function () {
 gulp.task('release', ['debug', 'copy-dist-to-release', 'copy-resources-to-release', 'copy-examples-to-release', 'update-release-html']);
 
 gulp.task('clean-demo', ['release'], function (cb) {
-  rimraf(DEMO_PROJECT_DIR + '/gebrowser/*', cb);
+  rimraf(DEMO_PROJECT_DIR + '/*', cb);
 });
 
 gulp.task('deploy-demo', ['clean-demo'], function () {
   var network = gulp.src(RELEASE_DIR + '/**/*')
-    .pipe(gulp.dest(DEMO_PROJECT_DIR + '/gebrowser'));
+    .pipe(gulp.dest(DEMO_PROJECT_DIR));
 
   return network;
 });
