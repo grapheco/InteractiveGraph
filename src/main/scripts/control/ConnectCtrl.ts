@@ -13,8 +13,8 @@ export class ConnectCtrl extends UIControl {
 
     public onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
         this._frame = args.mainFrame;
-        
-        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
+
+        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON<a href="#"><span style="color:firebrick" class="fa fa-question-circle"></span></a> text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
         this._dlgLoadGsonUrl = $('<div title="load GSON"><p>input remote GSON url:<br><input class="connect-gson-url"></p></div>').appendTo($(htmlContainer));
 
         var gson = {
@@ -45,7 +45,11 @@ export class ConnectCtrl extends UIControl {
         };
 
         $("textarea", this._dlgLoadGsonString).val(JSON.stringify(gson));
-        $("input", this._dlgLoadGsonUrl).val(window.location.href);
+        var input = $("input", this._dlgLoadGsonUrl);
+
+        $("<a href='#'>WorldCup2014.json</a>").click(() => {
+            $(input).val("WorldCup2014.json");
+        }).appendTo($(this._dlgLoadGsonUrl));
     }
 
     public loadGsonString() {

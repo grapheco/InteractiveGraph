@@ -23,6 +23,95 @@ button.ui-button2:active {
     padding-right: 0px;
 }
 
+.vis-button {
+    background-image: none !important;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.vis-button.vis-up::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f01b";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-left::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f190";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-right::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f18e";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-down::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f01a";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-zoomIn::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f055";
+    font-size: 2.4em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2.5px;
+}
+
+.vis-button.vis-zoomOut::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f056";
+    font-size: 2.4em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2.5px;
+}
+
+.vis-button.vis-zoomExtends::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f1cd";
+    font-size: 2em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
 .ui-tool {
     padding: 4px;
     vertical-align: middle;

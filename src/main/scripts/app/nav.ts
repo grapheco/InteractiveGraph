@@ -84,7 +84,7 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addButton({
-            icon: "fa fa-arrows",
+            icon: "fa fa-anchor",
             checked: true,
             tooltip: "show navigation buttons",
             click: (checked: boolean) => { app.toggleNavigationButtons(checked); }

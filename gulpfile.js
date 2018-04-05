@@ -11,23 +11,29 @@ var argv = require('yargs').argv;
 var replace = require('gulp-replace-pro');
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
+const zip = require('gulp-zip');
 
 var ENTRY = './exports.js';
-var BUILD = __dirname + '/build';
-var DEBUG_DIR = __dirname + '/../interactive-graph-release/debug';
-var RELEASE_DIR = __dirname + '/../interactive-graph-release/release';
-var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io/intergraph';
-var OUTPUT_JS = 'intergraph.js';
-var OUTPUT_MAP = 'intergraph.map';
-var OUTPUT_MIN_JS = 'intergraph.min.js';
-var OUTPUT_CSS = 'intergraph.css';
-var OUTPUT_MIN_CSS = 'intergraph.min.css';
-var TS_SOURCE = './src/main/scripts/**/*.ts';
+var BUILD_DIR = __dirname + '/build';
+var SOURCE_EXAMPLES_DIR = __dirname + '/src/test/webapp';
+var PRODUCT_NAME = 'interactive-graph';
+var VERSIONED_PRODUCT_NAME = PRODUCT_NAME + '-0.1.0';
+var DIST_DIR = __dirname + '/dist';
+var RELEASE_LIB_DIR = DIST_DIR + '/' + VERSIONED_PRODUCT_NAME;
+var RELEASE_EXAMPLES_DIR = DIST_DIR + '/examples';
+var LIB_DIR_IN_RELEASE_EXAMPLES = RELEASE_EXAMPLES_DIR + '/lib/' + VERSIONED_PRODUCT_NAME;
+var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io/igraph';
+var OUTPUT_JS = PRODUCT_NAME + '.js';
+var OUTPUT_MAP = PRODUCT_NAME + '.map';
+var OUTPUT_MIN_JS = PRODUCT_NAME + '.min.js';
+var OUTPUT_CSS = PRODUCT_NAME + '.css';
+var OUTPUT_MIN_CSS = PRODUCT_NAME + '.min.css';
+var TYPESCRIPT_SOURCE = './src/main/scripts/**/*.ts';
 var CSS_SOURCE = './src/main/resources/**/*.css';
-var IMG_SOURCE = './src/main/resources/img/**/*';
-var WEBPACK_LIBRARY = 'intergraph';
-var RELEASE_REPLACE_1 = '../dist/grapheco-browser.';
-var RELEASE_REPLACE_2 = '../dist/grapheco-browser.min.';
+var WEBPACK_LIBRARY = 'igraph';
+
+var RELEASE_REPLACE_1 = '../../../build/' + PRODUCT_NAME;
+var RELEASE_REPLACE_2 = './lib/' + VERSIONED_PRODUCT_NAME + '/' + PRODUCT_NAME + '.min';
 
 var webpackModule = {
   loaders: [{
@@ -49,7 +55,7 @@ var webpackConfig = {
   output: {
     library: WEBPACK_LIBRARY,
     libraryTarget: 'umd',
-    path: BUILD,
+    path: BUILD_DIR,
     filename: OUTPUT_JS,
     sourcePrefix: '  '
   },
@@ -85,14 +91,13 @@ function handleCompilerCallback(err, stats) {
   }
 }
 
-// clean the dist/img directory
 gulp.task('clean-build', function (cb) {
-  rimraf(BUILD + '/*', cb);
+  rimraf(BUILD_DIR + '/*', cb);
 });
 
 //.ts --> .js
-gulp.task('build-ts', function (cb) {
-  return gulp.src(TS_SOURCE)
+gulp.task('build-ts', ['clean-build'], function (cb) {
+  return gulp.src(TYPESCRIPT_SOURCE)
     .pipe(tsp({
       error: (error, typescript) => {
         console.info("failed to compile:");
@@ -103,7 +108,7 @@ gulp.task('build-ts', function (cb) {
         console.info(results);
       }
     }))
-    .pipe(gulp.dest(BUILD));
+    .pipe(gulp.dest(BUILD_DIR));
 
   cb();
 });
@@ -117,97 +122,94 @@ gulp.task('bundle-js', ['build-ts'], function (cb) {
 });
 
 // bundle and minify css
-gulp.task('bundle-css', function () {
+gulp.task('bundle-css', ['clean-build'], function () {
   return gulp.src(CSS_SOURCE)
     .pipe(concat(OUTPUT_CSS))
-    .pipe(gulp.dest(BUILD));
+    .pipe(gulp.dest(BUILD_DIR));
 });
 
-gulp.task('clean-debug-dist', function (cb) {
-  rimraf(DEBUG_DIR + '/dist/', cb);
-});
-
-gulp.task('copy-resources-to-debug', ['clean-build', 'clean-debug-dist'], function () {
-  var network = gulp.src(IMG_SOURCE)
-    .pipe(gulp.dest(DEBUG_DIR + '/dist/img'));
-
-  return network;
-});
-
-gulp.task('copy-output-to-debug', ['bundle'], function () {
-  var network = gulp.src(BUILD + '/*.*')
-    .pipe(gulp.dest(DEBUG_DIR + '/dist'));
-
-  return network;
-});
-
-gulp.task('minify-css', ['bundle'], function () {
-  return gulp.src(BUILD + "/" + OUTPUT_CSS)
-    .pipe(cleanCSS())
-    .pipe(rename(OUTPUT_MIN_CSS))
-    .pipe(gulp.dest(BUILD));
-});
-
-gulp.task('minify-js', ['bundle'], function (cb) {
-  var result = uglify.minify([BUILD + '/' + OUTPUT_JS], uglifyConfig);
-
-  // note: we add a newline '\n' to the end of the minified file to prevent
-  //       any issues when concatenating the file downstream (the file ends
-  //       with a comment).
-  fs.writeFileSync(BUILD + '/' + OUTPUT_MIN_JS, result.code + '\n');
-  fs.writeFileSync(BUILD + '/' + OUTPUT_MAP, result.map.replace(/"\.\/dist\//g, '"'));
-
-  cb();
+gulp.task('clean-dist', function (cb) {
+  rimraf(DIST_DIR, cb);
 });
 
 gulp.task('bundle', ['bundle-js', 'bundle-css']);
 
-gulp.task('debug', ['clean-build', 'build-ts', 'bundle', 'copy-resources-to-debug', 'copy-output-to-debug']);
+/////////gulp build///////////
+gulp.task('build', ['clean-build', 'build-ts', 'bundle']);
 
-gulp.task('clean-release', function (cb) {
-  rimraf(RELEASE_DIR + '/*', cb);
+gulp.task('minify-css', ['bundle'], function () {
+  return gulp.src(BUILD_DIR + "/" + OUTPUT_CSS)
+    .pipe(cleanCSS())
+    .pipe(rename(OUTPUT_MIN_CSS))
+    .pipe(gulp.dest(BUILD_DIR));
 });
 
-gulp.task('copy-dist-to-release', ['minify-js', 'minify-css', 'clean-release'], function (cb) {
-  var network = gulp.src(BUILD + '/*.min.*')
-    .pipe(gulp.dest(RELEASE_DIR + '/dist'));
+gulp.task('minify-js', ['bundle'], function (cb) {
+  var result = uglify.minify([BUILD_DIR + '/' + OUTPUT_JS], uglifyConfig);
 
-  return network;
+  fs.writeFileSync(BUILD_DIR + '/' + OUTPUT_MIN_JS, result.code + '\n');
+  fs.writeFileSync(BUILD_DIR + '/' + OUTPUT_MAP, result.map.replace(/"\.\/dist\//g, '"'));
+
+  cb();
 });
 
-gulp.task('copy-resources-to-release', ['clean-release'], function () {
-  var network = gulp.src(IMG_SOURCE)
-    .pipe(gulp.dest(RELEASE_DIR + '/dist/img'));
+gulp.task('copy-build-to-lib', ['minify-js', 'minify-css', 'clean-dist'], function (cb) {
+  var stream = gulp.src(BUILD_DIR + '/*.min.*')
+    .pipe(gulp.dest(RELEASE_LIB_DIR));
 
-  return network;
+  return stream;
 });
 
-gulp.task('copy-examples-to-release', ['clean-release'], function (cb) {
-  var network = gulp.src(DEBUG_DIR + '/examples/**/*')
-    .pipe(gulp.dest(RELEASE_DIR + '/examples'));
+gulp.task('copy-examples-to-release', ['clean-dist'], function (cb) {
+  var stream = gulp.src(SOURCE_EXAMPLES_DIR + '/**/*')
+    .pipe(gulp.dest(RELEASE_EXAMPLES_DIR));
 
-  return network;
+  return stream;
+});
+
+gulp.task('copy-lib-to-release', ['copy-build-to-lib', 'copy-examples-to-release'], function (cb) {
+  var stream = gulp.src(RELEASE_LIB_DIR + '/**/*')
+    .pipe(gulp.dest(LIB_DIR_IN_RELEASE_EXAMPLES));
+
+  return stream;
 });
 
 gulp.task('update-release-html', ['copy-examples-to-release'], function () {
-  gulp.src(DEBUG_DIR + '/examples/**/*.html')
-    .pipe(replace({
-      RELEASE_REPLACE_1: RELEASE_REPLACE_2
-    }))
-    .pipe(gulp.dest(RELEASE_DIR + '/examples'));
+  gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.html')
+    .pipe(replace(RELEASE_REPLACE_1, RELEASE_REPLACE_2))
+    .pipe(gulp.dest(RELEASE_EXAMPLES_DIR));
 });
 
-gulp.task('release', ['debug', 'copy-dist-to-release', 'copy-resources-to-release', 'copy-examples-to-release', 'update-release-html']);
+gulp.task('zip-lib', ['update-release-html'], function () {
+  return gulp.src(RELEASE_LIB_DIR + '/**/*.*')
+    .pipe(zip(VERSIONED_PRODUCT_NAME + '.zip'))
+    .pipe(gulp.dest(DIST_DIR));
+});
+
+gulp.task('zip-examples', ['update-release-html'], function () {
+  return gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.*')
+    .pipe(zip('examples.zip'))
+    .pipe(gulp.dest(DIST_DIR));
+});
+
+/////////gulp release///////////
+gulp.task('release', ['build', 'copy-build-to-lib', 'copy-examples-to-release', 'copy-lib-to-release',
+  'update-release-html', 'zip-examples', 'zip-lib'
+]);
 
 gulp.task('clean-demo', ['release'], function (cb) {
   rimraf(DEMO_PROJECT_DIR + '/*', cb);
 });
 
 gulp.task('deploy-demo', ['clean-demo'], function () {
-  var network = gulp.src(RELEASE_DIR + '/**/*')
+  var stream = gulp.src(RELEASE_EXAMPLES_DIR + '/**/*')
     .pipe(gulp.dest(DEMO_PROJECT_DIR));
 
-  return network;
+  return stream;
 });
 
-gulp.task('deploy', ['release', 'clean-demo', 'deploy-demo']);
+/////////gulp deploy///////////
+gulp.task('deploy', ['release', 'clean-demo', 'deploy-demo'], function (cb) {
+  console.warn('this function is to deploy webapp in directory: ' + DEMO_PROJECT_DIR);
+  cb();
+});
