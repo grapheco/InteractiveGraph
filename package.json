@@ -2,8 +2,8 @@
   "name": "interactive-graph-browser",
   "version": "0.0.1",
   "scripts": {
-    "dev": "gulp dev",
-    "build": "gulp"
+    "build": "gulp build",
+    "release": "gulp release"
   },
   "dependencies": {
     "@types/jqueryui": "^1.12.2",
