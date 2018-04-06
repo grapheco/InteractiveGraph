@@ -29,13 +29,13 @@ __Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
 __Step 3.__ import the `.js` and `.css` files in HTML page, like that:
-```
+```javascript
 <script type="text/javascript" src="./lib/interactive-graph-0.1.0/interactive-graph.min.js"></script>
 <link type="text/css" rel="stylesheet" href="./lib/interactive-graph-0.1.0/interactive-graph.min.css">
 ```
 
 __Step 4.__ use functions and classes defined in `igraph` namespace:
-```
+```javascript
 <script type="text/javascript">
     igraph.i18n.setLanguage("chs");
     var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
@@ -58,6 +58,18 @@ this project depends on some open sourced components including `visjs`, `npm`, `
 <img src="docs/jqueryui.png" height="50">
 
 More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
+
+# MainFrame, applications
+
+# <a name="GSON">GSON</a>
+
+# GraphNavigator
+
+# GraphExplorer
+
+# RelFinder
+
+<img src="docs/rel.gif">
 
 # build & run
 
