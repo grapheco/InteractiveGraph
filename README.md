@@ -4,14 +4,14 @@ InteractiveGraph provides a web-based interactive framwork for operation on larg
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
 __GraphNavigator__: online demo https://bluejoe2008.github.io/igraph/example1.html
-<img src="https://github.com/bluejoe2008/InteractiveGraph/blob/master/docs/navi.png?raw=true">
+<img src="docs/navi.png" width="1024">
 
 __GraphExplorer__: online demo 
 https://bluejoe2008.github.io/igraph/example2.html
-<img src="https://github.com/bluejoe2008/InteractiveGraph/blob/master/docs/exp.png?raw=true">
+<img src="docs/exp.png" width="1024">
 
 __RelFinder__: online demo https://bluejoe2008.github.io/igraph/example3.html
-<img src="https://github.com/bluejoe2008/InteractiveGraph/blob/master/docs/rel.png?raw=true">
+<img src="docs/rel.png" width="1024">
 
 # Quick start
 __Step 1.__ download `examples.zip` from `dist` directory: https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples.zip?raw=true
@@ -51,11 +51,7 @@ To develop custom applications, it is a good idea to write new application class
 # dependencies
 this project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI` and so on.
 
-<img src="docs/visjs.png" height="50">
-<img src="docs/npm.png" height="50">
-<img src="docs/gulp.png" height="50">
-<img src="docs/jquery.png" height="50">
-<img src="docs/jqueryui.png" height="50">
+<img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50">
 
 More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
 
@@ -63,13 +59,19 @@ More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/mast
 
 # <a name="GSON">GSON</a>
 
-# GraphNavigator
+# Datasets
+## honglou.json
+## WorldCup2014.json
 
-# GraphExplorer
+# Applications
 
-# RelFinder
+## GraphNavigator
 
-<img src="docs/rel.gif">
+## GraphExplorer
+
+## RelFinder
+
+<img src="docs/rel.gif" width="1024">
 
 # build & run
 
