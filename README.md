@@ -49,12 +49,13 @@ For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/maste
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
 # dependencies
-this project depends on some open sourced components including `npm`, `gulp`, `jQuery`, `jQueryUI` and so on.
+this project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI` and so on.
 
-<img src="https://docs.npmjs.com/images/npm.svg" height="100">
-<img src="https://gulpjs.com/img/gulp-white-text.svg" height="100">
-<img src="https://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery@2x.png" height="100">
-<img src="https://jqueryui.com/jquery-wp-content/themes/jquery/images/logo-jquery-ui@2x.png" height="100">
+<img src="docs/visjs.png" height="50">
+<img src="docs/npm.png" height="50">
+<img src="docs/gulp.png" height="50">
+<img src="docs/jquery.png" height="50">
+<img src="docs/jqueryui.png" height="50">
 
 More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
 
