@@ -24,7 +24,7 @@ export class MainFrame {
     private _maxScale: number = 2;
     private _graphService: GraphService;
     private _network: GraphNetwork;
-    private _emmiter = new events.EventEmitter();
+    private _emiter = new events.EventEmitter();
     private _networkOptions: NETWORK_OPTIONS;
 
     private _screenData: NodeEdgeSet = {
@@ -55,22 +55,26 @@ export class MainFrame {
         this._bindControlEvents(FrameEventName.FRAME_RESIZE);
     }
 
+    public emit(event: string, args: object) {
+        this._emiter.emit(event, args);
+    }
+
     public fire(event: string, extra?: object) {
-        this._emmiter.emit(event, this._composeEventArgs(extra));
+        this._emiter.emit(event, this._composeEventArgs(extra));
     }
 
     public on(event: string, listener: (args: EVENT_ARGS_FRAME) => void) {
-        this._emmiter.on(event, listener);
+        this._emiter.on(event, listener);
     }
 
     public off(event: string, listener?: (args: EVENT_ARGS_FRAME) => void): Function[] {
         if (listener === undefined) {
-            var listeners = this._emmiter.listeners(event);
-            this._emmiter.removeAllListeners(event);
+            var listeners = this._emiter.listeners(event);
+            this._emiter.removeAllListeners(event);
             return listeners;
         }
         else {
-            this._emmiter.removeListener(event, listener);
+            this._emiter.removeListener(event, listener);
             return [listener];
         }
     }
