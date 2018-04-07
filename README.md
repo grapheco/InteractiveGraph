@@ -57,6 +57,18 @@ More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/mast
 
 # MainFrame, applications
 
+InteractiveGraph provides MainFrame class as a facade of Web UI, event handling and graph data processing.
+
+## controls
+
+<img src="docs/frame.png">
+
+## event handling
+
+MainFrame embeds a EventEmmiter to handle events.
+
+## data connector
+
 # <a name="GSON">GSON</a>
 
 # Datasets
