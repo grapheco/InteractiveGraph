@@ -72,11 +72,11 @@ All controls are listed in the table below.
 | control | function | type |
 |-|-|-|
 |ConnectCtrl|show a load data dialog|UIControl|
-|ExpansionCtrl|expands a graph node on double click|BGControl|
-|HighlightNodeCtrl|highlight selected graph nodes|BGControl|
+|ExpansionCtrl|expands a graph node on double click|WorkerControl|
+|HighlightNodeCtrl|highlight selected graph nodes|WorkerControl|
 |InfoBoxCtrl|show a infomation box on click on a graph node|UIControl|
 |MessageBoxCtrl|show a message box on demand|UIControl|
-|RelFinderCtrl|finding relations between graph nodes|BGControl|
+|RelFinderCtrl|finding relations between graph nodes|WorkerControl|
 |RelFinderDialogCtrl|show a dialog for user to launch a finding task|UIControl|
 |SearchBarCtrl|show a search bar for keyword input|UIControl|
 |ToolbarCtrl|show a tool bar|UIControl|
@@ -178,7 +178,7 @@ __Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser
 
 __Step 2.__ open `src/test/webapp/example1.html` in Web browser (`Google Chrome`, for example).
 
-or
+*or*
 
 __Step 1.__ use `gulp release` if you want to get distribution version, which will output `examples` and `interactive-graph-<VERSION>` in `dist` dir.
 
