@@ -61,7 +61,7 @@ InteractiveGraph provides MainFrame class as a facade of Web UI, event handling 
 
 ## controls
 
-<img src="docs/frame.png">
+<img src="docs/frame.png" width="700">
 
 ## event handling
 
