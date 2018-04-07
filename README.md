@@ -138,7 +138,7 @@ Here, `translator` defines transaltor functions for graph nodes and edges, which
 
 The honglou dataset comes from the Chinese famous novel *Dream of the Red Chamber*(also called *The Story of the Stone*, https://en.wikipedia.org/wiki/Dream_of_the_Red_Chamber), in which *Jia Baoyu*, *Lin daiyu*, and *Xue baochai* are famous characters. The honglou dataset defines 300+ entities represent persons, locations, and events in the novel, and 500+ links between them.
 
-@nickel_2008 provides this dataset.
+nickel2008@github provides this dataset. Maybe there are some mistakes in the dataset, but it is good enough to use as an example graph.
 
 ## WorldCup2014.json
 
