@@ -90,18 +90,18 @@ InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, eve
 
 As shown above, MainFrame consists of a main graph renderimng canvas,a set of navigation buttons, and serveral controls: search bar, tool bar, info box, highlight control and so on.
 
-Some controls have Web UI, such as InfoBoxCtrl, MessageBoxCtrl, etc. While others work with no UI, such as HighlightNodeCtrl, ExpansionCtrl, etc. A `Control` class and two derived classes `UIControl`(controls with UI) and `WorkerControl`(worker control without UI) are defined in InteractiveGraph.
+Some controls have Web UI, such as InfoBoxCtrl, MessageBoxCtrl, etc. While others work with no UI, such as HighlightNodeCtrl, ExpansionCtrl, etc. A `Control` class and two derived classes `UIControl`(controls with UI) and `BGControl`(backgroud control with no UI) are defined in InteractiveGraph.
 
 All controls are listed in the table below.
 
 | control | function | type |
 |-|-|-|
 |ConnectCtrl|show a load data dialog|UIControl|
-|ExpansionCtrl|expands a graph node on double click|WorkerControl|
-|HighlightNodeCtrl|highlight selected graph nodes|WorkerControl|
+|ExpansionCtrl|expands a graph node on double click|BGControl|
+|HighlightNodeCtrl|highlight selected graph nodes|BGControl|
 |InfoBoxCtrl|show a infomation box on click on a graph node|UIControl|
 |MessageBoxCtrl|show a message box on demand|UIControl|
-|RelFinderCtrl|finding relations between graph nodes|WorkerControl|
+|RelFinderCtrl|finding relations between graph nodes|BGControl|
 |RelFinderDialogCtrl|show a dialog for user to launch a finding task|UIControl|
 |SearchBarCtrl|show a search bar for keyword input|UIControl|
 |ToolbarCtrl|show a tool bar|UIControl|
@@ -189,7 +189,7 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute new applications, you may define new application class derived from `BaseApp`.
 
-* To contribute any controls, you may define new control class derived from `UIControl` and `WorkerControl`.
+* To contribute any controls, you may define new control class derived from `UIControl` and `BGControl`.
 
 * To contribute new themes, refer to `themes.ts`.
 
