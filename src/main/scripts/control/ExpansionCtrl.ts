@@ -3,9 +3,9 @@ import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
+import { Control, BGControl } from "./Control";
 
-export class ExpansionCtrl extends Control {
+export class ExpansionCtrl extends BGControl {
     private _mapNodeId2ExpansionValue: Map<string, number> = new Map<string, number>();
     private _frame: MainFrame;
 

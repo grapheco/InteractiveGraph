@@ -24,6 +24,15 @@ export abstract class Control extends events.EventEmitter {
     }
 }
 
+/**
+ * control with no UI
+ */
+export abstract class BGControl extends Control {
+}
+
+/**
+ * control with UI
+ */
 export abstract class UIControl extends Control {
     protected _htmlContainer: HTMLElement;
     protected _position: (frameRect: RECT, ctrlRect: RECT) => POINT;
@@ -36,8 +45,8 @@ export abstract class UIControl extends Control {
 
     public onCreate(args: EVENT_ARGS_FRAME) {
         this._htmlContainer = document.createElement("div");
-        $(this._htmlContainer).appendTo($(args.htmlMainFrame));
-        
+        $(this._htmlContainer).addClass("htmlContainer").appendTo($(args.htmlMainFrame));
+
         //resize
         this.on(FrameEventName.FRAME_RESIZE, this.onResize.bind(this));
         this.onCreateUI(this._htmlContainer, args);

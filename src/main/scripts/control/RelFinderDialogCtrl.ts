@@ -14,7 +14,8 @@ export class RelFinderDialogCtrl extends UIControl {
         var ctrl = this;
 
         $(htmlContainer).addClass("relfinder-dlg").draggable();
-
+        super.hide();
+        
         //input box
         var sbCtrl = new SearchBarCtrl();
         var icons = ["fa-flag", "fa-flag-checkered"];

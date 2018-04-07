@@ -511,6 +511,7 @@ export class MainFrame {
                     highlight: '#ff0000',
                     hover: '#ff0000',
                 },
+                selectionWidth: 0.05,
                 hoverWidth: 0.05,
                 arrows: {
                     from: {},

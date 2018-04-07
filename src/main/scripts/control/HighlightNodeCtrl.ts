@@ -3,9 +3,9 @@ import { MainFrame } from "../mainframe";
 import { FrameEventName, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
+import { Control, BGControl } from "./Control";
 
-export class HighlightNodeCtrl extends Control {
+export class HighlightNodeCtrl extends BGControl {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
     public highlight(nodeIds: string | string[]) {

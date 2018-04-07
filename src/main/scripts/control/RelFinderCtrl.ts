@@ -3,10 +3,10 @@ import { MainFrame } from "../mainframe";
 import { FrameEventName, QUERY_RESULTS, RELATION_PATH, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control } from "./Control";
+import { Control, BGControl } from "./Control";
 import { Themes, Theme } from "../theme";
 
-export class RelFinderCtrl extends Control {
+export class RelFinderCtrl extends BGControl {
     private _frame: MainFrame;
     private _queryId: string;
     private _stopped;
