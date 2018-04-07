@@ -1,25 +1,25 @@
 <!-- vscode-markdown-toc -->
-* 1. [Quick start](#Quickstart)
-* 2. [How to use](#Howtouse)
-* 3. [dependencies](#dependencies)
-* 4. [MainFrame, applications](#MainFrameapplications)
-	* 4.1. [controls](#controls)
-	* 4.2. [theme](#theme)
-	* 4.3. [event handling](#eventhandling)
-	* 4.4. [data connector](#dataconnector)
-* 5. [GSON](#GSON)
-* 6. [Datasets](#Datasets)
-	* 6.1. [honglou.json](#honglou.json)
-	* 6.2. [WorldCup2014.json](#WorldCup2014.json)
-* 7. [Applications](#Applications)
-	* 7.1. [GraphNavigator](#GraphNavigator)
-	* 7.2. [GraphExplorer](#GraphExplorer)
-	* 7.3. [RelFinder](#RelFinder)
-* 8. [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
-* 9. [build & run](#buildrun)
+* [Quick start](#Quickstart)
+* [How to use](#Howtouse)
+* [dependencies](#dependencies)
+* [MainFrame, applications](#MainFrameapplications)
+	* [controls](#controls)
+	* [theme](#theme)
+	* [event handling](#eventhandling)
+	* [data connector](#dataconnector)
+* [GSON](#GSON)
+* [Datasets](#Datasets)
+	* [honglou.json](#honglou.json)
+	* [WorldCup2014.json](#WorldCup2014.json)
+* [Applications](#Applications)
+	* [GraphNavigator](#GraphNavigator)
+	* [GraphExplorer](#GraphExplorer)
+	* [RelFinder](#RelFinder)
+* [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
+* [build & run](#buildrun)
 
 <!-- vscode-markdown-toc-config
-	numbering=true
+	numbering=false
 	autoSave=true
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
@@ -38,7 +38,7 @@ https://bluejoe2008.github.io/igraph/example2.html
 __RelFinder__: online demo https://bluejoe2008.github.io/igraph/example3.html
 <img src="docs/rel.png" width="700">
 
-##  1. <a name='Quickstart'></a>Quick start
+## <a name='Quickstart'></a>Quick start
 __Step 1.__ download `examples.zip` from `dist` directory: https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples.zip?raw=true
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
@@ -48,7 +48,7 @@ https://localhost:8080/examples/example1.html
 
 change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
-##  2. <a name='Howtouse'></a>How to use
+## <a name='Howtouse'></a>How to use
 __Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/interactive-graph-0.1.0.zip?raw=true
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
@@ -73,18 +73,18 @@ For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/maste
 
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
-##  3. <a name='dependencies'></a>dependencies
+## <a name='dependencies'></a>dependencies
 this project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
 More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
 
-##  4. <a name='MainFrameapplications'></a>MainFrame, applications
+## <a name='MainFrameapplications'></a>MainFrame, applications
 
 InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, event handling and graph data connection.
 
-###  4.1. <a name='controls'></a>controls
+### <a name='controls'></a>controls
 
 <img src="docs/frame.png" width="700">
 
@@ -106,9 +106,9 @@ All controls are listed in the table below.
 |SearchBarCtrl|show a search bar for keyword input|UIControl|
 |ToolbarCtrl|show a tool bar|UIControl|
 
-###  4.2. <a name='theme'></a>theme
+### <a name='theme'></a>theme
 
-###  4.3. <a name='eventhandling'></a>event handling
+### <a name='eventhandling'></a>event handling
 
 MainFrame and controls communicate with applications through events. For example, when the window is resizing, MainFrame and all controls will receive FRAME_RESIZE events.
 
@@ -116,11 +116,11 @@ To subscribe a event, call a `on(event, handler)` method on MainFrame or a Contr
 
 To fire an event to MainFrame, use `MainFrame.emit(event, args)` or `MainFrame.fire(event, args)` method. Unlike the `emit()` method, `fire()` put default context objects including `mainFrame`, `htmlMainFrame`, `theme` into `args` before emition. To fire an event to a `Control`, use `emit(event, args)` method.
 
-###  4.4. <a name='dataconnector'></a>data connector
+### <a name='dataconnector'></a>data connector
 
 MainFrame loads data via a `Connector` which may connect to a `LocalGraph` or a `RemoteGraph`. A `LocalGraph` loads all data once from a GSON object or file, while a `RemoteGraph` interacts with a remote graph server each time if no cache data is available.
 
-##  5. <a name='GSON'></a>GSON
+## <a name='GSON'></a>GSON
 
 MainFrame loads data from a `LocalGraph` in `GSON` format. `GSON` is actually an enhanced `JSON` format of graph data. The enhancement is `GSON` recoginzes `function`s, which is not valid in JSON.
 
@@ -158,14 +158,14 @@ Here, `translator` defines transaltor functions for graph nodes and edges, which
   }
 ```
 
-##  6. <a name='Datasets'></a>Datasets
-###  6.1. <a name='honglou.json'></a>honglou.json
+## <a name='Datasets'></a>Datasets
+### <a name='honglou.json'></a>honglou.json
 
 The honglou dataset comes from the Chinese famous novel *Dream of the Red Chamber*(also called *The Story of the Stone*, https://en.wikipedia.org/wiki/Dream_of_the_Red_Chamber), in which *Jia Baoyu*, *Lin daiyu*, and *Xue baochai* are famous characters. The honglou dataset defines 300+ entities represent persons, locations, and events in the novel, and 500+ links between them.
 
 nickel2008@github provides this dataset. Maybe there are some mistakes in the dataset, but it is good enough to use as an example graph.
 
-###  6.2. <a name='WorldCup2014.json'></a>WorldCup2014.json
+### <a name='WorldCup2014.json'></a>WorldCup2014.json
 
 The world cup 2014 data set comes from http://visjs.org/examples/network/exampleApplications/worldCupPerformance.html. The edges in particular (~9200) are very computationally intensive to draw.
 
@@ -173,17 +173,17 @@ The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` 
 
 <img src="docs/worldcup2014.png" width="700">
 
-##  7. <a name='Applications'></a>Applications
+## <a name='Applications'></a>Applications
 
-###  7.1. <a name='GraphNavigator'></a>GraphNavigator
+### <a name='GraphNavigator'></a>GraphNavigator
 
-###  7.2. <a name='GraphExplorer'></a>GraphExplorer
+### <a name='GraphExplorer'></a>GraphExplorer
 
-###  7.3. <a name='RelFinder'></a>RelFinder
+### <a name='RelFinder'></a>RelFinder
 
 <img src="docs/rel.gif" width="700">
 
-##  8. <a name='ContributingtoInteractiveGraph'></a>Contributing to InteractiveGraph
+## <a name='ContributingtoInteractiveGraph'></a>Contributing to InteractiveGraph
 
 It would be highly appreciated if you commit any codes or documents to InteractiveGraph. If you have any good idea, please fork this project and create pull requests.
 
@@ -197,7 +197,7 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute new data sets or modification, you may submit data in GSON format!
 
-##  9. <a name='buildrun'></a>build & run
+## <a name='buildrun'></a>build & run
 
 __Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `interactive-graph.js` and `interactive-graph.css` in `build` dir.
 
