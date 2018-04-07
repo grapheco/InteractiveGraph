@@ -20,7 +20,7 @@ export class Themes {
                 gradientOutterColor: "#FFFFFF",
             },
             expansion: {
-                backgroudColorCollapsed: "rgba(255, 0, 0, 0.9)",
+                backgroudColorCollapsed: "rgba(127, 127, 127, 0.9)",
                 backgroudColorExpanded: "rgba(0, 128, 0, 0.9)",
                 fontColor: "#FFFFFF"
             }
