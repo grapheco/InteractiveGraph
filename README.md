@@ -28,6 +28,7 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
 
+[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
 [![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/issues)
 [![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/network)
 [![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
