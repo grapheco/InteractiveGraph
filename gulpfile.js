@@ -21,9 +21,10 @@ var PRODUCT_NAME = 'interactive-graph';
 var VERSIONED_PRODUCT_NAME = PRODUCT_NAME + '-0.1.0';
 var DIST_DIR = __dirname + '/dist';
 var API_DOC_DIR = DIST_DIR + '/api';
+var LIB_ZIP_NAME = 'igraph.zip';
 var API_DOC_ZIP_NAME = 'api-doc.zip';
 var EXAMPLES_ZIP_NAME = 'examples.zip';
-var RELEASE_LIB_DIR = DIST_DIR + '/' + VERSIONED_PRODUCT_NAME;
+var RELEASE_LIB_DIR = DIST_DIR + '/igraph';
 var RELEASE_EXAMPLES_DIR = DIST_DIR + '/examples';
 var LIB_DIR_IN_RELEASE_EXAMPLES = RELEASE_EXAMPLES_DIR + '/lib/' + VERSIONED_PRODUCT_NAME;
 var DEMO_PROJECT_DIR = __dirname + '/../bluejoe2008.github.io/igraph';
@@ -211,7 +212,7 @@ gulp.task('update-release-html', ['copy-examples-to-release'], function () {
 
 gulp.task('zip-lib', ['copy-lib-to-release'], function () {
   return gulp.src(RELEASE_LIB_DIR + '/**/*.*')
-    .pipe(zip(VERSIONED_PRODUCT_NAME + '.zip'))
+    .pipe(zip(LIB_ZIP_NAME))
     .pipe(gulp.dest(DIST_DIR));
 });
 
