@@ -21,6 +21,8 @@ var PRODUCT_NAME = 'interactive-graph';
 var VERSIONED_PRODUCT_NAME = PRODUCT_NAME + '-0.1.0';
 var DIST_DIR = __dirname + '/dist';
 var API_DOC_DIR = DIST_DIR + '/api';
+var API_DOC_ZIP_NAME = 'api-doc.zip';
+var EXAMPLES_ZIP_NAME = 'examples.zip';
 var RELEASE_LIB_DIR = DIST_DIR + '/' + VERSIONED_PRODUCT_NAME;
 var RELEASE_EXAMPLES_DIR = DIST_DIR + '/examples';
 var LIB_DIR_IN_RELEASE_EXAMPLES = RELEASE_EXAMPLES_DIR + '/lib/' + VERSIONED_PRODUCT_NAME;
@@ -189,7 +191,8 @@ gulp.task('ts-doc', ['clean-dist'], function (cb) {
       // Output options (see typedoc docs)
       out: API_DOC_DIR,
       //json: "./docs/api/file.json",
-      mode: "modules",
+      //mode: "modules",
+      mode: "file",
       // TypeDoc options (see typedoc docs)
       name: "InteractiveGraph API",
       ignoreCompilerErrors: true,
@@ -206,19 +209,25 @@ gulp.task('update-release-html', ['copy-examples-to-release'], function () {
     .pipe(gulp.dest(RELEASE_EXAMPLES_DIR));
 });
 
-gulp.task('zip-lib', ['update-release-html'], function () {
+gulp.task('zip-lib', ['copy-lib-to-release'], function () {
   return gulp.src(RELEASE_LIB_DIR + '/**/*.*')
     .pipe(zip(VERSIONED_PRODUCT_NAME + '.zip'))
     .pipe(gulp.dest(DIST_DIR));
 });
 
+gulp.task('zip-api-doc', ['ts-doc'], function () {
+  return gulp.src(API_DOC_DIR + '/**/*.*')
+    .pipe(zip(API_DOC_ZIP_NAME))
+    .pipe(gulp.dest(DIST_DIR));
+});
+
 gulp.task('zip-examples', ['update-release-html'], function () {
   return gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.*')
-    .pipe(zip('examples.zip'))
+    .pipe(zip(EXAMPLES_ZIP_NAME))
     .pipe(gulp.dest(DIST_DIR));
 });
 
 /////////gulp release///////////
 gulp.task('release', ['build', 'copy-build-to-lib', 'copy-examples-to-release', 'copy-lib-to-release',
-  'ts-doc', 'update-release-html', 'zip-examples', 'zip-lib'
+  'ts-doc', 'update-release-html', 'zip-examples', 'zip-lib', 'zip-api-doc'
 ]);

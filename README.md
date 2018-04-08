@@ -2,7 +2,7 @@
 * [Quick start](#Quickstart)
 * [How to use](#Howtouse)
 * [Reference manual](#Referencemanual)
-	* [API documents](#APIdocuments)
+	* [InteractiveGraph API](#InteractiveGraphAPI)
 	* [dependencies](#dependencies)
 * [MainFrame, applications](#MainFrameapplications)
 	* [controls](#controls)
@@ -85,7 +85,7 @@ To develop custom applications, it is a good idea to write new application class
 
 ## <a name='Referencemanual'></a>Reference manual
 
-### <a name='APIdocuments'></a>API documents
+### <a name='InteractiveGraphAPI'></a>InteractiveGraph API
 InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
 
 ### <a name='dependencies'></a>dependencies
