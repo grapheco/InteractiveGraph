@@ -17,6 +17,7 @@
 	* [RelFinder](#RelFinder)
 * [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
 * [build & run](#buildrun)
+* [LICENSE](#LICENSE)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -217,7 +218,7 @@ __Step 2.__ open `dist/examples/example1.html` in Web browser.
 
 DO NOT attempt to use `gulp deploy` if you are not bluejoe2008@github.
 
-## LICENSE
+## <a name='LICENSE'></a>LICENSE
 
 InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 
