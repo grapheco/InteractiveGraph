@@ -48,7 +48,7 @@ __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/e
 <img src="docs/rel.png" width="700">
 
 ## <a name='Quickstart'></a>Quick start
-__Step 1.__ download `examples.zip` from `release` directory: 
+__Step 1.__ download `examples.zip` from `release` directory:
 https://github.com/bluejoe2008/InteractiveGraph/releases/
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
@@ -59,7 +59,8 @@ https://localhost:8080/examples/example1.html
 change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
 ## <a name='Howtouse'></a>How to use
-__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `release` directory: https://github.com/bluejoe2008/InteractiveGraph/releases/
+__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `release` directory: 
+https://github.com/bluejoe2008/InteractiveGraph/releases/
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
