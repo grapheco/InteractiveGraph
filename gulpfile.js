@@ -12,6 +12,7 @@ var replace = require('gulp-replace-pro');
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 const zip = require('gulp-zip');
+var typedoc = require("gulp-typedoc");
 
 var ENTRY = './exports.js';
 var BUILD_DIR = __dirname + '/build';
@@ -19,6 +20,7 @@ var SOURCE_EXAMPLES_DIR = __dirname + '/src/test/webapp';
 var PRODUCT_NAME = 'interactive-graph';
 var VERSIONED_PRODUCT_NAME = PRODUCT_NAME + '-0.1.0';
 var DIST_DIR = __dirname + '/dist';
+var API_DOC_DIR = DIST_DIR + '/api';
 var RELEASE_LIB_DIR = DIST_DIR + '/' + VERSIONED_PRODUCT_NAME;
 var RELEASE_EXAMPLES_DIR = DIST_DIR + '/examples';
 var LIB_DIR_IN_RELEASE_EXAMPLES = RELEASE_EXAMPLES_DIR + '/lib/' + VERSIONED_PRODUCT_NAME;
@@ -174,6 +176,30 @@ gulp.task('copy-lib-to-release', ['copy-build-to-lib', 'copy-examples-to-release
   return stream;
 });
 
+gulp.task('ts-doc', ['clean-dist'], function (cb) {
+  return gulp
+    .src([TYPESCRIPT_SOURCE])
+    .pipe(typedoc({
+      // TypeScript options (see typescript docs)
+      module: "umd",
+      target: "es6",
+      includeDeclarations: false,
+      excludeExternals: true,
+
+      // Output options (see typedoc docs)
+      out: API_DOC_DIR,
+      //json: "./docs/api/file.json",
+      mode: "module",
+      // TypeDoc options (see typedoc docs)
+      name: "InteractiveGraph API",
+      ignoreCompilerErrors: true,
+      version: true,
+      readme: 'none',
+      hideGenerator: true,
+      excludePrivate: true
+    }));
+});
+
 gulp.task('update-release-html', ['copy-examples-to-release'], function () {
   gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.html')
     .pipe(replace(RELEASE_REPLACE_1, RELEASE_REPLACE_2))
@@ -194,22 +220,5 @@ gulp.task('zip-examples', ['update-release-html'], function () {
 
 /////////gulp release///////////
 gulp.task('release', ['build', 'copy-build-to-lib', 'copy-examples-to-release', 'copy-lib-to-release',
-  'update-release-html', 'zip-examples', 'zip-lib'
+  'ts-doc', 'update-release-html', 'zip-examples', 'zip-lib'
 ]);
-
-gulp.task('clean-demo', ['release'], function (cb) {
-  rimraf(DEMO_PROJECT_DIR + '/*', cb);
-});
-
-gulp.task('deploy-demo', ['clean-demo'], function () {
-  var stream = gulp.src(RELEASE_EXAMPLES_DIR + '/**/*')
-    .pipe(gulp.dest(DEMO_PROJECT_DIR));
-
-  return stream;
-});
-
-/////////gulp deploy///////////
-gulp.task('deploy', ['release', 'clean-demo', 'deploy-demo'], function (cb) {
-  console.warn('this function is to deploy webapp in directory: ' + DEMO_PROJECT_DIR);
-  cb();
-});

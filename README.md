@@ -35,14 +35,14 @@ InteractiveGraph provides a web-based interactive operating framwork for large g
 
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
-__GraphNavigator__: online demo https://bluejoe2008.github.io/igraph/example1.html
+__GraphNavigator__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
 <img src="docs/navi.png" width="700">
 
 __GraphExplorer__: online demo 
-https://bluejoe2008.github.io/igraph/example2.html
+https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
 <img src="docs/exp.png" width="700">
 
-__RelFinder__: online demo https://bluejoe2008.github.io/igraph/example3.html
+__RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
 <img src="docs/rel.png" width="700">
 
 ## <a name='Quickstart'></a>Quick start
@@ -56,7 +56,7 @@ https://localhost:8080/examples/example1.html
 change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
 ## <a name='Howtouse'></a>How to use
-__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/interactive-graph-0.1.0.zip?raw=true
+__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: https://bluejoe2008.github.io/InteractiveGraph/dist/interactive-graph-0.1.0.zip
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
@@ -80,8 +80,10 @@ For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/maste
 
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
+InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/master/dist/api/index.html to get API documents.
+
 ## <a name='dependencies'></a>dependencies
-this project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
+This project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
@@ -216,10 +218,8 @@ __Step 1.__ use `gulp release` if you want to get distribution version, which wi
 
 __Step 2.__ open `dist/examples/example1.html` in Web browser.
 
-DO NOT attempt to use `gulp deploy` if you are not bluejoe2008@github.
-
 ## <a name='LICENSE'></a>LICENSE
 
 InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 
-However, it is appreciated that let me know how you use it in your projects!!! Please create a new issue (https://github.com/bluejoe2008/InteractiveGraph/issues/new) to submit information including your name (github username), organization, and project.
+However, it is appreciated if you let we know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
