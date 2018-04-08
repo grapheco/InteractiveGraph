@@ -24,6 +24,12 @@
 	/vscode-markdown-toc-config -->
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
+
+[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/issues)
+[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/network)
+[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
+[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/blob/master/LICENSE)
+
 InteractiveGraph provides a web-based interactive operating framwork for large graph data.
 
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
@@ -88,7 +94,7 @@ InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, eve
 
 <img src="docs/frame.png" width="700">
 
-As shown above, MainFrame consists of a main graph renderimng canvas,a set of navigation buttons, and serveral controls: search bar, tool bar, info box, highlight control and so on.
+As shown above, MainFrame consists of a main graph rendering canvas, a set of navigation buttons, and serveral controls: search bar, tool bar, info box, highlight control and so on.
 
 Some controls have Web UI, such as InfoBoxCtrl, MessageBoxCtrl, etc. While others work with no UI, such as HighlightNodeCtrl, ExpansionCtrl, etc. A `Control` class and two derived classes `UIControl`(controls with UI) and `BGControl`(backgroud control with no UI) are defined in InteractiveGraph.
 
@@ -122,7 +128,7 @@ MainFrame loads data via a `Connector` which may connect to a `LocalGraph` or a 
 
 ## <a name='GSON'></a>GSON
 
-MainFrame loads data from a `LocalGraph` in `GSON` format. `GSON` is actually an enhanced `JSON` format of graph data. The enhancement is `GSON` recoginzes `function`s, which is not valid in JSON.
+MainFrame loads data from a `LocalGraph` in `GSON` format. `GSON` is actually an enhanced `JSON` format for graph data. The enhancement is `GSON` recoginzes `function`s, which is not valid in JSON.
 
 `GSON` consists of some data items, it is defined as follow:
 
@@ -210,3 +216,9 @@ __Step 1.__ use `gulp release` if you want to get distribution version, which wi
 __Step 2.__ open `dist/examples/example1.html` in Web browser.
 
 DO NOT attempt to use `gulp deploy` if you are not bluejoe2008@github.
+
+## LICENSE
+
+InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
+
+However, it is appreciated that let me know how you use it in your projects!!! Please create a new issue (https://github.com/bluejoe2008/InteractiveGraph/issues/new) to submit information including your name (github username), organization, and project.
