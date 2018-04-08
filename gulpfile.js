@@ -189,7 +189,7 @@ gulp.task('ts-doc', ['clean-dist'], function (cb) {
       // Output options (see typedoc docs)
       out: API_DOC_DIR,
       //json: "./docs/api/file.json",
-      mode: "module",
+      mode: "modules",
       // TypeDoc options (see typedoc docs)
       name: "InteractiveGraph API",
       ignoreCompilerErrors: true,

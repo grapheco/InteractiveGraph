@@ -75,9 +75,9 @@ export class RelationFinder extends BaseApp {
             app.stopQuery();
         })
 
-        this._dlgNoEnoughNodesSelected = $('<div title="No enough nodes"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>TWO nodes are required to start relation path discovery.</p></div>').appendTo($(args.htmlMainFrame));
+        this._dlgNoEnoughNodesSelected = $('<div title="No enough nodes"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>TWO nodes are required to start relation path discovery.</p></div>').appendTo($(args.htmlMainFrame)).hide();
 
-        this._dlgClearScreenAlert = $('<div id="dialog-confirm" title="Empty the results?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be deleted. Are you sure?</p> </div>').appendTo($(args.htmlMainFrame));
+        this._dlgClearScreenAlert = $('<div id="dialog-confirm" title="Empty the results?"><p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be deleted. Are you sure?</p> </div>').appendTo($(args.htmlMainFrame)).hide();
     }
 
     public startQueryWithPrompt(refreshInterval: number = 500, maxDepth: number = 6) {

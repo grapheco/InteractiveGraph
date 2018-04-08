@@ -1,7 +1,9 @@
 <!-- vscode-markdown-toc -->
 * [Quick start](#Quickstart)
 * [How to use](#Howtouse)
-* [dependencies](#dependencies)
+* [Reference manual](#Referencemanual)
+	* [API documents](#APIdocuments)
+	* [dependencies](#dependencies)
 * [MainFrame, applications](#MainFrameapplications)
 	* [controls](#controls)
 	* [theme](#theme)
@@ -46,7 +48,8 @@ __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/e
 <img src="docs/rel.png" width="700">
 
 ## <a name='Quickstart'></a>Quick start
-__Step 1.__ download `examples.zip` from `dist` directory: https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples.zip?raw=true
+__Step 1.__ download `examples.zip` from `dist` directory: 
+https://bluejoe2008.github.io/InteractiveGraph/dist/examples.zip
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
 
@@ -80,9 +83,12 @@ For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/maste
 
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
-InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/master/dist/api/index.html to get API documents.
+## <a name='Referencemanual'></a>Reference manual
 
-## <a name='dependencies'></a>dependencies
+### <a name='APIdocuments'></a>API documents
+InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
+
+### <a name='dependencies'></a>dependencies
 This project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
