@@ -35,7 +35,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
 [![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/blob/master/LICENSE)
 
-InteractiveGraph provides a web-based interactive operating framwork for large graph data.
+InteractiveGraph provides a web-based interactive operating framwork for large graph data, which may come from a GSON file, or an online Neo4j graph database.
 
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
