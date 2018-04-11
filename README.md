@@ -44,7 +44,7 @@ __GraphNavigator__: online demo https://bluejoe2008.github.io/InteractiveGraph/d
 
 __GraphExplorer__: online demo 
 https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
-<img alt="GraphExplorer" src="docs/exp.png" width="700">
+<img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
 __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
