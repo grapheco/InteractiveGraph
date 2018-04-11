@@ -222,7 +222,7 @@ gulp.task('zip-api-doc', ['ts-doc'], function () {
     .pipe(gulp.dest(DIST_DIR));
 });
 
-gulp.task('zip-examples', ['update-release-html'], function () {
+gulp.task('zip-examples', ['update-release-html', 'copy-lib-to-release'], function () {
   return gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.*')
     .pipe(zip(EXAMPLES_ZIP_NAME))
     .pipe(gulp.dest(DIST_DIR));

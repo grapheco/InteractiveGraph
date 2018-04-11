@@ -14,7 +14,7 @@ export class ConnectCtrl extends UIControl {
     public onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
         this._frame = args.mainFrame;
 
-        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON<a href="#"><span style="color:firebrick" class="fa fa-question-circle"></span></a> text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
+        this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON<a href="https://github.com/bluejoe2008/InteractiveGraph#GSON"><span style="color:firebrick" class="fa fa-question-circle"></span></a> text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
         this._dlgLoadGsonUrl = $('<div title="load GSON"><p>input remote GSON url:<br><input class="connect-gson-url"></p></div>').appendTo($(htmlContainer));
         super.hide();
 

@@ -47,7 +47,7 @@ https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
 <img src="docs/exp.png" width="700">
 
 __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
-<img src="docs/rel.png" width="700">
+<img src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick start
 __Step 1.__ download `examples.zip` from `release` directory:
@@ -177,6 +177,9 @@ Here, `translator` defines transaltor functions for graph nodes and edges, which
 ```
 
 ## <a name='Datasets'></a>Datasets
+
+Two GSON datasets are provided in examples as `.json` files: honglou.json, WorldCup2014.json.
+
 ### <a name='honglou.json'></a>honglou.json
 
 The honglou dataset comes from the Chinese famous novel *Dream of the Red Chamber*(also called *The Story of the Stone*, https://en.wikipedia.org/wiki/Dream_of_the_Red_Chamber), in which *Jia Baoyu*, *Lin daiyu*, and *Xue baochai* are famous characters. The honglou dataset defines 300+ entities represent persons, locations, and events in the novel, and 500+ links between them.
@@ -198,8 +201,6 @@ The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` 
 ### <a name='GraphExplorer'></a>GraphExplorer
 
 ### <a name='RelFinder'></a>RelFinder
-
-<img src="docs/rel.gif" width="700">
 
 ## <a name='ContributingtoInteractiveGraph'></a>Contributing to InteractiveGraph
 
