@@ -36,8 +36,8 @@ export interface GraphService {
      */
     getNodeCategories(): object;
     /**
-     * updates nodes' status (set updates[nodeid]=false) filtered by a catagory
-     * @param className 
+     * get nodes be kind of given catagory
+     * @param catagory 
      * @param nodeIds 
      * @param showOrNot 
      * @param callback 
