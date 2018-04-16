@@ -182,12 +182,15 @@ export class MainFrame {
 
     public showNodesOfCategory(className: string, showOrNot: boolean, callback?: () => void) {
         var browser = this;
-        this._graphService.requestUpdateNodesOfCategory(className,
-            this._screenData.nodes.getIds(),
+        var ids = this._screenData.nodes.getIds();
+        this._graphService.requestFilterNodesByCategory(className,
+            ids,
             showOrNot,
-            (updates) => {
-                if (updates.length > 0)
-                    this._screenData.nodes.update(updates);
+            (filteredNodeIds) => {
+                if (filteredNodeIds.length > 0)
+                    this._screenData.nodes.update(ids.map((nodeId: string) => {
+                        return { id: nodeId, hidden: filteredNodeIds.indexOf(nodeId) < 0 };
+                    }));
 
                 if (callback !== undefined)
                     callback();

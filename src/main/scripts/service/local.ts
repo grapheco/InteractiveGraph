@@ -275,23 +275,20 @@ export class LocalGraph implements GraphService {
         });
     }
 
-    requestUpdateNodesOfCategory(className: string, nodeIds: any[], showOrNot: boolean,
-        callback: (updates: object[]) => void) {
+    requestFilterNodesByCategory(className: string, nodeIds: any[], showOrNot: boolean,
+        callback: (filteredNodeIds: any[]) => void) {
         var local: LocalGraph = this;
         this._async(() => {
-            var updates = [];
+            var filteredNodeIds = [];
             nodeIds.forEach((nodeId) => {
-                var update: any = { id: nodeId };
                 var node: any = local._getNode(nodeId);
                 var nls: string[] = node.categories;
                 if (nls.indexOf(className) > -1) {
-                    update.hidden = !showOrNot;
+                    filteredNodeIds.push(nodeId);
                 }
-
-                updates.push(update);
             });
 
-            callback(updates);
+            callback(filteredNodeIds);
         });
     }
 
