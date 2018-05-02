@@ -4,6 +4,7 @@ import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARG
 import { MessageBoxCtrl } from "../control/MessageBoxCtrl";
 import { GraphService } from '../service/service';
 import { Theme } from '../Theme';
+import { RemoteGraph } from '../service/remote';
 
 export abstract class BaseApp {
     protected _toggleEdgeLabelHandlers;
@@ -35,6 +36,9 @@ export abstract class BaseApp {
 
     public connect(url: string, callback) {
         //remote
+        console.log("app-remote-connect2");
+        var graph = new RemoteGraph(url);
+        graph.init();
     }
 
     public showGraph(options, callback: () => void) {
