@@ -50,8 +50,8 @@ __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/e
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick start
-__Step 1.__ download `examples.zip` from `release` directory:
-https://github.com/bluejoe2008/InteractiveGraph/releases/
+__Step 1.__ download `examples.zip` from `dist` directory:
+https://github.com/bluejoe2008/InteractiveGraph/dist/
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
 
@@ -61,8 +61,8 @@ https://localhost:8080/examples/example1.html
 change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
 ## <a name='Howtouse'></a>How to use
-__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `release` directory: 
-https://github.com/bluejoe2008/InteractiveGraph/releases/
+__Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: 
+https://github.com/bluejoe2008/InteractiveGraph/dist/
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
@@ -215,18 +215,6 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 * To contribute new tool button, you may define new ButtonInfos. Note that `Font Awesome` icons are available in button icon!
 
 * To contribute new data sets or modification, you may submit data in GSON format!
-
-## <a name='buildrun'></a>build & run
-
-__Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `interactive-graph.js` and `interactive-graph.css` in `build` dir.
-
-__Step 2.__ open `src/test/webapp/example1.html` in Web browser (`Google Chrome`, for example).
-
-*or*
-
-__Step 1.__ use `gulp release` if you want to get distribution version, which will output `examples` and `interactive-graph-<VERSION>` in `dist` dir.
-
-__Step 2.__ open `dist/examples/example1.html` in Web browser.
 
 ## <a name='LICENSE'></a>LICENSE
 
