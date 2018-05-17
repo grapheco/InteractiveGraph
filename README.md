@@ -18,7 +18,6 @@
 	* [GraphExplorer](#GraphExplorer)
 	* [RelFinder](#RelFinder)
 * [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
-* [build & run](#buildrun)
 * [LICENSE](#LICENSE)
 
 <!-- vscode-markdown-toc-config
@@ -28,30 +27,30 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
 
-[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/bluejoe2008/InteractiveGraph/total.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/issues)
-[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/network)
-[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
-[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/blob/master/LICENSE)
+[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/bluejoe2008/InteractiveGraph/total.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/issues)
+[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/network)
+[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/stargazers)
+[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
 
 InteractiveGraph provides a web-based interactive operating framwork for large graph data, which may come from a GSON file, or an online Neo4j graph database.
 
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
-__GraphNavigator__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
+__GraphNavigator__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
 <img alt="GraphNavigator" src="docs/navi.png" width="700">
 
 __GraphExplorer__: online demo 
-https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
+https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
 <img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
-__RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
+__RelFinder__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick start
 __Step 1.__ download `examples.zip` from `dist` directory:
-https://github.com/bluejoe2008/InteractiveGraph/dist/
+https://github.com/grapheco/InteractiveGraph/dist/
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
 
@@ -62,7 +61,7 @@ change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
 ## <a name='Howtouse'></a>How to use
 __Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: 
-https://github.com/bluejoe2008/InteractiveGraph/dist/
+https://github.com/grapheco/InteractiveGraph/dist/
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
@@ -82,21 +81,21 @@ __Step 4.__ use functions and classes defined in `igraph` namespace:
 ```
 As shown above, a `GraphNavigator` application object is created and used to load graph data from `honglou.json`.
 
-For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples/example1.html.
+For more details, see https://github.com/grapheco/InteractiveGraph/blob/master/dist/examples/example1.html.
 
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
 ## <a name='Referencemanual'></a>Reference manual
 
 ### <a name='InteractiveGraphAPI'></a>InteractiveGraph API
-InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
+InteractiveGraph is written in TypeScript. Visit https://grapheco.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
 
 ### <a name='dependencies'></a>dependencies
 This project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
-More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
+More dependencies, see https://github.com/grapheco/InteractiveGraph/blob/master/package.json.
 
 ## <a name='MainFrameapplications'></a>MainFrame, applications
 
@@ -210,7 +209,7 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute any controls, you may define new control class derived from `UIControl` and `BGControl`.
 
-* To contribute new themes, refer to `themes.ts`.
+* To contribute new themes.
 
 * To contribute new tool button, you may define new ButtonInfos. Note that `Font Awesome` icons are available in button icon!
 
@@ -220,4 +219,4 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 
-However, it is appreciated if you let we know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
+However, it is appreciated if you let we know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/grapheco/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
