@@ -88,6 +88,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#_async" class="tsd-kind-icon">_async</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestfilternodesbycategory" class="tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetmorerelations" class="tsd-kind-icon">request<wbr>Get<wbr>More<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a></li>
@@ -95,7 +96,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestsearch" class="tsd-kind-icon">request<wbr>Search</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requeststopfindrelations" class="tsd-kind-icon">request<wbr>Stop<wbr>Find<wbr>Relations</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestupdatenodesofcategory" class="tsd-kind-icon">request<wbr>Update<wbr>Nodes<wbr>OfCategory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="localgraph.html#fromgson" class="tsd-kind-icon">from<wbr>Gson</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="localgraph.html#fromgsonfile" class="tsd-kind-icon">from<wbr>Gson<wbr>File</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="localgraph.html#fromgsonstring" class="tsd-kind-icon">from<wbr>Gson<wbr>String</a></li>
@@ -116,7 +116,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L151">service/local.ts:151</a></li>
+									<li>Defined in service/local.ts:151</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -158,7 +158,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#getnodecategories">getNodeCategories</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L147">service/local.ts:147</a></li>
+									<li>Defined in service/local.ts:147</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -175,7 +175,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L164">service/local.ts:164</a></li>
+									<li>Defined in service/local.ts:164</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -201,6 +201,56 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="requestfilternodesbycategory" class="tsd-anchor"></a>
+					<h3>request<wbr>Filter<wbr>Nodes<wbr>ByCategory</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, showOrNot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in service/local.ts:278</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>className: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>nodeIds: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>showOrNot: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>filteredNodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>filteredNodeIds: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="requestfindrelations" class="tsd-anchor"></a>
 					<h3>request<wbr>Find<wbr>Relations</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -210,7 +260,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L327">service/local.ts:327</a></li>
+									<li>Defined in service/local.ts:324</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -263,7 +313,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L359">service/local.ts:359</a></li>
+									<li>Defined in service/local.ts:356</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -307,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L255">service/local.ts:255</a></li>
+									<li>Defined in service/local.ts:255</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -354,7 +404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L171">service/local.ts:171</a></li>
+									<li>Defined in service/local.ts:171</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -398,7 +448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L184">service/local.ts:184</a></li>
+									<li>Defined in service/local.ts:184</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -442,7 +492,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L190">service/local.ts:190</a></li>
+									<li>Defined in service/local.ts:190</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -490,63 +540,13 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#requeststopfindrelations">requestStopFindRelations</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L363">service/local.ts:363</a></li>
+									<li>Defined in service/local.ts:360</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>queryId: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="requestupdatenodesofcategory" class="tsd-anchor"></a>
-					<h3>request<wbr>Update<wbr>Nodes<wbr>OfCategory</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Update<wbr>Nodes<wbr>OfCategory<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, showOrNot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L278">service/local.ts:278</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>className: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>nodeIds: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-								<li>
-									<h5>showOrNot: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>callback: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>updates<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>updates: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -563,7 +563,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L109">service/local.ts:109</a></li>
+									<li>Defined in service/local.ts:109</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -586,7 +586,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L135">service/local.ts:135</a></li>
+									<li>Defined in service/local.ts:135</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -609,7 +609,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bluejoe2008/InteractiveGraph/blob/d049eb4/src/main/scripts/service/local.ts#L125">service/local.ts:125</a></li>
+									<li>Defined in service/local.ts:125</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -649,6 +649,9 @@
 								<a href="localgraph.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="localgraph.html#requestfilternodesbycategory" class="tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="localgraph.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -668,9 +671,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="localgraph.html#requeststopfindrelations" class="tsd-kind-icon">request<wbr>Stop<wbr>Find<wbr>Relations</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="localgraph.html#requestupdatenodesofcategory" class="tsd-kind-icon">request<wbr>Update<wbr>Nodes<wbr>OfCategory</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="localgraph.html#fromgson" class="tsd-kind-icon">from<wbr>Gson</a>
