@@ -27,12 +27,12 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
 
-[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/bluejoe2008/InteractiveGraph/total.svg)](https://github.com/grapheco/InteractiveGraph/releases)
-[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/issues)
-[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/network)
-[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/stargazers)
-[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
+[![GitHub releases](https://img.shields.io/github/release/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/grapheco/InteractiveGraph/total.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub issues](https://img.shields.io/github/issues/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/issues)
+[![GitHub forks](https://img.shields.io/github/forks/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/network)
+[![GitHub stars](https://img.shields.io/github/stars/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/stargazers)
+[![GitHub license](https://img.shields.io/github/license/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
 
 InteractiveGraph provides a web-based interactive operating framwork for large graph data, which may come from a GSON file, or an online Neo4j graph database.
 
