@@ -88,7 +88,7 @@ __Step 4.__ 使用在 `igraph` 中定义的函数和类：
 ## <a name='Referencemanual'></a>参考手册(Reference manual)
 
 ### <a name='InteractiveGraphAPI'></a>接口(InteractiveGraph API)
-InteractiveGraph是用TypeScript写的，如果需要获取在线API文档，请参见：
+InteractiveGraph是用TypeScript实现的，如果需要获取在线API文档，请参见：
 https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 
 
@@ -135,7 +135,7 @@ InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务
 
 如需订阅事务，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
 
-如果需要从主框架上关闭事务，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭时间，可以使用`emit(event, args)`方法.
+如果需要从主框架上关闭事务，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭事件，可以使用`emit(event, args)`方法.
 
 ### <a name='dataconnector'></a>数据连接(data connector)
 
