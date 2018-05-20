@@ -102,7 +102,7 @@ https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 ## <a name='MainFrameapplications'></a>主框架及应用(MainFrame, applications)
 
 InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务处理和图数据连接的包装，并为用户提供了简洁易用的接口.
-InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, event handling and graph data connection.
+
 
 ### <a name='控件(controls)'></a>控件(controls)
 
