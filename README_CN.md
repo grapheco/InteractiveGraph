@@ -7,7 +7,7 @@
 * [主框架及应用(MainFrame, applications)](#MainFrameapplications)
 	* [控件(controls)](#controls)
 	* [主题(theme)](#theme)
-	* [事物处理(event handling)](#eventhandling)
+	* [事务处理(event handling)](#eventhandling)
 	* [数据连接(data connector)](#dataconnector)
 * [GSON](#GSON)
 * [数据集(Datasets)](#Datasets)
@@ -16,7 +16,7 @@
 * [应用(Applications)](#Applications)
 	* [图导航器(GraphNavigator)](#GraphNavigator)
 	* [图浏览器(GraphExplorer)](#GraphExplorer)
-	* [关系查找(RelFinder)](#RelFinder)
+	* [关系查找器(RelFinder)](#RelFinder)
 * [贡献(Contributing to InteractiveGraph)](#ContributingtoInteractiveGraph)
 * [证书(LICENSE)](#LICENSE)
 
@@ -39,16 +39,16 @@ InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架
 InteractiveGraph 也提供了三个基于本框架的应用：`GraphNavigator`, `GraphExplorer` 和 `RelFinder`
 
 
-__GraphNavigator__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
+__图导航器(GraphNavigator)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
 <img alt="GraphNavigator" src="docs/navi.png" width="700">
 
-__GraphExplorer__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
+__图浏览器(GraphExplorer)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
 <img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
-__RelFinder__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
+__关系查找器(RelFinder)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
-## <a name='Quickstart'></a>Quick Start
+## <a name='Quickstart'></a>快速开始(Quick Start)
 __Step 1.__ 从`dist`处下载 `examples.zip`，链接如下:
 https://github.com/grapheco/InteractiveGraph/dist/
 
@@ -59,7 +59,7 @@ https://localhost:8080/examples/example1.html
 
 把 `example1.html` 改为 `examples2.html` 或 `examples3.html`, 等，即可试用三个不同应用.
 
-## <a name='Howtouse'></a>How to use
+## <a name='Howtouse'></a>使用方法(How to use)
 __Step 1.__ 下载 `interactive-graph-<VERSION>.zip`(如`interactive-graph-0.1.0.zip`) : 
 https://github.com/grapheco/InteractiveGraph/dist/
 
@@ -85,26 +85,26 @@ __Step 4.__ 使用在 `igraph` 中定义的函数和类：
 
 如若需要扩展应用，可以根据`GraphNavigator`或其他应用写衍生类，也可以通过使用 `MainFrame` 直接创建新的应用.
 
-## <a name='Referencemanual'></a>Reference manual
+## <a name='Referencemanual'></a>参考手册(Reference manual)
 
-### <a name='InteractiveGraphAPI'></a>InteractiveGraph API
+### <a name='InteractiveGraphAPI'></a>接口(InteractiveGraph API)
 InteractiveGraph是用TypeScript写的，如果需要获取在线API文档，请参见：
 https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 
 
-### <a name='dependencies'></a>dependencies
+### <a name='dependencies'></a>项目依赖(dependencies)
 在开发InteractiveGraph时，依赖了一些开源项目，包括但不仅限于`visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome`.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
 关于项目依赖的详情,请参见 https://github.com/grapheco/InteractiveGraph/blob/master/package.json.
 
-## <a name='MainFrameapplications'></a>MainFrame, applications
+## <a name='MainFrameapplications'></a>主框架及应用(MainFrame, applications)
 
-InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事件处理和图数据连接的包装，并为用户提供了简洁易用的接口.
+InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务处理和图数据连接的包装，并为用户提供了简洁易用的接口.
 InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, event handling and graph data connection.
 
-### <a name='controls'></a>controls
+### <a name='控件(controls)'></a>控件(controls)
 
 <img src="docs/frame.png" width="700">
 
@@ -127,17 +127,18 @@ InteractiveGraph provides a MainFrame, which actually is a facade of Web UI, eve
 |SearchBarCtrl|show a search bar for keyword input|UIControl|
 |ToolbarCtrl|show a tool bar|UIControl|
 
-### <a name='theme'></a>theme
+### <a name='theme'></a>主题(theme)
+略
 
-### <a name='eventhandling'></a>event handling
+### <a name='eventhandling'></a>事务处理(event handling)
 
-主框架及其控件通过事件与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事件.
+主框架及其控件通过事务与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事务.
 
-如需订阅事件，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
+如需订阅事务，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
 
-如果需要从主框架上关闭事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭时间，可以使用`emit(event, args)`方法.
+如果需要从主框架上关闭事务，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭时间，可以使用`emit(event, args)`方法.
 
-### <a name='dataconnector'></a>data connector
+### <a name='dataconnector'></a>数据连接(data connector)
 
 主框架通过`Connector`加载数据，`Connector`可能连接到`LocalGraph`或`RemoteGraph`.其中`LocalGraph`是一次性从GSON对象或文件中一次性加载全部数据，而`RemoteGraph`则在本地没有缓存数据时，与远程图服务器交互，从中获取数据和服务.
 MainFrame loads data via a `Connector` which may connect to a `LocalGraph` or a `RemoteGraph`. A `LocalGraph` loads all data once from a GSON object or file, while a `RemoteGraph` interacts with a remote graph server each time if no cache data is available.
@@ -179,7 +180,7 @@ export interface GSON {
   }
 ```
 
-## <a name='Datasets'></a>Datasets
+## <a name='Datasets'></a>数据集(Datasets)
 
 示例中以`.json`文件的形式提供了两个GSON数据集：honglou.json, WorldCup2014.json.
 
@@ -198,15 +199,15 @@ World Cup 2014数据集来自http://visjs.org/examples/network/exampleApplicatio
 
 <img src="docs/worldcup2014.png" width="700">
 
-## <a name='Applications'></a>Applications
+## <a name='Applications'></a>应用(Applications)
 
-### <a name='GraphNavigator'></a>GraphNavigator
+### <a name='GraphNavigator'></a>图导航器(GraphNavigator)
 
-### <a name='GraphExplorer'></a>GraphExplorer
+### <a name='GraphExplorer'></a>图浏览器(GraphExplorer)
 
-### <a name='RelFinder'></a>RelFinder
+### <a name='RelFinder'></a>关系查找器(RelFinder)
 
-## <a name='ContributingtoInteractiveGraph'></a>Contributing to InteractiveGraph
+## <a name='ContributingtoInteractiveGraph'></a>贡献(Contributing to InteractiveGraph)
 
 真诚地感谢您为InteractiveGraph提交的任何代码或文档.如果您有好的想法和创意，请fork本项目，并创建pull请求.
 
@@ -221,7 +222,7 @@ World Cup 2014数据集来自http://visjs.org/examples/network/exampleApplicatio
 * 若要贡献新的数据集或对数据集的修改，您可以以GSON格式提交！
 * To contribute new data sets or modification, you may submit data in GSON format!
 
-## <a name='LICENSE'></a>LICENSE
+## <a name='LICENSE'></a>证书(LICENSE)
 
 InteractiveGraph 使用 BSD 2-Clause "Simplified"证书.
 
