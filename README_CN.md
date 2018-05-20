@@ -131,11 +131,11 @@ InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事件
 
 ### <a name='eventhandling'></a>事件处理(event handling)
 
-主框架及其控件通过事件与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事件.
+主框架(MainFrame)及其控件通过事件与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事件.
 
 如需订阅事件，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
 
-如果需要从主框架上关闭事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭事件，可以使用`emit(event, args)`方法.
+如果需要向主框架发射事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行发射动作之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想向控件发送事件，可以使用`emit(event, args)`方法.
 
 ### <a name='dataconnector'></a>数据连接(data connector)
 
