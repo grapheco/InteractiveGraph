@@ -7,7 +7,7 @@
 * [主框架及应用(MainFrame, applications)](#MainFrameapplications)
 	* [控件(controls)](#controls)
 	* [主题(theme)](#theme)
-	* [事务处理(event handling)](#eventhandling)
+	* [事件处理(event handling)](#eventhandling)
 	* [数据连接(data connector)](#dataconnector)
 * [GSON](#GSON)
 * [数据集(Datasets)](#Datasets)
@@ -101,7 +101,7 @@ https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 
 ## <a name='MainFrameapplications'></a>主框架及应用(MainFrame, applications)
 
-InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务处理和图数据连接的包装，并为用户提供了简洁易用的接口.
+InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事件处理和图数据连接的包装，并为用户提供了简洁易用的接口.
 
 ### <a name='控件(controls)'></a>控件(controls)
 
@@ -129,13 +129,13 @@ InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务
 ### <a name='theme'></a>主题(theme)
 略
 
-### <a name='eventhandling'></a>事务处理(event handling)
+### <a name='eventhandling'></a>事件处理(event handling)
 
-主框架及其控件通过事务与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事务.
+主框架及其控件通过事件与应用通信.例如，当窗口大小被重置，主框架及其所有控件将会接收到FRAME_RESIZE事件.
 
-如需订阅事务，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
+如需订阅事件，可以通过主框架或控件调用`on(event, handler)`.相反，若需要取消订阅，可以使用`off(event, handler)`方法.
 
-如果需要从主框架上关闭事务，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭事件，可以使用`emit(event, args)`方法.
+如果需要从主框架上关闭事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法.不同于`emit()`方法的是，`fire()`在执行关闭之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想从控件上关闭事件，可以使用`emit(event, args)`方法.
 
 ### <a name='dataconnector'></a>数据连接(data connector)
 
