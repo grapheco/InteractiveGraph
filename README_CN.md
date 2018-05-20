@@ -1,24 +1,24 @@
 <!-- vscode-markdown-toc -->
-* [Quick Start](#Quickstart)
-* [How to Use](#Howtouse)
-* [Reference manual](#Referencemanual)
-	* [InteractiveGraph API](#InteractiveGraphAPI)
-	* [dependencies](#dependencies)
-* [MainFrame, applications](#MainFrameapplications)
-	* [controls](#controls)
-	* [theme](#theme)
-	* [event handling](#eventhandling)
-	* [data connector](#dataconnector)
+* [快速开始(Quick Start)](#Quickstart)
+* [使用方法(How to Use)](#Howtouse)
+* [参考手册(Reference manual)](#Referencemanual)
+	* [接口(InteractiveGraph API)](#InteractiveGraphAPI)
+	* [项目依赖(dependencies)](#dependencies)
+* [主框架及应用(MainFrame, applications)](#MainFrameapplications)
+	* [控件(controls)](#controls)
+	* [主题(theme)](#theme)
+	* [事物处理(event handling)](#eventhandling)
+	* [数据连接(data connector)](#dataconnector)
 * [GSON](#GSON)
-* [Datasets](#Datasets)
+* [数据集(Datasets)](#Datasets)
 	* [honglou.json](#honglou.json)
 	* [WorldCup2014.json](#WorldCup2014.json)
-* [Applications](#Applications)
-	* [GraphNavigator](#GraphNavigator)
-	* [GraphExplorer](#GraphExplorer)
-	* [RelFinder](#RelFinder)
-* [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
-* [LICENSE](#LICENSE)
+* [应用(Applications)](#Applications)
+	* [图导航器(GraphNavigator)](#GraphNavigator)
+	* [图浏览器(GraphExplorer)](#GraphExplorer)
+	* [关系查找(RelFinder)](#RelFinder)
+* [贡献(Contributing to InteractiveGraph)](#ContributingtoInteractiveGraph)
+* [证书(LICENSE)](#LICENSE)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -35,18 +35,17 @@
 [![GitHub license](https://img.shields.io/github/license/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
 
 
-InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架，数据可以来自于GSON文件，或者在线Neo4j图数据库.
+InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架，其数据可以来自于GSON文件，或者在线Neo4j图数据库.
 InteractiveGraph 也提供了三个基于本框架的应用：`GraphNavigator`, `GraphExplorer` 和 `RelFinder`
 
 
-__GraphNavigator__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
+__GraphNavigator__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
 <img alt="GraphNavigator" src="docs/navi.png" width="700">
 
-__GraphExplorer__: online demo 
-https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
+__GraphExplorer__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
 <img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
-__RelFinder__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
+__RelFinder__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick Start
@@ -219,12 +218,12 @@ World Cup 2014数据集来自http://visjs.org/examples/network/exampleApplicatio
 
 * 若要贡献新的工具按钮，您可以定义新的ButtonInfos.请注意，在按钮图标中可以找到`Font Awesome`的图标.
 
-*若要贡献新的数据集或对数据集的修改，您可以以GSON格式提交！
+* 若要贡献新的数据集或对数据集的修改，您可以以GSON格式提交！
 * To contribute new data sets or modification, you may submit data in GSON format!
 
 ## <a name='LICENSE'></a>LICENSE
 
-InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
+InteractiveGraph 使用 BSD 2-Clause "Simplified"证书.
 
-此外，非常感谢您在项目中使用InteractiveGraph，为了更好地改进，我们真诚地想获取您的意见及使用情况，请将您的github用户名，您所在的组织和您的项目填写在下边的使用情况表中，非常感谢！
+最后，非常感谢您在项目中使用InteractiveGraph，为了更好地改进，我们真诚地想获取您的意见及使用情况，请将您的github用户名，您所在的组织和您的项目填写在下边的使用情况表中，非常感谢！
 https://github.com/grapheco/InteractiveGraph/wiki/use-case-collection
