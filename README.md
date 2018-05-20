@@ -158,7 +158,7 @@ export interface GSON {
 }
 ```
 
-Here, `translator` defines transaltor functions for graph nodes and edges, which will be invoked on loading. An example is shown below, in which `description` of each node is evaluated on loading time.
+Here, `translator` defines translator functions for graph nodes and edges, which will be invoked on loading. An example is shown below, in which `description` of each node is evaluated on loading time.
 
 ```javascript
   "translator": {
