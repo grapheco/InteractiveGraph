@@ -103,7 +103,6 @@ https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 
 InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务处理和图数据连接的包装，并为用户提供了简洁易用的接口.
 
-
 ### <a name='控件(controls)'></a>控件(controls)
 
 <img src="docs/frame.png" width="700">
@@ -111,7 +110,7 @@ InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事务
 如上所示，MainFrame包括了一个主图形渲染画布，一组导航按钮，以及搜索栏，工具栏，信息框，高亮控件等控件.
 
 一些控件是带有Web UI的，比如信息框，消息框等. 但是其他一些组件是没有UI的，比如HighlightNode控件和ExpansionCtrl等控件等.
-在InteractiveGraph中，我们定义了一个`Control`类，以及它的两个衍生类`UIControl`（带UI的组件）和`BGControl`（不带UI的后台控件）.
+在InteractiveGraph中，我们定义了一个`Control`类，以及它的两个衍生类`UIControl`（带UI的控件）和`BGControl`（不带UI的后台控件）.
 
 下表所列是项目中的全部控件.
 
@@ -186,14 +185,15 @@ export interface GSON {
 
 ### <a name='honglou.json'></a>honglou.json
 
-honglou.json数据集来自于中国古典名著《红楼梦》（又名《石头记》，https://en.wikipedia.org/wiki/Dream_of_the_Red_Chamber），在这部小说中贾宝玉、林黛玉、薛宝钗是主要人物. 这个数据集中定义了超过300个实体，其中包括书中的人物，地点和时间，以及超过500个这些实体之间的连接.
+honglou.json数据集来自于中国古典名著《红楼梦》（又名《石头记》，https://en.wikipedia.org/wiki/Dream_of_the_Red_Chamber）.
+在这部小说中贾宝玉、林黛玉、薛宝钗是主要人物. 这个数据集中定义了超过300个实体，其中包括书中的人物，地点和时间，以及超过500个这些实体之间的连接.
 
 nickel2008@github 提供了数据集. 此数据集中或有纰漏，但是对于一个图数据项目的示例来说已经足够好了.
 
 ### <a name='WorldCup2014.json'></a>WorldCup2014.json
 
 World Cup 2014数据集来自http://visjs.org/examples/network/exampleApplications/worldCupPerformance.html.
-其中边浇多，因此绘制时对算力要求较高.
+其中边较多，因此绘制时对算力要求较高.
 
 下边的屏幕截图展示了在`GraphNavigator`中，WorldCup2014.json是如何渲染的.
 
