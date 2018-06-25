@@ -49,8 +49,8 @@ __RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/e
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick start
-__Step 1.__ download `examples.zip` from `dist` directory:
-https://github.com/bluejoe2008/InteractiveGraph/dist/
+__Step 1.__ download `examples.zip`:
+https://github.com/bluejoe2008/InteractiveGraph/releases
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
 
