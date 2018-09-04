@@ -1,3 +1,5 @@
+感谢您关注本项目，欢迎点赞⬆︎
+
 <!-- vscode-markdown-toc -->
 * [快速开始(Quick Start)](#Quickstart)
 * [使用方法(How to Use)](#Howtouse)
@@ -229,4 +231,4 @@ InteractiveGraph 使用 BSD 2-Clause "Simplified"证书。
 
 https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection
 
-如果您认可本项目，欢迎点赞：[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
+感谢您关注本项目，欢迎点赞⬆︎
