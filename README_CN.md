@@ -36,7 +36,8 @@
 
 
 InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架，其数据可以来自于GSON文件，或者在线Neo4j图数据库。
-InteractiveGraph 也提供了三个基于本框架的应用：`GraphNavigator`, `GraphExplorer` 和 `RelFinder`。
+
+InteractiveGraph 同时也提供了三个基于本框架的应用：`GraphNavigator`, `GraphExplorer` 和 `RelFinder`。
 
 
 __图导航器(GraphNavigator)__: 在线试用 https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
@@ -135,7 +136,7 @@ InteracticeGraph 提供了一个`MainFrame`框架，它实际上对Web UI,事件
 
 如需订阅事件，可以通过主框架或控件调用`on(event, handler)`。相反，若需要取消订阅，可以使用`off(event, handler)`方法。
 
-如果需要向主框架发射事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法。不同于`emit()`方法的是，`fire()`在执行发射动作之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想向控件发送事件，可以使用`emit(event, args)`方法。
+如果需要向主框架发送事件，可以使用`MainFrame.emit(event, args)`或`MainFrame.fire(event, args)`方法。不同于`emit()`方法的是，`fire()`在执行发送动作之前，会将包括`mainFrame`, `htmlMainFrame`和`theme`在内的上下文信息置入到`args`.如果想向控件发送事件，可以使用`emit(event, args)`方法。
 
 ### <a name='dataconnector'></a>数据连接(data connector)
 
@@ -161,7 +162,7 @@ export interface GSON {
 }
 ```
 
-此处，`translator`是对于图中节点和边的translator函数的定义，加载数据时会调用这个函数。示例如下，在这个例子中，在加载时为每个节点的`description`赋值。
+此处，`translator`是对于图中节点和边的翻译函数的定义，框架加载数据时会调用这个函数。示例如下，在这个例子中，在加载时为每个节点的`description`赋值。
 
 ```javascript
   "translator": {
@@ -225,4 +226,5 @@ World Cup 2014数据集来自http://visjs.org/examples/network/exampleApplicatio
 InteractiveGraph 使用 BSD 2-Clause "Simplified"证书。
 
 最后，非常感谢您在项目中使用InteractiveGraph，为了更好地改进，我们真诚地想获取您的意见及使用情况，请将您的github用户名，您所在的组织和您的项目填写在下边的使用情况表中，非常感谢！
+
 https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection
