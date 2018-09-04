@@ -228,3 +228,5 @@ InteractiveGraph 使用 BSD 2-Clause "Simplified"证书。
 最后，非常感谢您在项目中使用InteractiveGraph，为了更好地改进，我们真诚地想获取您的意见及使用情况，请将您的github用户名，您所在的组织和您的项目填写在下边的使用情况表中，非常感谢！
 
 https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection
+
+如果您认可本项目，欢迎点赞：[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
