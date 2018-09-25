@@ -18,6 +18,7 @@
 	* [GraphExplorer](#GraphExplorer)
 	* [RelFinder](#RelFinder)
 * [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
+* [Build & Run](#BuildRun)
 * [LICENSE](#LICENSE)
 
 <!-- vscode-markdown-toc-config
@@ -215,8 +216,26 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute new data sets or modification, you may submit data in GSON format!
 
+## <a name='BuildRun'></a>Build & Run
+
+__Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `interactive-graph.js` and `interactive-graph.css` in `build` dir.
+
+__Step 2.__ open `src/test/webapp/example1.html` in Web browser (`Google Chrome`, for example).
+
+*or*
+
+__Step 1.__ use `gulp release` if you want to get a distribution version, which will output `examples` and `interactive-graph-<VERSION>` in `dist` dir.
+
+__Step 2.__ open `dist/examples/example1.html` in Web browser.
+
 ## <a name='LICENSE'></a>LICENSE
 
 InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 
-However, it is appreciated if you let we know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
+Please cite this project as reference if you used it:
+
+```
+Zhihong SHEN. InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/bluejoe2008/InteractiveGraph, 2018-09-09
+```
+
+Furthermore, it is appreciated if you let us know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
