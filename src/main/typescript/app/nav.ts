@@ -1,15 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const theme_1 = require("../theme");
-const SearchBarCtrl_1 = require("../control/SearchBarCtrl");
-const InfoBoxCtrl_1 = require("../control/InfoBoxCtrl");
-const ToolbarCtrl_1 = require("../control/ToolbarCtrl");
-const types_1 = require("../types");
-const HighlightNodeCtrl_1 = require("../control/HighlightNodeCtrl");
-const ConnectCtrl_1 = require("../control/ConnectCtrl");
-class GraphNavigator extends app_1.BaseApp {
-    constructor(htmlFrame) {
+import { MainFrame } from '../mainframe';
+import { BaseApp } from './app';
+import { Themes, Theme } from "../theme";
+import { MessageBoxCtrl } from '../control/MessageBoxCtrl';
+import { SearchBarCtrl } from '../control/SearchBarCtrl';
+import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
+import { ToolbarCtrl } from '../control/ToolbarCtrl';
+import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
+import { GraphService } from '../service/service';
+import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
+import { ConnectCtrl } from '../control/ConnectCtrl';
+
+export class GraphNavigator extends BaseApp {
+    private _searchBar: SearchBarCtrl;
+    private _infoBox: InfoBoxCtrl;
+
+    public constructor(htmlFrame: HTMLElement) {
         super(htmlFrame, {
             showLabels: true,
             showTitles: true,
@@ -19,94 +24,111 @@ class GraphNavigator extends app_1.BaseApp {
             showGroups: true
         });
     }
-    onCreateFrame(args) {
+
+    protected onCreateFrame(args: EVENT_ARGS_FRAME) {
         var frame = args.mainFrame;
-        this._searchBar = frame.addControl("search", new SearchBarCtrl_1.SearchBarCtrl());
-        this._infoBox = frame.addControl("info", new InfoBoxCtrl_1.InfoBoxCtrl());
-        var connect = frame.addControl("connect", new ConnectCtrl_1.ConnectCtrl());
-        var hilight = frame.addControl("hilight", new HighlightNodeCtrl_1.HighlightNodeCtrl());
-        var toolbar = frame.addControl("toolbar", new ToolbarCtrl_1.ToolbarCtrl());
+        this._searchBar = frame.addControl("search", new SearchBarCtrl());
+        this._infoBox = frame.addControl("info", new InfoBoxCtrl());
+        var connect = frame.addControl("connect", new ConnectCtrl());
+        var hilight = frame.addControl("hilight", new HighlightNodeCtrl());
+        var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
         var app = this;
+
         toolbar.addButton({
             icon: "fa fa-user-circle-o",
             checked: true,
             tooltip: "show faces",
-            click: (checked) => { app.toggleFaces(checked); }
+            click: (checked: boolean) => { app.toggleFaces(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-gavel",
             checked: true,
             tooltip: "show degrees",
-            click: (checked) => { app.toggleWeights(checked); }
+            click: (checked: boolean) => { app.toggleWeights(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-share-alt",
             checked: true,
             tooltip: "show edges",
-            click: (checked) => { app.toggleEdges(checked); }
+            click: (checked: boolean) => { app.toggleEdges(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-strikethrough",
             checked: false,
             tooltip: "always show edge's label",
-            click: (checked) => { app.toggleShowEdgeLabelAlways(checked); }
+            click: (checked: boolean) => { app.toggleShowEdgeLabelAlways(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-circle-o",
             checked: false,
             tooltip: "show border",
-            click: (checked) => { app.toggleNodeBorder(checked); }
+            click: (checked: boolean) => { app.toggleNodeBorder(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-transgender-alt",
             checked: false,
             tooltip: "show edge color",
-            click: (checked) => { app.toggleEdgeColor(checked); }
+            click: (checked: boolean) => { app.toggleEdgeColor(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-clone",
             checked: false,
             tooltip: "show shadow",
-            click: (checked) => { app.toggleShadow(checked); }
+            click: (checked: boolean) => { app.toggleShadow(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-anchor",
             checked: true,
             tooltip: "show navigation buttons",
-            click: (checked) => { app.toggleNavigationButtons(checked); }
+            click: (checked: boolean) => { app.toggleNavigationButtons(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-search",
             checked: true,
             tooltip: "show search bar",
-            click: (checked) => { app.toggleSearchBar(checked); }
+            click: (checked: boolean) => { app.toggleSearchBar(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-info-circle",
             checked: true,
             tooltip: "show info",
-            click: (checked) => { app.toggleInfoBox(checked); }
+            click: (checked: boolean) => { app.toggleInfoBox(checked); }
         });
+
         toolbar.addButton({
             icon: "fa fa-file-code-o",
             tooltip: "load GSON string",
-            click: (checked) => { connect.loadGsonString(); }
+            click: (checked: boolean) => { connect.loadGsonString(); }
         });
+
         toolbar.addButton({
             icon: "fa fa-folder-open-o",
             tooltip: "load GSON url",
-            click: (checked) => { connect.loadGsonUrl(); }
+            click: (checked: boolean) => { connect.loadGsonUrl(); }
         });
+
         this.addScaleSlider(toolbar, frame);
         this._addThemeSelect(toolbar);
-        this._frame.on(types_1.FrameEventName.GRAPH_CONNECTED, (args) => {
+
+        this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             app._addCategoriesSelect(toolbar, frame.getGraphService());
             hilight.clear();
             app.showGraph({}, () => { });
         });
+
         this.toggleShowEdgeLabelAlways(false);
     }
-    addScaleSlider(toolbar, frame) {
+
+    private addScaleSlider(toolbar: ToolbarCtrl, frame: MainFrame) {
         var slider = document.createElement("div");
         $(slider).addClass("scaleSlider");
         $(slider).slider({
@@ -120,7 +142,8 @@ class GraphNavigator extends app_1.BaseApp {
         });
         toolbar.addTool(slider);
     }
-    toggleInfoBox(checked) {
+
+    private toggleInfoBox(checked: boolean) {
         if (checked) {
             this._infoBox.enable();
         }
@@ -128,7 +151,8 @@ class GraphNavigator extends app_1.BaseApp {
             this._infoBox.disable();
         }
     }
-    toggleSearchBar(checked) {
+
+    private toggleSearchBar(checked: boolean) {
         if (checked) {
             this._searchBar.show();
         }
@@ -136,42 +160,50 @@ class GraphNavigator extends app_1.BaseApp {
             this._searchBar.hide();
         }
     }
-    _addCategoriesSelect(toolbar, connector) {
+
+    private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: GraphService) {
         var app = this;
         var map = this._frame.getNodeCategories();
         var span = document.getElementById("categories-select");
         if (span != null)
             span.remove();
+
         span = document.createElement("span");
         $(span).attr("id", "categories-select");
         for (var key in map) {
             var check = document.createElement("input");
             var label = document.createElement("label");
+
             $(check).attr("id", "checkbox_" + key)
                 .appendTo($(span))
                 .attr("key", key)
                 .attr("type", "checkbox")
                 .attr("checked", "true")
                 .click(function () {
-                app._frame.showNodesOfCategory($(this).attr("key"), $(this).prop('checked'));
-            });
+                    app._frame.showNodesOfCategory($(this).attr("key"),
+                        $(this).prop('checked'));
+                });
+
             $(label)
                 .appendTo($(span))
                 .attr("for", "checkbox_" + key).text(map[key]);
         }
+
         toolbar.addTool(span);
     }
-    _addThemeSelect(toolbar) {
+
+    private _addThemeSelect(toolbar: ToolbarCtrl) {
         var select = document.createElement("select");
+
         $("<option></option>").val('DEFAULT').text("THEME_DEFAULT").appendTo($(select));
         $("<option></option>").val('BLACK').text("THEME_BLACK").appendTo($(select));
         var app = this;
         $(select).change(function () {
-            var value = $(select).val();
-            var func = theme_1.Themes[value];
+            var value = <string>$(select).val();
+            var func = Themes[value];
             app._frame.updateTheme(func());
         });
+
         toolbar.addTool(select);
     }
 }
-exports.GraphNavigator = GraphNavigator;

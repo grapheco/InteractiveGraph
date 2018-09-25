@@ -1,7 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Themes {
-    static DEFAULT() {
+export interface Theme {
+    canvasBackground: string;
+    highlight: {
+        gradientInnerColor: string,
+        gradientOutterColor: string,
+    }
+    expansion: {
+        backgroudColorCollapsed: string,
+        backgroudColorExpanded: string,
+        fontColor: string
+    }
+}
+
+export class Themes {
+    static DEFAULT(): Theme {
         return {
             canvasBackground: "none",
             highlight: {
@@ -15,7 +26,8 @@ class Themes {
             }
         };
     }
-    static BLACK() {
+
+    static BLACK(): Theme {
         return {
             canvasBackground: "#111111",
             highlight: {
@@ -30,4 +42,3 @@ class Themes {
         };
     }
 }
-exports.Themes = Themes;

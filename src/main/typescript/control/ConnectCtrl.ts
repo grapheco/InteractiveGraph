@@ -1,13 +1,23 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Control_1 = require("./Control");
-const local_1 = require("../service/local");
-class ConnectCtrl extends Control_1.UIControl {
-    onCreateUI(htmlContainer, args) {
+import { Utils, Rect, Point } from "../utils";
+import { MainFrame } from "../mainframe";
+import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
+import { GraphService } from '../service/service';
+import { i18n } from "../messages";
+import { Control, UIControl } from "./Control";
+import { LocalGraph } from "../service/local";
+
+export class ConnectCtrl extends UIControl {
+    private _frame: MainFrame;
+    private _dlgLoadGsonString: JQuery;
+    private _dlgLoadGsonUrl: JQuery;
+
+    public onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
         this._frame = args.mainFrame;
+
         this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON<a href="https://github.com/bluejoe2008/InteractiveGraph#GSON"><span style="color:firebrick" class="fa fa-question-circle"></span></a> text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
         this._dlgLoadGsonUrl = $('<div title="load GSON"><p>input remote GSON url:<br><input class="connect-gson-url"></p></div>').appendTo($(htmlContainer));
         super.hide();
+
         var gson = {
             data: {
                 nodes: [
@@ -16,6 +26,7 @@ class ConnectCtrl extends Control_1.UIControl {
                             "person"
                         ],
                     },
+
                     {
                         id: "2", "label": "CNIC", "image": "https://bluejoe2008.github.io/cas.jpg", "categories": [
                             "organization"
@@ -33,13 +44,16 @@ class ConnectCtrl extends Control_1.UIControl {
                 ]
             }
         };
+
         $("textarea", this._dlgLoadGsonString).val(JSON.stringify(gson));
         var input = $("input", this._dlgLoadGsonUrl);
+
         $("<a href='#'>WorldCup2014.json</a>").click(() => {
             $(input).val("WorldCup2014.json");
         }).appendTo($(this._dlgLoadGsonUrl));
     }
-    loadGsonString() {
+
+    public loadGsonString() {
         var frame = this._frame;
         this._dlgLoadGsonString.dialog({
             modal: true,
@@ -49,14 +63,15 @@ class ConnectCtrl extends Control_1.UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(local_1.LocalGraph.fromGsonString("" + $("textarea", this).val()), () => {
+                    frame.connect(LocalGraph.fromGsonString("" + $("textarea", this).val()), () => {
                         dlg.dialog("close");
                     });
                 }
             }
         });
     }
-    loadGsonUrl() {
+
+    public loadGsonUrl() {
         var frame = this._frame;
         this._dlgLoadGsonUrl.dialog({
             modal: true,
@@ -66,14 +81,15 @@ class ConnectCtrl extends Control_1.UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(local_1.LocalGraph.fromGsonFile($("input", this).val()), () => {
+                    frame.connect(LocalGraph.fromGsonFile($("input", this).val()), () => {
                         dlg.dialog("close");
                     });
                 }
             }
         });
     }
-    onResize(args) {
+
+    public onResize(args: EVENT_ARGS_FRAME) {
+
     }
 }
-exports.ConnectCtrl = ConnectCtrl;

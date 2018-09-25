@@ -14,7 +14,7 @@
             "type": "node",
             "request": "launch",
             "name": "run test all",
-            "program": "${workspaceFolder}/src/test/javascript/testAll.js"
+            "program": "${workspaceFolder}/src/test/scripts/testAll.js"
         }
     ]
 }

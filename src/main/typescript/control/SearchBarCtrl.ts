@@ -1,14 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Control_1 = require("./Control");
-class SearchBarCtrl extends Control_1.UIControl {
-    constructor() {
-        super(...arguments);
-        this._renderAutoCompletionItem = function (item) {
-            return "<b>" + item.label + "</b>";
-        };
+import { Utils, Rect, Point } from "../utils";
+import { MainFrame } from "../mainframe";
+import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT } from '../types';
+import { GraphService } from '../service/service';
+import { i18n } from "../messages";
+import { Control, UIControl } from "./Control";
+
+export class SearchBarCtrl extends UIControl {
+    private _renderAutoCompletionItem = function (item: GraphNode) {
+        return "<b>" + item.label + "</b>";
     }
-    onCreateUI(htmlContainer, args) {
+
+    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
         var frame = args.mainFrame;
         /*
         <div id="searchPanel" class="searchPanel">
@@ -23,10 +25,13 @@ class SearchBarCtrl extends Control_1.UIControl {
         var thisCtrl = this;
         var offset = $(args.htmlMainFrame).offset();
         $(htmlContainer).addClass("searchPanel");
+        
         var searchPanel1 = document.createElement("div");
         $(searchPanel1).addClass("searchPanel1")
             .appendTo($(htmlContainer));
-        $(this.createSearchBox(frame)).appendTo($(searchPanel1));
+
+        $(this.createSearchBox(frame)).appendTo($(searchPanel1))
+
         var searchPanel2 = document.createElement("div");
         $(searchPanel2).addClass("searchPanel2")
             .appendTo($(htmlContainer));
@@ -35,24 +40,28 @@ class SearchBarCtrl extends Control_1.UIControl {
             .addClass("fa-search")
             .addClass("fa-lg")
             .appendTo($(searchPanel2));
-        super.setPosition((frameRect, ctrlRect) => {
+
+        super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
             return {
                 x: frameRect.left + 10,
                 y: frameRect.top + 20
             };
         });
     }
-    createSearchBox(frame) {
+
+    public createSearchBox(frame: MainFrame): HTMLElement {
         var thisCtrl = this;
+
         var htmlSearchBox = document.createElement("input");
         $(htmlSearchBox).addClass("searchBox")
             .attr("type", "text")
             .attr("placeholder", "input keyword");
+
         //binds events
         $(htmlSearchBox).autocomplete({
             source: function (request, response) {
                 var term = request.term;
-                frame.search(term, function (nodes) {
+                frame.search(term, function (nodes: GraphNode[]) {
                     response(nodes.map((node) => {
                         return {
                             value: node.label,
@@ -62,25 +71,28 @@ class SearchBarCtrl extends Control_1.UIControl {
                     }));
                 });
             },
+
             change: function (event, ui) {
                 console.log(ui.item);
                 if (ui.item == null) {
                     $(htmlSearchBox).data("node", null);
-                }
-                else {
+                } else {
                     $(htmlSearchBox).data("node", ui.item.node);
                 }
+
                 return false;
             },
+
             select: function (event, ui) {
                 console.log(ui.item);
-                var node = ui.item.node;
+                var node: GraphNode = ui.item.node;
                 if (node !== undefined) {
                     $(htmlSearchBox).val(node.label);
                     $(htmlSearchBox).data("node", node);
                     frame.insertNodes([node]);
                     frame.focusNodes(["" + node.id]);
                 }
+
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
@@ -88,7 +100,7 @@ class SearchBarCtrl extends Control_1.UIControl {
                 .append(thisCtrl._renderAutoCompletionItem(item.node))
                 .appendTo(ul);
         };
+
         return htmlSearchBox;
     }
 }
-exports.SearchBarCtrl = SearchBarCtrl;

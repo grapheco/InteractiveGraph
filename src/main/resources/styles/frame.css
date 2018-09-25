@@ -1,0 +1,284 @@
+.ui-draggable,
+.ui-droppable {
+    background-position: top;
+}
+
+button.ui-button2 {
+    text-align: center;
+    width: 32;
+    height: 32;
+    padding: 2px;
+    border-radius: 6px;
+    transition: none;
+    color: #1051cae3;
+    border-style: none;
+    font-size: 1.6em;
+    cursor: hand;
+}
+
+button.ui-button2:active {
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+}
+
+.vis-button {
+    background-image: none !important;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.vis-button.vis-up::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f01b";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-left::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f190";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-right::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f18e";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-down::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f01a";
+    font-size: 2.5em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.vis-button.vis-zoomIn::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f055";
+    font-size: 2.4em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2.5px;
+}
+
+.vis-button.vis-zoomOut::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f056";
+    font-size: 2.4em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 0px;
+    margin-left: 2.5px;
+}
+
+.vis-button.vis-zoomExtends::before {
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "\f1cd";
+    font-size: 2em;
+    color: rgba(0, 127, 0, 0.7);
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
+.ui-tool {
+    padding: 4px;
+    vertical-align: middle;
+    float: left;
+    color: #1051cae3;
+}
+
+button.ui-button2:hover {
+    border-style: none;
+    color: white;
+    background-color: #1051cae3;
+}
+
+button.ui-button2:focus {
+    outline: none;
+}
+
+button.ui-button2-checked {
+    border-style: solid;
+}
+
+div.infoBox {
+    font-size: 9px;
+    border: 1px;
+}
+
+div.infoPanel {
+    display: none;
+    padding: 5px;
+    position: absolute;
+    width: 258px;
+    cursor: hand;
+    background: rgba(230, 217, 202, 0.8);
+    color: rgb(35, 34, 34);
+    z-index: 888;
+}
+
+div.ui-slider-handle:focus {
+    outline: none;
+}
+
+div.scaleSlider {
+    float: left;
+    width: 314px;
+    margin-top: 3px;
+}
+
+div.toolbarPanel {
+    padding: 4px;
+    width: 320px;
+    position: absolute;
+    cursor: hand;
+    border-width: 2px;
+    background: white;
+    color: darkgray;
+    font-size: 11px;
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    z-index: 888;
+}
+
+div.searchPanel {
+    padding: 4px;
+    position: absolute;
+    width: 260px;
+    height: 30px;
+    cursor: hand;
+    background: white;
+    color: #ecb80e;
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    z-index: 900;
+}
+
+div.line {
+    height: 30px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+span.ui-spinner {
+    font-size: 0.6em;
+}
+
+span.relfinder-icon {
+    margin-top: 8px;
+    color: #1051cae3;
+    font-size: 1.1em;
+}
+
+button.relfinder-btn {
+    font-size: 0.9em;
+    border-radius: 5px;
+}
+
+div.relfinder-searchbox-container {
+    width: 220px;
+    float: right;
+}
+
+div.relfinder-dlg {
+    padding: 4px;
+    position: absolute;
+    width: 260px;
+    cursor: hand;
+    background: white;
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    z-index: 900;
+}
+
+textarea.connect-gson-string {
+    width: 360px;
+    height: 250px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+    font-size: 12px !important;
+}
+
+input.connect-gson-url {
+    width: 360px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+    font-size: 12px !important;
+}
+
+div.searchPanel1 {
+    width: 220px;
+    float: left;
+}
+
+input.searchBox {
+    width: 100%;
+    height: 100%;
+}
+
+div.searchPanel2 {
+    width: 30px;
+    height: 20px;
+    background-color: #6495ed;
+    color: white;
+    float: left;
+    padding: 7px 0px 3px 10px;
+}
+
+div.infoPanel1 {
+    width: 230px;
+    float: left;
+}
+
+div.infoPanel2 {
+    width: 20px;
+    height: 20px;
+    float: right;
+    padding: 5px 0px 5px 5px;
+}
+
+.btnCloseInfoPanel {
+    color: darkgray;
+}
+
+ul.ui-autocomplete {
+    font-size: 12px;
+    z-index: 999;
+}
+
+div.messageBox {
+    position: absolute;
+    width: 300px;
+    background-color: lightgray;
+    color: black;
+    padding: 20px 20px 20px 20px;
+}
