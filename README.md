@@ -18,7 +18,8 @@
 	* [GraphExplorer](#GraphExplorer)
 	* [RelFinder](#RelFinder)
 * [Contributing to InteractiveGraph](#ContributingtoInteractiveGraph)
-* [Build & Run](#BuildRun)
+* [Build & Debug](#BuildDebug)
+* [Build & Release](#BuildRelease)
 * [LICENSE](#LICENSE)
 
 <!-- vscode-markdown-toc-config
@@ -216,13 +217,13 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute new data sets or modification, you may submit data in GSON format!
 
-## <a name='BuildRun'></a>Build & Run
+## <a name='BuildDebug'></a>Build & Debug
 
 __Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `interactive-graph.js` and `interactive-graph.css` in `build` dir.
 
 __Step 2.__ open `src/test/webapp/example1.html` in Web browser (`Google Chrome`, for example).
 
-*or*
+## <a name='BuildRelease'></a>Build & Release
 
 __Step 1.__ use `gulp release` if you want to get a distribution version, which will output `examples` and `interactive-graph-<VERSION>` in `dist` dir.
 

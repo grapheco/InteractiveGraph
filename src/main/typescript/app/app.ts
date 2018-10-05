@@ -10,7 +10,7 @@ export abstract class BaseApp {
     protected _toggleEdgeLabelHandlers;
     protected _frame: MainFrame;
     protected _htmlFrame: HTMLElement;
-    protected _messageBox: MessageBoxCtrl;
+    protected _messageBox: MessageBoxCtrl; //signleton message box
 
     protected constructor(htmlFrame: HTMLElement,
         initialOptions: FRAME_OPTIONS, extra?: object) {
@@ -154,6 +154,12 @@ export abstract class BaseApp {
                     hover: '#ff0000'
                 };
             }
+        });
+    }
+
+    public toggleDraggable(checked: boolean) {
+        this._frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.interaction.dragNodes = checked;
         });
     }
 

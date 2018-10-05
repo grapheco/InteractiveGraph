@@ -42,7 +42,7 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addButton({
-            icon: "fa fa-gavel",
+            icon: "fa fa-sliders",
             checked: true,
             tooltip: "show degrees",
             click: (checked: boolean) => { app.toggleWeights(checked); }
@@ -102,6 +102,13 @@ export class GraphNavigator extends BaseApp {
             checked: true,
             tooltip: "show info",
             click: (checked: boolean) => { app.toggleInfoBox(checked); }
+        });
+
+        toolbar.addButton({
+            icon: "fa fa-expand",
+            checked: true,
+            tooltip: "undraggable/draggable",
+            click: (checked: boolean) => { app.toggleDraggable(checked); }
         });
 
         toolbar.addButton({

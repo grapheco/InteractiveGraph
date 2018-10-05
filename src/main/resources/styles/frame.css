@@ -5,12 +5,12 @@
 
 button.ui-button2 {
     text-align: center;
-    width: 32;
-    height: 32;
+    width: 24;
+    height: 24;
     padding: 2px;
-    border-radius: 6px;
+    border-radius: 4px;
     transition: none;
-    color: #1051cae3;
+    color: burlywood;
     border-style: none;
     font-size: 1.6em;
     cursor: hand;
@@ -35,7 +35,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f01b";
     font-size: 2.5em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
 }
@@ -47,7 +48,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f190";
     font-size: 2.5em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
 }
@@ -59,7 +61,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f18e";
     font-size: 2.5em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
 }
@@ -71,7 +74,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f01a";
     font-size: 2.5em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
 }
@@ -83,7 +87,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f055";
     font-size: 2.4em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2.5px;
 }
@@ -95,7 +100,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f056";
     font-size: 2.4em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2.5px;
 }
@@ -107,7 +113,8 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f1cd";
     font-size: 2em;
-    color: rgba(0, 127, 0, 0.7);
+    color: mediumorchid;
+    text-shadow: 1px 1px antiquewhite;
     margin-top: 3px;
     margin-left: 3px;
 }
@@ -122,7 +129,7 @@ button.ui-button2:active {
 button.ui-button2:hover {
     border-style: none;
     color: white;
-    background-color: #1051cae3;
+    background-color: chocolate;
 }
 
 button.ui-button2:focus {
@@ -130,7 +137,8 @@ button.ui-button2:focus {
 }
 
 button.ui-button2-checked {
-    border-style: solid;
+    border-style: none;
+    color: blueviolet;
 }
 
 div.infoBox {
