@@ -236,7 +236,7 @@ InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 Please cite this project as reference if you used it:
 
 ```
-Zhihong SHEN. InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/bluejoe2008/InteractiveGraph, 2018-09-09
+InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/bluejoe2008/InteractiveGraph, 2018-09-09
 ```
 
 Furthermore, it is appreciated if you let us know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
