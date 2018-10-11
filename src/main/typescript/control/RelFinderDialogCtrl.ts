@@ -1,6 +1,6 @@
 import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../mainframe";
-import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT } from '../types';
+import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT, EVENT_ARGS_RELFINDER } from '../types';
 import { GraphService } from '../service/service';
 import { i18n } from "../messages";
 import { Control, UIControl } from "./Control";
@@ -14,7 +14,7 @@ export class RelFinderDialogCtrl extends UIControl {
         var ctrl = this;
 
         $(htmlContainer).addClass("relfinder-dlg").draggable();
-        
+
         //input box
         var sbCtrl = new SearchBarCtrl();
         var icons = ["fa-flag", "fa-flag-checkered"];
@@ -52,7 +52,7 @@ export class RelFinderDialogCtrl extends UIControl {
         var div = $('<p align="center"></p>');
         div.appendTo($(htmlContainer));
 
-        $('<button type="button" class="btn relfinder-btn">find relations</button>')
+        var btnStart = $('<button type="button" class="btn relfinder-btn">find relations</button>')
             .appendTo($(div))
             .click(function () {
                 frame.fire(FrameEventName.RELFINDER_START, {
@@ -63,7 +63,7 @@ export class RelFinderDialogCtrl extends UIControl {
 
         $('<span> </span>').appendTo($(div));
 
-        $('<button type="button" class="btn relfinder-btn">stop</button>')
+        var btnStop = $('<button type="button" class="btn relfinder-btn" disabled>stop</button>')
             .appendTo($(div))
             .click(function () {
                 frame.fire(FrameEventName.RELFINDER_STOP, {
@@ -78,6 +78,16 @@ export class RelFinderDialogCtrl extends UIControl {
                 y: frameRect.top + 45
             };
         });
+
+        this.on(FrameEventName.RELFINDER_STARTED, (args: EVENT_ARGS_RELFINDER) => {
+            btnStart.attr("disabled", "disabled");
+            btnStop.removeAttr("disabled");
+        })
+
+        this.on(FrameEventName.RELFINDER_STOPPED, (args: EVENT_ARGS_RELFINDER) => {
+            btnStop.attr("disabled", "disabled");
+            btnStart.removeAttr("disabled");
+        })
     }
 
     public getSelectedNodeIds(): string[] {

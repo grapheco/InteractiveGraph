@@ -45,7 +45,7 @@ export class InfoBoxCtrl extends UIControl {
                 if (!ctrl._disabled) {
                     var nodeIds = args.nodes;
                     if (nodeIds.length > 0) {
-                        frame.getGraphService().requestGetNodeDescriptions(nodeIds,
+                        frame.getGraphService().requestGetNodeInfos(nodeIds,
                             function (nodeInfos) {
                                 $(htmlInfoBox).empty();
                                 $(htmlInfoBox).append(nodeInfos[0]);

@@ -1,11 +1,7 @@
-import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../mainframe";
-import { FrameEventName, BUTTON_OPTIONS, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, RECT } from '../types';
-import { GraphService } from '../service/service';
-import { i18n } from "../messages";
-import { Control, UIControl } from "./Control";
-import { } from "jquery";
-import { } from "jqueryui";
+import { BUTTON_OPTIONS, EVENT_ARGS_FRAME, RECT } from '../types';
+import { UIControl } from "./Control";
+import "jquery";
+import "jqueryui";
 
 export class ToolbarCtrl extends UIControl {
     public addTool(e: HTMLElement) {
@@ -81,15 +77,6 @@ export class ToolbarCtrl extends UIControl {
         });
     }
 
-    private posite(htmlMainFrame: HTMLElement, htmlCtrl: HTMLElement) {
-        var jaa = $(htmlMainFrame);
-        var offset = jaa.offset();
-
-        $(htmlCtrl).offset({
-            left: offset.left + jaa.width() - $(htmlCtrl).width() - 6,
-            top: offset.top
-        });
-    }
 
     public onDestroy(args: EVENT_ARGS_FRAME) {
     }

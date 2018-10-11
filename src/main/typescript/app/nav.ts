@@ -127,7 +127,7 @@ export class GraphNavigator extends BaseApp {
         this._addThemeSelect(toolbar);
 
         this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            app._addCategoriesSelect(toolbar, frame.getGraphService());
+            app._addCategoriesSelect(toolbar);
             hilight.clear();
             app.showGraph({}, () => { });
         });
@@ -168,7 +168,7 @@ export class GraphNavigator extends BaseApp {
         }
     }
 
-    private _addCategoriesSelect(toolbar: ToolbarCtrl, connector: GraphService) {
+    private _addCategoriesSelect(toolbar: ToolbarCtrl) {
         var app = this;
         var map = this._frame.getNodeCategories();
         var span = document.getElementById("categories-select");

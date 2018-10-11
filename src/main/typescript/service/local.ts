@@ -1,7 +1,7 @@
 import { GraphService } from './service';
 import { Utils } from '../utils';
 import { } from "jquery";
-import { NodesEdges, PAIR, GSON, FRAME_OPTIONS, QUERY_RESULTS, RELATION_PATH, GraphNode, GraphEdge } from '../types';
+import { NodesEdges, PAIR, GSON, QUERY_RESULTS, RELATION_PATH, GraphNode, GraphEdge } from '../types';
 import * as vis from "vis";
 
 export class LocalGraph implements GraphService {
@@ -9,6 +9,7 @@ export class LocalGraph implements GraphService {
     private _edges: object[];
     private _labels: object;
     private _callbackLoadData: (callbackAfterLoad: () => void) => void;
+    private _taskManager = new FindRelationsTaskManager();
 
     //indices
     private _indexDB = {
@@ -149,16 +150,10 @@ export class LocalGraph implements GraphService {
     }
 
     _async(fn: (timerId: number) => void) {
-        //for tests
-        if (typeof window == 'undefined') {
-            fn(0);
-        }
-        else {
-            var timerId;
-            timerId = window.setTimeout(() => {
-                fn(timerId);
-            }, 1);
-        }
+        var timerId;
+        timerId = window.setTimeout(() => {
+            fn(timerId);
+        }, 1);
     }
 
     requestConnect(callback: () => void) {
@@ -168,7 +163,7 @@ export class LocalGraph implements GraphService {
         });
     }
 
-    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void) {
+    requestGetNodeInfos(nodeIds: string[], callback: (infos: string[]) => void) {
         var local: LocalGraph = this;
         this._async(() =>
             callback(nodeIds.map(nodeId => {
@@ -275,7 +270,7 @@ export class LocalGraph implements GraphService {
         });
     }
 
-    requestFilterNodesByCategory(className: string, nodeIds: any[], showOrNot: boolean,
+    requestFilterNodesByCategory(className: string, nodeIds: any[],
         callback: (filteredNodeIds: any[]) => void) {
         var local: LocalGraph = this;
         this._async(() => {
@@ -322,76 +317,73 @@ export class LocalGraph implements GraphService {
     }
 
     requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number,
-        callback: (queryResults: QUERY_RESULTS) => void, algDfsOrBfs: boolean = true) {
-        var graph: LocalGraph = this;
-        this._async((timerId: number) => {
-            var results: string[][] = [];
-            var pointer = 0;
-
-            if (algDfsOrBfs)
-                graph._findRelationsDFS(startNodeId, endNodeId, maxDepth,
-                    results, [], 0);
-            else
-                graph._findRelationsBFS(startNodeId, endNodeId, maxDepth, results);
-
-            var paths: RELATION_PATH[] = results.map((path: string[]) => {
-                return {
-                    nodes: path.map((id: string) => {
-                        return graph._getNode(id);
-                    }),
-                    edges: graph._getEdgesInPath(path).map((id: string) => {
-                        return graph._getEdge(id);
-                    }),
-                };
-            });
-
-            callback({
-                hasMore: false,
-                paths: paths,
-                queryId: "" + timerId,
-            });
-        });
+        callback: (queryId: string) => void) {
+        var task = this._taskManager.createTask();
+        task.start(this, startNodeId, endNodeId, maxDepth);
+        callback("" + task._taskId);
     }
 
     requestGetMoreRelations(queryId: string,
         callback: (queryResults: QUERY_RESULTS) => void) {
+        var task = this._taskManager.getTask(queryId);
+        callback(task.readMore(10));
     }
 
     requestStopFindRelations(queryId: string) {
-        window.clearTimeout(parseInt(queryId));
+        var task = this._taskManager.getTask(queryId);
+        task.stop();
+    }
+
+    private _wrapPath(pathOfNodes: string[]): RELATION_PATH {
+        return {
+            nodes: pathOfNodes.map((id: string) => {
+                return this._getNode(id);
+            }),
+            edges: this._getEdgesInPath(pathOfNodes).map((id: string) => {
+                return this._getEdge(id);
+            }),
+        };
+    }
+
+    findRelations(algDfsOrBfs: boolean, startNodeId: string, endNodeId: string, maxDepth: number, paths: RELATION_PATH[]) {
+        if (algDfsOrBfs)
+            this._findRelationsDFS(startNodeId, endNodeId, maxDepth, paths, [], 0);
+        else
+            this._findRelationsBFS(startNodeId, endNodeId, maxDepth, paths);
     }
 
     private _findRelationsDFS(startNodeId: string, endNodeId: string, maxDepth: number,
-        results: string[][], path: string[], depth: number) {
+        paths: RELATION_PATH[], pathOfNodes: string[], depth: number) {
 
         if (depth > maxDepth)
             return;
 
-        var newPath = path.concat([startNodeId]);
+        var newPath = pathOfNodes.concat([startNodeId]);
         if (startNodeId == endNodeId) {
             //BINGO!!!
-            results.push(newPath);
+            var wpath = this._wrapPath(newPath);
+            paths.push(wpath);
             return;
         }
 
-        var gson = this;
+        var local = this;
         //get all adjant nodes
         var neighbours = this._indexDB._mapNodeId2NeighbourNodeIds.get(startNodeId);
         neighbours.forEach((nodeId: string) => {
             //no loop
-            if (path.indexOf(nodeId) < 0) {
-                gson._findRelationsDFS(nodeId,
+            if (pathOfNodes.indexOf(nodeId) < 0) {
+                local._findRelationsDFS(nodeId,
                     endNodeId, maxDepth,
-                    results, newPath, depth + 1);
+                    paths, newPath, depth + 1);
             }
         }
         );
     }
 
-    private _findRelationsBFS(startNodeId: string, endNodeId: string, maxDepth: number, results: string[][]) {
-        var queue = new Array<{ nodeId: string, depth: number, path: string[] }>();
+    private _findRelationsBFS(startNodeId: string, endNodeId: string, maxDepth: number, results: RELATION_PATH[]) {
+        var queue = new Array<{ nodeId: string, depth: number, pathOfNodes: string[] }>();
 
-        queue.push({ nodeId: startNodeId, depth: 0, path: [startNodeId] });
+        queue.push({ nodeId: startNodeId, depth: 0, pathOfNodes: [startNodeId] });
 
         while (queue.length > 0) {
             var one = queue.shift();
@@ -401,22 +393,71 @@ export class LocalGraph implements GraphService {
 
             if (one.nodeId == endNodeId) {
                 //BINGO!!!
-                results.push(one.path);
+                var wpath = this._wrapPath(one.pathOfNodes);
+                results.push(wpath);
                 continue;
             }
 
             var neighbours = this._indexDB._mapNodeId2NeighbourNodeIds.get(one.nodeId);
             for (var neighbour of neighbours) {
-                if (one.path.indexOf(neighbour) >= 0)
+                if (one.pathOfNodes.indexOf(neighbour) >= 0)
                     continue;
 
-                var newPath = one.path.concat([neighbour]);
+                var newPath = one.pathOfNodes.concat([neighbour]);
                 queue.push({
                     nodeId: neighbour,
                     depth: one.depth + 1,
-                    path: newPath
+                    pathOfNodes: newPath
                 });
             }
         }
+    }
+}
+
+class FindRelationsTask {
+    _taskId = 0;
+    _pointer = 0;
+    _completed = false;
+    _timerId = 0;
+
+    paths: RELATION_PATH[] = [];
+
+    public constructor(taskId: number) {
+        this._taskId = taskId;
+    }
+
+    start(graph: LocalGraph, startNodeId: string, endNodeId: string, maxDepth: number) {
+        graph._async((timerId: number) => {
+            this._timerId = timerId;
+            graph.findRelations(true, startNodeId, endNodeId, maxDepth, this.paths);
+            this._completed = true;
+        });
+    }
+
+    readMore(limit: number): QUERY_RESULTS {
+        var token = this.paths.slice(this._pointer, limit);
+        this._pointer += token.length;
+        return { 'paths': token, 'completed': this._completed };
+    }
+
+    stop() {
+        clearTimeout(this._timerId);
+    }
+}
+
+class FindRelationsTaskManager {
+    private _seq = 1224;
+    private _allTasks = {};
+
+    createTask(): FindRelationsTask {
+        var taskId = this._seq++;
+        var task = new FindRelationsTask(taskId);
+        this._allTasks["" + taskId] = task;
+
+        return task;
+    }
+
+    getTask(taskId: string): FindRelationsTask {
+        return this._allTasks[taskId];
     }
 }

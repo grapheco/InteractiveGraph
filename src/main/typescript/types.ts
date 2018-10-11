@@ -126,7 +126,9 @@ export enum FrameEventName {
     NETWORK_DRAGGING = "NETWORK_DRAGGING",
     FRAME_RESIZE = "FRAME_RESIZE",
     RELFINDER_START = "RELFINDER_START",
-    RELFINDER_STOP = "RELFINDER_STOP"
+    RELFINDER_STOP = "RELFINDER_STOP",
+    RELFINDER_STARTED = "RELFINDER_STARTED",
+    RELFINDER_STOPPED = "RELFINDER_STOPPED",
 }
 
 export interface RELATION_PATH {
@@ -135,9 +137,8 @@ export interface RELATION_PATH {
 }
 
 export interface QUERY_RESULTS {
-    hasMore: boolean,
+    completed: boolean,
     paths: RELATION_PATH[];
-    queryId: string;
 }
 
 export interface PAIR<K, V> {

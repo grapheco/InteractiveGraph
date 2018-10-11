@@ -35,10 +35,7 @@ export abstract class BaseApp {
     }
 
     public connect(url: string, callback) {
-        //remote
-        console.log("app-remote-connect2");
-        var graph = new RemoteGraph(url);
-        graph.init();
+        this._frame.connect(new RemoteGraph(url), callback);
     }
 
     public showGraph(options, callback: () => void) {

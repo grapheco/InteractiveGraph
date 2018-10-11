@@ -1,5 +1,5 @@
 import { MainFrame } from "../mainframe";
-import { FRAME_OPTIONS, QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
+import {QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
 
 export interface GraphService {
     /**
@@ -12,7 +12,7 @@ export interface GraphService {
      * @param nodeIds 
      * @param callback 
      */
-    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void);
+    requestGetNodeInfos(nodeIds: string[], callback: (descriptions: string[]) => void);
     /**
      * loads graph data to render
      * @param callback 
@@ -42,7 +42,7 @@ export interface GraphService {
      * @param showOrNot 
      * @param callback 
      */
-    requestFilterNodesByCategory(catagory: string, nodeIds: any[], showOrNot: boolean,
+    requestFilterNodesByCategory(catagory: string, nodeIds: any[],
         callback: (filteredNodeIds: any[]) => void);
     /**
      * starts a query to find relations of two nodes
@@ -51,7 +51,7 @@ export interface GraphService {
      * @param maxDepth 
      * @param callback 
      */
-    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryResults: QUERY_RESULTS) => void);
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryId: string) => void);
     /**
      * get next relations as results in a relation path query
      * @param queryId

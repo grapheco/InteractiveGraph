@@ -5,14 +5,12 @@
 import * as vis from "vis";
 import { GraphService } from './service/service';
 import { Utils, Rect, Point } from "./utils";
-import { } from "jquery";
-import { } from "jqueryui";
+import "jquery";
+import "jqueryui";
 import * as events from "events";
-import * as series from "async/series";
 import { Themes, Theme } from "./theme";
 import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE, GraphNode, NETWORK_OPTIONS, GraphEdge, GraphNodeSet, GraphEdgeSet, GraphNetwork } from "./types";
 import { Control } from "./control/Control";
-import { ToolbarCtrl } from "./control/ToolbarCtrl";
 
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
@@ -94,6 +92,10 @@ export class MainFrame {
         this._ctrls.delete(name);
     }
 
+    public getControl(name: string) {
+        return this._ctrls.get(name);
+    }
+
     public addControl<T extends Control>(name: string, ctrl: T): T {
         this._ctrls.set(name, ctrl);
         ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
@@ -145,10 +147,6 @@ export class MainFrame {
         this._network.fit({ nodes: nodeIds, animation: animation });
     }
 
-    public pipe(tasksWithCallback) {
-        series(tasksWithCallback);
-    }
-
     public search(keyword: any, callback: (nodes: GraphNode[]) => void) {
         this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
     }
@@ -185,12 +183,15 @@ export class MainFrame {
         var ids = this._screenData.nodes.getIds();
         this._graphService.requestFilterNodesByCategory(className,
             ids,
-            showOrNot,
             (filteredNodeIds) => {
                 if (filteredNodeIds.length > 0)
-                    this._screenData.nodes.update(ids.map((nodeId: string) => {
-                        return { id: nodeId, hidden: filteredNodeIds.indexOf(nodeId) < 0 };
-                    }));
+                    this._screenData.nodes.update(ids
+                        .filter((nodeId: string) => {
+                            return filteredNodeIds.indexOf(nodeId) >= 0;
+                        })
+                        .map((nodeId: string) => {
+                            return { id: nodeId, hidden: !showOrNot };
+                        }));
 
                 if (callback !== undefined)
                     callback();

@@ -1,99 +1,99 @@
 import { GraphService } from './service';
-import { NodesEdges, PAIR, GSON, FRAME_OPTIONS, QUERY_RESULTS, RELATION_PATH, GraphNode, GraphEdge } from '../types';
-import * as http from 'http';
-import { filterSeries } from 'async';
+import { QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
+//import request = require('superagent');
+import 'jquery';
 
 export class RemoteGraph implements GraphService {
     private _url: string;
-    private _nodes: object[];
-    private _edges: object[];
-    private _labels: object;
+    private _categories: object;
+
     constructor(url: string) {
         this._url = url;
     }
 
-    init() {
-        //var remote: RemoteGraph = this;
-        console.log("remote_init");
-    }
-
-    private _ajaxCommand(command, params, callback: (data, status) => void) {
-        console.log("remote_"+command);
+    private _ajaxCommand(command, params, callback: (data) => void) {
+        console.log("command:" + command);
         params = params || {};
-        params["command"] = command;
-        $.getJSON(this._url + "?jsoncallback=?", params, callback);
-    };
-
-    getNodesInfo(nodeIds: string[], callback: (nodeInfos: object[]) => void) {
-        this._ajaxCommand("getNodesInfo", { nodes: nodeIds }, function (data, status) {
-            callback(data.nodeInfos);
+        /*
+        request.post(this._url + "?command=" + command).send(params)
+            .then(function (res) {
+                if (!res.error) {
+                    callback(JSON.parse(res.text));
+                }
+            });
+        */
+        $.ajax({
+            type: "post",
+            url: this._url + "?command=" + command,
+            async: true,
+            data: JSON.stringify(params),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                callback(data);
+            }
         });
     }
 
-    loadGraph(options: object, callback: (graphData: object) => void) {
-        this._ajaxCommand("loadGraph", options, function (data, status) {
-            callback({ nodes: data.nodes, edges: data.edges });
+    requestConnect(callback: () => void) {
+        var remote = this;
+        this._ajaxCommand("init", {}, (data) => {
+            remote._categories = data.categories;
+            callback();
         });
     }
 
-    requestConnect(callback: () => void){
-        this._ajaxCommand("requestConnect",null,function(data,status) {
-            callback () });
+    requestGetNodeInfos(nodeIds: string[], callback: (infos: string[]) => void) {
+        this._ajaxCommand("getNodesInfo", { nodeIds: nodeIds }, function (data) {
+            callback(data.infos);
+        })
     }
 
-    requestGetNodeDescriptions(nodeIds: string[], callback: (descriptions: string[]) => void){
-        this._ajaxCommand("requestGetNodeDescriptions",nodeIds,function(data,status){
-            callback(data.descriptions);})  
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void) {
+        this._ajaxCommand("loadGraph", {}, function (data) {
+            callback(data.nodes, data.edges);
+        })
     }
 
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void){
-        this._ajaxCommand("requestLoadGraph",null,function(data,status){
-            callback(data.nodes, data.edges);})
+    requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void) {
+        this._ajaxCommand("search", { expr: expr, limit: limit }, function (data) {
+            callback(data.nodes);
+        })
     }
 
-    requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void){
-        this._ajaxCommand("requestSearch",{expr ,limit},function(data,status){
-            callback(data.nodes);})
+    requestGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void) {
+        this._ajaxCommand("getNeighbours", { nodeId: nodeId }, function (data) {
+            callback(data.neighbourNodes, data.neighbourEdges);
+        })
     }
 
-    requestGetNeighbours(nodeId, callback: (neighbourNodes: object[], neighbourEdges: object[]) => void){
-        this._ajaxCommand("requestGetNeighbours",nodeId,function(data,status){
-            callback(data.neighbourNodes,data.neighbourEdges);})
+    getNodeCategories(): object {
+        return this._categories;
     }
 
-    getNodeCategories(): object{
-        return this._labels;
+    requestFilterNodesByCategory(catagory: string, nodeIds: any[],
+        callback: (filteredNodeIds: any[]) => void) {
+        this._ajaxCommand("filterNodesByCategory", { catagory: catagory, nodeIds: nodeIds }, function (data) {
+            callback(data.filteredNodeIds);
+        })
     }
 
-    requestFilterNodesByCategory(catagory: string, nodeIds: any[], showOrNot: boolean,
-        callback: (filteredNodeIds: any[]) => void){
-            this._ajaxCommand("requestFilterNodesByCategory",{catagory,nodeIds,showOrNot},function(data,status){
-                callback(data.filteredNodeIds);
-            })
-        }
-    
-    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryResults: QUERY_RESULTS) => void){
-        this._ajaxCommand("requestFindRelations",{startNodeId,endNodeId,maxDepth},function(data,status){
+    requestFindRelations(startNodeId: string, endNodeId: string, maxDepth: number, callback: (queryId: string) => void) {
+        this._ajaxCommand("findRelations", { startNodeId: startNodeId, endNodeId: endNodeId, maxDepth: maxDepth }, function (data) {
+            callback(data.queryId);
+        })
+    }
+
+    requestGetMoreRelations(queryId: string, callback: (queryResults: QUERY_RESULTS) => void) {
+        this._ajaxCommand("getMoreRelations", { queryId: queryId }, function (data) {
             callback(data.queryResults);
         })
     }
 
-    requestGetMoreRelations(queryId: string, callback: (queryResults: QUERY_RESULTS) => void){
-        this._ajaxCommand("requestGetMoreRelations",queryId,function(data,status){
-            callback(data.queryResults);
-        })
-    }
-
-    requestStopFindRelations(queryId: string){
-        this._ajaxCommand("requestStopFindRelations",queryId,function(status){
+    requestStopFindRelations(queryId: string) {
+        this._ajaxCommand("stopFindRelations", { queryId: queryId }, function (status) {
             //how to stop?
             return status;
         })
     }
-
-
-
-
-
-
 }

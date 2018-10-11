@@ -1,20 +1,25 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-        {
+    "configurations": [{
+            "name": "调试当前ts文件",
             "type": "node",
             "request": "launch",
-            "name": "run test <selected file>",
-            "program": "${file}"
+            //NOTE: 
+            //npm install typescript --save-dev
+            //npm install ts-node --save-dev
+            //see help doc: https://segmentfault.com/a/1190000011935122
+            "program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+            "args": [
+                "${relativeFile}"
+            ],
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector"
         },
         {
+            "name": "调试当前js文件",
             "type": "node",
             "request": "launch",
-            "name": "run test all",
-            "program": "${workspaceFolder}/src/test/scripts/testAll.js"
+            "program": "${file}"
         }
     ]
 }

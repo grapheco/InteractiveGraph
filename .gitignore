@@ -62,4 +62,5 @@ typings/
 !/dist/
 .DS_Store
 /build/
+/watch/
 /dist/*.zip

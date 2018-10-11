@@ -92,15 +92,12 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#getnodesinfo" class="tsd-kind-icon">get<wbr>Nodes<wbr>Info</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#init" class="tsd-kind-icon">init</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#loadgraph" class="tsd-kind-icon">load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestfilternodesbycategory" class="tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestgetmorerelations" class="tsd-kind-icon">request<wbr>Get<wbr>More<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestgetnodedescriptions" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requestsearch" class="tsd-kind-icon">request<wbr>Search</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="remotegraph.html#requeststopfindrelations" class="tsd-kind-icon">request<wbr>Stop<wbr>Find<wbr>Relations</a></li>
@@ -121,7 +118,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L10">service/remote.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L8">service/remote.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -148,115 +145,10 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#getnodecategories">getNodeCategories</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L64">service/remote.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L70">service/remote.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getnodesinfo" class="tsd-anchor"></a>
-					<h3>get<wbr>Nodes<wbr>Info</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Nodes<wbr>Info<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L27">service/remote.ts:27</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>nodeIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-								<li>
-									<h5>callback: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>nodeInfos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>nodeInfos: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="init" class="tsd-anchor"></a>
-					<h3>init</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L15">service/remote.ts:15</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="loadgraph" class="tsd-anchor"></a>
-					<h3>load<wbr>Graph</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">load<wbr>Graph<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L33">service/remote.ts:33</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>options: <span class="tsd-signature-type">object</span></h5>
-								</li>
-								<li>
-									<h5>callback: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>graphData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>graphData: <span class="tsd-signature-type">object</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -270,7 +162,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L39">service/remote.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L38">service/remote.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -299,13 +191,13 @@
 					<a name="requestfilternodesbycategory" class="tsd-anchor"></a>
 					<h3>request<wbr>Filter<wbr>Nodes<wbr>ByCategory</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory<span class="tsd-signature-symbol">(</span>catagory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, showOrNot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory<span class="tsd-signature-symbol">(</span>catagory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L68">service/remote.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L74">service/remote.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -315,9 +207,6 @@
 								</li>
 								<li>
 									<h5>nodeIds: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-								<li>
-									<h5>showOrNot: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
 									<h5>callback: <span class="tsd-signature-type">function</span></h5>
@@ -355,7 +244,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L75">service/remote.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L81">service/remote.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,14 +263,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>queryResults<span class="tsd-signature-symbol">: </span><a href="../interfaces/query_results.html" class="tsd-signature-type">QUERY_RESULTS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>queryId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>queryResults: <a href="../interfaces/query_results.html" class="tsd-signature-type">QUERY_RESULTS</a></h5>
+															<h5>queryId: <span class="tsd-signature-type">string</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -405,7 +294,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L81">service/remote.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L87">service/remote.ts:87</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -449,7 +338,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L59">service/remote.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L64">service/remote.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -487,16 +376,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="requestgetnodedescriptions" class="tsd-anchor"></a>
-					<h3>request<wbr>Get<wbr>Node<wbr>Descriptions</h3>
+					<a name="requestgetnodeinfos" class="tsd-anchor"></a>
+					<h3>request<wbr>Get<wbr>Node<wbr>Infos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L44">service/remote.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L46">service/remote.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -509,14 +398,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>descriptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>infos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>descriptions: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+															<h5>infos: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -540,7 +429,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L49">service/remote.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L52">service/remote.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -584,7 +473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L54">service/remote.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L58">service/remote.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -632,7 +521,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#requeststopfindrelations">requestStopFindRelations</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/remote.ts#L87">service/remote.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/remote.ts#L93">service/remote.ts:93</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -669,15 +558,6 @@
 								<a href="remotegraph.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="remotegraph.html#getnodesinfo" class="tsd-kind-icon">get<wbr>Nodes<wbr>Info</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="remotegraph.html#init" class="tsd-kind-icon">init</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="remotegraph.html#loadgraph" class="tsd-kind-icon">load<wbr>Graph</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="remotegraph.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -693,7 +573,7 @@
 								<a href="remotegraph.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="remotegraph.html#requestgetnodedescriptions" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions</a>
+								<a href="remotegraph.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="remotegraph.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a>

@@ -21,7 +21,7 @@ var ENTRY = __dirname + '/src/exports.js';
 var RELEASE_DIR = __dirname + '/dist';
 var SOURCE_EXAMPLES_DIR = __dirname + '/src/test/webapp';
 var BUILD_PACK_DIR = __dirname + '/build';
-var BUILD_JS_DIR = BUILD_PACK_DIR + '/js';
+var BUILD_OBJ_DIR = BUILD_PACK_DIR + '/obj';
 
 var API_DOC_DIR = RELEASE_DIR + '/api';
 var LIB_ZIP_NAME = 'igraph.zip';
@@ -100,7 +100,7 @@ function handleCompilerCallback(err, stats) {
 }
 
 gulp.task('clean-build', function (cb) {
-  rimraf(BUILD_JS_DIR + '/*', cb);
+  rimraf(BUILD_PACK_DIR + '/*', cb);
 });
 
 //.ts --> .js
@@ -116,7 +116,7 @@ gulp.task('build-ts', ['clean-build'], function (cb) {
         console.info(results);
       }
     }))
-    .pipe(gulp.dest(BUILD_JS_DIR));
+    .pipe(gulp.dest(BUILD_OBJ_DIR));
 
   cb();
 });

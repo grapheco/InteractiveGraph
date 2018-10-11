@@ -54,8 +54,9 @@ export class RelationFinder extends BaseApp {
             this._dlgSelectionCtrl.selectNodes([]);
         });
 
-        this._dlgSelectionCtrl = frame.addControl("selectiondlg", new RelFinderDialogCtrl());
+        this._dlgSelectionCtrl = frame.addControl("relfinderdlg", new RelFinderDialogCtrl());
         this._relfinder = frame.addControl("relfinder", new RelFinderCtrl());
+
         if ((<any>args).showDialog === false) {
             this._dlgSelectionCtrl.hide();
             frame.addControl("search", new SearchBarCtrl());
@@ -73,6 +74,14 @@ export class RelationFinder extends BaseApp {
 
         frame.on(FrameEventName.RELFINDER_STOP, (args: EVENT_ARGS_RELFINDER) => {
             app.stopQuery();
+        })
+
+        frame.on(FrameEventName.RELFINDER_STARTED, (args: EVENT_ARGS_RELFINDER) => {
+            app._dlgSelectionCtrl.emit(FrameEventName.RELFINDER_STARTED, args);
+        })
+
+        frame.on(FrameEventName.RELFINDER_STOPPED, (args: EVENT_ARGS_RELFINDER) => {
+            app._dlgSelectionCtrl.emit(FrameEventName.RELFINDER_STOPPED, args);
         })
 
         this._dlgNoEnoughNodesSelected = $('<div title="No enough nodes"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>TWO nodes are required to start relation path discovery.</p></div>').appendTo($(args.htmlMainFrame)).hide();

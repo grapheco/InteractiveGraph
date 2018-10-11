@@ -86,13 +86,14 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#_async" class="tsd-kind-icon">_async</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#findrelations" class="tsd-kind-icon">find<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestfilternodesbycategory" class="tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetmorerelations" class="tsd-kind-icon">request<wbr>Get<wbr>More<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetnodedescriptions" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requestsearch" class="tsd-kind-icon">request<wbr>Search</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="localgraph.html#requeststopfindrelations" class="tsd-kind-icon">request<wbr>Stop<wbr>Find<wbr>Relations</a></li>
@@ -116,7 +117,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L151">service/local.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L152">service/local.ts:152</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -148,6 +149,41 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="findrelations" class="tsd-anchor"></a>
+					<h3>find<wbr>Relations</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Relations<span class="tsd-signature-symbol">(</span>algDfsOrBfs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, startNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, maxDepth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, paths<span class="tsd-signature-symbol">: </span><a href="../interfaces/relation_path.html" class="tsd-signature-type">RELATION_PATH</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L348">service/local.ts:348</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>algDfsOrBfs: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5>startNodeId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>endNodeId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>maxDepth: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>paths: <a href="../interfaces/relation_path.html" class="tsd-signature-type">RELATION_PATH</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getnodecategories" class="tsd-anchor"></a>
 					<h3>get<wbr>Node<wbr>Categories</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -158,7 +194,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#getnodecategories">getNodeCategories</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L147">service/local.ts:147</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L148">service/local.ts:148</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -175,7 +211,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L164">service/local.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L159">service/local.ts:159</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -204,13 +240,13 @@
 					<a name="requestfilternodesbycategory" class="tsd-anchor"></a>
 					<h3>request<wbr>Filter<wbr>Nodes<wbr>ByCategory</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, showOrNot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory<span class="tsd-signature-symbol">(</span>className<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L278">service/local.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L273">service/local.ts:273</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -220,9 +256,6 @@
 								</li>
 								<li>
 									<h5>nodeIds: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-								<li>
-									<h5>showOrNot: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
 									<h5>callback: <span class="tsd-signature-type">function</span></h5>
@@ -254,13 +287,13 @@
 					<a name="requestfindrelations" class="tsd-anchor"></a>
 					<h3>request<wbr>Find<wbr>Relations</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Find<wbr>Relations<span class="tsd-signature-symbol">(</span>startNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, maxDepth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, algDfsOrBfs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Find<wbr>Relations<span class="tsd-signature-symbol">(</span>startNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endNodeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, maxDepth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L324">service/local.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L319">service/local.ts:319</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -279,14 +312,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>queryResults<span class="tsd-signature-symbol">: </span><a href="../interfaces/query_results.html" class="tsd-signature-type">QUERY_RESULTS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>queryId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>queryResults: <a href="../interfaces/query_results.html" class="tsd-signature-type">QUERY_RESULTS</a></h5>
+															<h5>queryId: <span class="tsd-signature-type">string</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -294,9 +327,6 @@
 											</ul>
 										</li>
 									</ul>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> algDfsOrBfs: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -313,7 +343,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L356">service/local.ts:356</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L326">service/local.ts:326</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -357,7 +387,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L255">service/local.ts:255</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L250">service/local.ts:250</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -395,16 +425,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="requestgetnodedescriptions" class="tsd-anchor"></a>
-					<h3>request<wbr>Get<wbr>Node<wbr>Descriptions</h3>
+					<a name="requestgetnodeinfos" class="tsd-anchor"></a>
+					<h3>request<wbr>Get<wbr>Node<wbr>Infos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L171">service/local.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L166">service/local.ts:166</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -417,14 +447,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>descriptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>infos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>descriptions: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+															<h5>infos: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -448,7 +478,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L184">service/local.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L179">service/local.ts:179</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -492,7 +522,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L190">service/local.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L185">service/local.ts:185</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -540,7 +570,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/graphservice.html">GraphService</a>.<a href="../interfaces/graphservice.html#requeststopfindrelations">requestStopFindRelations</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L360">service/local.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L332">service/local.ts:332</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -563,7 +593,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L109">service/local.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L110">service/local.ts:110</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -586,7 +616,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L135">service/local.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L136">service/local.ts:136</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -609,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/af9aebc/src/main/typescript/service/local.ts#L125">service/local.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/65a8435/src/main/typescript/service/local.ts#L126">service/local.ts:126</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -643,6 +673,9 @@
 								<a href="localgraph.html#_async" class="tsd-kind-icon">_async</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="localgraph.html#findrelations" class="tsd-kind-icon">find<wbr>Relations</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="localgraph.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -661,7 +694,7 @@
 								<a href="localgraph.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="localgraph.html#requestgetnodedescriptions" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Descriptions</a>
+								<a href="localgraph.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="localgraph.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a>

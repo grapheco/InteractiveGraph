@@ -2,6 +2,9 @@
  * Created by bluejoe on 2018/2/6.
  */
 ///////////////////////////////////
+
+import "jquery";
+
 export class Utils {
 	public static distinct(arr: any[]): any[] {
 		var ae = [];

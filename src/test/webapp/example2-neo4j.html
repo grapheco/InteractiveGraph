@@ -1,8 +1,8 @@
-<html>
+﻿<html>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>GraphNavigator</title>
+    <title>GraphExplorer</title>
     <script type="text/javascript" src="../../../build/interactive-graph.js"></script>
     <link type="text/css" rel="stylesheet" href="../../../build/interactive-graph.css">
     <script src="./lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
@@ -24,16 +24,20 @@
 </head>
 
 <body>
-<div style="height:100%">
-    <div id="graphArea"></div>
-</div>
-
-<script type="text/javascript">
-    igraph.i18n.setLanguage("chs");
-    var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
-    console.log(app);
-    app.loadGson("honglou.json");
-</script>
+    <div style="height:100%">
+        <div id="graphArea"></div>
+    </div>
+    <script type="text/javascript">
+        igraph.i18n.setLanguage("chs");
+        var app = new igraph.GraphExplorer(document.getElementById('graphArea'));
+        app.connect("http://localhost:9999/graphserver/connector", function () {
+            app.pickup([{
+                label: "贾宝玉"
+            }, {
+                label: "薛蟠"
+            }]);
+        });
+    </script>
 </body>
 
 </html>

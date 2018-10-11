@@ -3,13 +3,15 @@
     "module": "commonjs",
     "target": "es6",
     "noImplicitAny": false,
-    "sourceMap": false,
-    "rootDir": "./src/main/typescript",
-    "outDir": "./build",
-    "watch": true
+    "sourceMap": true,
+    "outDir": "./watch",
+    "typeRoots": ["node_modules/@types/"],
+    //"types": ["jquery"],
+    //run 'tsc' in terminal
+    //"watch": true
   },
   "include": [
-    "./src/main/typescript/**/*.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
