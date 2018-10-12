@@ -119,10 +119,16 @@ export class GraphNavigator extends BaseApp {
 
         toolbar.addButton({
             icon: "fa fa-folder-open-o",
-            tooltip: "load GSON url",
+            tooltip: "load remote GSON",
             click: (checked: boolean) => { connect.loadGsonUrl(); }
         });
 
+        toolbar.addButton({
+            icon: "fa fa-universal-access",
+            tooltip: "connect remote IGP server",
+            click: (checked: boolean) => { connect.loadRemoteServer(); }
+        });
+        
         this.addScaleSlider(toolbar, frame);
         this._addThemeSelect(toolbar);
 
