@@ -60,7 +60,7 @@ export class ConnectCtrl extends UIControl {
 
         var input2 = $("input", this._dlgLoadRemoteSever);
         $("<a href='#'>example server</a>").click(() => {
-            $(input2).val("http://localhost:9999/graphserver/connector");
+            $(input2).val("http://localhost:9999/graphserver/connector-bolt");
         }).appendTo($(this._dlgLoadRemoteSever));
     }
 
