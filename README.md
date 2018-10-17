@@ -39,6 +39,8 @@
 
 InteractiveGraph provides a web-based interactive operating framwork for large graph data, which may come from a GSON file, or an online Neo4j graph database.
 
+__InteractiveGraphServer__: InteractiveGraphServer(https://github.com/bluejoe2008/InteractiveGraphServer) serves GSON files, Neo4j databases, RDF stores as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand. Known InteractiveGraph clients includes GraphNavigator, GraphBrowser, and RelFinder.
+
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
 __GraphNavigator__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
@@ -148,7 +150,6 @@ app.loadGson("honglou.json");
 Or calling `connect()` method to load an interactive graph from remote IGP server:
 ```
 app.connect("http://localhost:9999/graphserver/connector-bolt");
-
 ```
 
 ## <a name='GSON'></a>GSON
