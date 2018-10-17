@@ -41,6 +41,12 @@ export class GraphExplorer extends BaseApp {
             click: (checked: boolean) => { connect.loadGsonUrl(); }
         });
 
+        toolbar.addButton({
+            icon: "fa fa-universal-access",
+            tooltip: "connect remote IGP server",
+            click: (checked: boolean) => { connect.loadRemoteServer(); }
+        });
+
         this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             this._frame.clearScreen();
             expansion.clear();

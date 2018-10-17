@@ -86,7 +86,7 @@ export class RemoteGraph implements GraphService {
 
     requestGetMoreRelations(queryId: string, callback: (queryResults: QUERY_RESULTS) => void) {
         this._ajaxCommand("getMoreRelations", { queryId: queryId }, function (data) {
-            callback(data.queryResults);
+            callback(data);
         })
     }
 
