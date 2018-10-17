@@ -139,6 +139,17 @@ To fire an event to MainFrame, use `MainFrame.emit(event, args)` or `MainFrame.f
 
 MainFrame loads data via a `Connector` which may connect to a `LocalGraph` or a `RemoteGraph`. A `LocalGraph` loads all data once from a GSON object or file, while a `RemoteGraph` interacts with a remote graph server each time if no cache data is available.
 
+An application always employe an embedded MainFrame to load a GSON file via `loadGson()` method:
+```
+app.loadGson("honglou.json");
+```
+
+Or calling `connect()` method to load an interactive graph from remote IGP server:
+```
+app.connect("http://localhost:9999/graphserver/connector-bolt");
+
+```
+
 ## <a name='GSON'></a>GSON
 
 MainFrame loads data from a `LocalGraph` in `GSON` format. `GSON` is actually an enhanced `JSON` format for graph data. The enhancement is `GSON` recoginzes `function`s, which is not valid in JSON.
@@ -176,7 +187,6 @@ Here, `translator` defines translator functions for graph nodes and edges, which
     },
   }
 ```
-
 ## <a name='Datasets'></a>Datasets
 
 Two GSON datasets are provided in examples as `.json` files: honglou.json, WorldCup2014.json.
@@ -194,6 +204,14 @@ The world cup 2014 data set comes from http://visjs.org/examples/network/example
 The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` (empowered by visjs).
 
 <img src="docs/worldcup2014.png" width="700">
+
+## Building an IGP server
+
+An `RemoteGraph` is always provided by an IGP(interactive graph protocol) server. To build an IGP server, refer to the InteractiveGraphServer project and other 3-party projects.
+
+|project|url|language|
+|-|-|-|
+|InteractiveGraphServer|https://github.com/bluejoe2008/InteractiveGraphServer|Scala+Java+Spring|
 
 ## <a name='Applications'></a>Applications
 
