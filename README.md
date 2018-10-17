@@ -13,6 +13,7 @@
 * [Datasets](#Datasets)
 	* [honglou.json](#honglou.json)
 	* [WorldCup2014.json](#WorldCup2014.json)
+* [Building an IGP server](#BuildinganIGPserver)
 * [Applications](#Applications)
 	* [GraphNavigator](#GraphNavigator)
 	* [GraphExplorer](#GraphExplorer)
@@ -205,7 +206,7 @@ The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` 
 
 <img src="docs/worldcup2014.png" width="700">
 
-## Building an IGP server
+## <a name='BuildinganIGPserver'></a>Building an IGP server
 
 An `RemoteGraph` is always provided by an IGP(interactive graph protocol) server. To build an IGP server, refer to the InteractiveGraphServer project and other 3-party projects.
 
