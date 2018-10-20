@@ -207,11 +207,11 @@ The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` 
 
 ## <a name='BuildinganIGPserver'></a>Building an IGP server
 
-An `RemoteGraph` is always provided by an IGP(interactive graph protocol) server. To build an IGP server, refer to the InteractiveGraphServer project and other 3-party projects.
+An `RemoteGraph` is always provided by an IGP(interactive graph protocol) server. To build an IGP server, refer to the InteractiveGraph-neo4j project and other 3-party projects.
 
 |project|description|language|
 |-|-|-|
-|InteractiveGraphServer|InteractiveGraphServer(https://github.com/bluejoe2008/InteractiveGraphServer) serves GSON files, Neo4j databases, RDF stores as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand.|Scala+Java+Spring|
+|InteractiveGraph-neo4j|InteractiveGraph-neo4j(https://github.com/bluejoe2008/InteractiveGraph-neo4j) serves GSON files, Neo4j databases, RDF stores as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand.|Scala+Java+Spring|
 
 ## <a name='Applications'></a>Applications
 
