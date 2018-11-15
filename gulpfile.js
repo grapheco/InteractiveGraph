@@ -13,6 +13,7 @@ var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 const zip = require('gulp-zip');
 var typedoc = require("gulp-typedoc");
+var war = require("gulp-war");
 
 var PRODUCT_NAME = 'interactive-graph';
 var VERSIONED_PRODUCT_NAME = PRODUCT_NAME + '-0.1.0';
@@ -27,6 +28,7 @@ var API_DOC_DIR = RELEASE_DIR + '/api';
 var LIB_ZIP_NAME = 'igraph.zip';
 var API_DOC_ZIP_NAME = 'api-doc.zip';
 var EXAMPLES_ZIP_NAME = 'examples.zip';
+var EXAMPLES_WAR_NAME = 'igraph.war'
 var RELEASE_LIB_DIR = RELEASE_DIR + '/igraph';
 var RELEASE_EXAMPLES_DIR = RELEASE_DIR + '/examples';
 var LIB_DIR_IN_RELEASE_EXAMPLES = RELEASE_EXAMPLES_DIR + '/lib/' + VERSIONED_PRODUCT_NAME;
@@ -231,7 +233,14 @@ gulp.task('zip-examples', ['update-release-html', 'copy-lib-to-release'], functi
     .pipe(gulp.dest(RELEASE_DIR));
 });
 
+gulp.task('war-examples', ['update-release-html', 'copy-lib-to-release'], function () {
+  return gulp.src(RELEASE_EXAMPLES_DIR + '/**/*.*')
+    .pipe(war({}))
+    .pipe(zip(EXAMPLES_WAR_NAME))
+    .pipe(gulp.dest(RELEASE_DIR));
+});
+
 /////////gulp release///////////
 gulp.task('release', ['build', 'copy-build-to-lib', 'copy-examples-to-release', 'copy-lib-to-release',
-  'ts-doc', 'update-release-html', 'zip-examples', 'zip-lib', 'zip-api-doc'
+  'ts-doc', 'update-release-html', 'zip-examples', 'war-examples', 'zip-lib', 'zip-api-doc'
 ]);
