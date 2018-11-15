@@ -31,7 +31,6 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraphProtocol
 
-
 InteractiveGraphProtocol(IGP) defines a set of graph interaction interfaces via HTTP protocol.
 
 An IGP request is a HTTP POST request, which contains a `command` parameter in query string and a JSON parameter in request body, like:
