@@ -8,40 +8,40 @@ import { Themes, Theme } from "../theme";
 import { RelFinderDialogCtrl } from "./RelFinderDialogCtrl";
 
 export class RelFinderCtrl extends BGControl {
-    private _frame:MainFrame;
-    private _queryId:string;
+    private _frame: MainFrame;
+    private _queryId: string;
     private _stopped;
     private _queryCompleted;
-    private _queryStartNodeIds:string[];
-    private _consumeTimer:number;
-    private _checkDataTimer:number;
-    private _collectedPaths:RELATION_PATH[];
-    private _consumedPaths:RELATION_PATH[];
+    private _queryStartNodeIds: string[];
+    private _consumeTimer: number;
+    private _checkDataTimer: number;
+    private _collectedPaths: RELATION_PATH[];
+    private _consumedPaths: RELATION_PATH[];
 
     //colors of selected paths
     private _pathColors = [
         '#fd740b', '#ed00ff', '#63b706',
         '#17b7fe', '#fb3a71', '#d66dfe'];
 
-    onCreate(args:EVENT_ARGS_FRAME) {
+    onCreate(args: EVENT_ARGS_FRAME) {
         var frame = args.mainFrame;
         this._frame = frame;
 
         //when a node/edge is clicked
-        var onselect = function (args:EVENT_ARGS_FRAME_INPUT) {
-            var thisCtrl = this;
+        var onselect = function (args: EVENT_ARGS_FRAME_INPUT) {
+            var thisCtrl= this;
             if (this._queryStartNodeIds !== undefined) {
-                var inPathNodeIds:string[] = [];
-                var inPathEdgeIds:string[] = [];
+                var inPathNodeIds: string[] = [];
+                var inPathEdgeIds: string[] = [];
 
-                var selectedNodeIds:string[] = args.nodes;
-                var selectedEdgeIds:string[] = args.edges;
+                var selectedNodeIds: string[] = args.nodes;
+                var selectedEdgeIds: string[] = args.edges;
                 var colorIndex = 0;
                 var updates = [];
 
                 //when a non-start node is selected
                 if (selectedNodeIds.length == 1 && this._queryStartNodeIds.indexOf(selectedNodeIds[0]) < 0) {
-                    this._consumedPaths.forEach((path:RELATION_PATH) => {
+                    this._consumedPaths.forEach((path: RELATION_PATH) => {
                         var inPath = false;
                         for (var x of path.nodes) {
                             if (selectedNodeIds.indexOf(x['id']) >= 0) {
@@ -61,23 +61,22 @@ export class RelFinderCtrl extends BGControl {
 
                         //hilight paths which contain selected node/edge
                         if (inPath) {
-                            path.nodes.forEach((x:any) => {
-                                inPathNodeIds.push(x.id);
-                            });
-                            path.edges.forEach((x:any) => {
+                            path.nodes.forEach((x: any) => { inPathNodeIds.push(x.id); });
+                            path.edges.forEach((x: any) => {
                                 inPathEdgeIds.push(x.id);
+                                const selectedColor = thisCtrl._pathColors[colorIndex % thisCtrl._pathColors.length];
                                 updates.push({
                                     id: x.id,
                                     /*
-                                     color: {
-                                     highlight: this._pathColors[colorIndex % this._pathColors.length]
-                                     },
-                                     selectionWidth: 2
-                                     */
-                                    chosen: {
-                                        edge: function (values, id, selected, hovering) {
-                                            if (selected) {
-                                                values.color = thisCtrl._pathColors[colorIndex % thisCtrl._pathColors.length];
+                                    color: {
+                                        highlight: this._pathColors[colorIndex % this._pathColors.length]
+                                    },
+                                    selectionWidth: 2
+                                    */
+                                    chosen:{
+                                        edge: function(values, id, selected, hovering) {
+                                            if(selected) {
+                                                values.color = selectedColor;
                                                 values.width = 2;
                                                 values.opacity = 0.9;
                                             }
@@ -85,9 +84,8 @@ export class RelFinderCtrl extends BGControl {
                                     }
                                 });
                             });
-
-                            colorIndex++;
                         }
+                        colorIndex++;
                     });
 
                     frame.updateEdges(updates);
@@ -98,7 +96,7 @@ export class RelFinderCtrl extends BGControl {
             }
         }
 
-        frame.updateNetworkOptions((options:NETWORK_OPTIONS) => {
+        frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
             options.edges.width = 1;
             options.edges.font['size'] = 11;
         });
@@ -108,17 +106,18 @@ export class RelFinderCtrl extends BGControl {
         frame.on(FrameEventName.NETWORK_CLICK, onselect.bind(this));
     }
 
-    private _retrieveMoreRelations(queryId:string) {
+    private _retrieveMoreRelations(
+        queryId: string) {
         var thisCtrl = this;
         const RETRIEVE_INTERVAL = 1000;
 
         window.setTimeout(
             () => {
                 thisCtrl._frame.getGraphService().requestGetMoreRelations(queryId,
-                    (queryResults:QUERY_RESULTS) => {
+                    (queryResults: QUERY_RESULTS) => {
 
                         //collect paths
-                        queryResults.paths.forEach((path:RELATION_PATH) => {
+                        queryResults.paths.forEach((path: RELATION_PATH) => {
                             thisCtrl._collectedPaths.push(path);
                         })
 
@@ -138,9 +137,9 @@ export class RelFinderCtrl extends BGControl {
             RETRIEVE_INTERVAL);
     }
 
-    public startQuery(nodeIds:string[],
-                      refreshInterval:number = 1000,
-                      maxDepth:number = 6) {
+    public startQuery(nodeIds: string[],
+        refreshInterval: number = 1000,
+        maxDepth: number = 6) {
         this._stopped = false;
         this._queryCompleted = false;
         this._frame.placeNodes(nodeIds);
@@ -171,12 +170,12 @@ export class RelFinderCtrl extends BGControl {
 
         //start!
         this._frame.getGraphService().requestFindRelations(nodeIds[0], nodeIds[1], maxDepth,
-            (queryId:string) => {
+            (queryId: string) => {
                 thisCtrl._queryId = queryId;
                 thisCtrl._retrieveMoreRelations(queryId);
             });
 
-        this._frame.emit(FrameEventName.RELFINDER_STARTED, {ctrl: this});
+        this._frame.emit(FrameEventName.RELFINDER_STARTED, { ctrl: this });
     }
 
     public stopQuery() {
@@ -185,10 +184,10 @@ export class RelFinderCtrl extends BGControl {
             window.clearInterval(this._consumeTimer);
             this._frame.getGraphService().requestStopFindRelations(this._queryId);
 
-            this._frame.emit(FrameEventName.RELFINDER_STOPPED, {ctrl: this});
+            this._frame.emit(FrameEventName.RELFINDER_STOPPED, { ctrl: this });
         }
     }
 
-    public onDestroy(args:EVENT_ARGS_FRAME) {
+    public onDestroy(args: EVENT_ARGS_FRAME) {
     }
 }
