@@ -30,30 +30,30 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
 
-[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/bluejoe2008/InteractiveGraph/total.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/issues)
-[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/network)
-[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
-[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/blob/master/LICENSE)
+[![GitHub releases](https://img.shields.io/github/release/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/grapheco/InteractiveGraph/total.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub issues](https://img.shields.io/github/issues/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/issues)
+[![GitHub forks](https://img.shields.io/github/forks/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/network)
+[![GitHub stars](https://img.shields.io/github/stars/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/stargazers)
+[![GitHub license](https://img.shields.io/github/license/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
 
 InteractiveGraph provides a web-based interactive operating framwork for large graph data, which may come from a GSON file, or an online Neo4j graph database.
 
 InteractiveGraph also provides three applications built on the framework: `GraphNavigator`, `GraphExplorer` and `RelFinder`.
 
-__GraphNavigator__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
+__GraphNavigator__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
 <img alt="GraphNavigator" src="docs/navi.png" width="700">
 
 __GraphExplorer__: online demo 
-https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
+https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
 <img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
-__RelFinder__: online demo https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
+__RelFinder__: online demo https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>Quick start
 __Step 1.__ download `examples.zip`:
-https://github.com/bluejoe2008/InteractiveGraph/releases
+https://github.com/grapheco/InteractiveGraph/releases
 
 __Step 2.__ unzip and deploy `examples.zip` as a webapp in a Web server (Apache, Tomcat, etc). A Web server is required, otherwise the graph data loading via AJAX will get an error.
 
@@ -64,7 +64,7 @@ change `example1.html` to `examples2.html` or `examples3.html`, etc.
 
 ## <a name='Howtouse'></a>How to use
 __Step 1.__ download `interactive-graph-<VERSION>.zip`(`interactive-graph-0.1.0.zip`, for example) from `dist` directory: 
-https://github.com/bluejoe2008/InteractiveGraph/dist/
+https://github.com/grapheco/InteractiveGraph/dist/
 
 __Step 2.__ unzip `interactive-graph-<VERSION>.zip`, two files will be got: `interactive-graph.min.js` and `interactive-graph.min.css`.
 
@@ -84,21 +84,21 @@ __Step 4.__ use functions and classes defined in `igraph` namespace:
 ```
 As shown above, a `GraphNavigator` application object is created and used to load graph data from `honglou.json`.
 
-For more details, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples/example1.html.
+For more details, see https://github.com/grapheco/InteractiveGraph/blob/master/dist/examples/example1.html.
 
 To develop custom applications, it is a good idea to write new application classes derived on `GraphNavigator` and other application classes. Furthermore, users can create new application classes via using a `MainFrame` class directly.
 
 ## <a name='Referencemanual'></a>Reference manual
 
 ### <a name='InteractiveGraphAPI'></a>InteractiveGraph API
-InteractiveGraph is written in TypeScript. Visit https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
+InteractiveGraph is written in TypeScript. Visit https://grapheco.github.io/InteractiveGraph/dist/api/index.html to get online API documents.
 
 ### <a name='dependencies'></a>dependencies
 This project depends on some open sourced components including `visjs`, `npm`, `gulp`, `jQuery`, `jQueryUI`, `Font Awesome` and so on.
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
-More dependencies, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
+More dependencies, see https://github.com/grapheco/InteractiveGraph/blob/master/package.json.
 
 ## <a name='MainFrameapplications'></a>MainFrame, applications
 
@@ -207,11 +207,11 @@ The next screenshot shows how WorldCup2014.json is rendered in `GraphNavigator` 
 
 ## <a name='BuildinganIGPserver'></a>Building an IGP server
 
-An `RemoteGraph` is always provided by an IGP(interactive graph protocol, see https://github.com/bluejoe2008/InteractiveGraph/blob/master/IGP.md) server. To build an IGP server, refer to the InteractiveGraph-neo4j project and other 3-party projects.
+An `RemoteGraph` is always provided by an IGP(interactive graph protocol, see https://github.com/grapheco/InteractiveGraph/blob/master/IGP.md) server. To build an IGP server, refer to the InteractiveGraph-neo4j project and other 3-party projects.
 
 |project|description|language|
 |-|-|-|
-|InteractiveGraph-neo4j|InteractiveGraph-neo4j(https://github.com/bluejoe2008/InteractiveGraph-neo4j) serves GSON files, Neo4j databases as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand.|Scala+Java+Spring|
+|InteractiveGraph-neo4j|InteractiveGraph-neo4j(https://github.com/grapheco/InteractiveGraph-neo4j) serves GSON files, Neo4j databases as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand.|Scala+Java+Spring|
 |InteractiveGraph-RDF|InteractiveGraph-RDF(https://github.com/Airzihao/InteractiveGraph-RDF) serves RDF stores as InteractiveGraph providers|Scala+Java+Spring|
 
 ## <a name='Applications'></a>Applications
@@ -255,7 +255,7 @@ InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 Please cite this project as reference if you used it:
 
 ```
-InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/bluejoe2008/InteractiveGraph, 2018-09-09
+InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/grapheco/InteractiveGraph, 2018-09-09
 ```
 
-Furthermore, it is appreciated if you let us know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
+Furthermore, it is appreciated if you let us know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/grapheco/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
