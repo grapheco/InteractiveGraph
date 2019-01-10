@@ -212,7 +212,7 @@ An `RemoteGraph` is always provided by an IGP(interactive graph protocol, see ht
 |project|description|language|
 |-|-|-|
 |InteractiveGraph-neo4j|InteractiveGraph-neo4j(https://github.com/grapheco/InteractiveGraph-neo4j) serves GSON files, Neo4j databases as InteractiveGraph providers, it generates InteractiveGraphs for remote frontend InteractiveGraph clients on demand.|Scala+Java+Spring|
-|InteractiveGraph-RDF|InteractiveGraph-RDF(https://github.com/Airzihao/InteractiveGraph-RDF) serves RDF stores as InteractiveGraph providers|Scala+Java+Spring|
+|InteractiveGraph-RDF|InteractiveGraph-RDF(https://github.com/grapheco/InteractiveGraph-RDF) serves RDF stores as InteractiveGraph providers|Scala+Java+Spring|
 
 ## <a name='Applications'></a>Applications
 
