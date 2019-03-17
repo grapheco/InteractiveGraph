@@ -8,7 +8,6 @@ import { MainFrame } from '../mainframe';
 import { Themes } from "../theme";
 import { CommunityData, EVENT_ARGS_FRAME, FrameEventName } from "../types";
 import { BaseApp } from './app';
-import { nextTick } from 'async';
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBarCtrl;

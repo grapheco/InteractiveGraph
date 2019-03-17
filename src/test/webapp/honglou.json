@@ -4,26 +4,6 @@
     "event": "事件",
     "location": "地点"
   },
-  "translator": {
-    "nodes": function (node) {
-      //set description
-      if (node.description === undefined) {
-        var description = "<p align=center>";
-        if (node.image !== undefined) {
-          description += "<img src='" + node.image + "' width=150/><br>";
-        }
-        description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
-        description += "</p>";
-        if (node.info !== undefined) {
-          description += "<p align=left>" + node.info + "</p>";
-        } else {
-          if (node.title !== undefined)
-            description += "<p align=left>" + node.title + "</p>";
-        }
-        node.description = description;
-      }
-    },
-  },
   "data": {
     "nodes": [{
         "label": "共读西厢",

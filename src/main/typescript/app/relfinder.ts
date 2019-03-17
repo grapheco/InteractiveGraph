@@ -1,15 +1,12 @@
-import { BaseApp } from './app';
-import { MainFrame } from '../mainframe';
-import { SearchBarCtrl } from '../control/SearchBarCtrl';
-import { ExpansionCtrl } from '../control/ExpansionCtrl';
-import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
-import { RelFinderCtrl } from '../control/RelFinderCtrl';
-import { EVENT_ARGS_FRAME, NETWORK_OPTIONS, FrameEventName, GraphNode, EVENT_ARGS_RELFINDER } from '../types';
-import { Theme } from '../Theme';
-import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
-import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
 import { HighlightCtrl } from '../control/HighlightNodeCtrl';
+import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
+import { RelFinderCtrl } from '../control/RelFinderCtrl';
+import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
+import { SearchBarCtrl } from '../control/SearchBarCtrl';
+import { ToolbarCtrl } from '../control/ToolbarCtrl';
+import { EVENT_ARGS_FRAME, EVENT_ARGS_RELFINDER, FrameEventName, GraphNode, NETWORK_OPTIONS } from '../types';
+import { BaseApp } from './app';
 
 export class RelationFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;

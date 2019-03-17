@@ -9,8 +9,26 @@ export class LocalGraph implements GraphService {
     private _edges: object[];
     private _labels: object;
     private _loadGraphOption: LoadGraphOption;
-    private _callbackLoadData: (callbackAfterLoad: () => void) => void;
+    private _perfermLoadData: (callbackAfterLoad: () => void) => void;
     private _taskManager = new FindRelationsTaskManager();
+    private _eventHandlers = {};
+
+    private DEFAULT_GET_DESCRIPTION = function (node) {
+        var description = "<p align=center>";
+        if (node.image !== undefined) {
+            description += "<img src='" + node.image + "' width=150/><br>";
+        }
+        description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
+        description += "</p>";
+        if (node.info !== undefined) {
+            description += "<p align=left>" + node.info + "</p>";
+        } else {
+            if (node.title !== undefined)
+                description += "<p align=left>" + node.title + "</p>";
+        }
+
+        return description;
+    }
 
     //indices
     private _indexDB = {
@@ -26,19 +44,7 @@ export class LocalGraph implements GraphService {
         var counterNode = 1;
         var counterEdge = 1;
 
-        var transNode = (node: any) => { };
-        var transEdge = (node: any) => { };
-        if (gson.translator !== undefined) {
-            if (gson.translator.nodes !== undefined && gson.translator.nodes instanceof Function) {
-                transNode = gson.translator.nodes;
-            }
-            if (gson.translator.edges !== undefined && gson.translator.edges instanceof Function) {
-                transNode = gson.translator.edges;
-            }
-        }
-
         nodes.forEach((node: any) => {
-            transNode(node);
             if (node.id === undefined)
                 node.id = counterNode++;
             //set title
@@ -50,7 +56,6 @@ export class LocalGraph implements GraphService {
         });
 
         edges.forEach((edge: any) => {
-            transEdge(edge);
             if (edge.id === undefined)
                 edge.id = counterEdge++;
         });
@@ -125,7 +130,7 @@ export class LocalGraph implements GraphService {
 
     public static fromGson(gson: GSON) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callback: () => void) => {
+        graph._perfermLoadData = (callback: () => void) => {
             graph._processGson(gson);
             callback();
         };
@@ -141,7 +146,7 @@ export class LocalGraph implements GraphService {
 
     public static fromGsonString(gsonString: string) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callback: () => void) => {
+        graph._perfermLoadData = (callback: () => void) => {
             graph._processGson(LocalGraph._string2GSON(gsonString));
             callback();
         };
@@ -149,10 +154,11 @@ export class LocalGraph implements GraphService {
         return graph;
     }
 
-    public static fromGsonFile(gsonUrl) {
+    public static fromGsonFile(gsonUrl: string, eventHandlers: object) {
         var graph = new LocalGraph();
-        graph._callbackLoadData = (callback: () => void) => {
+        graph._perfermLoadData = (callback: () => void) => {
             $.get(gsonUrl, { t: new Date().getTime() }, function (data) {
+                graph._eventHandlers = eventHandlers || {};
                 graph._processGson(LocalGraph._string2GSON(data));
                 callback();
             }, "text");
@@ -178,7 +184,7 @@ export class LocalGraph implements GraphService {
     requestConnect(callback: () => void) {
         var local: LocalGraph = this;
         this._async(() => {
-            local._callbackLoadData(callback);
+            local._perfermLoadData(callback);
         });
     }
 
@@ -194,11 +200,9 @@ export class LocalGraph implements GraphService {
         this._async(() =>
             callback(nodeIds.map(nodeId => {
                 let node: any = local._getNode(nodeId);
-                if (node.description !== undefined) {
-                    return node.description;
-                }
+                let handler = local._eventHandlers['onGetNodeDescription'] || local.DEFAULT_GET_DESCRIPTION;
 
-                return null;
+                return handler(node);
             })));
     }
 

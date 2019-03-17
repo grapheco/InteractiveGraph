@@ -1,11 +1,8 @@
-import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../mainframe";
-import { FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT } from '../types';
-import { GraphService } from '../service/service';
-import { i18n } from "../messages";
-import { Control, UIControl } from "./Control";
 import { LocalGraph } from "../service/local";
 import { RemoteGraph } from "../service/remote";
+import { EVENT_ARGS_FRAME } from '../types';
+import { UIControl } from "./Control";
 
 export class ConnectCtrl extends UIControl {
     private _frame: MainFrame;
@@ -92,7 +89,7 @@ export class ConnectCtrl extends UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(LocalGraph.fromGsonFile($("input", this).val()), () => {
+                    frame.connect(LocalGraph.fromGsonFile(<string>$("input", this).val(), {}), () => {
                         dlg.dialog("close");
                     });
                 }

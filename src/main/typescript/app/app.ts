@@ -29,8 +29,8 @@ export abstract class BaseApp {
 
     protected abstract onCreateFrame(args: EVENT_ARGS_FRAME);
 
-    public loadGson(url: string, callback) {
-        this._frame.connect(LocalGraph.fromGsonFile(url), callback);
+    public loadGson(url: string, eventHandlers: object, callback) {
+        this._frame.connect(LocalGraph.fromGsonFile(url, eventHandlers), callback);
     }
 
     public connect(url: string, callback) {
