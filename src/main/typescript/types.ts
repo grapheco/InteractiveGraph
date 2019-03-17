@@ -1,10 +1,6 @@
-import { Theme } from './Theme';
-import { MainFrame } from './mainframe';
-import { Control } from './control/Control';
-import { ToolbarCtrl } from './control/ToolbarCtrl';
-import { GraphService } from './service/service';
-import { RelFinderCtrl } from './control/RelFinderCtrl';
 import * as vis from "vis";
+import { MainFrame } from './mainframe';
+import { Theme } from './Theme';
 
 export interface NodesEdges {
     nodes: object[];
@@ -30,10 +26,21 @@ export interface NodeEdgeSet {
 /** 
  * graph json objects
 */
+export interface Community {
+    id: string,
+    fillColor: string,
+    borderColor: string,
+    outline: POINT[]
+}
+
 export interface GSON {
+    option: {
+        autoLayout?: boolean;
+    }
     data: {
         nodes: object[];
         edges?: object[];
+        communities?: Community[];
     }
     dbinfo?: object;
     categories?: object;
@@ -54,7 +61,20 @@ export interface BUTTON_OPTIONS {
 }
 
 export interface GraphNode extends vis.Node {
+}
 
+export interface LoadGraphOption {
+    autoLayout?: boolean
+}
+
+export interface NodeCommunityEntry {
+    node: string,
+    community: string
+}
+
+export interface CommunityData {
+    communities: Community[];
+    nodeMap: NodeCommunityEntry[];
 }
 
 export interface GraphEdge extends vis.Edge {
@@ -62,7 +82,6 @@ export interface GraphEdge extends vis.Edge {
 }
 
 export class GraphNetwork extends vis.Network {
-
 }
 
 export interface NETWORK_OPTIONS extends vis.Options {

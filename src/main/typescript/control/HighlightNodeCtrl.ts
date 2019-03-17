@@ -1,21 +1,17 @@
-import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../mainframe";
-import { FrameEventName, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME } from '../types';
-import { GraphService } from '../service/service';
-import { i18n } from "../messages";
-import { Control, BGControl } from "./Control";
+import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_DRAWING, EVENT_ARGS_FRAME_INPUT, FrameEventName } from '../types';
+import { BGControl } from "./Control";
 
-export class HighlightNodeCtrl extends BGControl {
+export class HighlightCtrl extends BGControl {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
-    public highlight(nodeIds: string | string[]) {
+    public highlightNodes(nodeIds: string | string[]) {
         var x: string[] = nodeIds instanceof Array ? nodeIds : [nodeIds];
         x.forEach((nodeId) => {
             this._mapNodeId2HighlightFlag.set(nodeId, true);
         });
     }
 
-    public toggle(nodeId: string) {
+    public toggleNode(nodeId: string) {
         var highlighted = this._mapNodeId2HighlightFlag.get(nodeId);
         if (highlighted)
             this._mapNodeId2HighlightFlag.delete(nodeId);
@@ -23,7 +19,7 @@ export class HighlightNodeCtrl extends BGControl {
             this._mapNodeId2HighlightFlag.set(nodeId, true);
     }
 
-    public unhighlight(nodeIds: string | string[]) {
+    public unhighlightNodes(nodeIds: string | string[]) {
         var x: string[] = nodeIds instanceof Array ? nodeIds : [nodeIds];
         x.forEach((nodeId) => {
             this._mapNodeId2HighlightFlag.delete(nodeId);
@@ -75,7 +71,7 @@ export class HighlightNodeCtrl extends BGControl {
         //DANGER!!!
         frame.off(FrameEventName.FOCUS_NODES);
         frame.on(FrameEventName.FOCUS_NODES, function (args: EVENT_ARGS_FRAME_INPUT) {
-            thisCtrl.highlight(args.nodes);
+            thisCtrl.highlightNodes(args.nodes);
         });
 
         //DANGER!!!
@@ -89,7 +85,7 @@ export class HighlightNodeCtrl extends BGControl {
 
             var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
-                thisCtrl.toggle(nodeId);
+                thisCtrl.toggleNode(nodeId);
             });
         });
     }

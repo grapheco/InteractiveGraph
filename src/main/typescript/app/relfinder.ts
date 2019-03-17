@@ -9,7 +9,7 @@ import { Theme } from '../Theme';
 import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
-import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
+import { HighlightCtrl } from '../control/HighlightNodeCtrl';
 
 export class RelationFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
@@ -32,7 +32,7 @@ export class RelationFinder extends BaseApp {
         var app = this;
 
         frame.addControl("info", new InfoBoxCtrl());
-        var hilight = frame.addControl("hilight", new HighlightNodeCtrl());
+        var hilight = frame.addControl("hilight", new HighlightCtrl());
 
         var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
         var connect = frame.addControl("connect", new ConnectCtrl());

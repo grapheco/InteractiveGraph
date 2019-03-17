@@ -1,5 +1,4 @@
-import { MainFrame } from "../mainframe";
-import {QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
+import { GraphEdge, GraphNode, QUERY_RESULTS, LoadGraphOption, CommunityData } from '../types';
 
 export interface GraphService {
     /**
@@ -7,6 +6,10 @@ export interface GraphService {
      * @param callback 
      */
     requestConnect(callback: () => void);
+    /**
+     * get data of communities
+     */
+    requestGetCommunityData(callback: (data: CommunityData) => void);
     /**
      * retrieves description info in HTML format of given nodes
      * @param nodeIds 
@@ -17,7 +20,7 @@ export interface GraphService {
      * loads graph data to render
      * @param callback 
      */
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void);
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void);
     /**
      * performs a search on the graph, by giving a keyword
      * @param expr 
@@ -34,7 +37,7 @@ export interface GraphService {
     /**
      * gets categories and labels of all nodes
      */
-    getNodeCategories(): object;
+    requestGetNodeCategories(callback: (catagoryMap: object) => void);
     /**
      * get nodes be kind of given catagory
      * @param catagory 

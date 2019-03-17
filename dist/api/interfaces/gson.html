@@ -64,13 +64,6 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>graph json objects</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -89,6 +82,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="gson.html#categories" class="tsd-kind-icon">categories</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="gson.html#data" class="tsd-kind-icon">data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="gson.html#dbinfo" class="tsd-kind-icon">dbinfo</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="gson.html#option" class="tsd-kind-icon">option</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="gson.html#translator" class="tsd-kind-icon">translator</a></li>
 							</ul>
 						</section>
@@ -103,7 +97,7 @@
 					<div class="tsd-signature tsd-kind-icon">categories<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/types.ts#L39">types.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/types.ts#L46">types.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -113,12 +107,15 @@
 					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/types.ts#L34">types.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/types.ts#L40">types.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> communities<span class="tsd-signature-symbol">?: </span><a href="community.html" class="tsd-signature-type">Community</a><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
 							<li class="tsd-parameter">
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> edges<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
@@ -134,9 +131,27 @@
 					<div class="tsd-signature tsd-kind-icon">dbinfo<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/types.ts#L38">types.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/types.ts#L45">types.ts:45</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="option" class="tsd-anchor"></a>
+					<h3>option</h3>
+					<div class="tsd-signature tsd-kind-icon">option<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/types.ts#L37">types.ts:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> auto<wbr>Layout<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="translator" class="tsd-anchor"></a>
@@ -144,7 +159,7 @@
 					<div class="tsd-signature tsd-kind-icon">translator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/types.ts#L40">types.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/types.ts#L47">types.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -220,6 +235,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="gson.html#dbinfo" class="tsd-kind-icon">dbinfo</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="gson.html#option" class="tsd-kind-icon">option</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="gson.html#translator" class="tsd-kind-icon">translator</a>

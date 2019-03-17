@@ -86,12 +86,13 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestfilternodesbycategory" class="tsd-kind-icon">request<wbr>Filter<wbr>Nodes<wbr>ByCategory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestgetcommunitydata" class="tsd-kind-icon">request<wbr>Get<wbr>Community<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestgetmorerelations" class="tsd-kind-icon">request<wbr>Get<wbr>More<wbr>Relations</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestgetnodecategories" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Categories</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestloadgraph" class="tsd-kind-icon">request<wbr>Load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="graphservice.html#requestsearch" class="tsd-kind-icon">request<wbr>Search</a></li>
@@ -104,28 +105,6 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getnodecategories" class="tsd-anchor"></a>
-					<h3>get<wbr>Node<wbr>Categories</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Node<wbr>Categories<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L37">service/service.ts:37</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>gets categories and labels of all nodes</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="requestconnect" class="tsd-anchor"></a>
 					<h3>request<wbr>Connect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -135,7 +114,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L9">service/service.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L8">service/service.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -177,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L45">service/service.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L48">service/service.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L54">service/service.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L57">service/service.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -279,6 +258,52 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="requestgetcommunitydata" class="tsd-anchor"></a>
+					<h3>request<wbr>Get<wbr>Community<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Community<wbr>Data<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L12">service/service.ts:12</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>get data of communities</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>callback: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="communitydata.html" class="tsd-signature-type">CommunityData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="communitydata.html" class="tsd-signature-type">CommunityData</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="requestgetmorerelations" class="tsd-anchor"></a>
 					<h3>request<wbr>Get<wbr>More<wbr>Relations</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -288,7 +313,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L60">service/service.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L63">service/service.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -339,7 +364,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L33">service/service.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L36">service/service.ts:36</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -384,6 +409,52 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="requestgetnodecategories" class="tsd-anchor"></a>
+					<h3>request<wbr>Get<wbr>Node<wbr>Categories</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Categories<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L40">service/service.ts:40</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>gets categories and labels of all nodes</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>callback: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>catagoryMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>catagoryMap: <span class="tsd-signature-type">object</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="requestgetnodeinfos" class="tsd-anchor"></a>
 					<h3>request<wbr>Get<wbr>Node<wbr>Infos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -393,7 +464,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L15">service/service.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L18">service/service.ts:18</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -444,7 +515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L20">service/service.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L23">service/service.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -461,7 +532,7 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="graphnode.html" class="tsd-signature-type">GraphNode</a><span class="tsd-signature-symbol">[]</span>, edges<span class="tsd-signature-symbol">: </span><a href="graphedge.html" class="tsd-signature-type">GraphEdge</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>nodes<span class="tsd-signature-symbol">: </span><a href="graphnode.html" class="tsd-signature-type">GraphNode</a><span class="tsd-signature-symbol">[]</span>, edges<span class="tsd-signature-symbol">: </span><a href="graphedge.html" class="tsd-signature-type">GraphEdge</a><span class="tsd-signature-symbol">[]</span>, option<span class="tsd-signature-symbol">: </span><a href="loadgraphoption.html" class="tsd-signature-type">LoadGraphOption</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -472,6 +543,9 @@
 														</li>
 														<li>
 															<h5>edges: <a href="graphedge.html" class="tsd-signature-type">GraphEdge</a><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+														<li>
+															<h5>option: <a href="loadgraphoption.html" class="tsd-signature-type">LoadGraphOption</a></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -495,7 +569,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L27">service/service.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L30">service/service.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -549,7 +623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/4d08b55/src/main/typescript/service/service.ts#L65">service/service.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/b819cde/src/main/typescript/service/service.ts#L68">service/service.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -587,9 +661,6 @@
 						<a href="graphservice.html" class="tsd-kind-icon">Graph<wbr>Service</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="graphservice.html#getnodecategories" class="tsd-kind-icon">get<wbr>Node<wbr>Categories</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="graphservice.html#requestconnect" class="tsd-kind-icon">request<wbr>Connect</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
@@ -599,10 +670,16 @@
 								<a href="graphservice.html#requestfindrelations" class="tsd-kind-icon">request<wbr>Find<wbr>Relations</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="graphservice.html#requestgetcommunitydata" class="tsd-kind-icon">request<wbr>Get<wbr>Community<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="graphservice.html#requestgetmorerelations" class="tsd-kind-icon">request<wbr>Get<wbr>More<wbr>Relations</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="graphservice.html#requestgetneighbours" class="tsd-kind-icon">request<wbr>Get<wbr>Neighbours</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="graphservice.html#requestgetnodecategories" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Categories</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="graphservice.html#requestgetnodeinfos" class="tsd-kind-icon">request<wbr>Get<wbr>Node<wbr>Infos</a>

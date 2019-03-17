@@ -1,13 +1,14 @@
-import { GraphService } from './service';
-import { Utils } from '../utils';
 import { } from "jquery";
-import { NodesEdges, PAIR, GSON, QUERY_RESULTS, RELATION_PATH, GraphNode, GraphEdge } from '../types';
-import * as vis from "vis";
+import { CommunityData, GraphEdge, GraphNode, GSON, LoadGraphOption, NodesEdges, PAIR, QUERY_RESULTS, RELATION_PATH } from '../types';
+import { Utils } from '../utils';
+import { GraphService } from './service';
 
 export class LocalGraph implements GraphService {
     private _nodes: object[];
+    private _communityData: CommunityData;
     private _edges: object[];
     private _labels: object;
+    private _loadGraphOption: LoadGraphOption;
     private _callbackLoadData: (callbackAfterLoad: () => void) => void;
     private _taskManager = new FindRelationsTaskManager();
 
@@ -71,7 +72,22 @@ export class LocalGraph implements GraphService {
         var data = this._translate(gson);
         this._nodes = data.nodes;
         this._edges = data.edges;
+        //set loadGraphOption
+        this._loadGraphOption = gson.option || {
+            autoLayout: gson.data.communities === undefined
+        };
+
         this._createIndexDB();
+
+        this._communityData = {
+            communities: gson.data.communities,
+            nodeMap: data.nodes.map((x: object) => {
+                return {
+                    node: x['id'],
+                    community: x['community'],
+                };
+            })
+        };
     }
 
     private _createIndexDB() {
@@ -145,8 +161,11 @@ export class LocalGraph implements GraphService {
         return graph;
     }
 
-    getNodeCategories(): object {
-        return this._labels;
+    requestGetNodeCategories(callback: (catagoryMap: object) => void) {
+        var local: LocalGraph = this;
+        this._async(() => {
+            callback(local._labels);
+        });
     }
 
     _async(fn: (timerId: number) => void) {
@@ -163,6 +182,13 @@ export class LocalGraph implements GraphService {
         });
     }
 
+    requestGetCommunityData(callback: (data: CommunityData) => void) {
+        var local: LocalGraph = this;
+        this._async(() =>
+            callback(local._communityData)
+        );
+    }
+
     requestGetNodeInfos(nodeIds: string[], callback: (infos: string[]) => void) {
         var local: LocalGraph = this;
         this._async(() =>
@@ -176,10 +202,10 @@ export class LocalGraph implements GraphService {
             })));
     }
 
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void) {
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void) {
         var local: LocalGraph = this;
         this._async(() =>
-            callback(local._nodes, local._edges));
+            callback(local._nodes, local._edges, local._loadGraphOption));
     }
 
     requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void) {

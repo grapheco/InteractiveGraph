@@ -1,10 +1,9 @@
+import { MessageBoxCtrl } from "../control/MessageBoxCtrl";
 import { MainFrame } from '../mainframe';
 import { LocalGraph } from '../service/local';
-import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS, GraphNode } from "../types";
-import { MessageBoxCtrl } from "../control/MessageBoxCtrl";
-import { GraphService } from '../service/service';
-import { Theme } from '../Theme';
 import { RemoteGraph } from '../service/remote';
+import { Theme } from '../Theme';
+import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, FrameEventName, FRAME_OPTIONS, GraphNode, NETWORK_OPTIONS } from "../types";
 
 export abstract class BaseApp {
     protected _toggleEdgeLabelHandlers;
@@ -41,7 +40,7 @@ export abstract class BaseApp {
     public showGraph(options, callback: () => void) {
         var app = this;
         this._messageBox.showMessage("LOADING_GRAPH");
-        this._frame.load(options, function () {
+        this._frame.loadGraph(options, function () {
             app._messageBox.hideMessage();
             if (callback !== undefined)
                 callback();

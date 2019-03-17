@@ -4,7 +4,7 @@ import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { EVENT_ARGS_FRAME, FrameEventName } from '../types';
-import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
+import { HighlightCtrl } from '../control/HighlightNodeCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
 

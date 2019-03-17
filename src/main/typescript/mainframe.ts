@@ -2,15 +2,14 @@
  * Created by bluejoe on 2018/2/24.
  */
 
-import * as vis from "vis";
-import { GraphService } from './service/service';
-import { Utils, Rect, Point } from "./utils";
+import * as events from "events";
 import "jquery";
 import "jqueryui";
-import * as events from "events";
-import { Themes, Theme } from "./theme";
-import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, EVENT_ARGS_FRAME_RESIZE, GraphNode, NETWORK_OPTIONS, GraphEdge, GraphNodeSet, GraphEdgeSet, GraphNetwork } from "./types";
 import { Control } from "./control/Control";
+import { GraphService } from './service/service';
+import { Theme, Themes } from "./theme";
+import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, FrameEventName, FRAME_OPTIONS, GraphEdge, GraphEdgeSet, GraphNetwork, GraphNode, GraphNodeSet, LoadGraphOption, NETWORK_OPTIONS, NodeEdgeSet } from "./types";
+import { Utils } from "./utils";
 
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
@@ -112,10 +111,6 @@ export class MainFrame {
         });
     }
 
-    public getNodeCategories() {
-        return this._graphService.getNodeCategories();
-    }
-
     public updateTheme(theme: Theme | Function) {
         if (theme instanceof Function) {
             theme(this._theme);
@@ -145,6 +140,10 @@ export class MainFrame {
 
     public fits(nodeIds: string[], animation = false) {
         this._network.fit({ nodes: nodeIds, animation: animation });
+    }
+
+    public redraw() {
+        this._network.redraw();
     }
 
     public search(keyword: any, callback: (nodes: GraphNode[]) => void) {
@@ -207,10 +206,10 @@ export class MainFrame {
      * load graph data and show network in current format
      * @param callback
      */
-    public load(options, callback: () => void) {
+    public loadGraph(options, callback: () => void) {
         var browser = this;
         this._graphService.requestLoadGraph(
-            function (nodes: GraphNode[], edges: GraphEdge[]) {
+            function (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) {
                 browser._rawData = { nodes: nodes, edges: edges };
 
                 browser._screenData.nodes = new GraphNodeSet(browser._rawData.nodes.map((x) => {
@@ -223,12 +222,14 @@ export class MainFrame {
                 );
 
                 //too large!!
-                if (browser._rawData.nodes.length > MAX_NODES_COUNT ||
-                    browser._rawData.edges.length > MAX_EDGES_COUNT)
+                if (
+                    ((option || {}).autoLayout === false) ||
+                    browser._rawData.nodes.length > MAX_NODES_COUNT ||
+                    browser._rawData.edges.length > MAX_EDGES_COUNT) {
                     browser.updateNetworkOptions((options: NETWORK_OPTIONS) => {
                         options.physics = false;
                     });
-
+                }
                 browser._network.setData(browser._screenData);
 
                 if (options.scale !== undefined) {

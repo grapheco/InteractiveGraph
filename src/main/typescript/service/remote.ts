@@ -1,11 +1,10 @@
 import { GraphService } from './service';
-import { QUERY_RESULTS, GraphNode, GraphEdge } from '../types';
+import { QUERY_RESULTS, GraphNode, GraphEdge, LoadGraphOption, CommunityData } from '../types';
 //import request = require('superagent');
 import 'jquery';
 
 export class RemoteGraph implements GraphService {
     private _url: string;
-    private _categories: object;
 
     constructor(url: string) {
         this._url = url;
@@ -38,7 +37,6 @@ export class RemoteGraph implements GraphService {
     requestConnect(callback: () => void) {
         var remote = this;
         this._ajaxCommand("init", {}, (data) => {
-            remote._categories = data.categories;
             callback();
         });
     }
@@ -49,9 +47,9 @@ export class RemoteGraph implements GraphService {
         })
     }
 
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[]) => void) {
+    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void) {
         this._ajaxCommand("loadGraph", {}, function (data) {
-            callback(data.nodes, data.edges);
+            callback(data.nodes, data.edges, data.option);
         })
     }
 
@@ -67,8 +65,12 @@ export class RemoteGraph implements GraphService {
         })
     }
 
-    getNodeCategories(): object {
-        return this._categories;
+    requestGetNodeCategories(callback: (catagoryMap: object) => void){
+        throw new Error("Method not implemented.");
+    }
+
+    requestGetCommunityData(callback: (data: CommunityData) => void) {
+        throw new Error("Method not implemented.");
     }
 
     requestFilterNodesByCategory(catagory: string, nodeIds: any[],

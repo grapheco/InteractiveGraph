@@ -1,14 +1,14 @@
-import { MainFrame } from '../mainframe';
-import { BaseApp } from './app';
-import { Themes, Theme } from "../theme";
-import { MessageBoxCtrl } from '../control/MessageBoxCtrl';
-import { SearchBarCtrl } from '../control/SearchBarCtrl';
-import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
-import { ToolbarCtrl } from '../control/ToolbarCtrl';
-import { FRAME_OPTIONS, NodeEdgeSet, FrameEventName, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT } from "../types";
-import { GraphService } from '../service/service';
-import { HighlightNodeCtrl } from '../control/HighlightNodeCtrl';
+import { CommunityCtrl } from '../control/CommunityCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
+import { HighlightCtrl } from '../control/HighlightNodeCtrl';
+import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
+import { SearchBarCtrl } from '../control/SearchBarCtrl';
+import { ToolbarCtrl } from '../control/ToolbarCtrl';
+import { MainFrame } from '../mainframe';
+import { Themes } from "../theme";
+import { CommunityData, EVENT_ARGS_FRAME, FrameEventName } from "../types";
+import { BaseApp } from './app';
+import { nextTick } from 'async';
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBarCtrl;
@@ -30,7 +30,8 @@ export class GraphNavigator extends BaseApp {
         this._searchBar = frame.addControl("search", new SearchBarCtrl());
         this._infoBox = frame.addControl("info", new InfoBoxCtrl());
         var connect = frame.addControl("connect", new ConnectCtrl());
-        var hilight = frame.addControl("hilight", new HighlightNodeCtrl());
+        var hilight = frame.addControl("hilight", new HighlightCtrl());
+        var showCommunitiesCtrl = frame.addControl("hilight", new CommunityCtrl());
         var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
         var app = this;
 
@@ -112,6 +113,16 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addButton({
+            icon: "fa fa-cloud",
+            checked: true,
+            tooltip: "show communities/hide communities",
+            click: (checked: boolean) => { 
+                showCommunitiesCtrl.toggle(checked);
+                frame.redraw();
+            }
+        });
+
+        toolbar.addButton({
             icon: "fa fa-file-code-o",
             tooltip: "load GSON string",
             click: (checked: boolean) => { connect.loadGsonString(); }
@@ -128,14 +139,21 @@ export class GraphNavigator extends BaseApp {
             tooltip: "connect remote IGP server",
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
-        
+
         this.addScaleSlider(toolbar, frame);
         this._addThemeSelect(toolbar);
 
+        //show graph while new graph loaded
         this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            app._addCategoriesSelect(toolbar);
-            hilight.clear();
-            app.showGraph({}, () => { });
+            this._frame.getGraphService().requestGetNodeCategories((map: object) => {
+                app._addCategoriesSelect(toolbar, map);
+                hilight.clear();
+                args.mainFrame.getGraphService().requestGetCommunityData((data: CommunityData) => {
+                    showCommunitiesCtrl.bind(data);
+                    app.showGraph({}, () => {
+                    });
+                })
+            })
         });
 
         this.toggleShowEdgeLabelAlways(false);
@@ -174,9 +192,8 @@ export class GraphNavigator extends BaseApp {
         }
     }
 
-    private _addCategoriesSelect(toolbar: ToolbarCtrl) {
+    private _addCategoriesSelect(toolbar: ToolbarCtrl, map: object) {
         var app = this;
-        var map = this._frame.getNodeCategories();
         var span = document.getElementById("categories-select");
         if (span != null)
             span.remove();
