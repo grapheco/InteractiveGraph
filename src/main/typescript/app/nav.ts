@@ -147,6 +147,7 @@ export class GraphNavigator extends BaseApp {
             this._frame.getGraphService().requestGetNodeCategories((map: object) => {
                 app._addCategoriesSelect(toolbar, map);
                 hilight.clear();
+                app._infoBox.hide();
                 args.mainFrame.getGraphService().requestGetCommunityData((data: CommunityData) => {
                     showCommunitiesCtrl.bind(data);
                     app.showGraph({}, () => {

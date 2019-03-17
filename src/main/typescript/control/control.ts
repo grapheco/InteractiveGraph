@@ -1,7 +1,5 @@
-import { MainFrame } from "../mainframe";
 import * as events from "events";
-import { FrameEventName, EVENT_ARGS_FRAME, RECT, POINT } from "../types";
-import { Rect, Point } from "../utils";
+import { EVENT_ARGS_FRAME, FrameEventName, POINT, RECT } from "../types";
 
 export abstract class Control extends events.EventEmitter {
     protected _disabled: boolean = false;

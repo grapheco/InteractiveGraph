@@ -139,9 +139,12 @@ export class LocalGraph implements GraphService {
     }
 
     private static _string2GSON(gsonString: string): GSON {
+        /*
         var __gson__: GSON;
         eval("__gson__=" + gsonString);
         return __gson__;
+        */
+       return JSON.parse(gsonString);
     }
 
     public static fromGsonString(gsonString: string) {
