@@ -29,12 +29,12 @@
 <!-- /vscode-markdown-toc -->
 # InteractiveGraph
 
-[![GitHub releases](https://img.shields.io/github/release/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub downloads](https://img.shields.io/github/downloads/bluejoe2008/InteractiveGraph/total.svg)](https://github.com/bluejoe2008/InteractiveGraph/releases)
-[![GitHub issues](https://img.shields.io/github/issues/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/issues)
-[![GitHub forks](https://img.shields.io/github/forks/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/network)
-[![GitHub stars](https://img.shields.io/github/stars/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/stargazers)
-[![GitHub license](https://img.shields.io/github/license/bluejoe2008/InteractiveGraph.svg)](https://github.com/bluejoe2008/InteractiveGraph/blob/master/LICENSE)
+[![GitHub releases](https://img.shields.io/github/release/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/grapheco/InteractiveGraph/total.svg)](https://github.com/grapheco/InteractiveGraph/releases)
+[![GitHub issues](https://img.shields.io/github/issues/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/issues)
+[![GitHub forks](https://img.shields.io/github/forks/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/network)
+[![GitHub stars](https://img.shields.io/github/stars/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/stargazers)
+[![GitHub license](https://img.shields.io/github/license/grapheco/InteractiveGraph.svg)](https://github.com/grapheco/InteractiveGraph/blob/master/LICENSE)
 
 
 InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架，其数据可以来自于GSON文件，或者在线Neo4j图数据库。
@@ -42,18 +42,18 @@ InteractiveGraph 为大型图数据提供了一个基于web的交互操作框架
 InteractiveGraph 同时也提供了三个基于本框架的应用：`GraphNavigator`, `GraphExplorer` 和 `RelFinder`。
 
 
-__图导航器(GraphNavigator)__: 在线试用 https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example1.html
+__图导航器(GraphNavigator)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example1.html
 <img alt="GraphNavigator" src="docs/navi.png" width="700">
 
-__图浏览器(GraphExplorer)__: 在线试用 https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example2.html
+__图浏览器(GraphExplorer)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example2.html
 <img alt="GraphExplorer" src="docs/exp.gif" width="700">
 
-__关系查找器(RelFinder)__: 在线试用 https://bluejoe2008.github.io/InteractiveGraph/dist/examples/example3.html
+__关系查找器(RelFinder)__: 在线试用 https://grapheco.github.io/InteractiveGraph/dist/examples/example3.html
 <img alt="RelFinder" src="docs/rel.gif" width="700">
 
 ## <a name='Quickstart'></a>快速开始(Quick Start)
 __Step 1.__ 下载 `examples.zip`，链接如下:
-https://github.com/bluejoe2008/InteractiveGraph/releases
+https://github.com/grapheco/InteractiveGraph/releases
 
 __Step 2.__ 解压`examples.zip`，并将其部署在Web服务器上（比如Tomcat）。 如果不使用Web服务器，通过AJAX读取数据时将会出错。
 
@@ -64,7 +64,7 @@ https://localhost:8080/examples/example1.html
 
 ## <a name='Howtouse'></a>使用方法(How to use)
 __Step 1.__ 下载 `interactive-graph-<VERSION>.zip`(如`interactive-graph-0.1.0.zip`) : 
-https://github.com/bluejoe2008/InteractiveGraph/dist/
+https://github.com/grapheco/InteractiveGraph/dist/
 
 __Step 2.__ 解压 `interactive-graph-<VERSION>.zip`, 将得到两个文件: `interactive-graph.min.js` 和 `interactive-graph.min.css`.
 
@@ -84,7 +84,7 @@ __Step 4.__ 使用在 `igraph` 中定义的函数和类：
 ```
 按上述步骤操作，将会使用`honglou.json`中的数据创建一个 `GraphNavigator` 应用对象。
 
-更多详细信息, 请参见 https://github.com/bluejoe2008/InteractiveGraph/blob/master/dist/examples/example1.html.
+更多详细信息, 请参见 https://github.com/grapheco/InteractiveGraph/blob/master/dist/examples/example1.html.
 
 如若需要扩展应用，可以根据`GraphNavigator`或其他应用写衍生类，也可以通过使用 `MainFrame` 直接创建新的应用.
 
@@ -92,7 +92,7 @@ __Step 4.__ 使用在 `igraph` 中定义的函数和类：
 
 ### <a name='InteractiveGraphAPI'></a>接口(InteractiveGraph API)
 InteractiveGraph是用TypeScript实现的，如果需要获取在线API文档，请参见：
-https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html
+https://grapheco.github.io/InteractiveGraph/dist/api/index.html
 
 
 ### <a name='dependencies'></a>项目依赖(dependencies)
@@ -100,7 +100,7 @@ https://bluejoe2008.github.io/InteractiveGraph/dist/api/index.html
 
 <img src="docs/visjs.png" height="50"> <img src="docs/npm.png" height="50"> <img src="docs/gulp.png" height="50"> <img src="docs/jquery.png" height="50"> <img src="docs/jqueryui.png" height="50"> <img src="docs/fa.png" height="50">
 
-关于项目依赖的详情,请参见 https://github.com/bluejoe2008/InteractiveGraph/blob/master/package.json.
+关于项目依赖的详情,请参见 https://github.com/grapheco/InteractiveGraph/blob/master/package.json.
 
 ## <a name='MainFrameapplications'></a>主框架及应用(MainFrame, applications)
 
@@ -229,6 +229,6 @@ InteractiveGraph 使用 BSD 2-Clause "Simplified"证书。
 
 最后，非常感谢您在项目中使用InteractiveGraph，为了更好地改进，我们真诚地想获取您的意见及使用情况，请将您的github用户名，您所在的组织和您的项目填写在下边的使用情况表中，非常感谢！
 
-https://github.com/bluejoe2008/InteractiveGraph/wiki/use-case-collection
+https://github.com/grapheco/InteractiveGraph/wiki/use-case-collection
 
 感谢您关注本项目，欢迎点赞⬆︎
