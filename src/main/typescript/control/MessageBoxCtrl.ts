@@ -5,6 +5,9 @@ import { MainFrame } from "../mainframe";
 
 export class MessageBoxCtrl extends UIControl {
     private _htmlFrame: HTMLElement;
+    public getTypeName(): string {
+        return "MessageBoxCtrl";
+    }
 
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         this._htmlFrame = args.htmlMainFrame;

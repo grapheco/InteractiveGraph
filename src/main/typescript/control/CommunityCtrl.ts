@@ -5,6 +5,10 @@ export class CommunityCtrl extends BGControl {
     private _data: CommunityData;
     private _showOrNot = true;
 
+    public getTypeName(): string {
+        return "CommunityCtrl";
+    }
+
     public bind(value: CommunityData) {
         this._data = value;
     }
@@ -33,7 +37,7 @@ export class CommunityCtrl extends BGControl {
         })
     }
 
-    private _drawZone(zone: Community, ctx:CanvasRenderingContext2D) {
+    private _drawZone(zone: Community, ctx: CanvasRenderingContext2D) {
         var outline = zone.outline;
         if (outline.length > 2) {
             var head = outline[0];

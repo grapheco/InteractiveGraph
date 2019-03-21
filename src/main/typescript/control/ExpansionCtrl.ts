@@ -6,6 +6,10 @@ export class ExpansionCtrl extends BGControl {
     private _mapNodeId2ExpansionValue: Map<string, number> = new Map<string, number>();
     private _frame: MainFrame;
 
+    public getTypeName(): string {
+        return "ExpansionCtrl";
+    }
+
     public collapse(nodeId: string | string[]) {
         var nodeIds: string[] = (nodeId instanceof Array) ? nodeId : [nodeId];
         nodeIds.forEach((nodeId) => {

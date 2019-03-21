@@ -7,6 +7,10 @@ export class RelFinderDialogCtrl extends UIControl {
 
     private _searchBoxes: JQuery[];
 
+    public getTypeName(): string {
+        return "RelFinderDialogCtrl";
+    }
+
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         var ctrl = this;
 

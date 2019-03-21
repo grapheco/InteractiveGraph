@@ -99,7 +99,7 @@ export abstract class MainFrame {
     }
 
     public removeControlLike<T extends Control>(control: T) {
-        var name = control.constructor.name;
+        var name = control.getTypeName();
         var ctrl: Control = this._ctrls.get(name);
         ctrl.emit(FrameEventName.DESTROY_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.REMOVE_CONTROL, { ctrl: ctrl });
@@ -114,11 +114,11 @@ export abstract class MainFrame {
     }
 
     public getRequiredControlLike<T extends Control>(control: T): T {
-        return <T>this.getRequiredControl(control.constructor.name);
+        return <T>this.getRequiredControl(control.getTypeName());
     }
 
     public addControl<T extends Control>(ctrl: T): T {
-        this._ctrls.set(ctrl.constructor.name, ctrl);
+        this._ctrls.set(ctrl.getTypeName(), ctrl);
         ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.ADD_CONTROL, { ctrl: ctrl });
         return ctrl;
@@ -242,33 +242,33 @@ export abstract class MainFrame {
      * @param callback
      */
     public loadGraph(options, callback: () => void) {
-        var browser = this;
+        var frame = this;
         this._graphService.requestLoadGraph(
             function (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) {
-                browser._rawData = { nodes: nodes, edges: edges };
+                frame._rawData = { nodes: nodes, edges: edges };
 
-                browser._screenData.nodes = new GraphNodeSet(browser._rawData.nodes.map((x) => {
-                    return browser._formatNode(x);
+                frame._screenData.nodes = new GraphNodeSet(frame._rawData.nodes.map((x) => {
+                    return frame._formatNode(x);
                 })
                 );
-                browser._screenData.edges = new GraphEdgeSet(browser._rawData.edges.map((x) => {
-                    return browser._formatEdge(x);
+                frame._screenData.edges = new GraphEdgeSet(frame._rawData.edges.map((x) => {
+                    return frame._formatEdge(x);
                 })
                 );
 
                 //too large!!
                 if (
                     ((option || {}).autoLayout === false) ||
-                    browser._rawData.nodes.length > MAX_NODES_COUNT ||
-                    browser._rawData.edges.length > MAX_EDGES_COUNT) {
-                    browser.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                    frame._rawData.nodes.length > MAX_NODES_COUNT ||
+                    frame._rawData.edges.length > MAX_EDGES_COUNT) {
+                    frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
                         options.physics = false;
                     });
                 }
-                browser._network.setData(browser._screenData);
+                frame._network.setData(frame._screenData);
 
                 if (options.scale !== undefined) {
-                    browser.scaleTo(options.scale);
+                    frame.scaleTo(options.scale);
                 }
 
                 if (callback !== undefined)

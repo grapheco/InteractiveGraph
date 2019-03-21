@@ -5,6 +5,10 @@ import { UIControl } from "./Control";
 export class SearchBoxCtrl extends UIControl {
     public _input: JQuery<HTMLElement> = null;
 
+    public getTypeName(): string {
+        return "SearchBoxCtrl";
+    }
+
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         var input = $('.igraph-searchbox', htmlContainer);
         if (input.length == 0) {

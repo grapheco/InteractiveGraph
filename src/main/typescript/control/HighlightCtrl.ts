@@ -4,6 +4,10 @@ import { BGControl } from "./Control";
 export class HighlightCtrl extends BGControl {
     private _mapNodeId2HighlightFlag: Map<string, boolean> = new Map<string, boolean>();
 
+    public getTypeName(): string {
+        return "HighlightCtrl";
+    }
+
     public highlightNodes(nodeIds: string | string[]) {
         var x: string[] = nodeIds instanceof Array ? nodeIds : [nodeIds];
         x.forEach((nodeId) => {

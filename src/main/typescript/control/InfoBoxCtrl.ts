@@ -3,6 +3,10 @@ import { UIControl } from "./Control";
 import { MainFrame } from '../mainframe';
 
 export class InfoBoxCtrl extends UIControl {
+    public getTypeName(): string {
+        return "InfoBoxCtrl";
+    }
+
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         var ctrl = this;
 

@@ -5,9 +5,7 @@ import { EVENT_ARGS_FRAME, FrameEventName, POINT, RECT } from "../types";
 export abstract class Control extends events.EventEmitter {
     protected _disabled: boolean = false;
 
-    public getTypeName(): string {
-        return this.constructor.name;
-    }
+    public abstract getTypeName(): string;
 
     abstract onCreate(args: EVENT_ARGS_FRAME);
     abstract onDestroy(args: EVENT_ARGS_FRAME);

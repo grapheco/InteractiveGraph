@@ -10,6 +10,10 @@ export class ConnectCtrl extends UIControl {
     private _dlgLoadGsonUrl: JQuery;
     private _dlgLoadRemoteSever: JQuery;
 
+    public getTypeName(): string {
+        return "ConnectCtrl";
+    }
+
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         this._frame = frame;
 

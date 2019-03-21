@@ -1,11 +1,7 @@
-import { Utils, Rect, Point } from "../utils";
 import { MainFrame } from "../mainframe";
-import { FrameEventName, QUERY_RESULTS, RELATION_PATH, EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, NETWORK_OPTIONS } from '../types';
-import { GraphService } from '../service/service';
-import { i18n } from "../messages";
-import { Control, BGControl } from "./Control";
-import { Themes, Theme } from "../theme";
-import { RelFinderDialogCtrl } from "./RelFinderDialogCtrl";
+import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, FrameEventName, NETWORK_OPTIONS, QUERY_RESULTS, RELATION_PATH } from '../types';
+import { Utils } from "../utils";
+import { BGControl } from "./Control";
 
 export class RelFinderCtrl extends BGControl {
     private _frame: MainFrame;
@@ -17,6 +13,10 @@ export class RelFinderCtrl extends BGControl {
     private _checkDataTimer: number;
     private _collectedPaths: RELATION_PATH[];
     private _consumedPaths: RELATION_PATH[];
+
+    public getTypeName(): string {
+        return "RelFinderCtrl";
+    }
 
    //colors of selected paths
     private _pathColors = [

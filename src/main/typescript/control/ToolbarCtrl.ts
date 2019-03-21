@@ -4,7 +4,10 @@ import "jquery";
 import "jqueryui";
 
 export class ToolbarCtrl extends UIControl {
-    
+    public getTypeName(): string {
+        return "ToolbarCtrl";
+    }
+
     public addTool(e: HTMLElement) {
         var container = document.createElement("span");
         $(container).addClass("ui-tool").appendTo($(this._htmlContainer));
