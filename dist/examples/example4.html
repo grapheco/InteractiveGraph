@@ -31,8 +31,8 @@
 <script type="text/javascript">
     igraph.i18n.setLanguage("chs");
     var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
-    app.loadGson("honglou2.json", {}, function(){
-    });
+    console.log(app);
+    app.loadGson("honglou2.json");
     //app.connect("http://localhost:9999/graphserver/connector-bolt");
 </script>
 </body>

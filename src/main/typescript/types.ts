@@ -113,6 +113,10 @@ export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeEdgeIds {
     previousSelection?: NodeEdgeIds;
 }
 
+export interface EVENT_ARGS_FRAME_SHOW_INFO extends EVENT_ARGS_FRAME, NodeEdgeIds {
+    htmlInfoBox: HTMLElement;
+}
+
 export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {
     width?: number;
     height?: number;
@@ -148,6 +152,7 @@ export enum FrameEventName {
     RELFINDER_STOP = "RELFINDER_STOP",
     RELFINDER_STARTED = "RELFINDER_STARTED",
     RELFINDER_STOPPED = "RELFINDER_STOPPED",
+    SHOW_INFO = "SHOW_INFO",
 }
 
 export interface RELATION_PATH {

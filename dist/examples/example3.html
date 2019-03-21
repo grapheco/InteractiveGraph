@@ -30,7 +30,7 @@
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
         var app = new igraph.RelationFinder(document.getElementById('graphArea'));
-        app.loadGson("honglou.json", function () {
+        app.loadGson("honglou.json", {}, function () {
             app.pickup([{
                 label: "贾宝玉"
             }, {

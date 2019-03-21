@@ -1,12 +1,8 @@
-import { BaseApp } from './app';
-import { MainFrame } from '../mainframe';
-import { SearchBarCtrl } from '../control/SearchBarCtrl';
-import { ExpansionCtrl } from '../control/ExpansionCtrl';
-import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
-import { EVENT_ARGS_FRAME, FrameEventName } from '../types';
-import { HighlightCtrl } from '../control/HighlightNodeCtrl';
-import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
+import { ExpansionCtrl } from '../control/ExpansionCtrl';
+import { ToolbarCtrl } from '../control/ToolbarCtrl';
+import { EVENT_ARGS_FRAME, FrameEventName } from '../types';
+import { BaseApp } from './app';
 
 export class GraphExplorer extends BaseApp {
 
@@ -22,13 +18,10 @@ export class GraphExplorer extends BaseApp {
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
         var frame = args.mainFrame;
+        var expansion = frame.addControl(new ExpansionCtrl());
 
-        frame.addControl("search", new SearchBarCtrl());
-        frame.addControl("info", new InfoBoxCtrl());
-        var expansion = frame.addControl("expansion", new ExpansionCtrl());
-
-        var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
-        var connect = frame.addControl("connect", new ConnectCtrl());
+        var toolbar = frame.getRequiredControlLike(new ToolbarCtrl());
+        var connect = frame.addControl( new ConnectCtrl());
         toolbar.addButton({
             icon: "fa fa-file-code-o",
             tooltip: "load GSON string",
@@ -47,8 +40,8 @@ export class GraphExplorer extends BaseApp {
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
 
-        this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            this._frame.clearScreen();
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
+            super.clearScreen();
             expansion.clear();
         });
     }

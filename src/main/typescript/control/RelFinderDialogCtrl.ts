@@ -1,59 +1,26 @@
-import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../mainframe";
-import { FrameEventName, EVENT_ARGS_FRAME, GraphNode, RECT, EVENT_ARGS_RELFINDER } from '../types';
-import { GraphService } from '../service/service';
-import { i18n } from "../messages";
-import { Control, UIControl } from "./Control";
-import { SearchBarCtrl } from "./SearchBarCtrl";
+import { EVENT_ARGS_FRAME, EVENT_ARGS_RELFINDER, FrameEventName, GraphNode, RECT } from '../types';
+import { UIControl } from "./Control";
+import { SearchBoxCtrl } from "./SearchBoxCtrl";
+import { MainFrame } from '../mainframe';
 
 export class RelFinderDialogCtrl extends UIControl {
+
     private _searchBoxes: JQuery[];
 
-    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
-        var frame = args.mainFrame;
+    public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         var ctrl = this;
 
-        $(htmlContainer).addClass("relfinder-dlg").draggable();
-
-        //input box
-        var sbCtrl = new SearchBarCtrl();
-        var icons = ["fa-flag", "fa-flag-checkered"];
         this._searchBoxes = [];
-        for (var m = 0; m < 2; m++) {
-            var line = document.createElement("div");
-            $(line).addClass("line").appendTo($(htmlContainer));
-            $('<span class="fa relfinder-icon"></span>')
-                .addClass(icons[m])
-                .appendTo($(line));
-            var span = $('<div class="relfinder-searchbox-container"></div>');
-            span.appendTo($(line));
+        $(".relfinder-searchbox-container", htmlContainer).each(function () {
+            var sbctrl = new SearchBoxCtrl();
+            sbctrl.bindElement(this, frame, undefined);
+            ctrl._searchBoxes.push(sbctrl._input);
+        });
 
-            var sb = $(sbCtrl.createSearchBox(frame));
-            sb.appendTo($(span));
+        var spinner = $(".relfinder-depth-spinner", htmlContainer)
+            .val(3).spinner({ min: 1, max: 8 });
 
-            this._searchBoxes.push(sb);
-        }
-
-        //maxdepth spinner
-        var line = document.createElement("div");
-        $(line).addClass("line").appendTo($(htmlContainer));
-
-        $(document.createElement("label")).text("maxdepth: ").appendTo($(line));
-        var spinner = $(document.createElement("input"))
-            .attr("size", 10)
-            .val(3)
-            .appendTo($(line))
-            .spinner({
-                min: 1,
-                max: 8
-            });
-
-        //buttons: start/stop
-        var div = $('<p align="center"></p>');
-        div.appendTo($(htmlContainer));
-
-        var btnStart = $('<button type="button" class="btn relfinder-btn">find relations</button>')
-            .appendTo($(div))
+        var btnStart = $(".relfinder-btn-start", htmlContainer)
             .click(function () {
                 frame.fire(FrameEventName.RELFINDER_START, {
                     ctrl: ctrl,
@@ -61,23 +28,13 @@ export class RelFinderDialogCtrl extends UIControl {
                 });
             });
 
-        $('<span> </span>').appendTo($(div));
-
-        var btnStop = $('<button type="button" class="btn relfinder-btn" disabled>stop</button>')
-            .appendTo($(div))
+        var btnStop = $(".relfinder-btn-stop", htmlContainer)
             .click(function () {
                 frame.fire(FrameEventName.RELFINDER_STOP, {
                     ctrl: ctrl,
                     maxDepth: parseInt("" + spinner.val())
                 });
             });
-
-        super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
-            return {
-                x: frameRect.right - 6 - ctrlRect.right + ctrlRect.left,
-                y: frameRect.top + 45
-            };
-        });
 
         this.on(FrameEventName.RELFINDER_STARTED, (args: EVENT_ARGS_RELFINDER) => {
             btnStart.attr("disabled", "disabled");
