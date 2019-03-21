@@ -13,7 +13,7 @@ export class RelFinderDialogCtrl extends UIControl {
         this._searchBoxes = [];
         $(".relfinder-searchbox-container", htmlContainer).each(function () {
             var sbctrl = new SearchBoxCtrl();
-            sbctrl.bindElement(this, frame, undefined);
+            sbctrl.bindElement(this, frame, args);
             ctrl._searchBoxes.push(sbctrl._input);
         });
 
