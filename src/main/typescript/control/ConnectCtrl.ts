@@ -10,8 +10,8 @@ export class ConnectCtrl extends UIControl {
     private _dlgLoadGsonUrl: JQuery;
     private _dlgLoadRemoteSever: JQuery;
 
-    public onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
-        this._frame = args.mainFrame;
+    public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
+        this._frame = frame;
 
         this._dlgLoadGsonString = $('<div title="load GSON"><p>input a GSON<a href="https://github.com/bluejoe2008/InteractiveGraph#GSON" target="_blank"><span style="color:firebrick" class="fa fa-question-circle"></span></a> text:<br><textarea class="connect-gson-string"></textarea></p></div>').appendTo($(htmlContainer));
 
@@ -71,7 +71,7 @@ export class ConnectCtrl extends UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(LocalGraph.fromGsonString("" + $("textarea", this).val()), () => {
+                    frame.connectService(LocalGraph.fromGsonString("" + $("textarea", this).val()), () => {
                         dlg.dialog("close");
                     });
                 }
@@ -89,7 +89,7 @@ export class ConnectCtrl extends UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(LocalGraph.fromGsonFile(<string>$("input", this).val(), {}), () => {
+                    frame.connectService(LocalGraph.fromGsonFile(<string>$("input", this).val(), {}), () => {
                         dlg.dialog("close");
                     });
                 }
@@ -107,7 +107,7 @@ export class ConnectCtrl extends UIControl {
             buttons: {
                 "load": function () {
                     var dlg = $(this);
-                    frame.connect(new RemoteGraph(<string>$("input", this).val()), () => {
+                    frame.connectService(new RemoteGraph(<string>$("input", this).val()), () => {
                         dlg.dialog("close");
                     });
                 }

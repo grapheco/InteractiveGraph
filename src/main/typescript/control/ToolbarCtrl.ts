@@ -4,6 +4,7 @@ import "jquery";
 import "jqueryui";
 
 export class ToolbarCtrl extends UIControl {
+    
     public addTool(e: HTMLElement) {
         var container = document.createElement("span");
         $(container).addClass("ui-tool").appendTo($(this._htmlContainer));
@@ -60,23 +61,6 @@ export class ToolbarCtrl extends UIControl {
             return this.addButton(button);
         })
     }
-
-    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
-        $(htmlContainer).addClass("toolbarPanel")
-
-        var div = document.createElement("div");
-        $(div).attr("id", "toolbar");
-        $(div).appendTo($(htmlContainer));
-        $(htmlContainer).draggable();
-
-        super.setPosition((frameRect: RECT, ctrlRect: RECT) => {
-            return {
-                x: frameRect.right - 6 - ctrlRect.right + ctrlRect.left,
-                y: frameRect.top
-            };
-        });
-    }
-
 
     public onDestroy(args: EVENT_ARGS_FRAME) {
     }

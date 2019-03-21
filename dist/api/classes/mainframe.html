@@ -69,6 +69,11 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">MainFrame</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="baseapp.html" class="tsd-signature-type">BaseApp</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -86,16 +91,18 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="mainframe.html#addcontrol" class="tsd-kind-icon">add<wbr>Control</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="mainframe.html#adddocumentcontrols" class="tsd-kind-icon">add<wbr>Document<wbr>Controls</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#clearscreen" class="tsd-kind-icon">clear<wbr>Screen</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#connect" class="tsd-kind-icon">connect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#connectservice" class="tsd-kind-icon">connect<wbr>Service</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#deletenodes" class="tsd-kind-icon">delete<wbr>Nodes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#fire" class="tsd-kind-icon">fire</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#fits" class="tsd-kind-icon">fits</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#focusnodes" class="tsd-kind-icon">focus<wbr>Nodes</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#getcontrol" class="tsd-kind-icon">get<wbr>Control</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#getgraphservice" class="tsd-kind-icon">get<wbr>Graph<wbr>Service</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#getnodebyid" class="tsd-kind-icon">get<wbr>Node<wbr>ById</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#getrequiredcontrol" class="tsd-kind-icon">get<wbr>Required<wbr>Control</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="mainframe.html#getrequiredcontrollike" class="tsd-kind-icon">get<wbr>Required<wbr>Control<wbr>Like</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#getscreendata" class="tsd-kind-icon">get<wbr>Screen<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#insertedges" class="tsd-kind-icon">insert<wbr>Edges</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#insertnodes" class="tsd-kind-icon">insert<wbr>Nodes</a></li>
@@ -105,7 +112,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#placenodes" class="tsd-kind-icon">place<wbr>Nodes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#redraw" class="tsd-kind-icon">redraw</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#removecontrol" class="tsd-kind-icon">remove<wbr>Control</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="mainframe.html#removecontrollike" class="tsd-kind-icon">remove<wbr>Control<wbr>Like</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#scaleto" class="tsd-kind-icon">scale<wbr>To</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#search" class="tsd-kind-icon">search</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="mainframe.html#shownodesofcategory" class="tsd-kind-icon">show<wbr>Nodes<wbr>OfCategory</a></li>
@@ -131,7 +138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L40">mainframe.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L45">mainframe.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -157,13 +164,13 @@
 					<a name="addcontrol" class="tsd-anchor"></a>
 					<h3>add<wbr>Control</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Control&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, ctrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Control&lt;T&gt;<span class="tsd-signature-symbol">(</span>ctrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L98">mainframe.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L120">mainframe.ts:120</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -175,13 +182,36 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
 									<h5>ctrl: <span class="tsd-signature-type">T</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="adddocumentcontrols" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> add<wbr>Document<wbr>Controls</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Document<wbr>Controls<span class="tsd-signature-symbol">(</span>elements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JQuery</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span>, extra<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L127">mainframe.ts:127</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elements: <span class="tsd-signature-type">JQuery</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>extra: <span class="tsd-signature-type">object</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -195,7 +225,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L200">mainframe.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L235">mainframe.ts:235</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -203,16 +233,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="connect" class="tsd-anchor"></a>
-					<h3>connect</h3>
+					<a name="connectservice" class="tsd-anchor"></a>
+					<h3>connect<wbr>Service</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">connect<span class="tsd-signature-symbol">(</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/graphservice.html" class="tsd-signature-type">GraphService</a>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">connect<wbr>Service<span class="tsd-signature-symbol">(</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/graphservice.html" class="tsd-signature-type">GraphService</a>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L105">mainframe.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L140">mainframe.ts:140</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -238,7 +268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L277">mainframe.ts:277</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L312">mainframe.ts:312</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -287,7 +317,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L55">mainframe.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L69">mainframe.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -313,7 +343,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L59">mainframe.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L73">mainframe.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -339,7 +369,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L141">mainframe.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L176">mainframe.ts:176</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -365,7 +395,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L292">mainframe.ts:292</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L327">mainframe.ts:327</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -379,29 +409,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getcontrol" class="tsd-anchor"></a>
-					<h3>get<wbr>Control</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Control<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Control</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L94">mainframe.ts:94</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Control</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getgraphservice" class="tsd-anchor"></a>
 					<h3>get<wbr>Graph<wbr>Service</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -411,7 +418,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L79">mainframe.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L93">mainframe.ts:93</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/graphservice.html" class="tsd-signature-type">GraphService</a></h4>
@@ -428,7 +435,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L306">mainframe.ts:306</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L341">mainframe.ts:341</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -442,6 +449,58 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getrequiredcontrol" class="tsd-anchor"></a>
+					<h3>get<wbr>Required<wbr>Control</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Required<wbr>Control<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Control</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L109">mainframe.ts:109</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Control</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="getrequiredcontrollike" class="tsd-anchor"></a>
+					<h3>get<wbr>Required<wbr>Control<wbr>Like</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Required<wbr>Control<wbr>Like&lt;T&gt;<span class="tsd-signature-symbol">(</span>control<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L116">mainframe.ts:116</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Control</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>control: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getscreendata" class="tsd-anchor"></a>
 					<h3>get<wbr>Screen<wbr>Data</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -451,7 +510,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L83">mainframe.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L97">mainframe.ts:97</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/nodeedgeset.html" class="tsd-signature-type">NodeEdgeSet</a></h4>
@@ -468,7 +527,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L299">mainframe.ts:299</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L334">mainframe.ts:334</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -491,7 +550,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L253">mainframe.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L288">mainframe.ts:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -523,7 +582,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L209">mainframe.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L244">mainframe.ts:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -568,7 +627,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L244">mainframe.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L279">mainframe.ts:279</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -594,7 +653,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L67">mainframe.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L81">mainframe.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -638,7 +697,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L63">mainframe.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L77">mainframe.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -682,7 +741,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L310">mainframe.ts:310</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L345">mainframe.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -705,30 +764,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L145">mainframe.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L180">mainframe.ts:180</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="removecontrol" class="tsd-anchor"></a>
-					<h3>remove<wbr>Control</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Control<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="removecontrollike" class="tsd-anchor"></a>
+					<h3>remove<wbr>Control<wbr>Like</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Control<wbr>Like&lt;T&gt;<span class="tsd-signature-symbol">(</span>control<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L87">mainframe.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L101">mainframe.ts:101</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Control</span></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<h5>control: <span class="tsd-signature-type">T</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -745,7 +810,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L137">mainframe.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L172">mainframe.ts:172</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -768,7 +833,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L149">mainframe.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L184">mainframe.ts:184</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -812,7 +877,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L180">mainframe.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L215">mainframe.ts:215</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -853,7 +918,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L176">mainframe.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L211">mainframe.ts:211</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -876,7 +941,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L153">mainframe.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L188">mainframe.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -914,7 +979,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L126">mainframe.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L161">mainframe.ts:161</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -937,7 +1002,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L172">mainframe.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L207">mainframe.ts:207</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -960,7 +1025,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/mainframe.ts#L114">mainframe.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/mainframe.ts#L149">mainframe.ts:149</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -996,11 +1061,14 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="mainframe.html#addcontrol" class="tsd-kind-icon">add<wbr>Control</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="mainframe.html#adddocumentcontrols" class="tsd-kind-icon">add<wbr>Document<wbr>Controls</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#clearscreen" class="tsd-kind-icon">clear<wbr>Screen</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mainframe.html#connect" class="tsd-kind-icon">connect</a>
+								<a href="mainframe.html#connectservice" class="tsd-kind-icon">connect<wbr>Service</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#deletenodes" class="tsd-kind-icon">delete<wbr>Nodes</a>
@@ -1018,13 +1086,16 @@
 								<a href="mainframe.html#focusnodes" class="tsd-kind-icon">focus<wbr>Nodes</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mainframe.html#getcontrol" class="tsd-kind-icon">get<wbr>Control</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#getgraphservice" class="tsd-kind-icon">get<wbr>Graph<wbr>Service</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#getnodebyid" class="tsd-kind-icon">get<wbr>Node<wbr>ById</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="mainframe.html#getrequiredcontrol" class="tsd-kind-icon">get<wbr>Required<wbr>Control</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="mainframe.html#getrequiredcontrollike" class="tsd-kind-icon">get<wbr>Required<wbr>Control<wbr>Like</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#getscreendata" class="tsd-kind-icon">get<wbr>Screen<wbr>Data</a>
@@ -1053,8 +1124,8 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#redraw" class="tsd-kind-icon">redraw</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="mainframe.html#removecontrol" class="tsd-kind-icon">remove<wbr>Control</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="mainframe.html#removecontrollike" class="tsd-kind-icon">remove<wbr>Control<wbr>Like</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="mainframe.html#scaleto" class="tsd-kind-icon">scale<wbr>To</a>

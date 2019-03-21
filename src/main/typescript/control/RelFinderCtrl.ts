@@ -18,7 +18,7 @@ export class RelFinderCtrl extends BGControl {
     private _collectedPaths: RELATION_PATH[];
     private _consumedPaths: RELATION_PATH[];
 
-    //colors of selected paths
+   //colors of selected paths
     private _pathColors = [
         '#fd740b', '#ed00ff', '#63b706',
         '#17b7fe', '#fb3a71', '#d66dfe'];

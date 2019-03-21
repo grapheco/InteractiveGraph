@@ -1,8 +1,8 @@
 import { CommunityCtrl } from '../control/CommunityCtrl';
 import { ConnectCtrl } from '../control/ConnectCtrl';
-import { HighlightCtrl } from '../control/HighlightNodeCtrl';
+import { HighlightCtrl } from '../control/HighlightCtrl';
 import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
-import { SearchBarCtrl } from '../control/SearchBarCtrl';
+import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
 import { Themes } from "../theme";
@@ -10,7 +10,7 @@ import { CommunityData, EVENT_ARGS_FRAME, FrameEventName } from "../types";
 import { BaseApp } from './app';
 
 export class GraphNavigator extends BaseApp {
-    private _searchBar: SearchBarCtrl;
+    private _searchBar: SearchBoxCtrl;
     private _infoBox: InfoBoxCtrl;
 
     public constructor(htmlFrame: HTMLElement) {
@@ -26,12 +26,12 @@ export class GraphNavigator extends BaseApp {
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
         var frame = args.mainFrame;
-        this._searchBar = frame.addControl("search", new SearchBarCtrl());
-        this._infoBox = frame.addControl("info", new InfoBoxCtrl());
-        var connect = frame.addControl("connect", new ConnectCtrl());
-        var hilight = frame.addControl("hilight", new HighlightCtrl());
-        var showCommunitiesCtrl = frame.addControl("hilight", new CommunityCtrl());
-        var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
+        this._searchBar = frame.getRequiredControlLike(new SearchBoxCtrl());
+        this._infoBox = frame.getRequiredControlLike(new InfoBoxCtrl());
+        var connect = frame.addControl(new ConnectCtrl());
+        var hilight = frame.addControl(new HighlightCtrl());
+        var showCommunitiesCtrl = frame.addControl(new CommunityCtrl());
+        var toolbar = frame.getRequiredControlLike(new ToolbarCtrl());
         var app = this;
 
         toolbar.addButton({
@@ -115,7 +115,7 @@ export class GraphNavigator extends BaseApp {
             icon: "fa fa-cloud",
             checked: true,
             tooltip: "show communities/hide communities",
-            click: (checked: boolean) => { 
+            click: (checked: boolean) => {
                 showCommunitiesCtrl.toggle(checked);
                 frame.redraw();
             }
@@ -143,12 +143,12 @@ export class GraphNavigator extends BaseApp {
         this._addThemeSelect(toolbar);
 
         //show graph while new graph loaded
-        this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            this._frame.getGraphService().requestGetNodeCategories((map: object) => {
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
+            frame.getGraphService().requestGetNodeCategories((map: object) => {
                 app._addCategoriesSelect(toolbar, map);
                 hilight.clear();
                 app._infoBox.hide();
-                args.mainFrame.getGraphService().requestGetCommunityData((data: CommunityData) => {
+                frame.getGraphService().requestGetCommunityData((data: CommunityData) => {
                     showCommunitiesCtrl.bind(data);
                     app.showGraph({}, () => {
                     });
@@ -210,7 +210,7 @@ export class GraphNavigator extends BaseApp {
                 .attr("type", "checkbox")
                 .attr("checked", "true")
                 .click(function () {
-                    app._frame.showNodesOfCategory($(this).attr("key"),
+                    app.showNodesOfCategory($(this).attr("key"),
                         $(this).prop('checked'));
                 });
 
@@ -231,7 +231,7 @@ export class GraphNavigator extends BaseApp {
         $(select).change(function () {
             var value = <string>$(select).val();
             var func = Themes[value];
-            app._frame.updateTheme(func());
+            app.updateTheme(func());
         });
 
         toolbar.addTool(select);

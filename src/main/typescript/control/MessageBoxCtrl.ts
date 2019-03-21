@@ -1,15 +1,12 @@
-import { Utils, Rect, Point } from "../utils";
-import { MainFrame } from "../mainframe";
-import { FrameEventName, EVENT_ARGS_FRAME } from '../types';
-import { GraphService } from '../service/service';
 import { i18n } from "../messages";
-import { Control, UIControl } from "./Control";
+import { EVENT_ARGS_FRAME } from '../types';
+import { UIControl } from "./Control";
+import { MainFrame } from "../mainframe";
 
 export class MessageBoxCtrl extends UIControl {
     private _htmlFrame: HTMLElement;
 
-    onCreateUI(htmlContainer: HTMLElement, args: EVENT_ARGS_FRAME) {
-        //message bar
+    public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         this._htmlFrame = args.htmlMainFrame;
         $(htmlContainer).addClass("messageBox").hide();
     }

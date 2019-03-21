@@ -2,7 +2,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>RelationFinder</title>
+    <title>RelFinder</title>
     <script type="text/javascript" src="./lib/interactive-graph-0.1.0/interactive-graph.min.js"></script>
     <link type="text/css" rel="stylesheet" href="./lib/interactive-graph-0.1.0/interactive-graph.min.css">
     <script src="./lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
@@ -27,10 +27,45 @@
     <div style="height:100%">
         <div id="graphArea"></div>
     </div>
+    <!--all UI controls-->
+    <div>
+        <!--toolbar-->
+        <div class="toolbarPanel igraph-float" igraph-control-role="ToolbarCtrl" igraph-float-position="B:-6,0">
+            <div class="toolbar"></div>
+        </div>
+        <!--info box-->
+        <div class="infoPanel igraph-float" igraph-control-role="InfoBoxCtrl" igraph-float-position="A:10,80">
+            <div>
+                <div class="infoPanel1"></div>
+                <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
+            </div>
+            <div class="infoBox"></div>
+        </div>
+        <!--relfinder-->
+        <div class="relfinder-dlg igraph-float" igraph-control-role="RelFinderDialogCtrl" igraph-float-position="B:-6,45">
+            <div class="line"><span class="fa relfinder-icon fa-flag"></span>
+                <div class="relfinder-searchbox-container">
+                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+                </div>
+            </div>
+            <div class="line"><span class="fa relfinder-icon fa-flag-checkered"></span>
+                <div class="relfinder-searchbox-container">
+                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+                </div>
+            </div>
+            <div class="line"><label>maxdepth: </label>
+                <input size="10" autocomplete="off" readonly class="ui-spinner-input relfinder-depth-spinner">
+            </div>
+            <p align="center">
+                <button type="button" class="btn relfinder-btn relfinder-btn-start">find relations</button>
+                <button type="button" class="btn relfinder-btn relfinder-btn-stop" disabled="disabled">stop</button>
+            </p>
+        </div>
+    </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
-        var app = new igraph.RelationFinder(document.getElementById('graphArea'));
-        app.loadGson("honglou.json", function () {
+        var app = new igraph.RelFinder(document.getElementById('graphArea'));
+        app.loadGson("honglou.json", {}, function () {
             app.pickup([{
                 label: "贾宝玉"
             }, {

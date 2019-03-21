@@ -1,18 +1,16 @@
 import { ConnectCtrl } from '../control/ConnectCtrl';
-import { HighlightCtrl } from '../control/HighlightNodeCtrl';
-import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
+import { HighlightCtrl } from '../control/HighlightCtrl';
 import { RelFinderCtrl } from '../control/RelFinderCtrl';
 import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
-import { SearchBarCtrl } from '../control/SearchBarCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { EVENT_ARGS_FRAME, EVENT_ARGS_RELFINDER, FrameEventName, GraphNode, NETWORK_OPTIONS } from '../types';
 import { BaseApp } from './app';
 
-export class RelationFinder extends BaseApp {
+export class RelFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
     private _dlgNoEnoughNodesSelected;
     private _dlgClearScreenAlert;
-    private _dlgSelectionCtrl: RelFinderDialogCtrl;
+    private _relfinderDlg: RelFinderDialogCtrl;
 
     public constructor(htmlFrame: HTMLElement, showDialog?: boolean) {
         super(htmlFrame, {
@@ -28,11 +26,10 @@ export class RelationFinder extends BaseApp {
         var frame = args.mainFrame;
         var app = this;
 
-        frame.addControl("info", new InfoBoxCtrl());
-        var hilight = frame.addControl("hilight", new HighlightCtrl());
+        var hilight = frame.addControl( new HighlightCtrl());
+        var connect = frame.addControl( new ConnectCtrl());
+        var toolbar = frame.getRequiredControlLike(new ToolbarCtrl());
 
-        var toolbar = frame.addControl("toolbar", new ToolbarCtrl());
-        var connect = frame.addControl("connect", new ConnectCtrl());
         toolbar.addButton({
             icon: "fa fa-file-code-o",
             tooltip: "load GSON string",
@@ -51,19 +48,14 @@ export class RelationFinder extends BaseApp {
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
 
-        this._frame.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            this._frame.clearScreen();
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
+            super.clearScreen();
             hilight.clear();
-            this._dlgSelectionCtrl.selectNodes([]);
+            this._relfinderDlg.selectNodes([]);
         });
 
-        this._dlgSelectionCtrl = frame.addControl("relfinderdlg", new RelFinderDialogCtrl());
-        this._relfinder = frame.addControl("relfinder", new RelFinderCtrl());
-
-        if ((<any>args).showDialog === false) {
-            this._dlgSelectionCtrl.hide();
-            frame.addControl("search", new SearchBarCtrl());
-        }
+        this._relfinderDlg = frame.getRequiredControlLike(new RelFinderDialogCtrl());
+        this._relfinder = frame.addControl( new RelFinderCtrl());
 
         frame.updateNetworkOptions(function (options: NETWORK_OPTIONS) {
             options.edges.physics = false;
@@ -80,11 +72,11 @@ export class RelationFinder extends BaseApp {
         })
 
         frame.on(FrameEventName.RELFINDER_STARTED, (args: EVENT_ARGS_RELFINDER) => {
-            app._dlgSelectionCtrl.emit(FrameEventName.RELFINDER_STARTED, args);
+            app._relfinderDlg.emit(FrameEventName.RELFINDER_STARTED, args);
         })
 
         frame.on(FrameEventName.RELFINDER_STOPPED, (args: EVENT_ARGS_RELFINDER) => {
-            app._dlgSelectionCtrl.emit(FrameEventName.RELFINDER_STOPPED, args);
+            app._relfinderDlg.emit(FrameEventName.RELFINDER_STOPPED, args);
         })
 
         this._dlgNoEnoughNodesSelected = $('<div title="No enough nodes"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>TWO nodes are required to start relation path discovery.</p></div>').appendTo($(args.htmlMainFrame)).hide();
@@ -94,7 +86,7 @@ export class RelationFinder extends BaseApp {
 
     public startQueryWithPrompt(refreshInterval: number = 500, maxDepth: number = 6) {
         var app = this;
-        var pickedNodeIds = this._dlgSelectionCtrl.getSelectedNodeIds();
+        var pickedNodeIds = this._relfinderDlg.getSelectedNodeIds();
         if (pickedNodeIds.length != 2) {
             this._dlgNoEnoughNodesSelected.dialog({
                 modal: true,
@@ -111,7 +103,7 @@ export class RelationFinder extends BaseApp {
             return;
         }
 
-        if (this._frame.getScreenData().edges.length > 0) {
+        if (super.getScreenData().edges.length > 0) {
             this._dlgClearScreenAlert.dialog({
                 resizable: false,
                 height: "auto",
@@ -136,8 +128,8 @@ export class RelationFinder extends BaseApp {
 
     public startQuery(refreshInterval: number = 500, maxDepth: number = 6) {
         var app = this;
-        var pickedNodeIds = this._dlgSelectionCtrl.getSelectedNodeIds();
-        this._frame.deleteNodes(function (node) {
+        var pickedNodeIds = this._relfinderDlg.getSelectedNodeIds();
+        super.deleteNodes(function (node) {
             return pickedNodeIds.indexOf(node.id) < 0;
         });
 
@@ -151,7 +143,7 @@ export class RelationFinder extends BaseApp {
     public pickup(keywords: object[], callback: (nodes: GraphNode[]) => void) {
         var app = this;
         super.pickup(keywords, (nodes: GraphNode[]) => {
-            this._dlgSelectionCtrl.selectNodes(nodes);
+            this._relfinderDlg.selectNodes(nodes);
 
             if (callback !== undefined)
                 callback(nodes);

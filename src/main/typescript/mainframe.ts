@@ -5,17 +5,22 @@
 import * as events from "events";
 import "jquery";
 import "jqueryui";
-import { Control } from "./control/Control";
+import { Control, UIControl } from "./control/Control";
 import { GraphService } from './service/service';
 import { Theme, Themes } from "./theme";
-import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, FrameEventName, FRAME_OPTIONS, GraphEdge, GraphEdgeSet, GraphNetwork, GraphNode, GraphNodeSet, LoadGraphOption, NETWORK_OPTIONS, NodeEdgeSet } from "./types";
+import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, EVENT_ARGS_FRAME_SHOW_INFO, FrameEventName, FRAME_OPTIONS, GraphEdge, GraphEdgeSet, GraphNetwork, GraphNode, GraphNodeSet, LoadGraphOption, NETWORK_OPTIONS, NodeEdgeSet } from "./types";
 import { Utils } from "./utils";
+import { ToolbarCtrl } from "./control/ToolbarCtrl";
+import { InfoBoxCtrl } from "./control/InfoBoxCtrl";
+import { RelFinderDialogCtrl } from "./control/RelFinderDialogCtrl";
+import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
+import { SearchBoxCtrl } from "./control/SearchBoxCtrl";
 
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
 var MAX_NODES_COUNT = 5000;
 
-export class MainFrame {
+export abstract class MainFrame {
     private _htmlFrame: HTMLElement;
     private _minScale: number = 0.1;
     private _maxScale: number = 2;
@@ -50,6 +55,15 @@ export class MainFrame {
 
         this._bindNetworkEvents();
         this._bindControlEvents(FrameEventName.FRAME_RESIZE);
+
+        this.on(FrameEventName.SHOW_INFO, (args: EVENT_ARGS_FRAME_SHOW_INFO) => {
+            this.getGraphService().requestGetNodeInfos(args.nodes,
+                function (nodeInfos) {
+                    var htmlInfoBox = args.htmlInfoBox;
+                    $(htmlInfoBox).append(nodeInfos[0]);
+                });
+        }
+        );
     }
 
     public emit(event: string, args: object) {
@@ -84,25 +98,46 @@ export class MainFrame {
         return this._screenData;
     }
 
-    public removeControl(name: string) {
+    public removeControlLike<T extends Control>(control: T) {
+        var name = control.constructor.name;
         var ctrl: Control = this._ctrls.get(name);
         ctrl.emit(FrameEventName.DESTROY_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.REMOVE_CONTROL, { ctrl: ctrl });
         this._ctrls.delete(name);
     }
 
-    public getControl(name: string) {
+    public getRequiredControl(name: string): Control {
+        if (!this._ctrls.has(name))
+            throw new Error("required control not found: " + name);
+
         return this._ctrls.get(name);
     }
 
-    public addControl<T extends Control>(name: string, ctrl: T): T {
-        this._ctrls.set(name, ctrl);
+    public getRequiredControlLike<T extends Control>(control: T): T {
+        return <T>this.getRequiredControl(control.constructor.name);
+    }
+
+    public addControl<T extends Control>(ctrl: T): T {
+        this._ctrls.set(ctrl.constructor.name, ctrl);
         ctrl.emit(FrameEventName.CREATE_CONTROL, this._createEventArgs());
         this.fire(FrameEventName.ADD_CONTROL, { ctrl: ctrl });
         return ctrl;
     }
 
-    public connect(service: GraphService, callback) {
+    protected addDocumentControls(elements: JQuery<HTMLElement>, extra: object) {
+        var frame = this;
+        //do not use ()=>{}, which makes 'this' wrong
+        elements.each(function () {
+            var role = $(this).attr("igraph-control-role");
+            var ctrl = ControlFactory.createControl(role);
+            ctrl.bindElement(this, frame, frame._composeEventArgs(extra));
+            frame.addControl(ctrl);
+
+            console.log("document control created: " + role);
+        })
+    }
+
+    public connectService(service: GraphService, callback) {
         this._graphService = service;
         this._graphService.requestConnect(() => {
             this.fire(FrameEventName.GRAPH_CONNECTED);
@@ -555,5 +590,30 @@ export class MainFrame {
                 //selectConnectedEdges: false,
             }
         };
+    }
+}
+
+export class ControlFactory {
+    private CONTROL_MAP = {};
+    private static _instance = new ControlFactory();
+
+    constructor() {
+        this.CONTROL_MAP[new ToolbarCtrl().getTypeName()] = () => new ToolbarCtrl();
+        this.CONTROL_MAP[new InfoBoxCtrl().getTypeName()] = () => new InfoBoxCtrl();
+        this.CONTROL_MAP[new RelFinderDialogCtrl().getTypeName()] = () => new RelFinderDialogCtrl();
+        this.CONTROL_MAP[new MessageBoxCtrl().getTypeName()] = () => new MessageBoxCtrl();
+        this.CONTROL_MAP[new SearchBoxCtrl().getTypeName()] = () => new SearchBoxCtrl();
+    }
+
+    private _createControl(ctrlTypeName: string): UIControl {
+        var factory = this.CONTROL_MAP[ctrlTypeName];
+        if (factory === undefined)
+            throw new Error("unknown control type: " + ctrlTypeName);
+
+        return factory();
+    }
+
+    public static createControl(ctrlTypeName: string): UIControl {
+        return ControlFactory._instance._createControl(ctrlTypeName);
     }
 }

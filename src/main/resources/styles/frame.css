@@ -248,7 +248,7 @@ div.searchPanel1 {
     float: left;
 }
 
-input.searchBox {
+input.igraph-searchbox {
     width: 100%;
     height: 100%;
 }

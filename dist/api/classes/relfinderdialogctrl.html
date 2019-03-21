@@ -100,18 +100,21 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#bindelement" class="tsd-kind-icon">bind<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinderdialogctrl.html#createcontainerifabsent" class="tsd-kind-icon">create<wbr>Container<wbr>IfAbsent</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#disable" class="tsd-kind-icon">disable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#enable" class="tsd-kind-icon">enable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="relfinderdialogctrl.html#getselectednodeids" class="tsd-kind-icon">get<wbr>Selected<wbr>Node<wbr>Ids</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#gettypename" class="tsd-kind-icon">get<wbr>Type<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#hide" class="tsd-kind-icon">hide</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#listeners" class="tsd-kind-icon">listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="relfinderdialogctrl.html#onbindelement" class="tsd-kind-icon">on<wbr>Bind<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#oncreate" class="tsd-kind-icon">on<wbr>Create</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="relfinderdialogctrl.html#oncreateui" class="tsd-kind-icon">on<wbr>CreateUI</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#ondestroy" class="tsd-kind-icon">on<wbr>Destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinderdialogctrl.html#onresize" class="tsd-kind-icon">on<wbr>Resize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="relfinderdialogctrl.html#once" class="tsd-kind-icon">once</a></li>
@@ -144,7 +147,7 @@
 								<p>Inherited from UIControl.__constructor</p>
 								<p>Overrides Control.__constructor</p>
 								<ul>
-									<li>Defined in control/Control.ts:38</li>
+									<li>Defined in control/Control.ts:42</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="relfinderdialogctrl.html" class="tsd-signature-type">RelFinderDialogCtrl</a></h4>
@@ -161,7 +164,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from Control._disabled</p>
 						<ul>
-							<li>Defined in control/Control.ts:7</li>
+							<li>Defined in control/Control.ts:6</li>
 						</ul>
 					</aside>
 				</section>
@@ -172,7 +175,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from UIControl._htmlContainer</p>
 						<ul>
-							<li>Defined in control/Control.ts:37</li>
+							<li>Defined in control/Control.ts:41</li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +186,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from UIControl._position</p>
 						<ul>
-							<li>Defined in control/Control.ts:38</li>
+							<li>Defined in control/Control.ts:42</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -272,6 +275,54 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="bindelement" class="tsd-anchor"></a>
+					<h3>bind<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">bind<wbr>Element<span class="tsd-signature-symbol">(</span>htmlContainer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, frame<span class="tsd-signature-symbol">: </span><a href="mainframe.html" class="tsd-signature-type">MainFrame</a>, args<span class="tsd-signature-symbol">: </span><a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from UIControl.bindElement</p>
+								<ul>
+									<li>Defined in control/Control.ts:51</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>htmlContainer: <span class="tsd-signature-type">HTMLElement</span></h5>
+								</li>
+								<li>
+									<h5>frame: <a href="mainframe.html" class="tsd-signature-type">MainFrame</a></h5>
+								</li>
+								<li>
+									<h5>args: <a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="createcontainerifabsent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create<wbr>Container<wbr>IfAbsent</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Container<wbr>IfAbsent<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from UIControl.createContainerIfAbsent</p>
+								<ul>
+									<li>Defined in control/Control.ts:56</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="disable" class="tsd-anchor"></a>
 					<h3>disable</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -282,7 +333,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Control.disable</p>
 								<ul>
-									<li>Defined in control/Control.ts:22</li>
+									<li>Defined in control/Control.ts:26</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -328,7 +379,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Control.enable</p>
 								<ul>
-									<li>Defined in control/Control.ts:18</li>
+									<li>Defined in control/Control.ts:22</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -383,10 +434,28 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/control/RelFinderDialogCtrl.ts#L93">control/RelFinderDialogCtrl.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/control/RelFinderDialogCtrl.ts#L50">control/RelFinderDialogCtrl.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="gettypename" class="tsd-anchor"></a>
+					<h3>get<wbr>Type<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Type<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from Control.getTypeName</p>
+								<ul>
+									<li>Defined in control/Control.ts:8</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -401,7 +470,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.hide</p>
 								<ul>
-									<li>Defined in control/Control.ts:64</li>
+									<li>Defined in control/Control.ts:130</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -504,6 +573,36 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="onbindelement" class="tsd-anchor"></a>
+					<h3>on<wbr>Bind<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Bind<wbr>Element<span class="tsd-signature-symbol">(</span>htmlContainer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, frame<span class="tsd-signature-symbol">: </span><a href="mainframe.html" class="tsd-signature-type">MainFrame</a>, args<span class="tsd-signature-symbol">: </span><a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides UIControl.onBindElement</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/control/RelFinderDialogCtrl.ts#L10">control/RelFinderDialogCtrl.ts:10</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>htmlContainer: <span class="tsd-signature-type">HTMLElement</span></h5>
+								</li>
+								<li>
+									<h5>frame: <a href="mainframe.html" class="tsd-signature-type">MainFrame</a></h5>
+								</li>
+								<li>
+									<h5>args: <a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="oncreate" class="tsd-anchor"></a>
 					<h3>on<wbr>Create</h3>
@@ -516,38 +615,11 @@
 								<p>Inherited from UIControl.onCreate</p>
 								<p>Overrides Control.onCreate</p>
 								<ul>
-									<li>Defined in control/Control.ts:46</li>
+									<li>Defined in control/Control.ts:60</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>args: <a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-					<a name="oncreateui" class="tsd-anchor"></a>
-					<h3>on<wbr>CreateUI</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>CreateUI<span class="tsd-signature-symbol">(</span>htmlContainer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span>, args<span class="tsd-signature-symbol">: </span><a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides UIControl.onCreateUI</p>
-								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/control/RelFinderDialogCtrl.ts#L12">control/RelFinderDialogCtrl.ts:12</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>htmlContainer: <span class="tsd-signature-type">HTMLElement</span></h5>
-								</li>
 								<li>
 									<h5>args: <a href="../interfaces/event_args_frame.html" class="tsd-signature-type">EVENT_ARGS_FRAME</a></h5>
 								</li>
@@ -568,7 +640,7 @@
 								<p>Inherited from UIControl.onDestroy</p>
 								<p>Overrides Control.onDestroy</p>
 								<ul>
-									<li>Defined in control/Control.ts:89</li>
+									<li>Defined in control/Control.ts:155</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -592,7 +664,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.onResize</p>
 								<ul>
-									<li>Defined in control/Control.ts:68</li>
+									<li>Defined in control/Control.ts:134</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -849,7 +921,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/3aa4f25/src/main/typescript/control/RelFinderDialogCtrl.ts#L104">control/RelFinderDialogCtrl.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/13ef91e/src/main/typescript/control/RelFinderDialogCtrl.ts#L61">control/RelFinderDialogCtrl.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -898,7 +970,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.setPosition</p>
 								<ul>
-									<li>Defined in control/Control.ts:60</li>
+									<li>Defined in control/Control.ts:126</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -943,7 +1015,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.show</p>
 								<ul>
-									<li>Defined in control/Control.ts:56</li>
+									<li>Defined in control/Control.ts:122</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1013,6 +1085,12 @@
 								<a href="relfinderdialogctrl.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="relfinderdialogctrl.html#bindelement" class="tsd-kind-icon">bind<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="relfinderdialogctrl.html#createcontainerifabsent" class="tsd-kind-icon">create<wbr>Container<wbr>IfAbsent</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinderdialogctrl.html#disable" class="tsd-kind-icon">disable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
@@ -1031,6 +1109,9 @@
 								<a href="relfinderdialogctrl.html#getselectednodeids" class="tsd-kind-icon">get<wbr>Selected<wbr>Node<wbr>Ids</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="relfinderdialogctrl.html#gettypename" class="tsd-kind-icon">get<wbr>Type<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinderdialogctrl.html#hide" class="tsd-kind-icon">hide</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
@@ -1042,11 +1123,11 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="relfinderdialogctrl.html#on" class="tsd-kind-icon">on</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="relfinderdialogctrl.html#onbindelement" class="tsd-kind-icon">on<wbr>Bind<wbr>Element</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="relfinderdialogctrl.html#oncreate" class="tsd-kind-icon">on<wbr>Create</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
-								<a href="relfinderdialogctrl.html#oncreateui" class="tsd-kind-icon">on<wbr>CreateUI</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="relfinderdialogctrl.html#ondestroy" class="tsd-kind-icon">on<wbr>Destroy</a>
