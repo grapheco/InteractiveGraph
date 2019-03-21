@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>GraphNavigator</title>
-    <script type="text/javascript" src="../../../build/interactive-graph.js"></script>
-    <link type="text/css" rel="stylesheet" href="../../../build/interactive-graph.css">
+    <script type="text/javascript" src="./lib/interactive-graph-0.1.0/interactive-graph.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="./lib/interactive-graph-0.1.0/interactive-graph.min.css">
     <script src="./lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="./lib/jquery-3.2.1/jquery-ui.css">
     <script src="./lib/jquery-3.2.1/jquery-ui.js"></script>
@@ -24,6 +24,19 @@
 </head>
 
 <body>
+<<<<<<< HEAD
+<div style="height:100%">
+    <div id="graphArea"></div>
+</div>
+
+<script type="text/javascript">
+    igraph.i18n.setLanguage("chs");
+    var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
+    app.loadGson("honglou2_narrow.json", {}, function(){
+    });
+    //app.connect("http://localhost:9999/graphserver/connector-bolt");
+</script>
+=======
     <div style="height:100%">
         <div id="graphArea"></div>
     </div>
@@ -58,6 +71,7 @@
         app.loadGson("honglou2.json");
         //app.connect("http://localhost:9999/graphserver/connector-bolt");
     </script>
+>>>>>>> a3b02d2fe126668fe8147958adfebf6a672edaef
 </body>
 
 </html>
