@@ -101,6 +101,13 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addButton({
+            icon: "fa fa-terminal",
+            checked: true,
+            tooltip: "show status bar",
+            click: (checked: boolean) => { app.toggleStatusBar(checked); }
+        });
+
+        toolbar.addButton({
             icon: "fa fa-info-circle",
             checked: true,
             tooltip: "show info",
@@ -196,6 +203,15 @@ export class GraphNavigator extends BaseApp {
         }
         else {
             this._searchBar.hide();
+        }
+    }
+
+    private toggleStatusBar(checked: boolean) {
+        if (checked) {
+            this._statusBar.show();
+        }
+        else {
+            this._statusBar.hide();
         }
     }
 
