@@ -39,10 +39,5 @@ export class GraphExplorer extends BaseApp {
             tooltip: "connect remote IGP server",
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
-
-        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            super.clearScreen();
-            expansion.clear();
-        });
     }
 }

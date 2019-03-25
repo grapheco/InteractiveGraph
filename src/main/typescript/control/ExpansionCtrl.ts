@@ -41,6 +41,10 @@ export class ExpansionCtrl extends BGControl {
         this._frame = frame;
         var thisCtrl = this;
 
+        thisCtrl.on(FrameEventName.FRAME_CLEAR_ALL_FLAGS, function (args) {
+            thisCtrl.clear();
+        });
+
         frame.on(FrameEventName.NETWORK_AFTER_DRAWING, function (args: EVENT_ARGS_FRAME_DRAWING) {
             //draw unexpanded nodes
             var ctx = args.context2d;

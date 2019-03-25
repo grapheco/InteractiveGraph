@@ -37,6 +37,11 @@ export class HighlightCtrl extends BGControl {
     onCreate(args: EVENT_ARGS_FRAME) {
         var thisCtrl = this;
         var frame = args.mainFrame;
+
+        thisCtrl.on(FrameEventName.FRAME_CLEAR_ALL_FLAGS, function (args) {
+            thisCtrl.clear();
+        });
+
         frame.on(FrameEventName.NETWORK_BEFORE_DRAWING, function (args: EVENT_ARGS_FRAME_DRAWING) {
             var ctx = args.context2d;
             ctx.save();
@@ -46,7 +51,7 @@ export class HighlightCtrl extends BGControl {
                     var nodePositions: any = args.network.getPositions([nodeId]);
 
                     var node: any = frame.getNodeById(nodeId);
-                    if (!node.hidden) {
+                    if (node != null && !node.hidden) {
                         var pos = nodePositions[nodeId];
                         var box = args.network.getBoundingBox(nodeId);
 

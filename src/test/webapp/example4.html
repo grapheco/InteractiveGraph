@@ -24,57 +24,62 @@
 </head>
 
 <body>
-<div style="height:100%">
-    <div id="graphArea"></div>
-</div>
-<!--all UI controls-->
-<div>
-    <!--toolbar-->
-    <div class="toolbarPanel igraph-float" igraph-control-role="ToolbarCtrl" igraph-float-position="B:-6,0">
-        <div class="toolbar"></div>
+    <div style="height:100%">
+        <div id="graphArea"></div>
     </div>
-    <!--info box-->
-    <div class="infoPanel igraph-float" igraph-control-role="InfoBoxCtrl" igraph-float-position="A:10,80">
-        <div>
-            <div class="infoPanel1"></div>
-            <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
+    <!--all UI controls-->
+    <div>
+        <!--toolbar-->
+        <div class="toolbarPanel igraph-dockable igraph-draggable" igraph-control-role="ToolbarCtrl"
+            igraph-dock-position="B:-6,0">
+            <div class="toolbar"></div>
         </div>
-        <div class="infoBox"></div>
-    </div>
-    <!--search box-->
-    <div class="searchPanel igraph-float" igraph-control-role="SearchBoxCtrl" igraph-float-position="A:10,20">
-        <div class="searchPanel1">
-            <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
+        <!--info box-->
+        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,80">
+            <div>
+                <div class="infoPanel1"></div>
+                <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
+            </div>
+            <div class="infoBox"></div>
         </div>
-        <div class="searchPanel2">
+        <!--search box-->
+        <div class="searchPanel igraph-dockable igraph-draggable" igraph-control-role="SearchBoxCtrl"
+            igraph-dock-position="A:10,20">
+            <div class="searchPanel1">
+                <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
+            </div>
+            <div class="searchPanel2">
                 <span align="center" class="fa fa-search fa-lg"></i>
+            </div>
+        </div>
+        <!--status bar-->
+        <div class="statusPanel igraph-dockable" igraph-control-role="StatusBarCtrl" igraph-dock-position="C:-100,0">
+            <div class="statusBar"></div>
         </div>
     </div>
-</div>
-<script type="text/javascript">
-    igraph.i18n.setLanguage("chs");
-    var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
-    app.loadGson("honglou2_narrow.json", {
-        "onGetNodeDescription": function (node) {
-            var description = "<p align=center>";
-            if (node.image !== undefined) {
-                description += "<img src='" + node.image + "' width=150/><br>";
-            }
-            description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
-            description += "</p>";
-            if (node.info !== undefined) {
-                description += "<p align=left>" + node.info + "</p>";
-            } else {
-                if (node.title !== undefined)
-                    description += "<p align=left>" + node.title + "</p>";
-            }
+    <script type="text/javascript">
+        igraph.i18n.setLanguage("chs");
+        var app = new igraph.GraphNavigator(document.getElementById('graphArea'));
+        app.loadGson("honglou2_narrow.json", {
+            "onGetNodeDescription": function (node) {
+                var description = "<p align=center>";
+                if (node.image !== undefined) {
+                    description += "<img src='" + node.image + "' width=150/><br>";
+                }
+                description += "<b>" + node.label + "</b>" + "[" + node.id + "]";
+                description += "</p>";
+                if (node.info !== undefined) {
+                    description += "<p align=left>" + node.info + "</p>";
+                } else {
+                    if (node.title !== undefined)
+                        description += "<p align=left>" + node.title + "</p>";
+                }
 
-            return description;
-        }
-    }, function(){
-    });
-    //app.connect("http://localhost:9999/graphserver/connector-bolt");
-</script>
+                return description;
+            }
+        }, function () {});
+        //app.connect("http://localhost:9999/graphserver/connector-bolt");
+    </script>
 </body>
 
 </html>

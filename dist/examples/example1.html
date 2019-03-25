@@ -30,11 +30,12 @@
     <!--all UI controls-->
     <div>
         <!--toolbar-->
-        <div class="toolbarPanel igraph-float" igraph-control-role="ToolbarCtrl" igraph-float-position="B:-6,0">
+        <div class="toolbarPanel igraph-dockable igraph-draggable" igraph-control-role="ToolbarCtrl"
+            igraph-dock-position="B:-6,0">
             <div class="toolbar"></div>
         </div>
         <!--info box-->
-        <div class="infoPanel igraph-float" igraph-control-role="InfoBoxCtrl" igraph-float-position="A:10,80">
+        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,80">
             <div>
                 <div class="infoPanel1"></div>
                 <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
@@ -42,13 +43,18 @@
             <div class="infoBox"></div>
         </div>
         <!--search box-->
-        <div class="searchPanel igraph-float" igraph-control-role="SearchBoxCtrl" igraph-float-position="A:10,20">
+        <div class="searchPanel igraph-dockable igraph-draggable" igraph-control-role="SearchBoxCtrl"
+            igraph-dock-position="A:10,20">
             <div class="searchPanel1">
                 <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
             </div>
             <div class="searchPanel2">
-                <span align="center" class="fa fa-search fa-lg"/>
+                <span align="center" class="fa fa-search fa-lg" />
             </div>
+        </div>
+        <!--status bar-->
+        <div class="statusPanel igraph-dockable" igraph-control-role="StatusBarCtrl" igraph-dock-position="C:-100,0">
+            <div class="statusBar"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -71,7 +77,7 @@
 
                 return description;
             }
-        });
+        }, function () {});
         //app.connect("http://localhost:9999/graphserver/connector-bolt");
     </script>
 </body>

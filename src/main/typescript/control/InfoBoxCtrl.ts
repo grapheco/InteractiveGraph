@@ -17,6 +17,11 @@ export class InfoBoxCtrl extends UIControl {
         });
 
         var htmlInfoBox = $('.infoBox', htmlContainer);
+
+        this.on(FrameEventName.FRAME_CLEAR_ALL_FLAGS, function (args) {
+            ctrl.hide();
+        });
+
         //show details of selected node
         //DANGER!!!
         frame.off(FrameEventName.NETWORK_CLICK);
@@ -25,7 +30,6 @@ export class InfoBoxCtrl extends UIControl {
                 if (!ctrl._disabled) {
                     var nodeIds = args.nodes;
                     if (nodeIds.length > 0) {
-                        $(htmlInfoBox).empty();
                         frame.fire(FrameEventName.SHOW_INFO, {
                             nodes: nodeIds,
                             htmlInfoBox: htmlInfoBox

@@ -48,12 +48,6 @@ export class RelFinder extends BaseApp {
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
 
-        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
-            super.clearScreen();
-            hilight.clear();
-            this._relfinderDlg.selectNodes([]);
-        });
-
         this._relfinderDlg = frame.getRequiredControlLike(new RelFinderDialogCtrl());
         this._relfinder = frame.addControl( new RelFinderCtrl());
 

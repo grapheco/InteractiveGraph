@@ -49,6 +49,10 @@ export class RelFinderDialogCtrl extends UIControl {
             btnStop.attr("disabled", "disabled");
             btnStart.removeAttr("disabled");
         })
+
+        this.on(FrameEventName.FRAME_CLEAR_ALL_FLAGS, function (args) {
+            this.selectNodes([]);
+        });
     }
 
     public getSelectedNodeIds(): string[] {

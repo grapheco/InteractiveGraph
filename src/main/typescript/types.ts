@@ -109,6 +109,12 @@ export interface EVENT_ARGS_FRAME_DRAWING extends EVENT_ARGS_FRAME {
     context2d: CanvasRenderingContext2D;
 }
 
+export interface EVENT_ARGS_GRAPH_LOADED extends EVENT_ARGS_FRAME {
+    nodes: object[];
+    edges: object[];
+    option: object;
+}
+
 export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeEdgeIds {
     previousSelection?: NodeEdgeIds;
 }
@@ -129,12 +135,14 @@ export interface EVENT_ARGS_RELFINDER extends EVENT_ARGS_FRAME {
 }
 
 export enum FrameEventName {
+    FRAME_CLEAR_ALL_FLAGS = "FRAME_CLEAR_ALL_FLAGS",
     THEME_CHANGED = "THEME_CHANGED",
     DESTROY_CONTROL = "DESTROY_CONTROL",
     REMOVE_CONTROL = "REMOVE_CONTROL",
     CREATE_CONTROL = "CREATE_CONTROL",
     ADD_CONTROL = "ADD_CONTROL",
     GRAPH_CONNECTED = "GRAPH_CONNECTED",
+    GRAPH_LOADED = "GRAPH_LOADED",
     FRAME_CREATED = "FRAME_CREATED",
     FOCUS_NODES = "FOCUS_NODES",
     INSERT_NODES = "INSERT_NODES",

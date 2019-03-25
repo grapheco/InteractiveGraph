@@ -4,10 +4,12 @@ import { LocalGraph } from '../service/local';
 import { RemoteGraph } from '../service/remote';
 import { Theme } from '../Theme';
 import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, FrameEventName, FRAME_OPTIONS, GraphNode, NETWORK_OPTIONS } from "../types";
+import { SelectionCtrl } from "../control/SelectionCtrl";
 
 export abstract class BaseApp extends MainFrame {
     protected _toggleEdgeLabelHandlers;
     protected _messageBox: MessageBoxCtrl; //signleton message box
+    protected _selector: SelectionCtrl;
 
     protected constructor(htmlFrame: HTMLElement,
         initialOptions: FRAME_OPTIONS, extra?: object) {
@@ -19,9 +21,19 @@ export abstract class BaseApp extends MainFrame {
         };
 
         super.on(FrameEventName.FRAME_CREATED, this.onCreateFrame.bind(this));
+
         super.addDocumentControls($("[igraph-control-role]", document), extra);
-        this._messageBox = <any>super.addControl(new MessageBoxCtrl());
+        this._messageBox = super.addControl(new MessageBoxCtrl());
+        this._selector = super.addControl(new SelectionCtrl());
+
         super.fire(FrameEventName.FRAME_CREATED, extra || {});
+    }
+
+    public flagNodes(nodeIds: string[], flagOrNot: boolean) {
+        if (flagOrNot !== false)
+            this._selector.flagNodes(nodeIds);
+        else
+            this._selector.unflagNodes(nodeIds);
     }
 
     protected abstract onCreateFrame(args: EVENT_ARGS_FRAME);

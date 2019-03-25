@@ -58,28 +58,34 @@ export abstract class UIControl extends Control {
     public onCreate(args: EVENT_ARGS_FRAME) {
         if (this._htmlContainer == null) {
             var e = this._htmlContainer = this.createContainerIfAbsent();
-            $(e).addClass("htmlContainer").addClass("igraph-float").appendTo($(args.htmlMainFrame));
+            $(e).addClass("htmlContainer").addClass("igraph-dock").appendTo($(args.htmlMainFrame));
             console.log("created default control: " + this.getTypeName());
             this.bindElement(e, args.mainFrame, args);
         }
 
         var hc = this._htmlContainer;
 
-        //is float?
-        if ($(hc).hasClass("igraph-float")) {
+        //is draggable?
+        if($(hc).hasClass("igraph-draggable")){
             $(hc).draggable();
+        }
+
+        //is dockable?
+        if ($(hc).hasClass("igraph-dockable")) {
             this.on(FrameEventName.FRAME_RESIZE, this.onResize.bind(this));
+            $(hc).css("position", "absolute");
 
             //set offset
             //A|B|C|D:10,10
-            var pos = $(hc).attr("igraph-float-position");
+            var pos = $(hc).attr("igraph-dock-position");
+
             if (pos == undefined) {
                 pos = "A:0,0";
             }
 
             var s1 = pos.split(":");
             if (s1.length != 2) {
-                throw new Error("wrong igraph-float-position: " + pos);
+                throw new Error("wrong igraph-dock-position: " + pos);
             }
             var corner = s1[0].toUpperCase().charAt(0);
             var offset = s1[1].split(",").map((x: string) => {
@@ -87,7 +93,7 @@ export abstract class UIControl extends Control {
             });
 
             if (offset.length != 2) {
-                throw new Error("wrong igraph-float-position: " + pos);
+                throw new Error("wrong igraph-dock-position: " + pos);
             }
 
             this.setPosition((frameRect: RECT, ctrlRect: RECT) => {
@@ -102,11 +108,11 @@ export abstract class UIControl extends Control {
                     };
                     case 'C': return {
                         x: frameRect.right + offset[0] - (ctrlRect.right - ctrlRect.left),
-                        y: frameRect.top + offset[1] - (ctrlRect.bottom - ctrlRect.top)
+                        y: frameRect.bottom + offset[1] - (ctrlRect.bottom - ctrlRect.top)
                     };
                     case 'D': return {
                         x: frameRect.left + offset[0],
-                        y: frameRect.top + offset[1] - (ctrlRect.bottom - ctrlRect.top)
+                        y: frameRect.bottom + offset[1] - (ctrlRect.bottom - ctrlRect.top)
                     };
                     default:
                         throw new Error("invalid alignment corner: " + corner);

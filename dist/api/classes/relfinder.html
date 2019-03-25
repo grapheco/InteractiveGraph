@@ -90,13 +90,16 @@
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#_ctrls" class="tsd-kind-icon">_ctrls</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#_messagebox" class="tsd-kind-icon">_message<wbr>Box</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#_selector" class="tsd-kind-icon">_selector</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#_toggleedgelabelhandlers" class="tsd-kind-icon">_toggle<wbr>Edge<wbr>Label<wbr>Handlers</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#_notifycontrols" class="tsd-kind-icon">_notify<wbr>Controls</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="relfinder.html#addcontrol" class="tsd-kind-icon">add<wbr>Control</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="relfinder.html#adddocumentcontrols" class="tsd-kind-icon">add<wbr>Document<wbr>Controls</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#clearscreen" class="tsd-kind-icon">clear<wbr>Screen</a></li>
@@ -106,6 +109,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#fire" class="tsd-kind-icon">fire</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#fits" class="tsd-kind-icon">fits</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#flagnodes" class="tsd-kind-icon">flag<wbr>Nodes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#focusnodes" class="tsd-kind-icon">focus<wbr>Nodes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#getgraphservice" class="tsd-kind-icon">get<wbr>Graph<wbr>Service</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#getnodebyid" class="tsd-kind-icon">get<wbr>Node<wbr>ById</a></li>
@@ -117,6 +121,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#loadgraph" class="tsd-kind-icon">load<wbr>Graph</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#loadgson" class="tsd-kind-icon">load<wbr>Gson</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#lockscale" class="tsd-kind-icon">lock<wbr>Scale</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#notifyclearall" class="tsd-kind-icon">notify<wbr>Clear<wbr>All</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#off" class="tsd-kind-icon">off</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="relfinder.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="relfinder.html#oncreateframe" class="tsd-kind-icon">on<wbr>Create<wbr>Frame</a></li>
@@ -163,7 +168,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L13">app/relfinder.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L13">app/relfinder.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -183,13 +188,35 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="_ctrls" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _ctrls</h3>
+					<div class="tsd-signature tsd-kind-icon">_ctrls<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Control</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map&lt;string, Control&gt;()</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#_ctrls">_ctrls</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L44">mainframe.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_messagebox" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _message<wbr>Box</h3>
 					<div class="tsd-signature tsd-kind-icon">_message<wbr>Box<span class="tsd-signature-symbol">:</span> <a href="messageboxctrl.html" class="tsd-signature-type">MessageBoxCtrl</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#_messagebox">_messageBox</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L10">app/app.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L11">app/app.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="_selector" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _selector</h3>
+					<div class="tsd-signature tsd-kind-icon">_selector<span class="tsd-signature-symbol">:</span> <a href="selectionctrl.html" class="tsd-signature-type">SelectionCtrl</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#_selector">_selector</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L12">app/app.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -200,13 +227,40 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#_toggleedgelabelhandlers">_toggleEdgeLabelHandlers</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L9">app/app.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L10">app/app.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="_notifycontrols" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _notify<wbr>Controls</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">_notify<wbr>Controls<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, extra<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#_notifycontrols">_notifyControls</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L507">mainframe.ts:507</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> extra: <span class="tsd-signature-type">object</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 					<a name="addcontrol" class="tsd-anchor"></a>
 					<h3>add<wbr>Control</h3>
@@ -218,7 +272,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#addcontrol">addControl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L120">mainframe.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L127">mainframe.ts:127</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -248,7 +302,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#adddocumentcontrols">addDocumentControls</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L127">mainframe.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L134">mainframe.ts:134</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -275,7 +329,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#clearscreen">clearScreen</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L235">mainframe.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L242">mainframe.ts:242</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -293,7 +347,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#connect">connect</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L33">app/app.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L45">app/app.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -320,7 +374,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#connectservice">connectService</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L140">mainframe.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L147">mainframe.ts:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -347,7 +401,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#deletenodes">deleteNodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L312">mainframe.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L325">mainframe.ts:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -397,7 +451,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#emit">emit</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L69">mainframe.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L76">mainframe.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -424,7 +478,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#fire">fire</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L73">mainframe.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L80">mainframe.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -451,7 +505,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#fits">fits</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L176">mainframe.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L183">mainframe.ts:183</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -461,6 +515,33 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> animation: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="flagnodes" class="tsd-anchor"></a>
+					<h3>flag<wbr>Nodes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">flag<wbr>Nodes<span class="tsd-signature-symbol">(</span>nodeIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, flagOrNot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#flagnodes">flagNodes</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L32">app/app.ts:32</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>nodeIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>flagOrNot: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -478,7 +559,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#focusnodes">focusNodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L327">mainframe.ts:327</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L340">mainframe.ts:340</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -502,7 +583,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#getgraphservice">getGraphService</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L93">mainframe.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L100">mainframe.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/graphservice.html" class="tsd-signature-type">GraphService</a></h4>
@@ -520,7 +601,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#getnodebyid">getNodeById</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L341">mainframe.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L354">mainframe.ts:354</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -544,7 +625,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#getrequiredcontrol">getRequiredControl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L109">mainframe.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L116">mainframe.ts:116</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -568,7 +649,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#getrequiredcontrollike">getRequiredControlLike</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L116">mainframe.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L123">mainframe.ts:123</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -598,7 +679,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#getscreendata">getScreenData</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L97">mainframe.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L104">mainframe.ts:104</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/nodeedgeset.html" class="tsd-signature-type">NodeEdgeSet</a></h4>
@@ -616,7 +697,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#insertedges">insertEdges</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L334">mainframe.ts:334</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L347">mainframe.ts:347</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -640,7 +721,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#insertnodes">insertNodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L288">mainframe.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L301">mainframe.ts:301</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -673,7 +754,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#loadgraph">loadGraph</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L244">mainframe.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L251">mainframe.ts:251</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,7 +800,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#loadgson">loadGson</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L29">app/app.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L41">app/app.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -749,7 +830,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#lockscale">lockScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L279">mainframe.ts:279</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L292">mainframe.ts:292</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -766,6 +847,24 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="notifyclearall" class="tsd-anchor"></a>
+					<h3>notify<wbr>Clear<wbr>All</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">notify<wbr>Clear<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#notifyclearall">notifyClearAll</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L514">mainframe.ts:514</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="off" class="tsd-anchor"></a>
 					<h3>off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -776,7 +875,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#off">off</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L81">mainframe.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L88">mainframe.ts:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -821,7 +920,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#on">on</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L77">mainframe.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L84">mainframe.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -866,7 +965,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#oncreateframe">onCreateFrame</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L25">app/relfinder.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L25">app/relfinder.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -890,7 +989,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#pickup">pickup</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L143">app/relfinder.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L137">app/relfinder.ts:137</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -935,7 +1034,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#placenodes">placeNodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L345">mainframe.ts:345</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L358">mainframe.ts:358</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -959,7 +1058,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#redraw">redraw</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L180">mainframe.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L187">mainframe.ts:187</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -977,7 +1076,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#removecontrollike">removeControlLike</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L101">mainframe.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L108">mainframe.ts:108</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1007,7 +1106,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#scaleto">scaleTo</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L172">mainframe.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L179">mainframe.ts:179</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1031,7 +1130,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#search">search</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L184">mainframe.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L191">mainframe.ts:191</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1076,7 +1175,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#showgraph">showGraph</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L37">app/app.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L49">app/app.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1115,7 +1214,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#shownodesofcategory">showNodesOfCategory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L215">mainframe.ts:215</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L222">mainframe.ts:222</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1156,7 +1255,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L129">app/relfinder.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L123">app/relfinder.ts:123</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1182,7 +1281,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L87">app/relfinder.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L81">app/relfinder.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1208,7 +1307,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/relfinder.ts#L139">app/relfinder.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/relfinder.ts#L133">app/relfinder.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1226,7 +1325,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggledraggable">toggleDraggable</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L144">app/app.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L156">app/app.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1250,7 +1349,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggleedgecolor">toggleEdgeColor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L127">app/app.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L139">app/app.ts:139</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1274,7 +1373,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggleedges">toggleEdges</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L67">app/app.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L79">app/app.ts:79</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1298,7 +1397,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#togglefaces">toggleFaces</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L73">app/app.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L85">app/app.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1322,7 +1421,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#togglenavigationbuttons">toggleNavigationButtons</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L85">app/app.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L97">app/app.ts:97</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1346,7 +1445,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#togglenodeborder">toggleNodeBorder</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L91">app/app.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L103">app/app.ts:103</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1370,7 +1469,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggleshadow">toggleShadow</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L79">app/app.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L91">app/app.ts:91</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1394,7 +1493,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggleshowedgelabelalways">toggleShowEdgeLabelAlways</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L97">app/app.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L109">app/app.ts:109</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1418,7 +1517,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#toggleweights">toggleWeights</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L61">app/app.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L73">app/app.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1442,7 +1541,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#updateedges">updateEdges</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L211">mainframe.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L218">mainframe.ts:218</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1466,7 +1565,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#updategraph">updateGraph</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L188">mainframe.ts:188</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L195">mainframe.ts:195</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1505,7 +1604,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#updatenetworkoptions">updateNetworkOptions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L161">mainframe.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L168">mainframe.ts:168</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1529,7 +1628,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#updatenodes">updateNodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/mainframe.ts#L207">mainframe.ts:207</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/mainframe.ts#L214">mainframe.ts:214</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1554,7 +1653,7 @@
 								<p>Inherited from <a href="baseapp.html">BaseApp</a>.<a href="baseapp.html#updatetheme">updateTheme</a></p>
 								<p>Overrides <a href="mainframe.html">MainFrame</a>.<a href="mainframe.html#updatetheme">updateTheme</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/80e9732/src/main/typescript/app/app.ts#L170">app/app.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/2414294/src/main/typescript/app/app.ts#L182">app/app.ts:182</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1588,10 +1687,19 @@
 								<a href="relfinder.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="relfinder.html#_ctrls" class="tsd-kind-icon">_ctrls</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="relfinder.html#_messagebox" class="tsd-kind-icon">_message<wbr>Box</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="relfinder.html#_selector" class="tsd-kind-icon">_selector</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="relfinder.html#_toggleedgelabelhandlers" class="tsd-kind-icon">_toggle<wbr>Edge<wbr>Label<wbr>Handlers</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="relfinder.html#_notifycontrols" class="tsd-kind-icon">_notify<wbr>Controls</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 								<a href="relfinder.html#addcontrol" class="tsd-kind-icon">add<wbr>Control</a>
@@ -1619,6 +1727,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinder.html#fits" class="tsd-kind-icon">fits</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="relfinder.html#flagnodes" class="tsd-kind-icon">flag<wbr>Nodes</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinder.html#focusnodes" class="tsd-kind-icon">focus<wbr>Nodes</a>
@@ -1652,6 +1763,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinder.html#lockscale" class="tsd-kind-icon">lock<wbr>Scale</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="relfinder.html#notifyclearall" class="tsd-kind-icon">notify<wbr>Clear<wbr>All</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="relfinder.html#off" class="tsd-kind-icon">off</a>

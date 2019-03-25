@@ -6,12 +6,14 @@ import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
 import { Themes } from "../theme";
-import { CommunityData, EVENT_ARGS_FRAME, FrameEventName } from "../types";
+import { CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED } from "../types";
 import { BaseApp } from './app';
+import { StatusBarCtrl } from '../control/StatusBarCtrl';
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBoxCtrl;
     private _infoBox: InfoBoxCtrl;
+    private _statusBar: StatusBarCtrl;
 
     public constructor(htmlFrame: HTMLElement) {
         super(htmlFrame, {
@@ -28,6 +30,7 @@ export class GraphNavigator extends BaseApp {
         var frame = args.mainFrame;
         this._searchBar = frame.getRequiredControlLike(new SearchBoxCtrl());
         this._infoBox = frame.getRequiredControlLike(new InfoBoxCtrl());
+        this._statusBar = frame.getRequiredControlLike(new StatusBarCtrl());
         var connect = frame.addControl(new ConnectCtrl());
         var hilight = frame.addControl(new HighlightCtrl());
         var showCommunitiesCtrl = frame.addControl(new CommunityCtrl());
@@ -154,6 +157,10 @@ export class GraphNavigator extends BaseApp {
                     });
                 })
             })
+        });
+
+        super.on(FrameEventName.GRAPH_LOADED, (args: EVENT_ARGS_GRAPH_LOADED) => {
+            app._statusBar.showMessage("nodes: " + args.nodes.length + ", edges: " + args.edges.length);
         });
 
         this.toggleShowEdgeLabelAlways(false);

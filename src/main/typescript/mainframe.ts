@@ -15,6 +15,7 @@ import { InfoBoxCtrl } from "./control/InfoBoxCtrl";
 import { RelFinderDialogCtrl } from "./control/RelFinderDialogCtrl";
 import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
 import { SearchBoxCtrl } from "./control/SearchBoxCtrl";
+import { StatusBarCtrl } from "./control/StatusBarCtrl";
 
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
@@ -40,7 +41,7 @@ export abstract class MainFrame {
     };
 
     private _autoCompletionItemLimit = 30;
-    private _ctrls: Map<string, Control> = new Map<string, Control>();
+    protected _ctrls: Map<string, Control> = new Map<string, Control>();
     private _showGraphOptions: FRAME_OPTIONS = {};
     private _theme: Theme;
 
@@ -60,10 +61,16 @@ export abstract class MainFrame {
             this.getGraphService().requestGetNodeInfos(args.nodes,
                 function (nodeInfos) {
                     var htmlInfoBox = args.htmlInfoBox;
+                    $(htmlInfoBox).empty(); //must clear() first, else doubleclick will get double infos
                     $(htmlInfoBox).append(nodeInfos[0]);
                 });
         }
         );
+
+        this.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
+            this.clearScreen();
+            this.notifyClearAll();
+        });
     }
 
     public emit(event: string, args: object) {
@@ -245,8 +252,14 @@ export abstract class MainFrame {
         var frame = this;
         this._graphService.requestLoadGraph(
             function (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) {
-                frame._rawData = { nodes: nodes, edges: edges };
 
+                frame.fire(FrameEventName.GRAPH_LOADED, {
+                    nodes: nodes,
+                    edges: edges,
+                    option: option
+                });
+
+                frame._rawData = { nodes: nodes, edges: edges };
                 frame._screenData.nodes = new GraphNodeSet(frame._rawData.nodes.map((x) => {
                     return frame._formatNode(x);
                 })
@@ -375,7 +388,6 @@ export abstract class MainFrame {
     }
 
     private _bindNetworkEvents() {
-        var browser: MainFrame = this;
         var eventsMap = Utils.toMap({
             "click": FrameEventName.NETWORK_CLICK,
             "doubleClick": FrameEventName.NETWORK_DBLCLICK,
@@ -492,11 +504,15 @@ export abstract class MainFrame {
         });
     }
 
-    private _notifyControls(event: string, extra?: object) {
+    protected _notifyControls(event: string, extra?: object) {
         var args = this._composeEventArgs(extra);
         this._ctrls.forEach((ctrl: Control, name: string, map) => {
             ctrl.emit(event, args);
         });
+    }
+
+    public notifyClearAll() {
+        this._notifyControls(FrameEventName.FRAME_CLEAR_ALL_FLAGS, {});
     }
 
     private _createDefaultShowGraphOptions(): FRAME_OPTIONS {
@@ -603,6 +619,7 @@ export class ControlFactory {
         this.CONTROL_MAP[new RelFinderDialogCtrl().getTypeName()] = () => new RelFinderDialogCtrl();
         this.CONTROL_MAP[new MessageBoxCtrl().getTypeName()] = () => new MessageBoxCtrl();
         this.CONTROL_MAP[new SearchBoxCtrl().getTypeName()] = () => new SearchBoxCtrl();
+        this.CONTROL_MAP[new StatusBarCtrl().getTypeName()] = () => new StatusBarCtrl();
     }
 
     private _createControl(ctrlTypeName: string): UIControl {

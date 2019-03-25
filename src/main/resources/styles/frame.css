@@ -290,3 +290,24 @@ div.messageBox {
     color: black;
     padding: 20px 20px 20px 20px;
 }
+
+div.statusPanel {
+    width: 380px;
+    height: 60px;
+    background-color: rgba(200, 200, 200, 0.2);
+    overflow: hidden;
+}
+
+div.statusBar {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-overflow: clip;
+    text-align: center;
+    color: red;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow', sans-serif;
+    padding: 10px 10px 10px 10px;
+}
