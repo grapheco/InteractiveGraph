@@ -1,4 +1,4 @@
-感谢您关注本项目，欢迎点赞⬆︎
+最新版本&详细说明参见https://github.com/grapheco/InteractiveGraph
 
 <!-- vscode-markdown-toc -->
 * [快速开始(Quick Start)](#Quickstart)
