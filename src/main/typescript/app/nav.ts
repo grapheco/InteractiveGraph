@@ -156,6 +156,7 @@ export class GraphNavigator extends BaseApp {
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             frame.getGraphService().requestGetNodeCategories((map: object) => {
                 app._addCategoriesSelect(toolbar, map);
+                app._addCategoriesColorSelect(toolbar, map);
                 hilight.clear();
                 app._infoBox.hide();
                 frame.getGraphService().requestGetCommunityData((data: CommunityData) => {
@@ -242,6 +243,40 @@ export class GraphNavigator extends BaseApp {
                 .attr("for", "checkbox_" + key).text(map[key]);
         }
 
+        toolbar.addTool(span);
+    }
+
+    private _addCategoriesColorSelect(toolbar: ToolbarCtrl, map: object){
+        var app = this;
+        var span = document.getElementById("categories-color-select");
+        if (span != null)
+            span.remove();
+
+        span = document.createElement("span");
+        $(span).attr("id", "categories-color-select");
+        for (var key in map) {
+            var select = document.createElement("input");
+            var label = document.createElement("label");
+            $(label)
+                .appendTo($(span))
+                .attr("for", "colorselect_" + key).text(map[key]);
+            $(select).attr("id", "colorselect_" + key)
+                .appendTo($(span))
+                .attr("key", key)
+                .attr("type", "color")
+                .attr("value", "#FFFFFF")
+                .change(function () {
+                    let k = $(this).attr("key");
+                    let c = $(this).prop('value');
+                    console.log(k+"'s color changed to"+c);
+                    var options = {
+                        groups:{
+                            [k]:{color:c}
+                        }
+                    };
+                    app.updateNetworkOptions(options);
+                });
+        }
         toolbar.addTool(span);
     }
 
