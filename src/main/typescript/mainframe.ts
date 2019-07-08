@@ -16,6 +16,8 @@ import { RelFinderDialogCtrl } from "./control/RelFinderDialogCtrl";
 import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
 import { SearchBoxCtrl } from "./control/SearchBoxCtrl";
 import { StatusBarCtrl } from "./control/StatusBarCtrl";
+import * as vis from "vis";
+
 
 var CANVAS_PADDING: number = 80;
 var MAX_EDGES_COUNT = 5000;
@@ -48,7 +50,6 @@ export abstract class MainFrame {
     public constructor(htmlFrame: HTMLElement, showGraphOptions: FRAME_OPTIONS, theme?: Theme) {
         this._htmlFrame = htmlFrame;
 
-        this.updateTheme(theme);
         var showGraphOptions = showGraphOptions || {};
         this._showGraphOptions = Utils.deepExtend(this._createDefaultShowGraphOptions(), showGraphOptions);
         this._networkOptions = this._createDefaultNetworkOptions();
@@ -57,6 +58,7 @@ export abstract class MainFrame {
         this._bindNetworkEvents();
         this._bindControlEvents(FrameEventName.FRAME_RESIZE);
 
+        this.updateTheme(theme);
         this.on(FrameEventName.SHOW_INFO, (args: EVENT_ARGS_FRAME_SHOW_INFO) => {
             this.getGraphService().requestGetNodeInfos(args.nodes,
                 function (nodeInfos) {
@@ -153,15 +155,36 @@ export abstract class MainFrame {
         });
     }
 
-    public updateTheme(theme: Theme | Function) {
+    public updateTheme(theme: Theme | Function | any | String) {
         if (theme instanceof Function) {
             theme(this._theme);
+        }  else if (typeof theme == 'string') {
+            console.log(theme)
+            this._theme = Themes[theme]();
+        } else {
+            // this._theme = theme || Themes.DEFAULT();
+            this._theme = Themes.DEFAULT();
+            this._theme = <Theme>Utils.deepExtend(this._theme, theme);
+            console.log(this._theme)
         }
-        else {
-            this._theme = theme || Themes.DEFAULT();
-        }
-
         $(this._htmlFrame).css('background', this._theme.canvasBackground);
+        //update network option
+        let _temp={
+            nodes: this._theme.nodes,
+            edges: this._theme.edges,
+            groups: {}
+        };
+        if(this._theme.groups){
+            if(this._theme.groups.useSeqColors){
+                this._network['groups'].defaultGroups = this._theme.groups.SeqColors
+                this._network.redraw()
+            } else{
+                _temp.groups = this._theme.groups.custom
+            }
+        }
+        this._networkOptions = Utils.deepExtend(this._networkOptions, _temp);
+        this.updateNetworkOptions(this._networkOptions);
+
         this._notifyControls(FrameEventName.THEME_CHANGED, { theme: this._theme });
     }
 
@@ -542,46 +565,46 @@ export abstract class MainFrame {
             layout: {
                 improvedLayout: false
             },
-            nodes: {
-                borderWidth: 0,
-                shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
-                font: {
-                    size: 14,
-                    strokeWidth: 7
-                }
-            },
-            edges: {
-                width: 0.01,
-                font: {
-                    size: 11,
-                    color: 'green',
-                },
-                color: {
-                    //inherit: 'to',
-                    opacity: 0.4,
-                    //color: '#cccccc',
-                    highlight: '#ff0000',
-                    hover: '#ff0000',
-                },
-                selectionWidth: 0.05,
-                hoverWidth: 0.05,
-                arrows: {
-                    from: {},
-                    to: {
-                        enabled: true,
-                        scaleFactor: 0.5,
-                    }
-                },
-                smooth: {
-                    enabled: true,
-                    type: 'continuous',
-                    roundness: 0.5,
-                }
-            },
+            // nodes: {
+            //     borderWidth: 0,
+            //     shape: 'dot',
+            //     scaling: {
+            //         min: 10,
+            //         max: 30
+            //     },
+            //     font: {
+            //         size: 14,
+            //         strokeWidth: 7
+            //     }
+            // },
+            // edges: {
+            //     width: 0.01,
+            //     font: {
+            //         size: 11,
+            //         color: 'green',
+            //     },
+            //     color: {
+            //         //inherit: 'to',
+            //         opacity: 0.4,
+            //         //color: '#cccccc',
+            //         highlight: '#ff0000',
+            //         hover: '#ff0000',
+            //     },
+            //     selectionWidth: 0.05,
+            //     hoverWidth: 0.05,
+            //     arrows: {
+            //         from: {},
+            //         to: {
+            //             enabled: true,
+            //             scaleFactor: 0.5,
+            //         }
+            //     },
+            //     smooth: {
+            //         enabled: true,
+            //         type: 'continuous',
+            //         roundness: 0.5,
+            //     }
+            // },
             physics: {
                 stabilization: false,
                 solver: 'forceAtlas2Based',

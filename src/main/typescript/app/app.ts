@@ -12,8 +12,8 @@ export abstract class BaseApp extends MainFrame {
     protected _selector: SelectionCtrl;
 
     protected constructor(htmlFrame: HTMLElement,
-        initialOptions: FRAME_OPTIONS, extra?: object) {
-        super(htmlFrame, initialOptions);
+        initialOptions: FRAME_OPTIONS, extra?: object,theme?: Theme) {
+        super(htmlFrame, initialOptions, theme);
 
         this._toggleEdgeLabelHandlers = {
             onselect: this._toggleEdgeLabelOnSelect.bind(this),

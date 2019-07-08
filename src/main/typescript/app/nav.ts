@@ -5,17 +5,19 @@ import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
-import { Themes } from "../theme";
+import {Theme, Themes} from "../theme";
 import { CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED } from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
+import {Utils} from "../utils";
+
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBoxCtrl;
     private _infoBox: InfoBoxCtrl;
     private _statusBar: StatusBarCtrl;
 
-    public constructor(htmlFrame: HTMLElement) {
+    public constructor(htmlFrame: HTMLElement, theme?: Theme) {
         super(htmlFrame, {
             showLabels: true,
             showTitles: true,
@@ -23,7 +25,7 @@ export class GraphNavigator extends BaseApp {
             showDegrees: true,
             showEdges: true,
             showGroups: true
-        });
+        },null,theme);
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
@@ -269,12 +271,15 @@ export class GraphNavigator extends BaseApp {
                     let k = $(this).attr("key");
                     let c = $(this).prop('value');
                     console.log(k+"'s color changed to"+c);
-                    var options = {
-                        groups:{
-                            [k]:{color:c}
-                        }
-                    };
-                    app.updateNetworkOptions(options);
+                    app.updateNetworkOptions((o)=>{
+                        var o_append = {
+                            groups:{
+                                [k]:{color:c}
+                            }
+                        };
+                        o = Utils.deepExtend(o, o_append);
+                        return o;
+                    });
                 });
         }
         toolbar.addTool(span);
@@ -285,6 +290,7 @@ export class GraphNavigator extends BaseApp {
 
         $("<option></option>").val('DEFAULT').text("THEME_DEFAULT").appendTo($(select));
         $("<option></option>").val('BLACK').text("THEME_BLACK").appendTo($(select));
+        $("<option></option>").val('LIGHT').text("THEME_LIGHT").appendTo($(select));
         var app = this;
         $(select).change(function () {
             var value = <string>$(select).val();
