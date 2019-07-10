@@ -3,14 +3,23 @@ import { HighlightCtrl } from '../control/HighlightCtrl';
 import { RelFinderCtrl } from '../control/RelFinderCtrl';
 import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
-import { EVENT_ARGS_FRAME, EVENT_ARGS_RELFINDER, FrameEventName, GraphNode, NETWORK_OPTIONS } from '../types';
+import {
+    EVENT_ARGS_FRAME,
+    EVENT_ARGS_RELFINDER,
+    EVENT_ARGS_RELLIST,
+    FrameEventName,
+    GraphNode,
+    NETWORK_OPTIONS
+} from '../types';
 import { BaseApp } from './app';
+import {RelListCtrl} from "../control/RelListCtrl";
 
 export class RelFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
     private _dlgNoEnoughNodesSelected;
     private _dlgClearScreenAlert;
     private _relfinderDlg: RelFinderDialogCtrl;
+    private _rellist: RelListCtrl;
 
     public constructor(htmlFrame: HTMLElement, showDialog?: boolean) {
         super(htmlFrame, {
@@ -49,6 +58,7 @@ export class RelFinder extends BaseApp {
         });
 
         this._relfinderDlg = frame.getRequiredControlLike(new RelFinderDialogCtrl());
+        this._rellist = frame.getRequiredControlLike(new RelListCtrl());
         this._relfinder = frame.addControl( new RelFinderCtrl());
 
         frame.updateNetworkOptions(function (options: NETWORK_OPTIONS) {
@@ -59,6 +69,7 @@ export class RelFinder extends BaseApp {
 
         frame.on(FrameEventName.RELFINDER_START, (args: EVENT_ARGS_RELFINDER) => {
             app.startQueryWithPrompt(500, args.maxDepth);
+            app._rellist.emit(FrameEventName.RELFINDER_START, args);
         })
 
         frame.on(FrameEventName.RELFINDER_STOP, (args: EVENT_ARGS_RELFINDER) => {
@@ -71,6 +82,10 @@ export class RelFinder extends BaseApp {
 
         frame.on(FrameEventName.RELFINDER_STOPPED, (args: EVENT_ARGS_RELFINDER) => {
             app._relfinderDlg.emit(FrameEventName.RELFINDER_STOPPED, args);
+        })
+
+        frame.on(FrameEventName.RELLIST_PUT, (args:EVENT_ARGS_RELLIST)=>{
+            app._rellist.emit(FrameEventName.RELLIST_PUT, args);
         })
 
         this._dlgNoEnoughNodesSelected = $('<div title="No enough nodes"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>TWO nodes are required to start relation path discovery.</p></div>').appendTo($(args.htmlMainFrame)).hide();

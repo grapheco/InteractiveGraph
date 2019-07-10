@@ -17,6 +17,7 @@ import { MessageBoxCtrl } from "./control/MessageBoxCtrl";
 import { SearchBoxCtrl } from "./control/SearchBoxCtrl";
 import { StatusBarCtrl } from "./control/StatusBarCtrl";
 import * as vis from "vis";
+import {RelListCtrl} from "./control/RelListCtrl";
 
 
 var CANVAS_PADDING: number = 80;
@@ -367,6 +368,10 @@ export abstract class MainFrame {
         }
     }
 
+    public focusEdges(edgeIds: string[]): void{
+        this._network.selectEdges(edgeIds)
+    }
+
     public insertEdges(edges: any[]): void {
         var browser = this;
         this._screenData.edges.update(edges.map((edge) => {
@@ -643,6 +648,7 @@ export class ControlFactory {
         this.CONTROL_MAP[new MessageBoxCtrl().getTypeName()] = () => new MessageBoxCtrl();
         this.CONTROL_MAP[new SearchBoxCtrl().getTypeName()] = () => new SearchBoxCtrl();
         this.CONTROL_MAP[new StatusBarCtrl().getTypeName()] = () => new StatusBarCtrl();
+        this.CONTROL_MAP[new RelListCtrl().getTypeName()] = ()=> new RelListCtrl();
     }
 
     private _createControl(ctrlTypeName: string): UIControl {
