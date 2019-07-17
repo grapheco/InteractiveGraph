@@ -257,10 +257,10 @@ ul.rellist{
 }
 .relitem{
     color: #464646;
-    padding: 0.3rem;
+    padding: 0.1rem;
     border-left: 3px solid ;
     background: #f4f4f4;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.1rem;
     border-radius: 3px;
     line-height: 1.6rem;
 }
