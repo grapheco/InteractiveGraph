@@ -10,7 +10,7 @@ button.ui-button2 {
     padding: 2px;
     border-radius: 4px;
     transition: none;
-    color: burlywood;
+    color: #999;
     border-style: none;
     font-size: 1.6em;
     cursor: hand;
@@ -27,7 +27,11 @@ button.ui-button2:active {
     background-image: none !important;
     background-color: rgba(255, 255, 255, 0.7);
 }
-
+div.vis-button:hover{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
 .vis-button.vis-up::before {
     display: inline-block;
     font-family: FontAwesome;
@@ -35,7 +39,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f01b";
     font-size: 2.5em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
@@ -48,7 +52,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f190";
     font-size: 2.5em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
@@ -61,7 +65,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f18e";
     font-size: 2.5em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
@@ -74,7 +78,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f01a";
     font-size: 2.5em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2px;
@@ -87,7 +91,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f055";
     font-size: 2.4em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2.5px;
@@ -100,7 +104,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f056";
     font-size: 2.4em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 0px;
     margin-left: 2.5px;
@@ -113,7 +117,7 @@ button.ui-button2:active {
     -webkit-font-smoothing: antialiased;
     content: "\f1cd";
     font-size: 2em;
-    color: mediumorchid;
+    color: #3cc5e7;
     text-shadow: 1px 1px antiquewhite;
     margin-top: 3px;
     margin-left: 3px;
@@ -123,13 +127,13 @@ button.ui-button2:active {
     padding: 4px;
     vertical-align: middle;
     float: left;
-    color: #1051cae3;
+    color: #3cc5e7;
 }
 
 button.ui-button2:hover {
     border-style: none;
     color: white;
-    background-color: chocolate;
+    background-color: #3cc5e7;
 }
 
 button.ui-button2:focus {
@@ -138,7 +142,7 @@ button.ui-button2:focus {
 
 button.ui-button2-checked {
     border-style: none;
-    color: blueviolet;
+    color: #3cc5e7;
 }
 
 div.infoBox {
@@ -206,7 +210,7 @@ span.ui-spinner {
 
 span.relfinder-icon {
     margin-top: 8px;
-    color: #1051cae3;
+    color: #3cc5e7;
     font-size: 1.1em;
 }
 
@@ -229,6 +233,86 @@ div.relfinder-dlg {
     box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
     z-index: 900;
 }
+div.rellistPanel{
+    padding: 4px;
+    position: absolute;
+    width: 260px;
+    cursor: hand;
+    background: white;
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    z-index: 900;
+}
+.rellist-title{
+    font-size: 1rem;
+    margin: 0;
+    color: #646464;
+    padding: 5px 5px 0 5px;
+}
+ul.rellist{
+    margin: 0;
+    list-style-type: none;
+    padding: 5px;
+    max-height: 250px;
+    overflow: scroll;
+}
+.relitem{
+    color: #464646;
+    padding: 0.1rem;
+    border-left: 3px solid ;
+    background: #f4f4f4;
+    margin-bottom: 0.1rem;
+    border-radius: 3px;
+    line-height: 1.6rem;
+}
+.relitem:hover{
+    background: #e8e8e8;
+}
+.relitem span{
+    margin-right: 0.2rem;
+}
+.relnode{
+    border: 1px solid #3cc5e7;
+    border-radius: 5px;
+    padding: 1px;
+    font-size: 12px;
+    background-color: #3cc5e7;
+    color: white;
+}
+.reledge{
+    padding: 1px;
+    font-size: 12px;
+    background-color: #96dfb0;
+    color: white;
+    position: relative;
+}
+/*.right{*/
+/*    margin-right: 14px!important;*/
+/*}*/
+/*.relitem .right:after{*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    border-width: 10px;*/
+/*    border-style: solid;*/
+/*    border-color: transparent transparent transparent #a2e5b9;*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    right: -20px;*/
+/*    top: 0;*/
+/*}*/
+/*.left{*/
+/*    margin-left: 10px!important;*/
+/*}*/
+/*.relitem .left:after{*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    border-width: 10px;*/
+/*    border-style: solid;*/
+/*    border-color: transparent #a2e5b9 transparent transparent ;*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    left: -20px;*/
+/*    top: 0;*/
+/*}*/
 
 textarea.connect-gson-string {
     width: 360px;
@@ -247,16 +331,22 @@ div.searchPanel1 {
     width: 220px;
     float: left;
 }
-
+div.searchPanel1 input.igraph-searchbox{
+    border: none;
+}
 input.igraph-searchbox {
     width: 100%;
     height: 100%;
+    padding-left: 0.5rem;
+}
+input.igraph-searchbox:focus{
+    outline: none;
 }
 
 div.searchPanel2 {
     width: 30px;
     height: 20px;
-    background-color: #6495ed;
+    background-color: #3cc5e7;
     color: white;
     float: left;
     padding: 7px 0px 3px 10px;
@@ -310,4 +400,7 @@ div.statusBar {
     font-weight: bold;
     font-family: Impact, Haettenschweiler, 'Arial Narrow', sans-serif;
     padding: 10px 10px 10px 10px;
+}
+input[type='color']{
+    border: 0;
 }

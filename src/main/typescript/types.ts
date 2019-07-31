@@ -133,6 +133,10 @@ export interface EVENT_ARGS_FRAME_RESIZE extends EVENT_ARGS_FRAME {
 export interface EVENT_ARGS_RELFINDER extends EVENT_ARGS_FRAME {
     maxDepth: number;
 }
+export interface EVENT_ARGS_RELLIST extends EVENT_ARGS_FRAME{
+    path: RELATION_PATH,
+    startNodes: string[]
+}
 
 export enum FrameEventName {
     FRAME_CLEAR_ALL_FLAGS = "FRAME_CLEAR_ALL_FLAGS",
@@ -160,6 +164,7 @@ export enum FrameEventName {
     RELFINDER_STOP = "RELFINDER_STOP",
     RELFINDER_STARTED = "RELFINDER_STARTED",
     RELFINDER_STOPPED = "RELFINDER_STOPPED",
+    RELLIST_PUT = "RELLIST_PUT",
     SHOW_INFO = "SHOW_INFO",
 }
 

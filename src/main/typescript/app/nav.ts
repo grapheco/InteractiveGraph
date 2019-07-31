@@ -5,17 +5,19 @@ import { InfoBoxCtrl } from '../control/InfoBoxCtrl';
 import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
-import { Themes } from "../theme";
+import {Theme, Themes} from "../theme";
 import { CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED } from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
+import {Utils} from "../utils";
+
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBoxCtrl;
     private _infoBox: InfoBoxCtrl;
     private _statusBar: StatusBarCtrl;
 
-    public constructor(htmlFrame: HTMLElement) {
+    public constructor(htmlFrame: HTMLElement, theme?: Theme) {
         super(htmlFrame, {
             showLabels: true,
             showTitles: true,
@@ -23,7 +25,7 @@ export class GraphNavigator extends BaseApp {
             showDegrees: true,
             showEdges: true,
             showGroups: true
-        });
+        },null,theme);
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
@@ -156,6 +158,7 @@ export class GraphNavigator extends BaseApp {
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             frame.getGraphService().requestGetNodeCategories((map: object) => {
                 app._addCategoriesSelect(toolbar, map);
+                app._addCategoriesColorSelect(toolbar, map);
                 hilight.clear();
                 app._infoBox.hide();
                 frame.getGraphService().requestGetCommunityData((data: CommunityData) => {
@@ -245,11 +248,49 @@ export class GraphNavigator extends BaseApp {
         toolbar.addTool(span);
     }
 
+    private _addCategoriesColorSelect(toolbar: ToolbarCtrl, map: object){
+        var app = this;
+        var span = document.getElementById("categories-color-select");
+        if (span != null)
+            span.remove();
+
+        span = document.createElement("span");
+        $(span).attr("id", "categories-color-select");
+        for (var key in map) {
+            var select = document.createElement("input");
+            var label = document.createElement("label");
+            $(label)
+                .appendTo($(span))
+                .attr("for", "colorselect_" + key).text(map[key]);
+            $(select).attr("id", "colorselect_" + key)
+                .appendTo($(span))
+                .attr("key", key)
+                .attr("type", "color")
+                .attr("value", "#FFFFFF")
+                .change(function () {
+                    let k = $(this).attr("key");
+                    let c = $(this).prop('value');
+                    console.log(k+"'s color changed to"+c);
+                    app.updateNetworkOptions((o)=>{
+                        var o_append = {
+                            groups:{
+                                [k]:{color:c}
+                            }
+                        };
+                        o = Utils.deepExtend(o, o_append);
+                        return o;
+                    });
+                });
+        }
+        toolbar.addTool(span);
+    }
+
     private _addThemeSelect(toolbar: ToolbarCtrl) {
         var select = document.createElement("select");
 
         $("<option></option>").val('DEFAULT').text("THEME_DEFAULT").appendTo($(select));
         $("<option></option>").val('BLACK').text("THEME_BLACK").appendTo($(select));
+        $("<option></option>").val('LIGHT').text("THEME_LIGHT").appendTo($(select));
         var app = this;
         $(select).change(function () {
             var value = <string>$(select).val();
