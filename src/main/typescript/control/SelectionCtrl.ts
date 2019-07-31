@@ -46,16 +46,18 @@ export class SelectionCtrl extends BGControl {
                     if (node != null && !node.hidden) {
                         var nodePositions: any = args.network.getPositions([nodeId]);
                         var pos = nodePositions[nodeId];
-                        var box = args.network.getBoundingBox(nodeId);
-                        var r = pos.y - box.top;
-                        var r2 = r / 1.414;
-                        var x2 = pos.x + r2;
-                        var y2 = pos.y - r2;
-                        ctx.font = "30px FontAwesome";
-                        //ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
-                        ctx.fillStyle = "rgba(0, 236, 0, 0.9)";
-                        //ctx.strokeText("\uf11e", x2 - 5, y2 - 5);
-                        ctx.fillText("\uf11e", x2 - 5, y2 - 5);
+                        if (pos != undefined) {
+                            var box = args.network.getBoundingBox(nodeId);
+                            var r = pos.y - box.top;
+                            var r2 = r / 1.414;
+                            var x2 = pos.x + r2;
+                            var y2 = pos.y - r2;
+                            ctx.font = "30px FontAwesome";
+                            //ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
+                            ctx.fillStyle = "rgba(255, 0, 0, 0.8)";
+                            //ctx.strokeText("\uf11e", x2 - 5, y2 - 5);
+                            ctx.fillText("\uf041", x2 - 5, y2 - 5);
+                        }
                     }
                 }
             });
