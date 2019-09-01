@@ -6,7 +6,7 @@ import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
 import {Theme, Themes} from "../theme";
-import { CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED } from "../types";
+import {CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED, NETWORK_OPTIONS} from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
 import {Utils} from "../utils";
@@ -266,18 +266,13 @@ export class GraphNavigator extends BaseApp {
                 .appendTo($(span))
                 .attr("key", key)
                 .attr("type", "color")
-                .attr("value", "#FFFFFF")
+                .attr("value", "#ffffff")
                 .change(function () {
                     let k = $(this).attr("key");
                     let c = $(this).prop('value');
                     console.log(k+"'s color changed to"+c);
-                    app.updateNetworkOptions((o)=>{
-                        var o_append = {
-                            groups:{
-                                [k]:{color:c}
-                            }
-                        };
-                        o = Utils.deepExtend(o, o_append);
+                    app.updateNetworkOptions((o: NETWORK_OPTIONS)=>{
+                        o.groups[k] = {color:c};
                         return o;
                     });
                 });

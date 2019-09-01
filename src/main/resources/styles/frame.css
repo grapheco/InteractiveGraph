@@ -5,8 +5,8 @@
 
 button.ui-button2 {
     text-align: center;
-    width: 24;
-    height: 24;
+    width: 24px;
+    height: 24px;
     padding: 2px;
     border-radius: 4px;
     transition: none;
@@ -127,7 +127,7 @@ div.vis-button:hover{
     padding: 4px;
     vertical-align: middle;
     float: left;
-    color: #3cc5e7;
+    color: #333333;
 }
 
 button.ui-button2:hover {
