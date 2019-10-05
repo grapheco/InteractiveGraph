@@ -1,0 +1,240 @@
+@import "variable";
+/*
+  Typography
+*/
+// Headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: .5em;
+  margin-top: 0;
+}
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 500;
+}
+h1,
+.h1 {
+  font-size: 2rem;
+}
+h2,
+.h2 {
+  font-size: 1.6rem;
+}
+h3,
+.h3 {
+  font-size: 1.4rem;
+}
+h4,
+.h4 {
+  font-size: 1.2rem;
+}
+h5,
+.h5 {
+  font-size: 1rem;
+}
+h6,
+.h6 {
+  font-size: .8rem;
+}
+
+// Paragraphs
+p {
+  margin: 0 0 $line-height;
+}
+
+// Semantic text elements
+a,
+ins,
+u {
+  text-decoration-skip: ink edges;
+}
+a, a:hover { text-decoration: none; color: #333; }
+ul, li { list-style: none; }
+svg{
+  fill: currentColor;
+}
+
+abbr[title] {
+  border-bottom: $border-width dotted;
+  cursor: help;
+  text-decoration: none;
+}
+
+kbd {
+  font-size: $font-size-sm;
+}
+
+mark {
+  border-bottom: $unit-o solid darken($highlight-color, 15%);
+  border-radius: $border-radius;
+  padding: $unit-o $unit-h 0;
+}
+
+// Blockquote
+blockquote {
+  border-left: $border-width-lg solid $border-color;
+  margin-left: 0;
+  padding: $unit-2 $unit-4;
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Lists
+ul,
+ol {
+  margin: $unit-4 0 $unit-4 $unit-4;
+  padding: 0;
+
+  ul,
+  ol {
+    margin: $unit-4 0 $unit-4 $unit-4;
+  }
+
+  li {
+    margin-top: $unit-2;
+  }
+}
+
+ul {
+  list-style: disc inside;
+
+  ul {
+    list-style-type: circle;
+  }
+}
+
+ol {
+  list-style: decimal inside;
+
+  ol {
+    list-style-type: lower-alpha;
+  }
+}
+
+dl {
+  dt {
+    font-weight: bold;
+  }
+  dd {
+    margin: $unit-2 0 $unit-4 0;
+  }
+}
+
+/*
+----------Button----------
+*/
+button:active{
+  border:none;
+}
+.igraph-button{
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 20px;
+  background-color:$primary-color;
+  border-color: $primary-color;
+  color: #FFF;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  &:focus{
+    outline: none;
+  }
+  &:hover{
+    background: $primary-color-dark;
+    border-color:$primary-color-dark;
+  }
+}
+.igraph-button-sq{
+  width: 20px;
+  height: 20px;
+  background-color: $primary-color;
+  color: white;
+  float: right;
+  padding: 6px;
+  text-align: center;
+  cursor: pointer;
+  i{
+    line-height: 20px;
+  }
+  &:focus{
+    outline: none;
+  }
+}
+.is-warning{
+  background-color: $warning-color;
+  border-color: $warning-color;
+  &:hover{
+    background-color: darken($warning-color, 2%);
+    border-color: darken($warning-color, 2%);
+  }
+}
+.is-danger{
+  background-color: $error-color;
+  border-color: $error-color;
+}
+.is-danger:hover{
+  background: darken($error-color, 2%);
+  border-color: darken($error-color, 2%);
+}
+.igraph-button.btn-sm{
+  font-size: 10px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 14px;
+}
+button.ui-button2 {
+  text-align: center;
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  border-radius: 50%;
+  transition: none;
+  color: $gray-color;
+  border-style: none;
+  font-size: 1.6em;
+  cursor: pointer;
+  &:hover{
+    border-style: none;
+    color: white;
+    background-color: $primary-color;
+  }
+}
+
+
+button.ui-button2:focus {
+  outline: none;
+}
+
+button.ui-button2-checked {
+  border-style: none;
+  color: #3cc5e7;
+}
+input[type='color']{
+  border: 0;
+}
+textarea.connect-gson-string {
+  width: 360px;
+  height: 250px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+  font-size: 12px !important;
+}
+
+input.connect-gson-url {
+  width: 360px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
+  font-size: 12px !important;
+}

@@ -35,7 +35,7 @@
             <div class="toolbar"></div>
         </div>
         <!--info box-->
-        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,80">
+        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,200">
             <div>
                 <div class="infoPanel1"></div>
                 <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
@@ -48,14 +48,17 @@
             <div class="searchPanel1">
                 <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
             </div>
-            <div class="searchPanel2">
-                <span align="center" class="fa fa-search fa-lg" />
+            <div class="searchPanel2 igraph-searchbox-image">
+                <span align="center" class="fa fa-photo fa-lg" />
             </div>
         </div>
         <!--status bar-->
         <div class="statusPanel igraph-dockable" igraph-control-role="StatusBarCtrl" igraph-dock-position="C:-100,0">
             <div class="statusBar"></div>
         </div>
+        <!--image upload box-->
+        <div class="imageUploadPanel" igraph-control-role="ImageUploadCtrl"></div>
+        <div class="ResultListPanel igraph-dockable igraph-draggable" igraph-control-role="ResultListCtrl" igraph-dock-position="A:10,70"></div>
     </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");

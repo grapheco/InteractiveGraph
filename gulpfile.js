@@ -12,6 +12,7 @@ var replace = require('gulp-replace-pro');
 var ts = require('gulp-typescript');
 var tsp = ts.createProject('tsconfig.json');
 const zip = require('gulp-zip');
+const sass = require('gulp-sass');
 var typedoc = require("gulp-typedoc");
 var war = require("gulp-war");
 
@@ -40,6 +41,8 @@ var OUTPUT_CSS = PRODUCT_NAME + '.css';
 var OUTPUT_MIN_CSS = PRODUCT_NAME + '.min.css';
 var TYPESCRIPT_SOURCE = './src/main/typescript/**/*.ts';
 var CSS_SOURCE = './src/main/resources/**/*.css';
+var SASS_SOURCE = './src/main/resources/styles/*.scss';
+var SASS_OUTPUT = './src/main/resources/styles/';
 var WEBPACK_LIBRARY = 'igraph';
 
 var RELEASE_REPLACE_1 = '../../../build/' + PRODUCT_NAME;
@@ -131,6 +134,15 @@ gulp.task('bundle-js', ['build-ts'], function (cb) {
   });
 });
 
+// sass
+gulp.task('bundle-scss', function () {
+    gulp.src(SASS_SOURCE)
+        .pipe(sass({
+            outputStyle: 'expanded'
+        }))
+        .pipe(gulp.dest(SASS_OUTPUT));
+});
+
 // bundle and minify css
 gulp.task('bundle-css', ['clean-build'], function () {
   return gulp.src(CSS_SOURCE)
@@ -142,7 +154,7 @@ gulp.task('clean-dist', function (cb) {
   rimraf(RELEASE_DIR, cb);
 });
 
-gulp.task('bundle', ['bundle-js', 'bundle-css']);
+gulp.task('bundle', ['bundle-js','bundle-scss', 'bundle-css']);
 
 /////////gulp build///////////
 gulp.task('build', ['clean-build', 'build-ts', 'bundle']);
@@ -244,3 +256,8 @@ gulp.task('war-examples', ['update-release-html', 'copy-lib-to-release'], functi
 gulp.task('release', ['build', 'copy-build-to-lib', 'copy-examples-to-release', 'copy-lib-to-release',
   'ts-doc', 'update-release-html', 'zip-examples', 'war-examples', 'zip-lib', 'zip-api-doc'
 ]);
+
+/////////gulp watch///////////
+gulp.task('watch', function(){
+    gulp.watch(SASS_SOURCE, ['bundle-scss']);
+});

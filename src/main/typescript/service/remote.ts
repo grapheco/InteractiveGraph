@@ -98,4 +98,12 @@ export class RemoteGraph implements GraphService {
             return status;
         })
     }
+
+    requestImageSearch(img: any, limit: number, callback: (nodes: GraphNode[]) => void) {
+        this._ajaxCommand("searchImage", { file: img, limit: limit }, function (data) {
+            callback(data.nodes);
+        })
+    }
+
+
 }

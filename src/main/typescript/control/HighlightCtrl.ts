@@ -93,6 +93,7 @@ export class HighlightCtrl extends BGControl {
             }
 
             var nodeIds = args.nodes;
+            frame.emit(FrameEventName.RESULTLISTPUT, args.nodes);
             nodeIds.forEach(nodeId => {
                 thisCtrl.toggleNode(nodeId);
             });

@@ -1,0 +1,235 @@
+@import "variable";
+/*
+ ----------modal----------
+*/
+.igraph-modal{
+  display: none;
+  .igraph-modal-wrapper{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    overflow: hidden;
+    transform: translate(-50%,-50%);
+    box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+    pointer-events: auto;
+    width: 420px;
+    border-radius: 6px;
+    .igraph-modal-close{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+      color: #555;
+      cursor: pointer;
+    }
+    .igraph-modal-main{
+      position: relative;
+      padding: 15px 0;
+      min-height: 100px;
+      font-size: 14px;
+      line-height: 160%;
+      overflow: auto;
+      word-break: break-all;
+      color: #292929;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+  }
+}
+/*
+----------tab----------
+*/
+.mt-tabpage{
+  .mt-tabpage-title {
+    height: 44px;
+    font-size: 0;
+    background-color: #fff;
+    width: 94%;
+    margin: auto;
+    background: #fff;
+    border-bottom: 1px solid #f1f1f1;
+    .mt-tabpage-item {
+      display: inline-block;
+      width: 105px;
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      &:hover{
+        color: $primary-color;
+      }
+    }
+    .mt-tabpage-item-cur {
+      color: $primary-color;
+      border-bottom: 1px solid $primary-color;
+    }
+  }
+  .mt-tabpage-count {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    ul.mt-tabpage-cont__wrap{
+      padding:0 20px;
+      .mt-tabpage-content{
+        display: none;
+      }
+      .mt-tabpage-content-cur{
+        display: block;
+      }
+    }
+  }
+}
+
+.inputCtrl{
+  width: 100%;
+  margin-top: 10px;
+}
+.igraph-input{
+  outline-style: none ;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 6px 6px;
+  width: 300px;
+  font-size: 14px;
+  font-weight: 300;
+}
+.igraph-input-label{
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.igraph-input:focus{
+  border-color: $primary-color-light;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+.igraph-uploader-wrapper{
+  width: 100%;
+  min-height: 200px;
+}
+.igraph-uploader-img{
+  width: 100%;
+  display: none;
+}
+.igraph-filebox{
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: $primary-color dashed 2px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+.igraph-filebox span{
+  font-size: 26px;
+  color: #888;
+}
+.igraph-cam-video{
+  width: 100%;
+}
+.igraph-cam-image{
+  width: 100%;
+  display: none;
+}
+
+/*
+----------RelList----------
+*/
+div.line {
+  height: 30px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+span.ui-spinner {
+  font-size: 0.6em;
+}
+
+span.relfinder-icon {
+  margin-top: 8px;
+  color: #3cc5e7;
+  font-size: 1.1em;
+}
+
+button.relfinder-btn {
+  font-size: 0.9em;
+  border-radius: 5px;
+}
+
+div.relfinder-searchbox-container {
+  width: 220px;
+  float: right;
+}
+
+div.relfinder-dlg {
+  padding: 4px;
+  position: absolute;
+  width: 260px;
+  cursor: hand;
+  background: white;
+  box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+  z-index: 900;
+}
+div.rellistPanel{
+  padding: 4px;
+  position: absolute;
+  width: 260px;
+  cursor: hand;
+  background: white;
+  box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+  z-index: 900;
+}
+.rellist-title{
+  font-size: 1rem;
+  margin: 0;
+  color: #646464;
+  padding: 5px 5px 0 5px;
+}
+ul.rellist{
+  margin: 0;
+  list-style-type: none;
+  padding: 5px;
+  max-height: 250px;
+  overflow: scroll;
+}
+.relitem{
+  color: #464646;
+  padding: 0.1rem;
+  border-left: 3px solid ;
+  background: #f4f4f4;
+  margin-bottom: 0.1rem;
+  border-radius: 3px;
+  line-height: 1.6rem;
+}
+.relitem:hover{
+  background: #e8e8e8;
+}
+.relitem span{
+  margin-right: 0.2rem;
+}
+.relnode{
+  border: 1px solid #3cc5e7;
+  border-radius: 5px;
+  padding: 1px;
+  font-size: 12px;
+  background-color: #3cc5e7;
+  color: white;
+}
+
+.reledge{
+  padding: 1px;
+  font-size: 12px;
+  background-color: #96dfb0;
+  color: white;
+  position: relative;
+}
+
+

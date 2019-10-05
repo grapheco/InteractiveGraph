@@ -1,0 +1,229 @@
+@import "variable";
+@import "elements";
+div.pannel{
+  padding: 4px;
+  position: absolute;
+  box-shadow: rgba(116, 112, 112, 0.555) 1px 1px 10px;
+  z-index: 888;
+  background: white;
+  position: absolute;
+}
+
+.ui-draggable, .ui-droppable {
+  background-position: top;
+}
+
+/*
+----------InfoPanel----------
+*/
+div.infoPanel {
+  @extend .pannel;
+  display: none;
+  padding: 5px;
+  width: 258px;
+  background: rgba(230, 217, 202, 0.8);
+  .infoPanel1 {
+    width: 230px;
+    float: left;
+  }
+  .infoPanel2 {
+    width: 20px;
+    height: 20px;
+    float: right;
+    padding: 5px 0px 5px 5px;
+    cursor: pointer;
+  }
+  .btnCloseInfoPanel {
+    color: darkgray;
+  }
+}
+div.infoBox {
+  font-size: 9px;
+  border: 1px;
+}
+/*
+----------ToolBar----------
+*/
+div.toolbarPanel {
+  @extend .pannel;
+  width: 320px;
+  border-width: 2px;
+  color: darkgray;
+  font-size: 11px;
+}
+.ui-tool {
+  padding: 4px;
+  vertical-align: middle;
+  float: left;
+  .scaleSlider {
+    float: left;
+    width: 314px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 0!important;
+  }
+  .ui-slider-handle{
+    border: none;
+    background: $primary-color!important;
+    height: 16px!important;
+    width: 16px!important;
+    position: absolute;
+    top: -8px!important;
+    border-radius: 50%;
+    border-width: 0!important;
+    &:focus {
+      outline: none;
+    }
+  }
+  .ui-state-hover{
+
+  }
+}
+
+/*
+----------SearchCtrl----------
+*/
+div.searchPanel {
+  @extend .pannel;
+  width: 260px;
+  height: 30px;
+  padding: 0;
+  .searchPanel1 {
+    width: 180px;
+    float: left;
+    .igraph-searchbox{
+      width: 100%;
+      height: 100%;
+      padding-left: 0.5rem;
+      border: none;
+      &:focus{outline: none;}
+    }
+  }
+  .searchPanel2 {
+    width: 28px;
+    height: 20px;
+    background-color: $primary-color;
+    color: white;
+    float: right;
+    padding: 7px 0px 3px 10px;
+
+  }
+}
+ul.ui-autocomplete {
+  font-size: 12px;
+  z-index: 999;
+}
+
+/*
+----------MessageCtrl----------
+*/
+div.messageBox {
+  position: absolute;
+  width: 300px;
+  background-color: lightgray;
+  color: black;
+  padding: 20px 20px 20px 20px;
+}
+
+/*
+----------StatusPanel----------
+*/
+div.statusPanel {
+  width: 380px;
+  height: 60px;
+  background-color: rgba(200, 200, 200, 0.2);
+  overflow: hidden;
+}
+
+div.statusBar {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-overflow: clip;
+  text-align: center;
+  color: red;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow', sans-serif;
+  padding: 10px 10px 10px 10px;
+}
+
+/*
+----------ResultListPanel----------
+*/
+.ResultListPanel{
+  @extend .pannel;
+  width: 250px;
+  min-height: 112px;
+  max-height: 200px;
+  .result-list-title{
+    font-size: $font-size;
+    color: $gray-color-dark;
+  }
+  .result-control{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    .result-list-clear{
+      margin: 0;
+    }
+    .result-list-del{
+      margin: 0;
+    }
+  }
+  ul.result-list{
+    list-style: none;
+    margin: 0.5rem;
+    li.result-list-item{
+      display: inline;
+    }
+  }
+  li.node-info{
+    display: inline-block;
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    max-width: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:hover{
+      background-color: $gray-color-light;
+    }
+    span.photo{
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: $primary-color-light;
+      img{
+        width: 36px;
+        height: 36px;
+        float: right;
+        object-fit: cover;
+      }
+      .del-mask{
+        width: 100%;
+        height: 100%;
+        display: none;
+        border-radius: 50%;
+        background-color: $error-color;
+        float: left;
+        z-index: 500;
+        text-align: center;
+        color: $light-color;
+        i{
+          line-height: 36px;
+        }
+      }
+    }
+    span.title{
+      font-size: 0.5rem;
+      color: $dark-color;
+    }
+  }
+}

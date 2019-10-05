@@ -6,16 +6,27 @@ import { SearchBoxCtrl } from '../control/SearchBoxCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { MainFrame } from '../mainframe';
 import {Theme, Themes} from "../theme";
-import {CommunityData, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_LOADED, NETWORK_OPTIONS} from "../types";
+import {
+    CommunityData,
+    EVENT_ARGS_FRAME,
+    FrameEventName,
+    EVENT_ARGS_GRAPH_LOADED,
+    NETWORK_OPTIONS,
+    EVENT_ARGS_RELFINDER
+} from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
 import {Utils} from "../utils";
+import {ResultListCtrl} from "../control/ResultListCtrl";
+import {ImageUploadCtrl} from "../control/ImageUploadCtrl";
 
 
 export class GraphNavigator extends BaseApp {
     private _searchBar: SearchBoxCtrl;
     private _infoBox: InfoBoxCtrl;
     private _statusBar: StatusBarCtrl;
+    private _resultListCtrl: ResultListCtrl;
+    private _imageBox: ImageUploadCtrl;
 
     public constructor(htmlFrame: HTMLElement, theme?: Theme) {
         super(htmlFrame, {
@@ -33,6 +44,8 @@ export class GraphNavigator extends BaseApp {
         this._searchBar = frame.getRequiredControlLike(new SearchBoxCtrl());
         this._infoBox = frame.getRequiredControlLike(new InfoBoxCtrl());
         this._statusBar = frame.getRequiredControlLike(new StatusBarCtrl());
+        this._resultListCtrl = frame.getRequiredControlLike(new ResultListCtrl());
+        this._imageBox = frame.getRequiredControlLike(new ImageUploadCtrl());
         var connect = frame.addControl(new ConnectCtrl());
         var hilight = frame.addControl(new HighlightCtrl());
         var showCommunitiesCtrl = frame.addControl(new CommunityCtrl());
@@ -154,6 +167,13 @@ export class GraphNavigator extends BaseApp {
         this.addScaleSlider(toolbar, frame);
         this._addThemeSelect(toolbar);
 
+        frame.on(FrameEventName.RESULTLISTPUT, (args:any) => {
+            app._resultListCtrl.emit(FrameEventName.RESULTLISTPUT, args);
+        })
+
+        frame.on(FrameEventName.IMAGEBOXOPEN, (args:any) => {
+            app._imageBox.emit(FrameEventName.IMAGEBOXOPEN, args);
+        })
         //show graph while new graph loaded
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             frame.getGraphService().requestGetNodeCategories((map: object) => {

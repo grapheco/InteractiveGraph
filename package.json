@@ -3,7 +3,8 @@
   "version": "0.0.2",
   "scripts": {
     "build": "gulp build",
-    "release": "gulp release"
+    "release": "gulp release",
+    "watch": "gulp watch"
   },
   "dependencies": {
     "@types/async": "^2.0.48",
@@ -34,6 +35,7 @@
     "jqueryui": "^1.11.1",
     "minify": "^3.0.4",
     "moment": "^2.22.2",
+    "natives": "^1.1.6",
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
     "uglify-js": "^2.8.29",
@@ -50,6 +52,7 @@
     "@types/vis": "^4.21.1",
     "browserify": "^2.3.0",
     "gulp-replace-pro": "^1.0.1",
+    "gulp-sass": "^4.0.2",
     "gulp-typedoc": "^2.2.0",
     "gulp-war": "^0.1.4",
     "gulp-zip": "^4.2.0",

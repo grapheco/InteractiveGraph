@@ -1,0 +1,62 @@
+@import "variable";
+.vis-button {
+  background-image: none !important;
+  background-color: rgba(255, 255, 255, 0.7);
+  &:hover {
+    -webkit-box-shadow: $primary-color-dark !important;
+    -moz-box-shadow: $primary-color-dark !important;
+    box-shadow: $primary-color-dark !important;
+  }
+}
+.vis-direction-before{
+  display: inline-block;
+  font-family: FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font-size: 2.5em;
+  color: $primary-color;
+  text-shadow: 1px 1px antiquewhite;
+  margin-top: 0;
+  margin-left: 2px;
+}
+
+.vis-up::before {
+  @extend .vis-direction-before;
+  content: "\f01b";
+}
+
+.vis-left::before {
+  @extend .vis-direction-before;
+  content: "\f190";
+}
+
+.vis-right::before {
+  @extend .vis-direction-before;
+  content: "\f18e";
+}
+
+.vis-down::before {
+  @extend .vis-direction-before;
+  content: "\f01a";
+}
+
+.vis-zoomIn::before {
+  @extend .vis-direction-before;
+  content: "\f055";
+  font-size: 2.4em;
+  margin-left: 2.5px;
+}
+
+.vis-zoomOut::before {
+  @extend .vis-direction-before;
+  content: "\f056";
+  font-size: 2.4em;
+  margin-left: 2.5px;
+}
+
+.vis-zoomExtends::before {
+  @extend .vis-direction-before;
+  content: "\f1cd";
+  font-size: 2.4em;
+  margin-left: 2.5px;
+}

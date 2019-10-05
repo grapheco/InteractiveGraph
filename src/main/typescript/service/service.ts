@@ -29,6 +29,13 @@ export interface GraphService {
      */
     requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void);
     /**
+     * performs a search on the graph, by giving a image
+     * @param img
+     * @param limit
+     * @param callback
+     */
+    requestImageSearch(img: any, limit: number, callback: (nodes: GraphNode[]) => void);
+    /**
      * gets neighbour nodes and edges of given nodes
      * @param nodeId 
      * @param callback 

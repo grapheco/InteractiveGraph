@@ -18,6 +18,8 @@ import { SearchBoxCtrl } from "./control/SearchBoxCtrl";
 import { StatusBarCtrl } from "./control/StatusBarCtrl";
 import * as vis from "vis";
 import {RelListCtrl} from "./control/RelListCtrl";
+import {ImageUploadCtrl} from "./control/ImageUploadCtrl";
+import {ResultListCtrl} from "./control/ResultListCtrl";
 
 
 var CANVAS_PADDING: number = 80;
@@ -216,6 +218,10 @@ export abstract class MainFrame {
         this._graphService.requestSearch(keyword, this._autoCompletionItemLimit, callback);
     }
 
+    public searchImage(image: any, callback: (nodes: GraphNode[]) => void) {
+        this._graphService.requestImageSearch(image, 1, callback);
+    }
+
     public updateGraph(showGraphOptions: FRAME_OPTIONS | Function, callback?: () => void) {
         if (showGraphOptions instanceof Function) {
             showGraphOptions(this._showGraphOptions);
@@ -363,6 +369,9 @@ export abstract class MainFrame {
 
     public focusNodes(nodeIds: string[]): void {
         this._network.fit({ nodes: nodeIds, animation: true });
+    }
+
+    public highlightNodes(nodeIds:string[]): void{
         if (nodeIds.length > 0) {
             this.fire(FrameEventName.FOCUS_NODES, { nodes: nodeIds });
         }
@@ -649,6 +658,8 @@ export class ControlFactory {
         this.CONTROL_MAP[new SearchBoxCtrl().getTypeName()] = () => new SearchBoxCtrl();
         this.CONTROL_MAP[new StatusBarCtrl().getTypeName()] = () => new StatusBarCtrl();
         this.CONTROL_MAP[new RelListCtrl().getTypeName()] = ()=> new RelListCtrl();
+        this.CONTROL_MAP[new ImageUploadCtrl().getTypeName()] = ()=> new ImageUploadCtrl();
+        this.CONTROL_MAP[new ResultListCtrl().getTypeName()] = ()=> new ResultListCtrl();
     }
 
     private _createControl(ctrlTypeName: string): UIControl {

@@ -445,6 +445,13 @@ export class LocalGraph implements GraphService {
             }
         }
     }
+
+    requestImageSearch(img: any, limit: number, callback: (nodes: GraphNode[]) => void) {
+        //TODO image recognization
+        let index = Math.floor((Math.random()*this._nodes.length)+1);
+        let nodes = [this._nodes[index]];
+        callback(nodes);
+    }
 }
 
 class FindRelationsTask {
