@@ -12,7 +12,9 @@ export class ResultListCtrl extends UIControl {
     private _idList:IdType[] = [];
     private _clearBtn:JQuery<HTMLElement>;
     private _delBtn:JQuery<HTMLElement>;
+    private _closeBtn:JQuery<HTMLElement>;
     private _delMode:boolean = false;
+    private _isHide:boolean = false;
 
 
     getTypeName(): string {
@@ -25,6 +27,7 @@ export class ResultListCtrl extends UIControl {
         this._resultList = $('.result-list', htmlContainer);
         this._clearBtn = $('.result-list-clear', htmlContainer);
         this._delBtn = $('.result-list-del', htmlContainer);
+        this._closeBtn = $('.result-list-close', htmlContainer);
         //add
         this.on(FrameEventName.RESULTLISTPUT, (args) => {
             if(args instanceof Array){
@@ -57,13 +60,29 @@ export class ResultListCtrl extends UIControl {
             this.clearList()
         });
 
+        //close
+        this._closeBtn.on('click',()=>{
+            this.hide()
+        })
+        this.hide();
         return this;
+    }
+
+    hide() {
+        super.hide();
+        this._isHide = true;
+    }
+
+    show() {
+        super.show();
+        this._isHide = false;
     }
 
     /*
     * add Node to resultSet
     * */
     public addNodes(nodes:GraphNode[]){
+        if(this._isHide) this.show();
         nodes.forEach((node)=>{
             if(this._idList.indexOf(node.id)==-1) {
                 this._idList.push(node.id);
@@ -137,8 +156,11 @@ export class ResultListCtrl extends UIControl {
     private insertDOM(htmlContainer:HTMLElement){
         htmlContainer.innerHTML = `
             <div class="result-list-wrapper">
-                <div class="result-list-title">Search Result:</div>
+                <div class="result-list-title">Search Result</div>
                 <div class="result-control">
+                    <div class="result-list-close igraph-button-sq">
+                        <i class="fa fa-close fa-lg btnCloseInfoPanel"></i>
+                    </div>
                     <div class="result-list-clear igraph-button-sq is-danger">
                         <i class="fa fa-trash fa-lg btnCloseInfoPanel"></i>
                     </div>

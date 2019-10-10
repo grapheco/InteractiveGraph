@@ -173,13 +173,13 @@ export class ImageUploadCtrl extends UIControl {
                                     </li>
                                     <li class="mt-tabpage-content">
                                         <div class="inputCtrl">
-                                            <img src="" alt="" class="igraph-url-img">
+                                            <img src="https://grapheco.github.io/InteractiveGraph/dist/examples/images/photo/%E8%B4%BE%E5%AE%9D%E7%8E%89.jpg" alt="" class="igraph-url-img">
                                         </div>
                                         <form action="#">
                                             <div class="inputCtrl">
 
                                                 <span class="igraph-input-label">URL:</span>
-                                                <input type="text" class="igraph-input url" placeholder="Please input the picture path">
+                                                <input type="text" class="igraph-input url" value="https://grapheco.github.io/InteractiveGraph/dist/examples/images/photo/%E8%B4%BE%E5%AE%9D%E7%8E%89.jpg" placeholder="Please input the picture path">
                                             </div>
                                         </form>
                                         <div class="inputCtrl">
