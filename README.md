@@ -127,7 +127,66 @@ All controls are listed in the table below.
 |ToolbarCtrl|show a tool bar|UIControl|
 
 ### <a name='theme'></a>theme
-
+You can set the theme of an app when you create it:
+```javascript
+<script type="text/javascript">
+    igraph.i18n.setLanguage("chs");
+    var app = new igraph.GraphNavigator(document.getElementById('graphArea'), 'LIGHT');
+    app.loadGson("honglou.json");
+</script>
+```
+ Or you can customize the theme according to your own needs:
+ ```javascript
+ <script type="text/javascript">
+     igraph.i18n.setLanguage("chs");
+     var app = new igraph.GraphNavigator(document.getElementById('graphArea'),{
+        groups: {
+            useSeqColors: false,
+            custom: {
+                person: {color:'blue'},
+                location: {color:'red'},
+                event: {color:'green'}
+            }   
+        }
+     });
+     app.loadGson("honglou.json");
+ </script>
+ ```
+Then each type of node will change to the specified color. The parameters of the Theme object are as follows.
+```javascript
+export interface Theme {
+    canvasBackground: string,
+    highlight: {
+        gradientInnerColor: string,
+        gradientOutterColor: string,
+    }
+    expansion: {
+        backgroudColorCollapsed: string,
+        backgroudColorExpanded: string,
+        fontColor: string
+    }
+    edges: object,
+    nodes: object,
+    groups?: {
+        useSeqColors: boolean,
+        SeqColors?:NodeColor[],
+        custom?:{}
+    }
+}
+```
+| Name                              | Type        | Default                    | Description                                                                                                |
+|-----------------------------------|-------------|----------------------------|------------------------------------------------------------------------------------------------------------|
+| canvasBackground                  | String      | `"none"  `                   | Canvas background color                                                                                    |
+| highlight.gradientInnerColor      | String      | `"#00FF00"`                  | Internal color gradient when node highlights.                                                              |
+| highlight.gradientOutterColor     | String      | `"#FFFFFF"`                  | External color gradient when node highlights.                                                              |
+| expansion.backgroudColorCollapsed | String      | `"rgba(127, 127, 127, 0.9)"` | The color of the tag when node is collapsed.                                                               |
+| expansion.backgroudColorExpanded  | String      | `"rgba(0, 128, 0, 0.9)"`     | The color of the tag when node is expanded.                                                                |
+| expansion.fontColor               | String      | `"#FFFFFF"`                  | The font color of the tag.                                                                                 |
+| edges                             | Object      | `Object `                    | All options in this object are explained in [here](https://visjs.github.io/vis-network/docs/network/edges.html).|                                                          |
+| nodes                             | Object      | `Object `                    | All options in this object are explained in [here](https://visjs.github.io/vis-network/docs/network/nodes.html).|                                                         |
+| groups.useSeqColors               | Boolean     | `false  `                    | If true, the node will cycle use the colors in the color sequence. If false, nodes will use custom colors. |
+| groups.SeqColors                  | NodeColor[] | `null `                      | The color sequence.                                                                                        |
+| groups.custom                     | Object      | `null `                      | The custom colors.                                                                                         |
 ### <a name='eventhandling'></a>event handling
 
 MainFrame and controls communicate with applications through events. For example, when the window is resizing, MainFrame and all controls will receive FRAME_RESIZE events.

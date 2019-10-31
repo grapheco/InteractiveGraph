@@ -11,7 +11,7 @@ export interface NodeColor {
     }
 }
 export interface Theme {
-    canvasBackground: string;
+    canvasBackground: string,
     highlight: {
         gradientInnerColor: string,
         gradientOutterColor: string,
