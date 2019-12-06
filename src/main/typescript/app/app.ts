@@ -8,7 +8,7 @@ import { SelectionCtrl } from "../control/SelectionCtrl";
 
 export abstract class BaseApp extends MainFrame {
     protected _toggleEdgeLabelHandlers;
-    protected _messageBox: MessageBoxCtrl; //signleton message box
+    protected _messageBox: MessageBoxCtrl; //singleton message box
     protected _selector: SelectionCtrl;
 
     protected constructor(htmlFrame: HTMLElement,

@@ -238,23 +238,23 @@ class Uploader{
         e.preventDefault();
         if (this._file)
             return false;
-        var fileList = e.dataTransfer.files; //获取文件对象
+        var fileList = e.dataTransfer.files; //获取文件对象  -  Get file object
         // do something upload
         if(fileList.length == 0){
             return false;
         }
-        //检测文件是不是图片
+        //检测文件是不是图片  -  Detect if a file is a picture
         if(fileList[0].type.indexOf('image') === -1){
             alert("您拖的不是图片！");
             return false;
         }
 
-        //拖拉图片到浏览器，可以实现预览功能
+        //拖拉图片到浏览器，可以实现预览功能  -  Drag the picture to the browser, you can implement the preview function
         var img = window.URL.createObjectURL(fileList[0]);
-        var filename = fileList[0].name; //图片名称
+        var filename = fileList[0].name; //图片名称  -  Picture name
         var filesize = Math.floor((fileList[0].size)/1024);
         if(filesize > this._maxSize){
-            alert("上传大小不能超过"+this._maxSize+"KB.");
+            alert("Upload size cannot exceed "+this._maxSize+"KB.");
             return false;
         }
 
@@ -288,13 +288,13 @@ class Uploader{
     createImageUploadDialog(){
         var fileInput = this._fileInput;
         if (!fileInput) {
-            //创建临时input元素
+            //创建临时input元素  -  Create a temporary input element
             fileInput = document.createElement('input');
-            //设置input type为文件类型
+            //设置input type为文件类型  -  Set input type to file type
             fileInput.type = 'file';
-            //设置文件name
+            //设置文件name  -  Set file name
             fileInput.name = 'ime-images';
-            //允许上传多个文件
+            //允许上传多个文件  -  Allow uploading multiple files
             fileInput.multiple = false;
             fileInput.accept = 'image/*';
             fileInput.onchange  = this.onChangeUploadFile.bind(this);
@@ -302,7 +302,7 @@ class Uploader{
         }
         if (this._file)
             return false;
-        //触发点击input点击事件，弹出选择文件对话框
+        //触发点击input点击事件，弹出选择文件对话框  -  Trigger click input click event, pop up select file dialog box
         fileInput.click();
     }
 
@@ -355,21 +355,21 @@ class Camera {
     }
 
     public initCam():boolean{
-        // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象
+        // 老的浏览器可能根本没有实现 mediaDevices，所以我们可以先设置一个空的对象  -  Old browsers may not implement mediaDevices at all, so we can set an empty object first
         if (navigator.mediaDevices === undefined) {
             return false;
         }
         if (navigator.mediaDevices.getUserMedia === undefined) {
             navigator.mediaDevices.getUserMedia = function (constraints) {
-                // 首先，如果有getUserMedia的话，就获得它
+                // 首先，如果有getUserMedia的话，就获得它  -  First, if there is getUserMedia, get it
                 var getUserMedia = navigator['webkitGetUserMedia'] || navigator['mozGetUserMedia'] || navigator['msGetUserMedia']
 
-                // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口
+                // 一些浏览器根本没实现它 - 那么就返回一个error到promise的reject来保持一个统一的接口 -  Some browsers don't implement it at all-then return an error to the reject of the promise to maintain a uniform interface
                 if (!getUserMedia) {
                     return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
                 }
 
-                // 否则，为老的navigator.getUserMedia方法包裹一个Promise
+                // 否则，为老的navigator.getUserMedia方法包裹一个Promise  -  Otherwise, wrap a promise for the old navigator.getUserMedia method
                 return new Promise(function (resolve, reject) {
                     getUserMedia.call(navigator, constraints, resolve, reject);
                 });
@@ -385,11 +385,11 @@ class Camera {
         let promise = navigator.mediaDevices.getUserMedia(constraints);
         promise.then(stream => {
             this._stream = stream;
-            // 旧的浏览器可能没有srcObject
+            // 旧的浏览器可能没有srcObject  -  Old browsers may not have srcObject
             if ("srcObject" in v) {
                 v['srcObject'] = stream;
             } else {
-                // 防止再新的浏览器里使用它，应为它已经不再支持了
+                // 防止再新的浏览器里使用它，应为它已经不再支持了  -  Prevent it from being used in new browsers, because it is no longer supported
                 v['src'] = window.URL.createObjectURL(stream);
             }
             v.onloadedmetadata = function (e) {
