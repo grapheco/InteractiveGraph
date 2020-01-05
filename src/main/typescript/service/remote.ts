@@ -66,11 +66,14 @@ export class RemoteGraph implements GraphService {
     }
 
     requestGetNodeCategories(callback: (catagoryMap: object) => void){
-        throw new Error("Method not implemented.");
+        var remote = this;
+        this._ajaxCommand("init", {}, (data)=>{
+            callback(data.catagorys)
+        })
     }
 
     requestGetCommunityData(callback: (data: CommunityData) => void) {
-        throw new Error("Method not implemented.");
+        callback(null)
     }
 
     requestFilterNodesByCategory(catagory: string, nodeIds: any[],

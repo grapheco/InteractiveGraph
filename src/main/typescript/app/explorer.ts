@@ -3,17 +3,18 @@ import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import { EVENT_ARGS_FRAME, FrameEventName } from '../types';
 import { BaseApp } from './app';
+import {Theme} from "../theme";
 
 export class GraphExplorer extends BaseApp {
 
-    public constructor(htmlFrame: HTMLElement) {
+    public constructor(htmlFrame: HTMLElement, theme?: Theme) {
         super(htmlFrame, {
             showLabels: true,
             showFaces: true,
             showDegrees: true,
             showEdges: true,
             showGroups: true
-        });
+        },null,theme);
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {

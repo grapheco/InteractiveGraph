@@ -67,6 +67,13 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addButton({
+            icon: "fa fa-exchange",
+            checked: true,
+            tooltip: "toggle physics",
+            click: (checked: boolean) => { app.togglePhysics(checked); }
+        });
+
+        toolbar.addButton({
             icon: "fa fa-share-alt",
             checked: true,
             tooltip: "show edges",
@@ -182,7 +189,7 @@ export class GraphNavigator extends BaseApp {
                 hilight.clear();
                 app._infoBox.hide();
                 frame.getGraphService().requestGetCommunityData((data: CommunityData) => {
-                    showCommunitiesCtrl.bind(data);
+                    // showCommunitiesCtrl.bind(data);
                     app.showGraph({}, () => {
                     });
                 })

@@ -40,6 +40,13 @@ export class RelFinder extends BaseApp {
         var toolbar = frame.getRequiredControlLike(new ToolbarCtrl());
 
         toolbar.addButton({
+            icon: "fa fa-exchange",
+            checked: true,
+            tooltip: "toggle physics",
+            click: (checked: boolean) => { app.togglePhysics(checked); }
+        });
+
+        toolbar.addButton({
             icon: "fa fa-file-code-o",
             tooltip: "load GSON string",
             click: (checked: boolean) => { connect.loadGsonString(); }

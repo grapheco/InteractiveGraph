@@ -106,6 +106,12 @@ export abstract class BaseApp extends MainFrame {
         });
     }
 
+    public togglePhysics(checked: boolean) {
+        super.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+            options.physics.enabled = checked ;
+        })
+    }
+
     public toggleShowEdgeLabelAlways(checked: boolean) {
         if (checked) {
             super.updateNetworkOptions((options: NETWORK_OPTIONS) => {
