@@ -20,7 +20,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "babelify": "^8.0.0",
-    "canvas": "^1.6.9",
+    "canvas": "^1.6.10",
     "events": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
