@@ -95,7 +95,7 @@ export class ExpansionCtrl extends BGControl {
 
         //browser.removeAllListeners(BrowserEventName.NETWORK_DBLCLICK);
         frame.on(FrameEventName.NETWORK_DBLCLICK, function (args: EVENT_ARGS_FRAME_INPUT) {
-            var nodeIds = args.nodes;  debug
+            var nodeIds = args.nodes;
             nodeIds.forEach(nodeId => {
                 if (!thisCtrl.isExpanded(nodeId)) {
                     thisCtrl.expand(nodeId);
