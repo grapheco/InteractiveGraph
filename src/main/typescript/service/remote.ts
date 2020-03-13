@@ -1,5 +1,12 @@
 import { GraphService } from './service';
-import { QUERY_RESULTS, GraphNode, GraphEdge, LoadGraphOption, CommunityData } from '../types';
+import {
+    QUERY_RESULTS,
+    GraphNode,
+    GraphEdge,
+    LoadGraphOption,
+    CommunityData,
+    InitData, LoadGraphOptionCallback
+} from '../types';
 //import request = require('superagent');
 import 'jquery';
 
@@ -34,10 +41,13 @@ export class RemoteGraph implements GraphService {
         });
     }
 
-    requestConnect(callback: () => void) {
-        var remote = this;
+    requestConnect(callback: (data:InitData) => void) {
         this._ajaxCommand("init", {}, (data) => {
-            callback();
+            callback({
+                nodesNum: data.nodesCount,
+                edgesNum: data.edgesCount,
+                autoLayout: data.autoLayout
+            });
         });
     }
 
@@ -47,9 +57,12 @@ export class RemoteGraph implements GraphService {
         })
     }
 
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void) {
-        this._ajaxCommand("loadGraph", {}, function (data) {
-            callback(data.nodes, data.edges, data.option);
+    requestLoadGraph(option: LoadGraphOption, callback: (nodes: GraphNode[], edges: GraphEdge[], optionBack: LoadGraphOptionCallback) => void) {
+        this._ajaxCommand("loadGraph", option, function (data) {
+            callback(data.nodes, data.edges, {
+                width:  data.width,
+                height: data.height
+            });
         })
     }
 

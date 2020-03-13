@@ -64,12 +64,26 @@ export interface GraphNode extends vis.Node {
 }
 
 export interface LoadGraphOption {
-    autoLayout?: boolean
+    dynamic: boolean
+    centerPointX?: number
+    centerPointY?: number
+    scale?:number
+}
+
+export interface LoadGraphOptionCallback {
+    width: number
+    height: number
 }
 
 export interface NodeCommunityEntry {
     node: string,
     community: string
+}
+
+export interface InitData {
+    nodesNum: number,
+    edgesNum: number,
+    autoLayout : boolean;
 }
 
 export interface CommunityData {
@@ -115,6 +129,11 @@ export interface EVENT_ARGS_GRAPH_LOADED extends EVENT_ARGS_FRAME {
     option: object;
 }
 
+export interface EVENT_ARGS_GRAPH_CONNECTED extends EVENT_ARGS_FRAME {
+    nodesNum: number;
+    edgesNum: number;
+}
+
 export interface EVENT_ARGS_FRAME_INPUT extends EVENT_ARGS_FRAME, NodeEdgeIds {
     previousSelection?: NodeEdgeIds;
 }
@@ -158,7 +177,9 @@ export enum FrameEventName {
     NETWORK_AFTER_DRAWING = "NETWORK_END_DRAWING",
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
     NETWORK_CLICK = "NETWORK_CLICK",
+    NETWORK_ONCONTEXT = "NETWORK_ONCONTEXT",
     NETWORK_DRAGGING = "NETWORK_DRAGGING",
+    NETWORK_DRAGEND = "NETWORK_DRAGEND",
     FRAME_RESIZE = "FRAME_RESIZE",
     RELFINDER_START = "RELFINDER_START",
     RELFINDER_STOP = "RELFINDER_STOP",

@@ -1,5 +1,15 @@
 import { } from "jquery";
-import { CommunityData, GraphEdge, GraphNode, GSON, LoadGraphOption, NodesEdges, PAIR, QUERY_RESULTS, RELATION_PATH } from '../types';
+import {
+    CommunityData,
+    GraphEdge,
+    GraphNode,
+    GSON, InitData,
+    LoadGraphOption, LoadGraphOptionCallback,
+    NodesEdges,
+    PAIR,
+    QUERY_RESULTS,
+    RELATION_PATH
+} from '../types';
 import { Utils } from '../utils';
 import { GraphService } from './service';
 
@@ -8,8 +18,8 @@ export class LocalGraph implements GraphService {
     private _communityData: CommunityData;
     private _edges: object[];
     private _labels: object;
-    private _loadGraphOption: LoadGraphOption;
-    private _perfermLoadData: (callbackAfterLoad: () => void) => void;
+    private _loadGraphOption: object;
+    private _performLoadData: (callbackAfterLoad: () => void) => void;
     private _taskManager = new FindRelationsTaskManager();
     private _eventHandlers = {};
 
@@ -37,6 +47,19 @@ export class LocalGraph implements GraphService {
         _mapNodeId2NeighbourNodeIds: new Map<string, Set<string>>(),
         _mapNodePair2EdgeIds: new Map<string, Set<string>>(),
     };
+
+    //cells
+    private _cells = new Array<Array<string>>();
+    private l=0;
+    private r=0;
+    private t=0;
+    private b=0;
+    private w=0;
+    private h=0;
+    private cell_col_num=0;
+    private cell_w=0;
+    private cell_h=0;
+    private NODE_PRE_CELL = 100;
 
     private _translate(gson: GSON): NodesEdges {
         var nodes = gson.data.nodes;
@@ -83,6 +106,9 @@ export class LocalGraph implements GraphService {
         };
 
         this._createIndexDB();
+        if (!this._loadGraphOption["autoLayout"]) {
+            this._createCells();
+        }
 
         this._communityData = {
             communities: gson.data.communities,
@@ -93,6 +119,44 @@ export class LocalGraph implements GraphService {
                 };
             })
         };
+    }
+
+    //Cut data into many cells
+    private _createCells() {
+        this._nodes.forEach( (n:any) =>{
+            this.r = n.x > this.r? n.x: this.r;
+            this.l = n.x < this.l? n.x: this.l;
+            this.t = n.y > this.t? n.y: this.t;
+            this.b = n.y < this.b? n.y: this.b;
+        });
+
+        this.w = Math.ceil(this.r - this.l );
+        this.h = Math.ceil(this.t - this.b );
+
+        this.cell_col_num = Math.ceil(
+            Math.sqrt(this._nodes.length / this.NODE_PRE_CELL));
+        // console.log(this.t, this.b, this.l, this.r, this.w, this.h,this._nodes.length, this.cell_col_num);
+
+        this.cell_w = Math.ceil(this.w / this.cell_col_num);
+        this.cell_h = Math.ceil(this.h / this.cell_col_num);
+
+        for (let i = 0; i < this.cell_col_num * this.cell_col_num; i++){
+            let cell = new Array<string>();
+            this._cells.push(cell)
+        }
+
+        this._nodes.forEach( (n:any) => {
+            let cell_x = Math.floor((n['x'] - this.l) / this.cell_w);
+            let cell_y = Math.floor((this.t - n['y']) / this.cell_h);
+            this._cells[cell_y * this.cell_col_num + cell_x].push(n.id)
+        });
+
+        // let sum = 0;
+        // this._cells.forEach(c=>{
+        //     console.log(c.length, c[0]);
+        //     sum += c.length;
+        // });
+        // console.log(sum)
     }
 
     private _createIndexDB() {
@@ -130,7 +194,7 @@ export class LocalGraph implements GraphService {
 
     public static fromGson(gson: GSON) {
         var graph = new LocalGraph();
-        graph._perfermLoadData = (callback: () => void) => {
+        graph._performLoadData = (callback: () => void) => {
             graph._processGson(gson);
             callback();
         };
@@ -149,7 +213,7 @@ export class LocalGraph implements GraphService {
 
     public static fromGsonString(gsonString: string) {
         var graph = new LocalGraph();
-        graph._perfermLoadData = (callback: () => void) => {
+        graph._performLoadData = (callback: () => void) => {
             graph._processGson(LocalGraph._string2GSON(gsonString));
             callback();
         };
@@ -159,7 +223,7 @@ export class LocalGraph implements GraphService {
 
     public static fromGsonFile(gsonUrl: string, eventHandlers: object) {
         var graph = new LocalGraph();
-        graph._perfermLoadData = (callback: () => void) => {
+        graph._performLoadData = (callback: () => void) => {
             $.get(gsonUrl, { t: new Date().getTime() }, function (data) {
                 graph._eventHandlers = eventHandlers || {};
                 graph._processGson(LocalGraph._string2GSON(data));
@@ -184,10 +248,19 @@ export class LocalGraph implements GraphService {
         }, 1);
     }
 
-    requestConnect(callback: () => void) {
+    requestConnect(callback: (data:InitData) => void) {
         var local: LocalGraph = this;
         this._async(() => {
-            local._perfermLoadData(callback);
+            local._performLoadData(()=> {
+                console.log(local)
+                let option: InitData = {
+                    nodesNum: this._nodes.length,
+                    edgesNum: this._edges.length,
+                    autoLayout: this._loadGraphOption["autoLayout"] || false
+                };
+                callback(option)
+            });
+
         });
     }
 
@@ -209,10 +282,64 @@ export class LocalGraph implements GraphService {
             })));
     }
 
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void) {
-        var local: LocalGraph = this;
+    //TODO load a batch of data
+    requestLoadGraph(option: LoadGraphOption, callback: (nodes: GraphNode[], edges: GraphEdge[], back: LoadGraphOptionCallback) => void) {
+        let local: LocalGraph = this;
+        if ( option.dynamic ){
+            let cell_x = Math.floor((option.centerPointX - this.l) / this.cell_w);
+            let cell_y = Math.floor((this.t - option.centerPointY) / this.cell_h);
+            let point_cell = cell_y * this.cell_col_num + cell_x;
+            let cells = [];
+            let ids = [];
+            //TODO preload
+            [-1,0,1].forEach(i=>{
+                [-1,0,1].forEach(j=>{
+                    let c = point_cell + i*this.cell_col_num + j;
+                    if (c >= 0 && c < this.cell_col_num*this.cell_col_num){
+                        cells.push(c);
+                        ids = ids.concat(this._cells[c]);
+                    }
+                })
+            });
+
+            this.getDataByNodeId(ids,(nodes, edges)=>{
+                this._async(() =>
+                    callback(nodes, edges, {
+                        width: 3 * this.cell_w,
+                        height: 3 * this.cell_h
+                    }));
+            });
+        }else {
+            this._async(() =>
+                callback(local._nodes, local._edges, {
+                    width: 0,
+                    height: 0,
+                }));
+        }
+    }
+
+    private getDataByNodeId(ids:string[], callback: (nodes:GraphNode[], edges:GraphEdge[])=>void){
+        let nodes=[];
+        let edges=[];
+        ids.forEach(node=>{
+            nodes.push(this._getNode(node));
+            let nei = this._indexDB
+                ._mapNodeId2NeighbourNodeIds
+                .get(node);
+            if (nei) {
+                nei.forEach(neighbour => {
+                    //nodes.push(neighbour);
+                    this._indexDB
+                        ._mapNodePair2EdgeIds
+                        .get("" + node + "-" + neighbour)
+                        .forEach(edge=>{
+                            edges.push(this._indexDB._mapId2Edge.get(edge));
+                        })
+                })
+            }
+        });
         this._async(() =>
-            callback(local._nodes, local._edges, local._loadGraphOption));
+            callback(nodes, edges));
     }
 
     requestSearch(expr: any, limit: number, callback: (nodes: GraphNode[]) => void) {

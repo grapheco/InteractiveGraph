@@ -5,3 +5,13 @@
 //@import "../../../../node_modules/spectre.css/src/spectre";
 //@import "../../../../node_modules/spectre.css/src/spectre-icons";
 
+//context
+// Vars -------------------------------------------------------------- //
+@import 'context/vars';
+
+// Layout ------------------------------------------------------------ //
+@import 'context/container';
+@import 'context/context';
+
+// theme
+@import "context/bright";

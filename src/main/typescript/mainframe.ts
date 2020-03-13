@@ -8,7 +8,22 @@ import "jqueryui";
 import { Control, UIControl } from "./control/Control";
 import { GraphService } from './service/service';
 import { Theme, Themes } from "./theme";
-import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_RESIZE, EVENT_ARGS_FRAME_SHOW_INFO, FrameEventName, FRAME_OPTIONS, GraphEdge, GraphEdgeSet, GraphNetwork, GraphNode, GraphNodeSet, LoadGraphOption, NETWORK_OPTIONS, NodeEdgeSet } from "./types";
+import {
+    EVENT_ARGS_FRAME,
+    EVENT_ARGS_FRAME_RESIZE,
+    EVENT_ARGS_FRAME_SHOW_INFO,
+    FrameEventName,
+    FRAME_OPTIONS,
+    GraphEdge,
+    GraphEdgeSet,
+    GraphNetwork,
+    GraphNode,
+    GraphNodeSet,
+    LoadGraphOption,
+    NETWORK_OPTIONS,
+    NodeEdgeSet,
+    LoadGraphOptionCallback, InitData
+} from "./types";
 import { Utils } from "./utils";
 import { ToolbarCtrl } from "./control/ToolbarCtrl";
 import { InfoBoxCtrl } from "./control/InfoBoxCtrl";
@@ -20,11 +35,12 @@ import * as vis from "vis";
 import {RelListCtrl} from "./control/RelListCtrl";
 import {ImageUploadCtrl} from "./control/ImageUploadCtrl";
 import {ResultListCtrl} from "./control/ResultListCtrl";
+import {ContextCtrl} from "./control/ContextCtrl";
 
 
 var CANVAS_PADDING: number = 80;
-var MAX_EDGES_COUNT = 5000;
-var MAX_NODES_COUNT = 5000;
+export var MAX_EDGES_COUNT = 5000;
+export var MAX_NODES_COUNT = 5000;
 
 export abstract class MainFrame {
     private _htmlFrame: HTMLElement;
@@ -34,6 +50,8 @@ export abstract class MainFrame {
     private _network: GraphNetwork;
     private _emiter = new events.EventEmitter();
     private _networkOptions: NETWORK_OPTIONS;
+    private _dynamic: boolean = false;
+    private _loadedArea:Array<object> = [];
 
     private _screenData: NodeEdgeSet = {
         nodes: new GraphNodeSet(),
@@ -75,6 +93,12 @@ export abstract class MainFrame {
         this.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             this.clearScreen();
             this.notifyClearAll();
+        });
+
+        this.on(FrameEventName.NETWORK_DRAGEND, (e)=>{
+            if (this._dynamic){
+                this.loadGraph(null, null)
+            }
         });
     }
 
@@ -151,8 +175,32 @@ export abstract class MainFrame {
 
     public connectService(service: GraphService, callback) {
         this._graphService = service;
-        this._graphService.requestConnect(() => {
-            this.fire(FrameEventName.GRAPH_CONNECTED);
+        this._graphService.requestConnect((data:InitData) => {
+
+            // too large to close physics
+            if (
+                (data.autoLayout === false) ||
+                data.nodesNum > MAX_NODES_COUNT ||
+                data.edgesNum > MAX_EDGES_COUNT) {
+                this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                    options.physics = false;
+                });
+            }
+            // too large to dynamic load data
+            if (
+                data.nodesNum > MAX_NODES_COUNT ||
+                data.edgesNum > MAX_EDGES_COUNT) {
+                this._dynamic = true;
+                this.updateNetworkOptions((opt)=>{
+                    opt['interaction']['zoomView'] = false;
+                })
+            }
+
+            this.fire(FrameEventName.GRAPH_CONNECTED, {
+                nodesNum:data.nodesNum,
+                edgesNum:data.edgesNum
+            });
+
             if (callback != undefined)
                 callback();
         });
@@ -276,45 +324,74 @@ export abstract class MainFrame {
 
     /**
      * load graph data and show network in current format
+     * @param options
      * @param callback
      */
     public loadGraph(options, callback: () => void) {
         var frame = this;
-        this._graphService.requestLoadGraph(
-            function (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) {
 
-                frame.fire(FrameEventName.GRAPH_LOADED, {
-                    nodes: nodes,
-                    edges: edges,
-                    option: option
+        let option:LoadGraphOption = {
+            dynamic: false
+        };
+        // dynamic mode
+        if (this._dynamic){
+
+            option.centerPointX = this._network.getViewPosition().x;
+            option.centerPointY = this._network.getViewPosition().y;
+            option.scale        = this._network.getScale();
+            option.dynamic      = true;
+
+        }
+
+        // first load
+        if (!frame._screenData.nodes) {
+            frame._screenData.nodes = new GraphNodeSet();
+            frame._screenData.edges = new GraphEdgeSet();
+            option.centerPointX = 0;
+            option.centerPointY = 0;
+            option.scale        = 1;
+        }
+
+        // need load? TODO improve
+        let needLoad = true;
+        if (this._dynamic){
+            let l = Math.round(option.centerPointX - this._htmlFrame.clientWidth/(option.scale * 2));
+            let r = Math.round(option.centerPointX + this._htmlFrame.clientWidth/(option.scale * 2));
+            let b = Math.round(option.centerPointY - this._htmlFrame.clientHeight/(option.scale * 2));
+            let t = Math.round(option.centerPointY + this._htmlFrame.clientHeight/(option.scale * 2));
+            this._loadedArea.forEach((area)=>{
+                let ll = area['x'] - area['w']/2;
+                let lr = area['x'] + area['w']/2;
+                let lb = area['y'] - area['h']/2;
+                let lt = area['y'] + area['h']/2;
+                console.log(l,ll,r,lr,b,lb,t,lt);
+                if (l >= ll && r <= lr && b >= lb && t <= lt) {
+                    needLoad = false;
+                    return false;
+                }
+            })
+        }
+
+        if (!needLoad) return false;
+        console.log(`start load graph with x = ${option.centerPointX} and y = ${option.centerPointY}`)
+        this._graphService.requestLoadGraph(option,
+            function (nodes: GraphNode[], edges: GraphEdge[], back: LoadGraphOptionCallback) {
+                console.log(nodes.length);
+                frame.insertNodes(nodes);
+                frame.insertEdges(edges);
+                frame._loadedArea.push({
+                    x: option.centerPointX,
+                    y: option.centerPointY,
+                    w: back.width,
+                    h: back.height
                 });
+                // TODO scale
+                // if (option.scale != undefined) {
+                //     frame.scaleTo(options.scale);
+                //     console.log(frame._network.getScale());
+                // }
 
-                frame._rawData = { nodes: nodes, edges: edges };
-                frame._screenData.nodes = new GraphNodeSet(frame._rawData.nodes.map((x) => {
-                    return frame._formatNode(x);
-                })
-                );
-                frame._screenData.edges = new GraphEdgeSet(frame._rawData.edges.map((x) => {
-                    return frame._formatEdge(x);
-                })
-                );
-
-                //too large!!
-                if (
-                    ((option || {}).autoLayout === false) ||
-                    frame._rawData.nodes.length > MAX_NODES_COUNT ||
-                    frame._rawData.edges.length > MAX_EDGES_COUNT) {
-                    frame.updateNetworkOptions((options: NETWORK_OPTIONS) => {
-                        options.physics = false;
-                    });
-                }
-                frame._network.setData(frame._screenData);
-
-                if (options.scale !== undefined) {
-                    frame.scaleTo(options.scale);
-                }
-
-                if (callback !== undefined)
+                if (callback != undefined)
                     callback();
             });
     }
@@ -428,11 +505,13 @@ export abstract class MainFrame {
         var eventsMap = Utils.toMap({
             "click": FrameEventName.NETWORK_CLICK,
             "doubleClick": FrameEventName.NETWORK_DBLCLICK,
+            "oncontext": FrameEventName.NETWORK_ONCONTEXT,
             "beforeDrawing": FrameEventName.NETWORK_BEFORE_DRAWING,
             "afterDrawing": FrameEventName.NETWORK_AFTER_DRAWING,
             "selectEdge": FrameEventName.NETWORK_SELECT_EDGES,
             "deselectEdge": FrameEventName.NETWORK_DESELECT_EDGES,
             "dragging": FrameEventName.NETWORK_DRAGGING,
+            "dragEnd": FrameEventName.NETWORK_DRAGEND,
             "resize": FrameEventName.FRAME_RESIZE,
         });
 
@@ -660,6 +739,7 @@ export class ControlFactory {
         this.CONTROL_MAP[new RelListCtrl().getTypeName()] = ()=> new RelListCtrl();
         this.CONTROL_MAP[new ImageUploadCtrl().getTypeName()] = ()=> new ImageUploadCtrl();
         this.CONTROL_MAP[new ResultListCtrl().getTypeName()] = ()=> new ResultListCtrl();
+        this.CONTROL_MAP[new ContextCtrl().getTypeName()] = ()=> new ContextCtrl();
     }
 
     private _createControl(ctrlTypeName: string): UIControl {

@@ -1,11 +1,18 @@
-import { GraphEdge, GraphNode, QUERY_RESULTS, LoadGraphOption, CommunityData } from '../types';
+import {
+    GraphEdge,
+    GraphNode,
+    QUERY_RESULTS,
+    LoadGraphOption,
+    CommunityData,
+    InitData, LoadGraphOptionCallback
+} from '../types';
 
 export interface GraphService {
     /**
      * establishs a new connection
      * @param callback 
      */
-    requestConnect(callback: () => void);
+    requestConnect(callback: (data: InitData) => void);
     /**
      * get data of communities
      */
@@ -18,9 +25,10 @@ export interface GraphService {
     requestGetNodeInfos(nodeIds: string[], callback: (descriptions: string[]) => void);
     /**
      * loads graph data to render
-     * @param callback 
+     * @param option
+     * @param callback
      */
-    requestLoadGraph(callback: (nodes: GraphNode[], edges: GraphEdge[], option: LoadGraphOption) => void);
+    requestLoadGraph(option: LoadGraphOption, callback: (nodes: GraphNode[], edges: GraphEdge[], optionBack: LoadGraphOptionCallback) => void);
     /**
      * performs a search on the graph, by giving a keyword
      * @param expr 

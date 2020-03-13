@@ -12,7 +12,7 @@ import {
     FrameEventName,
     EVENT_ARGS_GRAPH_LOADED,
     NETWORK_OPTIONS,
-    EVENT_ARGS_RELFINDER
+    EVENT_ARGS_RELFINDER, EVENT_ARGS_GRAPH_CONNECTED
 } from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
@@ -196,8 +196,8 @@ export class GraphNavigator extends BaseApp {
             })
         });
 
-        super.on(FrameEventName.GRAPH_LOADED, (args: EVENT_ARGS_GRAPH_LOADED) => {
-            app._statusBar.showMessage("nodes: " + args.nodes.length + ", edges: " + args.edges.length);
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_GRAPH_CONNECTED) => {
+            app._statusBar.showMessage("nodes: " + args.nodesNum + ", edges: " + args.edgesNum);
         });
 
         this.toggleShowEdgeLabelAlways(false);

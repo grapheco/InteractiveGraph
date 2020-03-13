@@ -5,11 +5,13 @@ import { RemoteGraph } from '../service/remote';
 import { Theme } from '../Theme';
 import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, FrameEventName, FRAME_OPTIONS, GraphNode, NETWORK_OPTIONS } from "../types";
 import { SelectionCtrl } from "../control/SelectionCtrl";
+import {ContextCtrl} from "../control/ContextCtrl";
 
 export abstract class BaseApp extends MainFrame {
     protected _toggleEdgeLabelHandlers;
     protected _messageBox: MessageBoxCtrl; //signleton message box
     protected _selector: SelectionCtrl;
+    protected _context: ContextCtrl;
 
     protected constructor(htmlFrame: HTMLElement,
         initialOptions: FRAME_OPTIONS, extra?: object,theme?: Theme) {
@@ -25,6 +27,7 @@ export abstract class BaseApp extends MainFrame {
         super.addDocumentControls($("[igraph-control-role]", document), extra);
         this._messageBox = super.addControl(new MessageBoxCtrl());
         this._selector = super.addControl(new SelectionCtrl());
+        this._context = super.addControl(new ContextCtrl());
 
         super.fire(FrameEventName.FRAME_CREATED, extra || {});
     }
@@ -43,6 +46,7 @@ export abstract class BaseApp extends MainFrame {
     }
 
     public connect(url: string, callback) {
+        // @ts-ignore
         super.connectService(new RemoteGraph(url), callback);
     }
 

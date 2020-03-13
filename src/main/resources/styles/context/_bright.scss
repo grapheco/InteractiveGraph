@@ -1,0 +1,50 @@
+// Vars -------------------------------------------------------------- //
+@import 'vars';
+
+// Bright Theme ------------------------------------------------------- //
+.basicContext {
+
+	padding: 2px 0;
+	background-color: white;
+	box-shadow: 0 2px 15px rgba(0, 0, 0, .2), 0 0 0 1px #eee;
+	border-radius: 0;
+
+	&__item {
+		margin-bottom: 2px;
+
+		&--separator {
+			margin: 4px 0;
+			background-color: #eee;
+		}
+
+		&--disabled {
+			opacity: .5;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__data {
+		padding: 6px 10px;
+		color: #666;
+	}
+
+	&__item:not(.basicContext__item--disabled):hover &__data {
+		color: $basicContext__color;
+		background-color: rgba($basicContext__color, .1);
+	}
+
+	&__item:not(.basicContext__item--disabled):active &__data {
+		color: darken($basicContext__color, 10%);
+		background-color: rgba($basicContext__color, .15);
+	}
+
+	&__icon {
+		margin-right: 10px;
+		width: 12px;
+		text-align: center;
+	}
+
+}
