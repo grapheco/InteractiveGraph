@@ -56,6 +56,8 @@ export class SearchBoxCtrl extends UIControl {
                 if (node !== undefined) {
                     input.val(node.label);
                     input.data("node", node);
+                    node['x'] = 0;
+                    node['y'] = 0;
                     frame.insertNodes([node]);
                     // frame.focusNodes(["" + node.id]);
                     frame.emit(FrameEventName.RESULTLISTPUT,[node]);

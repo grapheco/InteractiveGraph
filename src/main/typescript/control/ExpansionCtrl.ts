@@ -30,6 +30,7 @@ export class ExpansionCtrl extends BGControl {
         this._frame.getGraphService().requestGetNeighbours(
             nodeId,
             function (neighbourNodes: object[], neighbourEdges: object[]) {
+                neighbourNodes.forEach(n=>{n['x']=0;n['y']=0})
                 thisCtrl._frame.insertNodes(neighbourNodes);
                 thisCtrl._frame.insertEdges(neighbourEdges);
                 thisCtrl._mapNodeId2ExpansionValue.set(nodeId, neighbourEdges.length);
@@ -55,7 +56,7 @@ export class ExpansionCtrl extends BGControl {
 
             thisCtrl._mapNodeId2ExpansionValue.forEach((v, nodeId, map) => {
                 var node: any = frame.getNodeById(nodeId);
-                if (node.hidden !== true) {
+                if (node!=null&&node.hidden !== true) {
                     var nodePositions: any = args.network.getPositions([nodeId]);
                     var pos = nodePositions[nodeId];
                     /*

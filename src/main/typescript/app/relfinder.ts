@@ -4,7 +4,8 @@ import { RelFinderCtrl } from '../control/RelFinderCtrl';
 import { RelFinderDialogCtrl } from '../control/RelFinderDialogCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
 import {
-    EVENT_ARGS_FRAME,
+    CommunityData,
+    EVENT_ARGS_FRAME, EVENT_ARGS_GRAPH_CONNECTED,
     EVENT_ARGS_RELFINDER,
     EVENT_ARGS_RELLIST,
     FrameEventName,
@@ -13,6 +14,7 @@ import {
 } from '../types';
 import { BaseApp } from './app';
 import {RelListCtrl} from "../control/RelListCtrl";
+import {StatusBarCtrl} from "../control/StatusBarCtrl";
 
 export class RelFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
@@ -20,6 +22,7 @@ export class RelFinder extends BaseApp {
     private _dlgClearScreenAlert;
     private _relfinderDlg: RelFinderDialogCtrl;
     private _rellist: RelListCtrl;
+    private _statusBar: StatusBarCtrl;
 
     public constructor(htmlFrame: HTMLElement, showDialog?: boolean) {
         super(htmlFrame, {
@@ -38,6 +41,7 @@ export class RelFinder extends BaseApp {
         var hilight = frame.addControl( new HighlightCtrl());
         var connect = frame.addControl( new ConnectCtrl());
         var toolbar = frame.getRequiredControlLike(new ToolbarCtrl());
+        this._statusBar = frame.getRequiredControlLike(new StatusBarCtrl());
 
         toolbar.addButton({
             icon: "fa fa-exchange",
@@ -72,6 +76,14 @@ export class RelFinder extends BaseApp {
             options.edges.physics = false;
             options.edges.length = 0.5;
             options.physics.timestep = 0.1;
+        });
+
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_GRAPH_CONNECTED) => {
+            this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                options.physics = true;
+            });
+            frame.setDynamic(false)
+            app._statusBar.showMessage("nodes: " + args.nodesNum + ", edges: " + args.edgesNum);
         });
 
         frame.on(FrameEventName.RELFINDER_START, (args: EVENT_ARGS_RELFINDER) => {

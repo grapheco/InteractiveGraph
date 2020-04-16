@@ -158,7 +158,13 @@ export class RelFinderCtrl extends BGControl {
                     var path = thisCtrl._collectedPaths.shift();
                     console.log(path);
                     thisCtrl._frame.emit(FrameEventName.RELLIST_PUT, { path: path,startNodes: this._queryStartNodeIds});
-                    thisCtrl._frame.insertNodes(path.nodes);
+                    var nodes = []
+                    for (var i = 1;i<path.nodes.length-1;i++){
+                        path.nodes[i]['x'] = 0;
+                        path.nodes[i]['y'] = 0;
+                        nodes.push(path.nodes[i])
+                    }
+                    thisCtrl._frame.insertNodes(nodes);
                     thisCtrl._frame.insertEdges(path.edges);
                     thisCtrl._consumedPaths.push(path);
                 }

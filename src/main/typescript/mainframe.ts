@@ -322,6 +322,11 @@ export abstract class MainFrame {
         this._screenData.edges.clear();
     }
 
+    public setDynamic(dy:boolean){
+        this._dynamic = dy;
+    }
+
+
     /**
      * load graph data and show network in current format
      * @param options

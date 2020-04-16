@@ -1,7 +1,7 @@
 import { ConnectCtrl } from '../control/ConnectCtrl';
 import { ExpansionCtrl } from '../control/ExpansionCtrl';
 import { ToolbarCtrl } from '../control/ToolbarCtrl';
-import { EVENT_ARGS_FRAME, FrameEventName } from '../types';
+import {EVENT_ARGS_FRAME, EVENT_ARGS_GRAPH_CONNECTED, FrameEventName, NETWORK_OPTIONS} from '../types';
 import { BaseApp } from './app';
 import {Theme} from "../theme";
 
@@ -39,6 +39,13 @@ export class GraphExplorer extends BaseApp {
             icon: "fa fa-universal-access",
             tooltip: "connect remote IGP server",
             click: (checked: boolean) => { connect.loadRemoteServer(); }
+        });
+
+        super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_GRAPH_CONNECTED) => {
+            this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
+                options.physics = true;
+            });
+            frame.setDynamic(false)
         });
     }
 }
