@@ -87,12 +87,17 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="infoboxctrl.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="infoboxctrl.html#_classname" class="tsd-kind-icon">_classname</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="infoboxctrl.html#_content" class="tsd-kind-icon">_content</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="infoboxctrl.html#_disabled" class="tsd-kind-icon">_disabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="infoboxctrl.html#_dockable" class="tsd-kind-icon">_dockable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="infoboxctrl.html#_draggable" class="tsd-kind-icon">_draggable</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="infoboxctrl.html#_htmlcontainer" class="tsd-kind-icon">_html<wbr>Container</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="infoboxctrl.html#_position" class="tsd-kind-icon">_position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="infoboxctrl.html#_positionstr" class="tsd-kind-icon">_position<wbr>Str</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="infoboxctrl.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a></li>
 							</ul>
 						</section>
@@ -145,7 +150,7 @@
 								<p>Inherited from UIControl.__constructor</p>
 								<p>Overrides Control.__constructor</p>
 								<ul>
-									<li>Defined in control/Control.ts:40</li>
+									<li>Defined in control/Control.ts:45</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="infoboxctrl.html" class="tsd-signature-type">InfoBoxCtrl</a></h4>
@@ -153,8 +158,30 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="_classname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _classname</h3>
+					<div class="tsd-signature tsd-kind-icon">_classname<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;infoPanel&quot;</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides Control._classname</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L13">control/InfoBoxCtrl.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="_content" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _content</h3>
+					<div class="tsd-signature tsd-kind-icon">_content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;&lt;div&gt;&lt;div class&#x3D;&quot;infoPanel1&quot;&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;infoPanel2&quot;&gt;&lt;span align&#x3D;&quot;center&quot; class&#x3D;&quot;fa fa-close fa-lg btnCloseInfoPanel&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class&#x3D;&quot;infoBox&quot;&gt;&lt;/div&gt;&#x60;</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides Control._content</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L7">control/InfoBoxCtrl.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_disabled" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _disabled</h3>
@@ -166,6 +193,28 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="_dockable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _dockable</h3>
+					<div class="tsd-signature tsd-kind-icon">_dockable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides Control._dockable</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L14">control/InfoBoxCtrl.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="_draggable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _draggable</h3>
+					<div class="tsd-signature tsd-kind-icon">_draggable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from Control._draggable</p>
+						<ul>
+							<li>Defined in control/Control.ts:10</li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="_htmlcontainer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _html<wbr>Container</h3>
@@ -173,7 +222,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from UIControl._htmlContainer</p>
 						<ul>
-							<li>Defined in control/Control.ts:39</li>
+							<li>Defined in control/Control.ts:44</li>
 						</ul>
 					</aside>
 				</section>
@@ -184,7 +233,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from UIControl._position</p>
 						<ul>
-							<li>Defined in control/Control.ts:40</li>
+							<li>Defined in control/Control.ts:45</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -211,6 +260,17 @@
 							</li>
 						</ul>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="_positionstr" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _position<wbr>Str</h3>
+					<div class="tsd-signature tsd-kind-icon">_position<wbr>Str<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;A:10,200&quot;</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides Control._positionStr</p>
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L15">control/InfoBoxCtrl.ts:15</a></li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 					<a name="defaultmaxlisteners" class="tsd-anchor"></a>
@@ -283,7 +343,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.bindElement</p>
 								<ul>
-									<li>Defined in control/Control.ts:49</li>
+									<li>Defined in control/Control.ts:54</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -313,7 +373,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.createContainerIfAbsent</p>
 								<ul>
-									<li>Defined in control/Control.ts:54</li>
+									<li>Defined in control/Control.ts:59</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -331,7 +391,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Control.disable</p>
 								<ul>
-									<li>Defined in control/Control.ts:24</li>
+									<li>Defined in control/Control.ts:29</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -377,7 +437,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Control.enable</p>
 								<ul>
-									<li>Defined in control/Control.ts:20</li>
+									<li>Defined in control/Control.ts:25</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -433,7 +493,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Control.getTypeName</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/e26bf26/src/main/typescript/control/InfoBoxCtrl.ts#L6">control/InfoBoxCtrl.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L17">control/InfoBoxCtrl.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -451,7 +511,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.hide</p>
 								<ul>
-									<li>Defined in control/Control.ts:134</li>
+									<li>Defined in control/Control.ts:146</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -565,7 +625,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides UIControl.onBindElement</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/e26bf26/src/main/typescript/control/InfoBoxCtrl.ts#L10">control/InfoBoxCtrl.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/814d321/src/main/typescript/control/InfoBoxCtrl.ts#L21">control/InfoBoxCtrl.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -596,7 +656,7 @@
 								<p>Inherited from UIControl.onCreate</p>
 								<p>Overrides Control.onCreate</p>
 								<ul>
-									<li>Defined in control/Control.ts:58</li>
+									<li>Defined in control/Control.ts:67</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -621,7 +681,7 @@
 								<p>Inherited from UIControl.onDestroy</p>
 								<p>Overrides Control.onDestroy</p>
 								<ul>
-									<li>Defined in control/Control.ts:159</li>
+									<li>Defined in control/Control.ts:171</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -645,7 +705,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.onResize</p>
 								<ul>
-									<li>Defined in control/Control.ts:138</li>
+									<li>Defined in control/Control.ts:150</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -928,7 +988,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.setPosition</p>
 								<ul>
-									<li>Defined in control/Control.ts:130</li>
+									<li>Defined in control/Control.ts:142</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -973,7 +1033,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from UIControl.show</p>
 								<ul>
-									<li>Defined in control/Control.ts:126</li>
+									<li>Defined in control/Control.ts:138</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1027,14 +1087,29 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="infoboxctrl.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="infoboxctrl.html#_classname" class="tsd-kind-icon">_classname</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="infoboxctrl.html#_content" class="tsd-kind-icon">_content</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="infoboxctrl.html#_disabled" class="tsd-kind-icon">_disabled</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="infoboxctrl.html#_dockable" class="tsd-kind-icon">_dockable</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="infoboxctrl.html#_draggable" class="tsd-kind-icon">_draggable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="infoboxctrl.html#_htmlcontainer" class="tsd-kind-icon">_html<wbr>Container</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="infoboxctrl.html#_position" class="tsd-kind-icon">_position</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="infoboxctrl.html#_positionstr" class="tsd-kind-icon">_position<wbr>Str</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="infoboxctrl.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a>
