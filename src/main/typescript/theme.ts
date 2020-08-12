@@ -12,6 +12,7 @@ export interface NodeColor {
 }
 export interface Theme {
     canvasBackground: string,
+    physics?: object,
     highlight: {
         gradientInnerColor: string,
         gradientOutterColor: string,
@@ -187,7 +188,17 @@ export class Themes {
 
     static LIGHT(): Theme {
         return {
-            canvasBackground: "#F3F3F3",
+            canvasBackground: "#FFF",
+
+            physics: {
+                enabled: true,
+                barnesHut: {
+                    gravitationalConstant: -80000,
+                    springConstant: 0.001,
+                    springLength: 200
+                },
+                solver: 'barnesHut'
+            },
             highlight: {
                 gradientInnerColor: "rgb(67, 216, 253)",
                 gradientOutterColor: "#F3F3F3",
@@ -258,3 +269,16 @@ export class Themes {
         };
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

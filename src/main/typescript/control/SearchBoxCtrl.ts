@@ -5,6 +5,16 @@ import { UIControl } from "./Control";
 export class SearchBoxCtrl extends UIControl {
     public _input: JQuery<HTMLElement> = null;
     public _image: JQuery<HTMLElement> = null;
+    protected _content = `
+    <div class="searchPanel1">
+        <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
+    </div>
+    <div class="searchPanel2 igraph-searchbox-image">
+        <span align="center" class="fa fa-photo fa-lg" />
+    </div>`
+    protected _classname = "searchPanel"
+    protected _dockable = true
+    protected _positionStr = "A:10,20"
 
     public getTypeName(): string {
         return "SearchBoxCtrl";
@@ -26,19 +36,26 @@ export class SearchBoxCtrl extends UIControl {
                 return "<b>" + item.label + "</b>";
             };
 
+        let timeout = null;
+
         //binds events
         input.autocomplete({
             source: function (request, response) {
-                var term = request.term;
-                frame.search(term, function (nodes: GraphNode[]) {
-                    response(nodes.map((node) => {
-                        return {
-                            value: node.label,
-                            label: node.label,
-                            node: node
-                        };
-                    }));
-                });
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    // console.log("search");
+                    var term = request.term;
+
+                    frame.search(term, function (nodes: GraphNode[]) {
+                        response(nodes.map((node) => {
+                            return {
+                                value: node.label,
+                                label: node.label,
+                                node: node
+                            };
+                        }));
+                    });
+                }, 1000);
             },
 
             change: function (event, ui) {
@@ -52,7 +69,7 @@ export class SearchBoxCtrl extends UIControl {
             },
 
             select: function (event, ui) {
-                var node: GraphNode = ui.item.node;
+                let node: GraphNode = ui.item.node;
                 if (node !== undefined) {
                     input.val(node.label);
                     input.data("node", node);

@@ -15,6 +15,7 @@ import {
 import { BaseApp } from './app';
 import {RelListCtrl} from "../control/RelListCtrl";
 import {StatusBarCtrl} from "../control/StatusBarCtrl";
+import {Theme} from "../theme";
 
 export class RelFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
@@ -24,14 +25,14 @@ export class RelFinder extends BaseApp {
     private _rellist: RelListCtrl;
     private _statusBar: StatusBarCtrl;
 
-    public constructor(htmlFrame: HTMLElement, showDialog?: boolean) {
+    public constructor(htmlFrame: HTMLElement,theme?: Theme, showDialog?: boolean) {
         super(htmlFrame, {
             showLabels: true,
             showFaces: true,
             showDegrees: true,
             showEdges: true,
             showGroups: true
-        }, { showDialog: showDialog });
+        }, { showDialog: showDialog },theme);
     }
 
     protected onCreateFrame(args: EVENT_ARGS_FRAME) {
@@ -80,7 +81,7 @@ export class RelFinder extends BaseApp {
 
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_GRAPH_CONNECTED) => {
             this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
-                options.physics = true;
+                options.physics.enabled = true;
             });
             frame.setDynamic(false)
             app._statusBar.showMessage("nodes: " + args.nodesNum + ", edges: " + args.edgesNum);

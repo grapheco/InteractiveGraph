@@ -183,7 +183,7 @@ export abstract class MainFrame {
                 data.nodesNum > MAX_NODES_COUNT ||
                 data.edgesNum > MAX_EDGES_COUNT) {
                 this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
-                    options.physics = false;
+                    options.physics.enabled = false;
                 });
             }
             // too large to dynamic load data

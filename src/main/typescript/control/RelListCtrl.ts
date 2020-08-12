@@ -14,6 +14,11 @@ export class RelListCtrl extends UIControl{
 
     private _frame: MainFrame;
 
+    protected _classname = 'ResultListPanel';
+    protected _dockable = true;
+    protected _draggable = true;
+    protected _positionStr = "A:10,70";
+
     //colors of selected paths
     private _pathColors = [
         '#fd9f83', '#fedb67', '#63b706',

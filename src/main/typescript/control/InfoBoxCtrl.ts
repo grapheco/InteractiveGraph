@@ -3,6 +3,17 @@ import { UIControl } from "./Control";
 import { MainFrame } from '../mainframe';
 
 export class InfoBoxCtrl extends UIControl {
+
+    protected _content: string = `
+            <div>
+                <div class="infoPanel1"></div>
+                <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
+            </div>
+            <div class="infoBox"></div>`;
+    protected _classname: string = 'infoPanel';
+    protected _dockable: boolean = true;
+    protected _positionStr: string = "A:10,200";
+
     public getTypeName(): string {
         return "InfoBoxCtrl";
     }

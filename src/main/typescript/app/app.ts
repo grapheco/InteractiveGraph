@@ -6,6 +6,13 @@ import { Theme } from '../Theme';
 import { EVENT_ARGS_FRAME, EVENT_ARGS_FRAME_INPUT, FrameEventName, FRAME_OPTIONS, GraphNode, NETWORK_OPTIONS } from "../types";
 import { SelectionCtrl } from "../control/SelectionCtrl";
 import {ContextCtrl} from "../control/ContextCtrl";
+import {SearchBoxCtrl} from "../control/SearchBoxCtrl";
+import {ToolbarCtrl} from "../control/ToolbarCtrl";
+import {StatusBarCtrl} from "../control/StatusBarCtrl";
+import {InfoBoxCtrl} from "../control/InfoBoxCtrl";
+import {RelListCtrl} from "../control/RelListCtrl";
+import {ImageUploadCtrl} from "../control/ImageUploadCtrl";
+import {ResultListCtrl} from "../control/ResultListCtrl";
 
 export abstract class BaseApp extends MainFrame {
     protected _toggleEdgeLabelHandlers;
@@ -24,7 +31,14 @@ export abstract class BaseApp extends MainFrame {
 
         super.on(FrameEventName.FRAME_CREATED, this.onCreateFrame.bind(this));
 
-        super.addDocumentControls($("[igraph-control-role]", document), extra);
+        // super.addDocumentControls($("[igraph-control-role]", document), extra);
+        super.addControl(new SearchBoxCtrl());
+        super.addControl(new ToolbarCtrl());
+        super.addControl(new StatusBarCtrl());
+        super.addControl(new InfoBoxCtrl());
+        super.addControl(new ResultListCtrl());
+        super.addControl(new ImageUploadCtrl());
+
         this._messageBox = super.addControl(new MessageBoxCtrl());
         this._selector = super.addControl(new SelectionCtrl());
         this._context = super.addControl(new ContextCtrl());

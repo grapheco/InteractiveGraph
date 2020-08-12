@@ -74,7 +74,7 @@
     </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
-        var app = new igraph.RelFinder(document.getElementById('graphArea'));
+        var app = new igraph.RelFinder(document.getElementById('graphArea'),'LIGHT');
         app.loadGson("honglou.json", {}, function () {
             app.pickup([{
                 label: "贾宝玉"

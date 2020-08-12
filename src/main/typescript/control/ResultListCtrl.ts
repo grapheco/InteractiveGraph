@@ -5,6 +5,11 @@ import {IdType} from "vis";
 
 export class ResultListCtrl extends UIControl {
 
+    protected _content = ``;
+    protected _classname = 'ResultListPanel';
+    protected _dockable = true;
+    protected _positionStr = "A:10,70";
+
     private _frame:MainFrame = null;
     private _nodeSet:GraphNode[] = [];
     private _html:JQuery<HTMLElement>;

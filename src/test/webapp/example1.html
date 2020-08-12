@@ -27,43 +27,10 @@
     <div style="height:100%">
         <div id="graphArea"></div>
     </div>
-    <!--all UI controls-->
-    <div>
-        <!--toolbar-->
-        <div class="toolbarPanel igraph-dockable igraph-draggable" igraph-control-role="ToolbarCtrl"
-            igraph-dock-position="B:-6,0">
-            <div class="toolbar"></div>
-        </div>
-        <!--info box-->
-        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,200">
-            <div>
-                <div class="infoPanel1"></div>
-                <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
-            </div>
-            <div class="infoBox"></div>
-        </div>
-        <!--search box-->
-        <div class="searchPanel igraph-dockable igraph-draggable" igraph-control-role="SearchBoxCtrl"
-            igraph-dock-position="A:10,20">
-            <div class="searchPanel1">
-                <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
-            </div>
-            <div class="searchPanel2 igraph-searchbox-image">
-                <span align="center" class="fa fa-photo fa-lg" />
-            </div>
-        </div>
-        <!--status bar-->
-        <div class="statusPanel igraph-dockable" igraph-control-role="StatusBarCtrl" igraph-dock-position="C:-100,0">
-            <div class="statusBar"></div>
-        </div>
-        <!--image upload box-->
-        <div class="imageUploadPanel" igraph-control-role="ImageUploadCtrl"></div>
-        <div class="ResultListPanel igraph-dockable igraph-draggable" igraph-control-role="ResultListCtrl" igraph-dock-position="A:10,70"></div>
-    </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
         var app = new igraph.GraphNavigator(document.getElementById('graphArea'), 'LIGHT');
-        app.loadGson("honglou2.json", {
+        app.loadGson("honglou.json", {
             "onGetNodeDescription": function (node) {
                 var description = "<p align=center>";
                 if (node.image !== undefined) {
@@ -81,7 +48,7 @@
                 return description;
             }
         }, function () {});
-        //app.connect("http://localhost:9999/graphserver/connector-bolt");
+        // app.connect("http://localhost:9999/graphserver/connector-bolt");
     </script>
 </body>
 

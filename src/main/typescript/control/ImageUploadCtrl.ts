@@ -6,6 +6,10 @@ import {getCommonBasePathOfArray} from "gulp-typescript/release/utils";
 
 export class ImageUploadCtrl extends UIControl {
 
+    protected _classname = 'imageUploadPanel';
+    protected _dockable = false;
+    protected _draggable = false;
+
     public _frame:MainFrame =null;
     public _modal: JQuery<HTMLElement> = null;
     public _modalCloser: JQuery<HTMLElement> = null;

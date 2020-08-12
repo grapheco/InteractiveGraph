@@ -29,36 +29,13 @@
     </div>
     <!--all UI controls-->
     <div>
-        <!--toolbar-->
-        <div class="toolbarPanel igraph-dockable igraph-draggable" igraph-control-role="ToolbarCtrl" igraph-dock-position="B:-6,0">
-            <div class="toolbar"></div>
-        </div>
-        <!--info box-->
-        <div class="infoPanel igraph-dockable igraph-draggable" igraph-control-role="InfoBoxCtrl" igraph-dock-position="A:10,80">
-            <div>
-                <div class="infoPanel1"></div>
-                <div class="infoPanel2"><span align="center" class="fa fa-close fa-lg btnCloseInfoPanel"></span></div>
-            </div>
-            <div class="infoBox"></div>
-        </div>
-        <!--search box-->
-        <div class="searchPanel igraph-dockable igraph-draggable" igraph-control-role="SearchBoxCtrl" igraph-dock-position="A:10,20">
-            <div class="searchPanel1">
-                <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
-            </div>
-            <div class="searchPanel2">
-                <span align="center" class="fa fa-search fa-lg"/>
-            </div>
-        </div>
     </div>
     <script type="text/javascript">
         igraph.i18n.setLanguage("chs");
-        var app = new igraph.GraphExplorer(document.getElementById('graphArea'));
+        var app = new igraph.GraphExplorer(document.getElementById('graphArea'),'LIGHT');
         app.loadGson("honglou.json", {}, function () {
             app.pickup([{
-                label: "贾宝玉"
-            }, {
-                label: "薛蟠"
+                label: "王熙凤"
             }]);
         });
     </script>

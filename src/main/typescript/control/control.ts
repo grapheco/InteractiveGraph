@@ -4,6 +4,11 @@ import { EVENT_ARGS_FRAME, FrameEventName, POINT, RECT } from "../types";
 
 export abstract class Control extends events.EventEmitter {
     protected _disabled: boolean = false;
+    protected _content: string = '';
+    protected _classname: string = '';
+    protected _dockable: boolean = false;
+    protected _draggable: boolean = true;
+    protected _positionStr: string = null;
 
     public abstract getTypeName(): string;
 
@@ -52,32 +57,39 @@ export abstract class UIControl extends Control {
     }
 
     protected createContainerIfAbsent(): HTMLElement {
-        return document.createElement("div");
+        let e = document.createElement("div");
+        $(e).addClass(this._classname)
+        $(e).html(this._content)
+        console.log("created default control: " + this.getTypeName());        
+        return e
     }
 
     public onCreate(args: EVENT_ARGS_FRAME) {
-        if (this._htmlContainer == null) {
-            var e = this._htmlContainer = this.createContainerIfAbsent();
-            $(e).addClass("htmlContainer").addClass("igraph-dock").appendTo($(args.htmlMainFrame));
-            console.log("created default control: " + this.getTypeName());
-            this.bindElement(e, args.mainFrame, args);
-        }
+        // if (this._htmlContainer == null) {
+        //     var e = this._htmlContainer = this.createContainerIfAbsent();
+        //     $(e).addClass("htmlContainer").addClass("igraph-dock").appendTo($(args.htmlMainFrame));
+        //     console.log("created default control: " + this.getTypeName());
+        //     this.bindElement(e, args.mainFrame, args);
+        // }
+        var e = this._htmlContainer = this.createContainerIfAbsent();
+        $(e).appendTo($(args.htmlMainFrame));
+        this.bindElement(e, args.mainFrame, args);
 
         var hc = this._htmlContainer;
 
         //is draggable?
-        if($(hc).hasClass("igraph-draggable")){
+        if(this._draggable){
             $(hc).draggable();
         }
 
         //is dockable?
-        if ($(hc).hasClass("igraph-dockable")) {
+        if (this._dockable) {
             this.on(FrameEventName.FRAME_RESIZE, this.onResize.bind(this));
             $(hc).css("position", "absolute");
 
             //set offset
             //A|B|C|D:10,10
-            var pos = $(hc).attr("igraph-dock-position");
+            var pos = this._positionStr;
 
             if (pos == undefined) {
                 pos = "A:0,0";

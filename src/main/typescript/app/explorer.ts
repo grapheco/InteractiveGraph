@@ -43,7 +43,7 @@ export class GraphExplorer extends BaseApp {
 
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_GRAPH_CONNECTED) => {
             this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
-                options.physics = true;
+                options.physics.enabled = true;
             });
             frame.setDynamic(false)
         });

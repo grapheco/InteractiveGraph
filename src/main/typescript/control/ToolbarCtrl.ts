@@ -4,6 +4,13 @@ import "jquery";
 import "jqueryui";
 
 export class ToolbarCtrl extends UIControl {
+
+    protected _content = `<div class="toolbar"></div>`;
+    protected _classname = 'toolbarPanel';
+    protected _dockable = true;
+    protected _positionStr = "B:-6,0";
+
+
     public getTypeName(): string {
         return "ToolbarCtrl";
     }
