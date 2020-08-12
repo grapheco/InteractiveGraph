@@ -311,10 +311,15 @@ __Step 2.__ open `dist/examples/example1.html` in Web browser.
 
 InteractiveGraph is licensed under the BSD 2-Clause "Simplified" License.
 
-Please cite this project as reference if you used it:
+Please cite this project as reference if you are to mention it:
 
 ```
 InteractiveGraph: a web-based interactive operating framwork for large graph data［EB/OL］. https://github.com/grapheco/InteractiveGraph, 2018-09-09
+```
+or add following paper as reference:
+
+```
+赵子豪,沈志宏*. 一种适合多元异构图数据管理系统的交互分析框架[J]. 数据分析与知识发现,2019,10(34):37-46.
 ```
 
 Furthermore, it is appreciated if you let us know how you use InteractiveGraph in your projects!!! Please fill the use case table (https://github.com/grapheco/InteractiveGraph/wiki/use-case-collection) with your name (github username), organization, and project.
