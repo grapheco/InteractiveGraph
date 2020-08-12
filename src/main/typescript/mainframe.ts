@@ -68,6 +68,8 @@ export abstract class MainFrame {
     private _showGraphOptions: FRAME_OPTIONS = {};
     private _theme: Theme;
 
+    private clickFlag = null;
+
     public constructor(htmlFrame: HTMLElement, showGraphOptions: FRAME_OPTIONS, theme?: Theme) {
         this._htmlFrame = htmlFrame;
 
@@ -498,6 +500,29 @@ export abstract class MainFrame {
         this.updateNodes(updates);
     }
 
+    private _bindNetworkClick(){
+        let browser: MainFrame = this;
+        this._network.on('click', function (args) {
+            if(browser.clickFlag) {//取消上次延时未执行的方法
+                browser.clickFlag = clearTimeout(browser.clickFlag);
+            }
+
+            browser.clickFlag = setTimeout(function() {
+                // click 事件的处理
+                browser.fire(FrameEventName.NETWORK_CLICK,
+                    args instanceof CanvasRenderingContext2D ? { context2d: args } : args);
+            }, 300);//延时300毫秒执行
+        });
+
+        this._network.on('doubleClick', function (args) {
+            if(browser.clickFlag) {//取消上次延时未执行的方法
+                browser.clickFlag = clearTimeout(browser.clickFlag);
+            }
+            browser.fire(FrameEventName.NETWORK_DBLCLICK,
+                args instanceof CanvasRenderingContext2D ? { context2d: args } : args);
+        });
+    }
+
     private _bindNetworkEvent(networkEventName, frameEventName) {
         var browser: MainFrame = this;
         this._network.on(networkEventName, function (args) {
@@ -508,8 +533,8 @@ export abstract class MainFrame {
 
     private _bindNetworkEvents() {
         var eventsMap = Utils.toMap({
-            "click": FrameEventName.NETWORK_CLICK,
-            "doubleClick": FrameEventName.NETWORK_DBLCLICK,
+            // "click": FrameEventName.NETWORK_CLICK,
+            // "doubleClick": FrameEventName.NETWORK_DBLCLICK,
             "oncontext": FrameEventName.NETWORK_ONCONTEXT,
             "beforeDrawing": FrameEventName.NETWORK_BEFORE_DRAWING,
             "afterDrawing": FrameEventName.NETWORK_AFTER_DRAWING,
@@ -523,6 +548,8 @@ export abstract class MainFrame {
         eventsMap.forEach((v, k, map) => {
             this._bindNetworkEvent(k, v);
         });
+
+        this._bindNetworkClick()
     }
 
     private _createEventArgs(): EVENT_ARGS_FRAME {

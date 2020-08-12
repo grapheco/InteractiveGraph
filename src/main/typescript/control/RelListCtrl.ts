@@ -14,10 +14,12 @@ export class RelListCtrl extends UIControl{
 
     private _frame: MainFrame;
 
-    protected _classname = 'ResultListPanel';
+    protected _content = `<p class="rellist-title">Relation Paths (<span class="relnum">11</span>):</p>
+            <ul class="rellist"></ul>`
+    protected _classname = 'rellistPanel';
     protected _dockable = true;
     protected _draggable = true;
-    protected _positionStr = "A:10,70";
+    protected _positionStr = "B:-6,220";
 
     //colors of selected paths
     private _pathColors = [

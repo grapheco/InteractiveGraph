@@ -16,6 +16,7 @@ import { BaseApp } from './app';
 import {RelListCtrl} from "../control/RelListCtrl";
 import {StatusBarCtrl} from "../control/StatusBarCtrl";
 import {Theme} from "../theme";
+import {SearchBoxCtrl} from "../control/SearchBoxCtrl";
 
 export class RelFinder extends BaseApp {
     private _relfinder: RelFinderCtrl;
@@ -69,9 +70,11 @@ export class RelFinder extends BaseApp {
             click: (checked: boolean) => { connect.loadRemoteServer(); }
         });
 
-        this._relfinderDlg = frame.getRequiredControlLike(new RelFinderDialogCtrl());
-        this._rellist = frame.getRequiredControlLike(new RelListCtrl());
+        // this._relfinderDlg = frame.getRequiredControlLike(new RelFinderDialogCtrl());
+        this._relfinderDlg = frame.addControl(new RelFinderDialogCtrl());
+        this._rellist = frame.addControl(new RelListCtrl());
         this._relfinder = frame.addControl( new RelFinderCtrl());
+        frame.getRequiredControlLike(new SearchBoxCtrl()).hide();
 
         frame.updateNetworkOptions(function (options: NETWORK_OPTIONS) {
             options.edges.physics = false;

@@ -8,7 +8,7 @@ export class StatusBarCtrl extends UIControl {
     protected _classname = 'statusBar';
     protected _dockable = true;
     protected _draggable = false;
-    protected _positionStr = "C:-100,0";
+    protected _positionStr = "C:-250,-10";
 
     public getTypeName(): string {
         return "StatusBarCtrl";

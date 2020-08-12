@@ -6,6 +6,27 @@ import { MainFrame } from '../mainframe';
 export class RelFinderDialogCtrl extends UIControl {
 
     private _searchBoxes: JQuery[];
+    protected _content = `
+    <div class="line"><span class="fa relfinder-icon fa-flag"></span>
+                <div class="relfinder-searchbox-container">
+                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+                </div>
+            </div>
+            <div class="line"><span class="fa relfinder-icon fa-flag-checkered"></span>
+                <div class="relfinder-searchbox-container">
+                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+                </div>
+            </div>
+            <div class="line"><label>maxdepth: </label>
+                <input size="10" autocomplete="off" readonly class="ui-spinner-input relfinder-depth-spinner">
+            </div>
+            <p align="center">
+                <button type="button" class="btn relfinder-btn relfinder-btn-start">find relations</button>
+                <button type="button" class="btn relfinder-btn relfinder-btn-stop" disabled="disabled">stop</button>
+            </p>`;
+    protected _classname = 'relfinder-dlg';
+    protected _dockable = true;
+    protected _positionStr = "B:-6,45";
 
     public getTypeName(): string {
         return "RelFinderDialogCtrl";

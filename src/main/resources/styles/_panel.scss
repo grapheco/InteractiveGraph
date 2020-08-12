@@ -141,9 +141,11 @@ div.statusBar {
   -ms-user-select: none;
   user-select: none;
   text-overflow: clip;
+  word-break: keep-all;
+  white-space: nowrap;
   text-align: center;
-  color: red;
-  font-size: 28px;
+  color: #777;
+  font-size: 18px;
   font-weight: bold;
   font-family: Impact, Haettenschweiler, 'Arial Narrow', sans-serif;
   padding: 10px 10px 10px 10px;
