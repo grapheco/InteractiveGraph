@@ -9,12 +9,24 @@ export class RelFinderDialogCtrl extends UIControl {
     protected _content = `
     <div class="line"><span class="fa relfinder-icon fa-flag"></span>
                 <div class="relfinder-searchbox-container">
-                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+<!--                    <input class="igraph-searchbox" type="text" placeholder="input keyword">-->
+                     <div class="searchPanel1">
+                        <select name="label" class="label-select">
+                            
+                        </select>
+                        <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
+                    </div>
                 </div>
             </div>
             <div class="line"><span class="fa relfinder-icon fa-flag-checkered"></span>
                 <div class="relfinder-searchbox-container">
-                    <input class="igraph-searchbox" type="text" placeholder="input keyword">
+<!--                    <input class="igraph-searchbox" type="text" placeholder="input keyword">-->
+                     <div class="searchPanel1">
+                        <select name="label" class="label-select">
+                            
+                        </select>
+                        <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
+                    </div>
                 </div>
             </div>
             <div class="line"><label>maxdepth: </label>
@@ -37,7 +49,7 @@ export class RelFinderDialogCtrl extends UIControl {
 
         this._searchBoxes = [];
         $(".relfinder-searchbox-container", htmlContainer).each(function () {
-            var sbctrl = new SearchBoxCtrl();
+            let sbctrl = new SearchBoxCtrl();
             sbctrl.bindElement(this, frame, args);
             ctrl._searchBoxes.push(sbctrl._input);
         });

@@ -78,6 +78,7 @@ export class ImageUploadCtrl extends UIControl {
          * */
         //local
         this._uploadBtns.eq(0).on('click',function(){
+            console.log(that._fileUploader.file[0])
             frame.searchImage(that._fileUploader.file[0],(nodes)=>{
                 that._frame.emit(FrameEventName.RESULTLISTPUT,nodes);
                 that.hideMe()

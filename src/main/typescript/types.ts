@@ -23,7 +23,7 @@ export interface NodeEdgeSet {
     edges: GraphEdgeSet
 }
 
-/** 
+/**
  * graph json objects
 */
 export interface Community {
@@ -81,6 +81,7 @@ export interface NodeCommunityEntry {
 }
 
 export interface InitData {
+    categories: object,
     nodesNum: number,
     edgesNum: number,
     autoLayout : boolean;
@@ -130,6 +131,7 @@ export interface EVENT_ARGS_GRAPH_LOADED extends EVENT_ARGS_FRAME {
 }
 
 export interface EVENT_ARGS_GRAPH_CONNECTED extends EVENT_ARGS_FRAME {
+    categories: object;
     nodesNum: number;
     edgesNum: number;
 }

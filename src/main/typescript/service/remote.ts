@@ -41,9 +41,37 @@ export class RemoteGraph implements GraphService {
         });
     }
 
+    private _fileCommand(command, file, params: object, callback: (data) => void) {
+        console.log("command:" + command)
+
+        let formData = new FormData();
+        for (let paramsKey in params) {
+            formData.append(paramsKey, params[paramsKey]);
+        }
+        formData.append("file", file);
+
+        $.ajax({
+            url:this._url + "?command=" + command,
+            dataType:'json',
+            type:'POST',
+            async: false,
+            data: formData,
+            processData : false, // 使数据不做处理
+            contentType : false, // 不要设置Content-Type请求头
+            success: function(data){
+                callback(data);
+            },
+            error:function(response){
+                console.log(response);
+            }
+        });
+
+    }
+
     requestConnect(callback: (data:InitData) => void) {
         this._ajaxCommand("init", {}, (data) => {
             callback({
+                categories:data.categories,
                 nodesNum: data.nodesCount,
                 edgesNum: data.edgesCount,
                 autoLayout: data.autoLayout
@@ -116,7 +144,7 @@ export class RemoteGraph implements GraphService {
     }
 
     requestImageSearch(img: any, limit: number, callback: (nodes: GraphNode[]) => void) {
-        this._ajaxCommand("searchImage", { file: img, limit: limit }, function (data) {
+        this._fileCommand("searchImage",img, { limit: limit }, function (data) {
             callback(data.nodes);
         })
     }

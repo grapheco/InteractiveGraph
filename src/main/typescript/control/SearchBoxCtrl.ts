@@ -1,12 +1,16 @@
 import { MainFrame } from "../mainframe";
-import {GraphNode, EVENT_ARGS_FRAME, FrameEventName} from '../types';
+import {GraphNode, EVENT_ARGS_FRAME, FrameEventName, EVENT_ARGS_GRAPH_CONNECTED} from '../types';
 import { UIControl } from "./Control";
 
 export class SearchBoxCtrl extends UIControl {
     public _input: JQuery<HTMLElement> = null;
     public _image: JQuery<HTMLElement> = null;
+
     protected _content = `
     <div class="searchPanel1">
+        <select name="label" class="label-select">
+            
+        </select>
         <input class="igraph-searchbox" type="text" size="16" placeholder="input keyword">
     </div>
     <div class="searchPanel2 igraph-searchbox-image">
@@ -23,9 +27,17 @@ export class SearchBoxCtrl extends UIControl {
     public onBindElement(htmlContainer: HTMLElement, frame: MainFrame, args: EVENT_ARGS_FRAME) {
         var input = $('.igraph-searchbox', htmlContainer);
         var image = $('.igraph-searchbox-image', htmlContainer);
+        let label_select = $('.label-select', htmlContainer);
         if (input.length == 0) {
             throw new Error("no input for search box: .igraph-searchbox");
         }
+
+        frame.on(FrameEventName.GRAPH_CONNECTED, (args:EVENT_ARGS_GRAPH_CONNECTED) => {
+            let categories = args.categories
+            for (let categoriesKey in categories) {
+                label_select.append(`<option value="${categoriesKey}">${categories[categoriesKey]}</option>`)
+            }
+        })
 
         this._input = input;
         this._image = image;
@@ -45,7 +57,10 @@ export class SearchBoxCtrl extends UIControl {
                 timeout = setTimeout(function () {
                     // console.log("search");
                     var term = request.term;
-
+                    let l = label_select.val();
+                    if (l)
+                        term  = l+":"+term;
+                    console.log(l,term);
                     frame.search(term, function (nodes: GraphNode[]) {
                         response(nodes.map((node) => {
                             return {

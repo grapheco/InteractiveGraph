@@ -83,6 +83,7 @@ div.toolbarPanel {
 /*
 ----------SearchCtrl----------
 */
+
 div.searchPanel {
   @extend .pannel;
   width: 260px;
@@ -91,8 +92,14 @@ div.searchPanel {
   .searchPanel1 {
     width: 180px;
     float: left;
+    .label-select{
+      height: 100%;
+      border: none;
+      color: $primary-color;
+      &:focus{outline: none;}
+    }
     .igraph-searchbox{
-      width: 100%;
+      width: 60%;
       height: 100%;
       padding-left: 0.5rem;
       border: none;

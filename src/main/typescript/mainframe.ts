@@ -181,17 +181,20 @@ export abstract class MainFrame {
 
             // too large to close physics
             if (
-                (data.autoLayout === false) ||
-                data.nodesNum > MAX_NODES_COUNT ||
-                data.edgesNum > MAX_EDGES_COUNT) {
+                data.autoLayout === false
+                // || data.nodesNum > MAX_NODES_COUNT
+                // || data.edgesNum > MAX_EDGES_COUNT
+            ){
                 this.updateNetworkOptions((options: NETWORK_OPTIONS) => {
                     options.physics.enabled = false;
                 });
             }
             // too large to dynamic load data
             if (
-                data.nodesNum > MAX_NODES_COUNT ||
-                data.edgesNum > MAX_EDGES_COUNT) {
+                data.autoLayout === false
+                // || data.nodesNum > MAX_NODES_COUNT
+                // || data.edgesNum > MAX_EDGES_COUNT
+            ) {
                 this._dynamic = true;
                 this.updateNetworkOptions((opt)=>{
                     opt['interaction']['zoomView'] = false;
@@ -199,12 +202,15 @@ export abstract class MainFrame {
             }
 
             this.fire(FrameEventName.GRAPH_CONNECTED, {
+                categories:data.categories,
                 nodesNum:data.nodesNum,
                 edgesNum:data.edgesNum
             });
 
             if (callback != undefined)
                 callback();
+
+            console.log(this._dynamic)
         });
     }
 
@@ -413,6 +419,14 @@ export abstract class MainFrame {
      * @returns new node ids (without which exist already)
      */
     public insertNodes(nodes: any[]): string[] {
+        // if node name is too long
+        nodes = nodes.map(node=>{
+
+            if(node.label && node.label.length>8){
+                node.label = node.label.toString().substr(0,3)+"..."
+            }
+            return node
+        })
         var browser = this;
 
         var newNodeIds = nodes.filter((node) => {
