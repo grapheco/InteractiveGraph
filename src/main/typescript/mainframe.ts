@@ -210,7 +210,7 @@ export abstract class MainFrame {
             if (callback != undefined)
                 callback();
 
-            console.log(this._dynamic)
+            console.log("dynamic"+this._dynamic)
         });
     }
 
@@ -753,8 +753,8 @@ export abstract class MainFrame {
                     springLength: 200
                 },
                 forceAtlas2Based: {
-                    gravitationalConstant: -26,
-                    centralGravity: 0.005,
+                    gravitationalConstant: -50,
+                    centralGravity: 0.003,
                     springLength: 230,
                     springConstant: 0.18
                 },
