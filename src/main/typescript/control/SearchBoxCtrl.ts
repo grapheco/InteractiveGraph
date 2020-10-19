@@ -5,6 +5,9 @@ import { UIControl } from "./Control";
 export class SearchBoxCtrl extends UIControl {
     public _input: JQuery<HTMLElement> = null;
     public _image: JQuery<HTMLElement> = null;
+    public _label: JQuery<HTMLElement> = null;
+    public _labels: Map<String, String> = new Map<String, String>();
+    private DELAY: number = 500
 
     protected _content = `
     <div class="searchPanel1">
@@ -19,6 +22,7 @@ export class SearchBoxCtrl extends UIControl {
     protected _classname = "searchPanel"
     protected _dockable = true
     protected _positionStr = "A:10,20"
+
 
     public getTypeName(): string {
         return "SearchBoxCtrl";
@@ -36,11 +40,13 @@ export class SearchBoxCtrl extends UIControl {
             let categories = args.categories
             for (let categoriesKey in categories) {
                 label_select.append(`<option value="${categoriesKey}">${categories[categoriesKey]}</option>`)
+                this._labels.set(categoriesKey, categories[categoriesKey])
             }
         })
 
         this._input = input;
         this._image = image;
+        this._label = label_select
 
         var callback = args['renderAutoCompletionItem'];
         if (callback === undefined)
@@ -52,9 +58,9 @@ export class SearchBoxCtrl extends UIControl {
 
         //binds events
         input.autocomplete({
-            source: function (request, response) {
+            source:  (request, response)=> {
                 clearTimeout(timeout);
-                timeout = setTimeout(function () {
+                timeout = setTimeout(()=> {
                     // console.log("search");
                     var term = request.term;
                     let l = label_select.val();
@@ -70,7 +76,7 @@ export class SearchBoxCtrl extends UIControl {
                             };
                         }));
                     });
-                }, 1000);
+                }, this.DELAY);
             },
 
             change: function (event, ui) {
@@ -109,5 +115,15 @@ export class SearchBoxCtrl extends UIControl {
         });
 
         return this;
+    }
+
+    public setInputText(text:string){
+        this._input.val(text)
+    }
+
+    public setLabel(text: string){
+        if (this._labels.has(text)){
+            this._label.val(text)
+        }
     }
 }

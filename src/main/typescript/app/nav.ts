@@ -12,7 +12,7 @@ import {
     FrameEventName,
     EVENT_ARGS_GRAPH_LOADED,
     NETWORK_OPTIONS,
-    EVENT_ARGS_RELFINDER, EVENT_ARGS_GRAPH_CONNECTED
+    EVENT_ARGS_RELFINDER, EVENT_ARGS_GRAPH_CONNECTED, GraphNode
 } from "../types";
 import { BaseApp } from './app';
 import { StatusBarCtrl } from '../control/StatusBarCtrl';
@@ -184,6 +184,7 @@ export class GraphNavigator extends BaseApp {
         //show graph while new graph loaded
         super.on(FrameEventName.GRAPH_CONNECTED, (args: EVENT_ARGS_FRAME) => {
             frame.getGraphService().requestGetNodeCategories((map: object) => {
+                console.log("getNodeCategories: "+map)
                 app._addCategoriesSelect(toolbar, map);
                 app._addCategoriesColorSelect(toolbar, map);
                 hilight.clear();
@@ -321,5 +322,15 @@ export class GraphNavigator extends BaseApp {
         });
 
         toolbar.addTool(select);
+    }
+
+    public pickup(keywords: object[], callback: (nodes: GraphNode[]) => void) {
+        var app = this;
+        super.pickup(keywords, (nodes: GraphNode[]) => {
+            this._searchBar.setInputText(nodes[0].label)
+            this._searchBar.setLabel(nodes[0].group)
+            if (callback !== undefined)
+                callback(nodes);
+        });
     }
 }

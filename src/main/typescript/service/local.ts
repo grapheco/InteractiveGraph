@@ -254,6 +254,7 @@ export class LocalGraph implements GraphService {
             local._performLoadData(()=> {
                 console.log(local)
                 let option: InitData = {
+                    categories: [],
                     nodesNum: this._nodes.length,
                     edgesNum: this._edges.length,
                     autoLayout: this._loadGraphOption["autoLayout"] || false

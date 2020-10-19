@@ -52,6 +52,7 @@ export abstract class MainFrame {
     private _networkOptions: NETWORK_OPTIONS;
     private _dynamic: boolean = false;
     private _loadedArea:Array<object> = [];
+    public  MAX_LABEL_LEN = 15
 
     private _screenData: NodeEdgeSet = {
         nodes: new GraphNodeSet(),
@@ -422,8 +423,8 @@ export abstract class MainFrame {
         // if node name is too long
         nodes = nodes.map(node=>{
 
-            if(node.label && node.label.length>8){
-                node.label = node.label.toString().substr(0,3)+"..."
+            if(node.label && node.label.length>this.MAX_LABEL_LEN){
+                node.label = node.label.toString().substr(0,this.MAX_LABEL_LEN-3)+"..."
             }
             return node
         })

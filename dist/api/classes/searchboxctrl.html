@@ -98,6 +98,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="searchboxctrl.html#_htmlcontainer" class="tsd-kind-icon">_html<wbr>Container</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="searchboxctrl.html#_image" class="tsd-kind-icon">_image</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="searchboxctrl.html#_input" class="tsd-kind-icon">_input</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="searchboxctrl.html#_label" class="tsd-kind-icon">_label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="searchboxctrl.html#_labels" class="tsd-kind-icon">_labels</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="searchboxctrl.html#_position" class="tsd-kind-icon">_position</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="searchboxctrl.html#_positionstr" class="tsd-kind-icon">_position<wbr>Str</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="searchboxctrl.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a></li>
@@ -129,6 +131,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="searchboxctrl.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="searchboxctrl.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="searchboxctrl.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchboxctrl.html#setinputtext" class="tsd-kind-icon">set<wbr>Input<wbr>Text</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="searchboxctrl.html#setlabel" class="tsd-kind-icon">set<wbr>Label</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="searchboxctrl.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="searchboxctrl.html#setposition" class="tsd-kind-icon">set<wbr>Position</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="searchboxctrl.html#show" class="tsd-kind-icon">show</a></li>
@@ -169,7 +173,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Control._classname</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L19">control/SearchBoxCtrl.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L22">control/SearchBoxCtrl.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,7 +184,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Control._content</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L9">control/SearchBoxCtrl.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L12">control/SearchBoxCtrl.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -202,7 +206,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Control._dockable</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L20">control/SearchBoxCtrl.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L23">control/SearchBoxCtrl.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -234,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">_image<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JQuery</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L7">control/SearchBoxCtrl.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L7">control/SearchBoxCtrl.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -244,7 +248,27 @@
 					<div class="tsd-signature tsd-kind-icon">_input<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JQuery</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L6">control/SearchBoxCtrl.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L6">control/SearchBoxCtrl.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="_label" class="tsd-anchor"></a>
+					<h3>_label</h3>
+					<div class="tsd-signature tsd-kind-icon">_label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">JQuery</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L8">control/SearchBoxCtrl.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="_labels" class="tsd-anchor"></a>
+					<h3>_labels</h3>
+					<div class="tsd-signature tsd-kind-icon">_labels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map&lt;String, String&gt;()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L9">control/SearchBoxCtrl.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -290,7 +314,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Control._positionStr</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L21">control/SearchBoxCtrl.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L24">control/SearchBoxCtrl.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -301,7 +325,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from EventEmitter.defaultMaxListeners</p>
 						<ul>
-							<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:916</li>
+							<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:916</li>
 						</ul>
 					</aside>
 				</section>
@@ -320,7 +344,7 @@
 								<p>Inherited from EventEmitter.addListener</p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:918</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:918</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -432,7 +456,7 @@
 								<p>Inherited from EventEmitter.emit</p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:929</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:929</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -478,7 +502,7 @@
 								<p>Inherited from EventEmitter.eventNames</p>
 								<p>Overrides EventEmitter.eventNames</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:930</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:930</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -497,7 +521,7 @@
 								<p>Inherited from EventEmitter.getMaxListeners</p>
 								<p>Overrides EventEmitter.getMaxListeners</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:926</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:926</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -515,7 +539,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Control.getTypeName</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L23">control/SearchBoxCtrl.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L27">control/SearchBoxCtrl.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -552,7 +576,7 @@
 								<p>Inherited from EventEmitter.listenerCount</p>
 								<p>Overrides EventEmitter.listenerCount</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:931</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:931</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -577,7 +601,7 @@
 								<p>Inherited from EventEmitter.listeners</p>
 								<p>Overrides EventEmitter.listeners</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:927</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:927</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -602,7 +626,7 @@
 								<p>Inherited from EventEmitter.on</p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:919</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:919</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -647,7 +671,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides UIControl.onBindElement</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/1624cf4/src/main/typescript/control/SearchBoxCtrl.ts#L27">control/SearchBoxCtrl.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L31">control/SearchBoxCtrl.ts:31</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -752,7 +776,7 @@
 								<p>Inherited from EventEmitter.once</p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:920</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:920</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -798,7 +822,7 @@
 								<p>Inherited from EventEmitter.prependListener</p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:921</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:921</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -844,7 +868,7 @@
 								<p>Inherited from EventEmitter.prependOnceListener</p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:922</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:922</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -890,7 +914,7 @@
 								<p>Inherited from EventEmitter.rawListeners</p>
 								<p>Overrides EventEmitter.rawListeners</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:928</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:928</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -915,7 +939,7 @@
 								<p>Inherited from EventEmitter.removeAllListeners</p>
 								<p>Overrides EventEmitter.removeAllListeners</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:924</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:924</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -940,7 +964,7 @@
 								<p>Inherited from EventEmitter.removeListener</p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:923</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:923</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -974,6 +998,52 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setinputtext" class="tsd-anchor"></a>
+					<h3>set<wbr>Input<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Input<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L120">control/SearchBoxCtrl.ts:120</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>text: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setlabel" class="tsd-anchor"></a>
+					<h3>set<wbr>Label</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Label<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/grapheco/InteractiveGraph/blob/bda4f9b/src/main/typescript/control/SearchBoxCtrl.ts#L124">control/SearchBoxCtrl.ts:124</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>text: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="setmaxlisteners" class="tsd-anchor"></a>
 					<h3>set<wbr>Max<wbr>Listeners</h3>
@@ -986,7 +1056,7 @@
 								<p>Inherited from EventEmitter.setMaxListeners</p>
 								<p>Overrides EventEmitter.setMaxListeners</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:925</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:925</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1073,7 +1143,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from EventEmitter.listenerCount</p>
 								<ul>
-									<li>Defined in /Users/huchuan/Documents/InteractiveGraph/node_modules/@types/node/index.d.ts:915</li>
+									<li>Defined in F:/InteractiveGraph/node_modules/@types/node/index.d.ts:915</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1132,6 +1202,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="searchboxctrl.html#_input" class="tsd-kind-icon">_input</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="searchboxctrl.html#_label" class="tsd-kind-icon">_label</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="searchboxctrl.html#_labels" class="tsd-kind-icon">_labels</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="searchboxctrl.html#_position" class="tsd-kind-icon">_position</a>
@@ -1210,6 +1286,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="searchboxctrl.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchboxctrl.html#setinputtext" class="tsd-kind-icon">set<wbr>Input<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="searchboxctrl.html#setlabel" class="tsd-kind-icon">set<wbr>Label</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 								<a href="searchboxctrl.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>

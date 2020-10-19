@@ -5,7 +5,7 @@ import { MainFrame } from '../mainframe';
 
 export class RelFinderDialogCtrl extends UIControl {
 
-    private _searchBoxes: JQuery[];
+    private _searchBoxes: SearchBoxCtrl[];
     protected _content = `
     <div class="line"><span class="fa relfinder-icon fa-flag"></span>
                 <div class="relfinder-searchbox-container">
@@ -51,7 +51,7 @@ export class RelFinderDialogCtrl extends UIControl {
         $(".relfinder-searchbox-container", htmlContainer).each(function () {
             let sbctrl = new SearchBoxCtrl();
             sbctrl.bindElement(this, frame, args);
-            ctrl._searchBoxes.push(sbctrl._input);
+            ctrl._searchBoxes.push(sbctrl);
         });
 
         var spinner = $(".relfinder-depth-spinner", htmlContainer)
@@ -90,8 +90,8 @@ export class RelFinderDialogCtrl extends UIControl {
 
     public getSelectedNodeIds(): string[] {
         var nodeIds: string[] = [];
-        this._searchBoxes.forEach((j: JQuery) => {
-            var data: GraphNode = j.data("node");
+        this._searchBoxes.forEach((j: SearchBoxCtrl) => {
+            var data: GraphNode = j._input.data("node");
             if (data !== undefined && data !== null)
                 nodeIds.push(<any>data.id);
         });
@@ -102,16 +102,23 @@ export class RelFinderDialogCtrl extends UIControl {
     public selectNodes(nodes: GraphNode[]) {
         var i = 0;
 
-        this._searchBoxes.forEach((sb: JQuery) => {
-            sb.val("");
-            sb.data("node", null);
-        });
-
+        // this._searchBoxes.forEach((sb: JQuery) => {
+        //     sb.val("");
+        //     sb.data("node", null);
+        // });
+        //
         var ctrl = this;
         nodes.forEach((node: GraphNode) => {
-            ctrl._searchBoxes[i].val(node.label);
-            ctrl._searchBoxes[i].data("node", node);
+            this._searchBoxes[i].setInputText(node.label)
+            this._searchBoxes[i].setLabel(node.group)
+            // ctrl._searchBoxes[i].val(node.label);
+            ctrl._searchBoxes[i]._input.data("node", node);
             i++;
         });
+    }
+
+
+    public getSearchBoxes(){
+        return this._searchBoxes;
     }
 }

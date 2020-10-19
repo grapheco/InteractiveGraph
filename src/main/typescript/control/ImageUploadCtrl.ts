@@ -80,6 +80,7 @@ export class ImageUploadCtrl extends UIControl {
         this._uploadBtns.eq(0).on('click',function(){
             console.log(that._fileUploader.file[0])
             frame.searchImage(that._fileUploader.file[0],(nodes)=>{
+                console.log(nodes)
                 that._frame.emit(FrameEventName.RESULTLISTPUT,nodes);
                 that.hideMe()
             })
@@ -413,9 +414,11 @@ class Camera {
 
     public closeCam(){
         console.log("close cam");
-        this._stream.getTracks().forEach(function (track) {
-            track.stop();
-        });
+        if (this._stream) {
+            this._stream.getTracks().forEach(function (track) {
+                track.stop();
+            });
+        }
         this._opening = false;
     }
 

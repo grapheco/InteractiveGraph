@@ -109,7 +109,7 @@ export class RemoteGraph implements GraphService {
     requestGetNodeCategories(callback: (catagoryMap: object) => void){
         var remote = this;
         this._ajaxCommand("init", {}, (data)=>{
-            callback(data.catagorys)
+            callback(data.categories)
         })
     }
 
