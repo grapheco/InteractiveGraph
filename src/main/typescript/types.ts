@@ -68,6 +68,14 @@ export interface LoadGraphOption {
     centerPointX?: number
     centerPointY?: number
     scale?:number
+    level?:number
+    row?:number
+    column?:number
+}
+
+export interface Tile {
+    nodes: object[]
+    edges: object[]
 }
 
 export interface LoadGraphOptionCallback {
@@ -179,6 +187,7 @@ export enum FrameEventName {
     NETWORK_AFTER_DRAWING = "NETWORK_END_DRAWING",
     NETWORK_DBLCLICK = "NETWORK_DBLCLICK",
     NETWORK_CLICK = "NETWORK_CLICK",
+    NETWORK_ZOOM = "NETWORK_ZOOM",
     NETWORK_ONCONTEXT = "NETWORK_ONCONTEXT",
     NETWORK_DRAGGING = "NETWORK_DRAGGING",
     NETWORK_DRAGEND = "NETWORK_DRAGEND",

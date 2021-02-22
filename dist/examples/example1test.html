@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>GraphNavigator</title>
+    <script type="text/javascript" src="./lib/interactive-graph-0.1.0/interactive-graph.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="./lib/interactive-graph-0.1.0/interactive-graph.min.css">
+    <script src="./lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="./lib/jquery-3.2.1/jquery-ui.css">
+    <script src="./lib/jquery-3.2.1/jquery-ui.js"></script>
+    <link href="./lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin: 0px;
+            font-size: 14px;
+        }
+
+        #graphArea {
+            height: 100%;
+            border: 1px solid lightgray;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div style="height:100%">
+        <div id="graphArea"></div>
+    </div>
+    <script type="text/javascript">
+        igraph.i18n.setLanguage("chs");
+        var app = new igraph.GraphNavigator(document.getElementById('graphArea'), 'LIGHT');
+        app.connect("http://localhost:9999/graphserver/connector-bolt")
+    </script>
+</body>
+
+</html>

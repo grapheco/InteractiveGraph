@@ -62,7 +62,8 @@ export interface Theme {
         shape: string,
         scaling: {
             min: number,
-            max: number
+            max: number,
+            customScalingFunction: Function
         },
         font: {
             size: number,
@@ -73,6 +74,14 @@ export interface Theme {
         useSeqColors: boolean,
         SeqColors?:NodeColor[],
         custom?:{}
+    }
+}
+
+let scale = {
+    min: 1,
+    max: 1000,
+    customScalingFunction(min?: number, max?: number, total?: number, value?: number): number {
+        return Math.max(0,value/999);
     }
 }
 
@@ -92,10 +101,7 @@ export class Themes {
             nodes: {
                 borderWidth: 0,
                 shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
+                scaling: scale,
                 font: {
                     size: 14,
                     strokeWidth: 7
@@ -147,10 +153,7 @@ export class Themes {
             nodes: {
                 borderWidth: 0,
                 shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
+                scaling: scale,
                 font: {
                     size: 14,
                     strokeWidth: 7
@@ -211,10 +214,7 @@ export class Themes {
             nodes: {
                 borderWidth: 0,
                 shape: 'dot',
-                scaling: {
-                    min: 10,
-                    max: 30
-                },
+                scaling: scale,
                 font: {
                     size: 14,
                     strokeWidth: 7
