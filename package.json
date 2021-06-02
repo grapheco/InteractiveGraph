@@ -31,7 +31,7 @@
     "gulp-typescript": "^4.0.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "jqueryui": "^1.11.1",
     "minify": "^3.0.4",
     "moment": "^2.22.2",
