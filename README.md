@@ -295,6 +295,10 @@ It would be highly appreciated if you commit any codes or documents to Interacti
 
 * To contribute new data sets or modification, you may submit data in GSON format!
 
+Tested development environment:
+- Node.js: v11.15.0
+- npm: 6.7.0
+
 ## <a name='BuildDebug'></a>Build & Debug
 
 __Step 1.__ use `npm run build` or `gulp build` to build InteractiveGraphBrowser, which generates `interactive-graph.js` and `interactive-graph.css` in `build` dir.
