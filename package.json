@@ -34,7 +34,7 @@
     "jquery": "^3.2.1",
     "jqueryui": "^1.11.1",
     "minify": "^3.0.4",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "natives": "^1.1.6",
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
